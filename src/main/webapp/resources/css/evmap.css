@@ -74,6 +74,7 @@ html, body {
 	color: black;
 	font-family: 'SUIT-Regular', sans-serif;
 	font-size: 18px;
+	cursor: pointer;
 	
 }
 
@@ -102,8 +103,58 @@ html, body {
 	font-size: 16px;
 	border-radius: 5px;
 	
+}
+
+.searchinput-container {
+	position: relative;
+	width: 90%;
+	margin: 3px auto;
+	padding: 10px;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 16px;
+	border-radius: 5px;
+	display:flex;
 	
 }
 
+.searchinput {
+	width: 90%;
+	margin: 3px auto;
+    padding: 10px 40px 10px 15px; /* 아이콘 공간 확보를 위해 오른쪽 padding 추가 */
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 16px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid #ccc;
+	
+}
+
+.searchicon {
+	position: absolute;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transform: translateY(-50%);
+    right: 15px; 
+    top: 50%;
+    
+}
+
+.searchbutton-container {
+	display: flex;
+	justify-content: space-around;
+}
+
+.searchbutton {
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	width: 100px;
+	background-color: blue;
+	
+}
 
 

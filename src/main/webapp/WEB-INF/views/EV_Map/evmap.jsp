@@ -65,9 +65,25 @@
 	    <select id="districtSelect" class="dropdown" disabled>
 	        <option value="">시/군</option>
 	    </select>
-	
-	
+	    
 	</div>
+
+    <!-- 입력 폼(검색용도) -->
+    <div class="searchinput-container">
+        <input type="text" placeholder="충전소를 검색해 주세요." class="searchinput">
+   		<button class="searchicon">
+        	<img src="${pageContext.request.contextPath}/resources/images/searchicon.png" alt="searchicon">
+        </button>
+    </div>
+    
+    <div class="searchbutton-container">
+    	<button class="searchbutton">검색하기</button>
+    	<button class="searchbutton">초기화</button>
+    
+    
+    
+    </div>
+
 	
 
 
