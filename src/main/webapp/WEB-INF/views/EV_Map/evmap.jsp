@@ -34,9 +34,12 @@
 		<p>CAR PLANET</p>
 	</div>
 	<div class="tabbar">
-		<span class="tabbarev">충전소 검색</span>
-		<span class="tabbarroad">충전소 길 찾기</span>
+        <span class="tabbarev active" onclick="showTab('search')">충전소 검색</span>
+		<span class="tabbarroad" onclick="showTab('route')">충전소 길 찾기</span>
 	</div>
+	
+	<!-- 충전소 검색 내용 -->
+    <div id="searchContent" class="tab-content active">
 	<div class="selectlocal">
 		<h3>지역 선택</h3>
 		<!-- 시/도 드롭다운 -->
@@ -65,7 +68,6 @@
 	    <select id="districtSelect" class="dropdown" disabled>
 	        <option value="">시/군</option>
 	    </select>
-	    
 	</div>
 
     <!-- 입력 폼(검색용도) -->
@@ -80,14 +82,72 @@
     	<button class="searchbutton">검색하기</button>
     	<button class="searchbutton">초기화</button>
     
-    
-    
     </div>
-
+    
+	<div class="chargetypetext">[충전타입]</div>
 	
-
-
-
+	<div class="chargetype">
+	    <label><input type="checkbox" checked> 전체</label>
+	    <label><input type="checkbox" checked> DC콤보</label>
+	    <label><input type="checkbox" checked> DC차데모</label>
+	    <label><input type="checkbox" checked> AC3상</label>
+	    <label><input type="checkbox" checked> 완속</label>
+	</div>
+	
+	<div class="searchlist">
+		<h2>검색결과</h2>
+	    <!-- 검색 결과 리스트 -->
+    	<ul>
+	    <li class="search-item">
+	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
+	        <div class="info">
+	            <h3>도솔공원</h3>
+	            <div class="status">
+	                <span class="available">사용가능</span>
+	                <span class="fast">⚡ 급속</span>
+	                <span class="type">DC콤보</span>
+	            </div>
+	        </div>
+	    </li>
+        <!-- 두 번째 충전소 아이템 -->
+	    <li class="search-item">
+	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
+	        <div class="info">
+	            <h3>독립기념관</h3>
+	            <div class="status">
+	                <span class="available">사용가능</span>
+	                <span class="fast">⚡ 급속</span>
+	                <span class="type">DC차데모</span>
+	                <span class="type">DC콤보</span>
+	            </div>
+	        </div>
+	    </li>
+	    </ul>
+	</div>
+	</div> <!-- end of tab-content active-->
+        <!-- 충전소 길 찾기 내용 -->
+        <div id="routeContent" class="tab-content">
+            <div class="route-search">
+                <input type="text" placeholder="출발지를 입력하세요" class="route-input">
+                <input type="text" placeholder="목적지를 입력하세요" class="route-input">
+                <button class="route-searchbutton">경로 검색</button>
+            </div>
+            <div class="route-options">
+<!--                 <label><input type="checkbox"> 최적경로</label>
+                <label><input type="checkbox"> 실시간</label>
+                <label><input type="checkbox"> 요금 설정</label> -->
+            </div>
+            <div class="route-result">
+                <!-- 경로 결과 예시 -->
+                <h3>11분 | 3.4km</h3>
+                <ul>
+                    <li>1. 대로로 307m 직진</li>
+                    <li>2. 자하도로 진입 후 1.0km 이동</li>
+                    <li>3. 좌회전 후 555m 이동</li>
+                </ul>
+            </div>
+        </div>
+	
 
 
 
@@ -97,7 +157,6 @@
 
 <!-- 카카오 맵 -->
 <div class="kakaomap" id="map"></div>
-
 
 
 
