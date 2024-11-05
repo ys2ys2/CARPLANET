@@ -14,10 +14,12 @@
 
 
 <!-- 카카오 맵 API -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66fe3ec238628b8043889a81592616b2"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66fe3ec238628b8043889a81592616b2&libraries=services"></script>
+
 <link href="${pageContext.request.contextPath}/resources/css/evmap.css" rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/resources/js/evdropdown.js" defer></script>
-
+<script src="${pageContext.request.contextPath}/resources/js/kakaoevmap.js" defer></script>
+<script src="${pageContext.request.contextPath}/resources/js/kakaoevroad.js" defer></script>
 
 
 <title>Car Planet 전기차 충전소</title>
@@ -73,6 +75,7 @@
     <!-- 입력 폼(검색용도) -->
     <div class="searchinput-container">
         <input type="text" placeholder="충전소를 검색해 주세요." class="searchinput">
+        <div id="suggestions"></div>
    		<button class="searchicon">
         	<img src="${pageContext.request.contextPath}/resources/images/searchicon.png" alt="searchicon">
         </button>
@@ -99,8 +102,8 @@
 	    <!-- 검색 결과 리스트 -->
     	<ul>
 	    <li class="search-item">
-	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
-	        <div class="info">
+<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
+ -->	        <div class="info">
 	            <h3>도솔공원</h3>
 	            <div class="status">
 	                <span class="available">사용가능</span>
@@ -111,8 +114,8 @@
 	    </li>
         <!-- 두 번째 충전소 아이템 -->
 	    <li class="search-item">
-	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
-	        <div class="info">
+<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
+ -->	        <div class="info">
 	            <h3>독립기념관</h3>
 	            <div class="status">
 	                <span class="available">사용가능</span>
@@ -128,29 +131,21 @@
         <!-- 충전소 길 찾기 내용 -->
         <div id="routeContent" class="tab-content">
             <div class="route-search">
-                <input type="text" placeholder="출발지를 입력하세요" class="route-input">
-                <input type="text" placeholder="목적지를 입력하세요" class="route-input">
-                <button class="route-searchbutton">경로 검색</button>
+                <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
+                	<div id="originSuggestions" class="suggestions-container"></div>
+                <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
+                	<div id="destinationSuggestions" class="suggestions-container"></div>
+                <button id="searchButton" class="route-searchbutton">경로 검색</button>
+                    <input type="hidden" id="originCoords">
+   	 				<input type="hidden" id="destinationCoords">
             </div>
-            <div class="route-options">
-<!--                 <label><input type="checkbox"> 최적경로</label>
-                <label><input type="checkbox"> 실시간</label>
-                <label><input type="checkbox"> 요금 설정</label> -->
-            </div>
-            <div class="route-result">
+
+            <div class="route-result" id="routeResult">
+            <div id="directionsList" class="directions-list"></div>
                 <!-- 경로 결과 예시 -->
-                <h3>11분 | 3.4km</h3>
-                <ul>
-                    <li>1. 대로로 307m 직진</li>
-                    <li>2. 자하도로 진입 후 1.0km 이동</li>
-                    <li>3. 좌회전 후 555m 이동</li>
-                </ul>
             </div>
         </div>
 	
-
-
-
 
 
 </div> <!-- end of searchbar -->
@@ -169,24 +164,7 @@
 
 
 
-
-
-
-
-
-
 </body>
 
-<script>
-
-var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-var options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-	level: 3 //지도의 레벨(확대, 축소 정도)
-};
-
-var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-</script>
 
 </html>
