@@ -126,7 +126,6 @@ async function getRoute(origin, destination) {
 
         return routeData;
         
-        return await response.json();
     } catch (error) {
         console.error("경로 요청 중 오류 발생:", error);
         return null;
@@ -139,6 +138,18 @@ function displayRoute(routeData) {
         const linePath = [];
         const directionsList = document.getElementById('directionsList'); // 경로 안내 표시할 div
         directionsList.innerHTML = ''; // 기존 안내 초기화
+        
+        // 총 예상 이동 시간 계산
+        const totalDurationInSeconds = routeData.routes[0].summary.duration;
+        const totalMinutes = Math.floor(totalDurationInSeconds / 60);
+        const totalSeconds = totalDurationInSeconds % 60;
+        const totalDurationText = `총 예상 이동 시간: 약 ${totalMinutes}분 `; //초는 이렇게 사용! ${totalSeconds}초
+        
+        // 예상 이동 시간 표시
+        const totalDurationElement = document.createElement('div');
+        totalDurationElement.className = 'total-duration';
+        totalDurationElement.innerHTML = `<strong>${totalDurationText}</strong>`;
+        directionsList.appendChild(totalDurationElement);
 
         // 경로 데이터에서 x, y 좌표를 추출하여 선을 구성
         routeData.routes[0].sections[0].roads.forEach(road => {
@@ -152,7 +163,12 @@ function displayRoute(routeData) {
         routeData.routes[0].sections[0].guides.forEach(guide => {
             const directionItem = document.createElement('div');
             directionItem.className = 'direction-item';
-            directionItem.innerHTML = `<strong>${guide.name || "이동"}</strong> - ${guide.distance}m`;
+
+            // 안내 문구 사용 (guidance 항목)
+            const guidanceText = guide.guidance || "이동";
+
+            // 지침과 거리 포함한 HTML로 설정
+            directionItem.innerHTML = `<strong>${guidanceText}</strong> 후  ${guide.distance}m 이동`;
             directionsList.appendChild(directionItem);
         });
 
@@ -179,6 +195,7 @@ function displayRoute(routeData) {
         alert("경로를 찾을 수 없습니다.");
     }
 }
+
 
 
 // 지도에 마커를 표시하는 함수
