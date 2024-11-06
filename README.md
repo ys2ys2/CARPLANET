@@ -27,3 +27,7 @@
 <img src="https://img.shields.io/badge/Naver-03C75A?style=flat&logo=naver&logoColor=white"/>
 <img src="https://img.shields.io/badge/Google-4285F4?style=flat&logo=Google&logoColor=white"/>
 
+<br><br><br>
+
+<h5>영신, 예슬, 희진, 문배, 선호<br><br>
+@CarPlanet_pjrt</h5>

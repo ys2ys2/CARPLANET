@@ -1,0 +1,109 @@
+
+/* 한국기계연구원 */
+@font-face {
+    font-family: 'KIMM_Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* 수트체 */
+@font-face {
+    font-family: 'SUIT-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+html, body {
+	margin: 0 auto;
+	height: 100%;
+	
+}
+
+.maincontainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+}
+
+
+.kakaomap {
+    width: 100%; 
+    height: 100%;
+    flex: 1;
+}
+
+
+.searchbar {
+	display: flex;
+	flex-direction: column;
+	width: 350px;
+	height: 100%;
+	background-color: white;
+	
+}
+
+.searchlogo {
+	width: 100%;
+	height: auto;
+	background-color: blue;
+	
+}
+
+.searchlogo p {
+	font-family: 'KIMM_Bold', sans-serif;
+	font-size: 25px;
+	color: white;
+	margin-left: 1vh;
+}
+
+.tabbar {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	height: auto;
+	
+}
+
+.tabbarev, .tabbarroad {
+	margin-top: 3vh;
+	color: black;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 18px;
+	
+}
+
+.selectlocal {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	
+	
+	
+}
+
+.selectlocal h3 {
+	margin-top: 4vh;
+	margin-left: 2vh;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 18px;
+	
+}
+
+.dropdown {
+	width: 90%;
+	margin: 3px auto;
+	padding: 10px;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 16px;
+	border-radius: 5px;
+	
+	
+}
+
+
+
