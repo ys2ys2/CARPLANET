@@ -291,3 +291,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+
+function showTab(tab) {
+    // 모든 탭과 콘텐츠를 비활성화
+    document.querySelectorAll('.tabbar span').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // 선택된 탭과 콘텐츠를 활성화
+    if (tab === 'search') {
+        document.querySelector('.tabbarev').classList.add('active');
+        document.getElementById('searchContent').classList.add('active');
+    } else if (tab === 'route') {
+        document.querySelector('.tabbarroad').classList.add('active');
+        document.getElementById('routeContent').classList.add('active');
+    }
+}
