@@ -159,18 +159,31 @@ function displayRoute(routeData) {
             }
         });
 
-        // 각 가이드(guide) 지침을 화면에 표시
-        routeData.routes[0].sections[0].guides.forEach(guide => {
-            const directionItem = document.createElement('div');
-            directionItem.className = 'direction-item';
+		// 출발지 이름 가져오기
+		const originName = document.getElementById("originInput").value; // 사용자가 입력한 출발지 이름
 
-            // 안내 문구 사용 (guidance 항목)
-            const guidanceText = guide.guidance || "이동";
+		// 각 가이드(guide) 지침을 화면에 표시
+		routeData.routes[0].sections[0].guides.forEach((guide, index) => {
+		    const directionItem = document.createElement('div');
+		    directionItem.className = 'direction-item';
+		
+		    // 첫 번째 안내 지침은 "출발지"로 표시, 마지막은 "목적지"로 표시
+		    let guidanceText;
+		    if (index === 0) {
+        		guidanceText = `출발 : ${originName}`; // 출발지 이름 포함
+		    } else if (index === routeData.routes[0].sections[0].guides.length - 1) {
+		        guidanceText = "목적지";
+		    } else {
+		        // 도로 이름(road name)을 포함하여 지침 텍스트 생성
+		        const roadName = guide.road && guide.road.name ? `${guide.road.name} 방면 ` : ""; // 도로 이름이 존재할 경우 추가
+		        guidanceText = `${roadName}${guide.guidance || "이동"} 후 ${guide.distance}m 이동`; // 지침 텍스트
+		    }
+		
+		    // 설정한 안내 지침을 HTML로 적용
+		    directionItem.innerHTML = `<strong>${guidanceText}</strong>`;
+		    directionsList.appendChild(directionItem);
+		});
 
-            // 지침과 거리 포함한 HTML로 설정
-            directionItem.innerHTML = `<strong>${guidanceText}</strong> 후  ${guide.distance}m 이동`;
-            directionsList.appendChild(directionItem);
-        });
 
         // 기존 경로가 있다면 제거
         if (polyline) {
