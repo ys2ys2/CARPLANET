@@ -1,3 +1,19 @@
+function showTab(tab) {
+    // 모든 탭과 콘텐츠를 비활성화
+    document.querySelectorAll('.tabbar span').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // 선택된 탭과 콘텐츠를 활성화
+    if (tab === 'search') {
+        document.querySelector('.tabbarev').classList.add('active');
+        document.getElementById('searchContent').classList.add('active');
+    } else if (tab === 'route') {
+        document.querySelector('.tabbarroad').classList.add('active');
+        document.getElementById('routeContent').classList.add('active');
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     // 시/군 데이터를 저장한 객체
     const districtData = {
@@ -270,13 +286,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	    
 
     // 시/도 선택 시 시/군 목록 업데이트
-    document.getElementById("citySelect").addEventListener("change", function() {
+    document.getElementById("citySelect").addEventListener("change", function () {
         const selectedCity = this.value;
         const districtSelect = document.getElementById("districtSelect");
-        
+
+        console.log("Selected city code:", selectedCity); // 선택된 시/도 코드 출력
+
         // 시/군 옵션 초기화
         districtSelect.innerHTML = '<option value="">시/군</option>';
-        
+
         // 시/군 데이터가 있는 경우에만 옵션 추가
         if (districtData[selectedCity]) {
             districtData[selectedCity].forEach(district => {
@@ -286,24 +304,92 @@ document.addEventListener("DOMContentLoaded", function() {
                 districtSelect.appendChild(option);
             });
             districtSelect.disabled = false; // 활성화
+            console.log("Districts updated for city:", selectedCity); // 시/군 리스트 업데이트 확인
         } else {
             districtSelect.disabled = true; // 비활성화
+            console.log("No districts available for city:", selectedCity); // 해당 시/도에 시/군이 없는 경우
         }
+    });
+
+    // 검색하기 버튼 클릭 시 API 호출
+    document.getElementById("stationSearchButton").addEventListener("click", function () {
+        const cityCode = document.getElementById("citySelect").value;
+        const districtCode = document.getElementById("districtSelect").value;
+
+        console.log("City Code:", cityCode); // 시/도 코드 확인
+        console.log("District Code:", districtCode); // 시/군 코드 확인
+
+        if (!cityCode || !districtCode) {
+            alert("시/도와 시/군을 선택해 주세요.");
+            return;
+        }
+
+        const apiKey = "rBOARBGR6WewzR+zYF+kQmTdL/uXaOHo8Xi8oSkMFzA/7fiYa80eViuXxb9mLDalaBCEyQPIIt3abBnIMVwU0Q==";
+        const apiUrl = `http://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=${encodeURIComponent(apiKey)}&numOfRows=10&pageNo=1&dataType=XML&zcode=${cityCode}&zscode=${districtCode}`;
+        console.log("API URL:", apiUrl); // API URL 확인
+
+        fetch(apiUrl)
+            .then(response => {
+                console.log("API Response Status:", response.status); // API 응답 상태 확인
+                if (!response.ok) {
+                    throw new Error("API 호출 오류");
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("API Data Received:", data); // API로 받은 데이터 확인
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, "application/xml");
+                const items = xmlDoc.getElementsByTagName("item");
+                console.log("Number of items received:", items.length); // 받은 item 수 확인
+
+                const resultList = document.querySelector(".searchlist ul");
+                resultList.innerHTML = ""; // 기존 리스트 초기화
+
+                for (let i = 0; i < items.length; i++) {
+                    const statNm = items[i].getElementsByTagName("statNm")[0].textContent;
+                    const addr = items[i].getElementsByTagName("addr")[0].textContent;
+                    const useTime = items[i].getElementsByTagName("useTime")[0].textContent;
+                    const output = items[i].getElementsByTagName("output")[0].textContent;
+                    const type = items[i].getElementsByTagName("chgerType")[0].textContent;
+
+                    console.log(`Item ${i + 1}:`, { statNm, addr, useTime, output, type }); // 각 item 정보 확인
+
+                    const chargerTypeMap = {
+                        "01": "DC차데모",
+                        "02": "AC완속",
+                        "03": "DC콤보",
+                    };
+                    const typeText = chargerTypeMap[type] || "알 수 없는 타입";
+
+                    const listItem = document.createElement("li");
+                    listItem.className = "search-item";
+                    listItem.innerHTML = `
+                        <div class="info">
+                            <h3>${statNm}</h3>
+                            <p>${addr}</p>
+                            <div class="status">
+                                <span class="available">사용가능</span>
+                                <span class="fast">⚡ ${output}kW</span>
+                                <span class="type">타입: ${typeText}</span>
+                            </div>
+                            <p>이용시간: ${useTime}</p>
+                        </div>
+                    `;
+                    resultList.appendChild(listItem);
+                }
+            })
+            .catch(error => console.error("API 호출 오류:", error));
+    });
+
+    // 초기화 버튼 기능
+    document.getElementById("resetButton").addEventListener("click", function () {
+        document.getElementById("citySelect").value = "";
+        document.getElementById("districtSelect").value = "";
+        document.querySelector(".searchlist ul").innerHTML = ""; // 결과 초기화
+        console.log("Search fields and results reset"); // 초기화 확인
     });
 });
 
 
-function showTab(tab) {
-    // 모든 탭과 콘텐츠를 비활성화
-    document.querySelectorAll('.tabbar span').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-    // 선택된 탭과 콘텐츠를 활성화
-    if (tab === 'search') {
-        document.querySelector('.tabbarev').classList.add('active');
-        document.getElementById('searchContent').classList.add('active');
-    } else if (tab === 'route') {
-        document.querySelector('.tabbarroad').classList.add('active');
-        document.getElementById('routeContent').classList.add('active');
-    }
-}

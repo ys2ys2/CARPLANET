@@ -82,8 +82,8 @@
     </div>
     
     <div class="searchbutton-container">
-    	<button class="searchbutton">검색하기</button>
-    	<button class="searchbutton">초기화</button>
+    	<button class="searchbutton" id="stationSearchButton">검색하기</button>
+    	<button class="searchbutton" id="resetButton">초기화</button>
     
     </div>
     
@@ -99,32 +99,8 @@
 	
 	<div class="searchlist">
 		<h2>검색결과</h2>
-	    <!-- 검색 결과 리스트 -->
-    	<ul>
-	    <li class="search-item">
-<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
- -->	        <div class="info">
-	            <h3>도솔공원</h3>
-	            <div class="status">
-	                <span class="available">사용가능</span>
-	                <span class="fast">⚡ 급속</span>
-	                <span class="type">DC콤보</span>
-	            </div>
-	        </div>
-	    </li>
-        <!-- 두 번째 충전소 아이템 -->
-	    <li class="search-item">
-<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
- -->	        <div class="info">
-	            <h3>독립기념관</h3>
-	            <div class="status">
-	                <span class="available">사용가능</span>
-	                <span class="fast">⚡ 급속</span>
-	                <span class="type">DC차데모</span>
-	                <span class="type">DC콤보</span>
-	            </div>
-	        </div>
-	    </li>
+    	<ul id="resultList">
+	 		<!-- 검색결과 리스트 -->
 	    </ul>
 	</div>
 	</div> <!-- end of tab-content active-->
