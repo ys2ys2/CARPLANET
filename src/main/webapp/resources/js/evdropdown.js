@@ -283,7 +283,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	    
 	};   	    
 	    
-	    
 
     // 시/도 선택 시 시/군 목록 업데이트
     document.getElementById("citySelect").addEventListener("change", function () {

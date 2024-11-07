@@ -12,6 +12,7 @@ public class HomeController {
 	public String evmap() {
 		return "EV_Map/evmap";
 		
+	
 	}
 	
 }

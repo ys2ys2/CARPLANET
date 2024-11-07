@@ -87,7 +87,7 @@
     
     </div>
     
-	<div class="chargetypetext">[충전타입]</div>
+<!-- 	<div class="chargetypetext">[충전타입]</div>
 	
 	<div class="chargetype">
 	    <label><input type="checkbox" checked> 전체</label>
@@ -95,7 +95,7 @@
 	    <label><input type="checkbox" checked> DC차데모</label>
 	    <label><input type="checkbox" checked> AC3상</label>
 	    <label><input type="checkbox" checked> 완속</label>
-	</div>
+	</div> -->
 	
 	<div class="searchlist">
 		<h2>검색결과</h2>
@@ -103,6 +103,8 @@
 	 		<!-- 검색결과 리스트 -->
 	    </ul>
 	</div>
+
+	
 	</div> <!-- end of tab-content active-->
         <!-- 충전소 길 찾기 내용 -->
         <div id="routeContent" class="tab-content">
@@ -122,9 +124,11 @@
             </div>
         </div>
 	
+	
+	</div> <!-- end of searchbar -->
 
 
-</div> <!-- end of searchbar -->
+
 
 <!-- 카카오 맵 -->
 <div class="kakaomap" id="map"></div>

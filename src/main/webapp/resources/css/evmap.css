@@ -16,16 +16,16 @@
 }
 
 
-
 html, body {
 	margin: 0 auto;
 	height: 100%;
+	overflow: hidden;
 	
 }
 
 .maincontainer {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	display: flex;
 	flex-direction: row;
 }
@@ -44,7 +44,7 @@ html, body {
 	width: 350px;
 	height: 100%;
 	background-color: white;
-	
+	overflow: hidden;
 }
 
 .searchlogo {
@@ -81,6 +81,7 @@ html, body {
 .tab-content.active {
     display: block;
     margin-top: 2vh;
+
 }
 
 .tabbarev, .tabbarroad {
@@ -236,21 +237,28 @@ html, body {
 }
 
 
+
+
+.searchlist {
+	font-family: 'SUIT-Regular', sans-serif;
+	width: auto;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	margin-left: 2vh;
+	overflow-y : auto;
+	max-height: 100%;
+	
+	
+}
+
+
 .searchlist ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.searchlist {
-	font-family: 'SUIT-Regular', sans-serif;
-	width: 100%;
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	margin-left: 2vh;
-	
-}
 
 .searchlist h2 {
 	font-family: 'SUIT-Regular', sans-serif;
