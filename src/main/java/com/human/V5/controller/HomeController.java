@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 	
-	// 메인페이지
+	// 전기차충전소
 	@GetMapping("/evmap")
 	public String evmap() {
 		return "EV_Map/evmap";
