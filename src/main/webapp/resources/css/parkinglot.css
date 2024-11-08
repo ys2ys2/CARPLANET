@@ -44,16 +44,21 @@ html, body{
 /* 탭 스타일 */
 .parking-tabs {
 	display: flex;
+	justify-content: space-around;
 	margin-bottom: 10px;
 }
 .tab-button {
-	flex: 1;
-	padding: 10px;
-	cursor: pointer;
+	padding: 10px 20px;
+    border: none;
+    cursor: pointer;
 }
 .tab-button.active {
-	background-color: #4CAF50;
-	color: white;
+	background-color: #007bff;
+    color: white;
+}
+
+.tab-content {
+    display: none;
 }
 
 /* 주차장 리스트 스타일 */
@@ -64,10 +69,47 @@ html, body{
 
 /* 페이지네이션 스타일 */
 .pagination {
+	 display: flex;
 	text-align: center;
 	margin-top: 10px;
 }
 .pagination button {
 	padding: 5px 10px;
 	margin: 0 5px;
+}
+
+/* label-container 클래스는 라벨을 담고 있는 컨테이너 */
+.label-container {
+    display: flex;
+    gap: 8px; /* 라벨 간 간격 */
+    margin-top: 5px; /* 라벨과 제목 간격 */
+}
+
+/* label 클래스는 각 라벨의 스타일 */
+.label_gubun{
+	background-color: #4CAF50; /* 라벨 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 3px 8px; /* 라벨 내부 여백 */
+    border-radius: 12px; /* 둥근 모서리 */
+    font-size: 0.8em; /* 폰트 크기 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+.label_type{
+	background-color: #0c10ec; /* 라벨 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 3px 8px; /* 라벨 내부 여백 */
+    border-radius: 12px; /* 둥근 모서리 */
+    font-size: 0.8em; /* 폰트 크기 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+
+.label_charge{
+	background-color: black; /* 라벨 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 3px 8px; /* 라벨 내부 여백 */
+    border-radius: 12px; /* 둥근 모서리 */
+    font-size: 0.8em; /* 폰트 크기 */
+    font-weight: bold; /* 텍스트 굵기 */
 }
