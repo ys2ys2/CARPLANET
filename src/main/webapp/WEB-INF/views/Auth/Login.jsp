@@ -32,7 +32,7 @@ body {
 .container {
 	display: flex;
 	width: 60%;
-	height: 70vh;
+	height: 80vh;
 	position: relative;
 	overflow:hidden;
 }
