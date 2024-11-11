@@ -79,8 +79,12 @@ html, body {
 }
 
 .tab-content.active {
-    display: block;
+    display: flex;
     margin-top: 2vh;
+    height: 100%;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 
 }
 
@@ -178,6 +182,7 @@ html, body {
 .searchbutton-container {
 	display: flex;
 	justify-content: space-around;
+	margin: 10px;
 }
 
 .searchbutton {
@@ -242,13 +247,14 @@ html, body {
 .searchlist {
 	font-family: 'SUIT-Regular', sans-serif;
 	width: auto;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	margin-left: 2vh;
 	overflow-y : auto;
 	max-height: 100%;
-	
+	flex: 1;
+	box-sizing: border-box;
 	
 }
 
@@ -279,10 +285,19 @@ html, body {
     margin-right: 15px;
 }
 
+.info {
+	cursor: pointer;
+}
+
 .info h3 {
-    font-size: 18px;
+    font-size: 15px;
     margin: 0;
-    padding-bottom: 5px;
+}
+
+.info p {
+	font-size: 13px;
+	margin: 0;
+	margin-top: 5px;
 }
 
 .status {
@@ -293,16 +308,53 @@ html, body {
 .status span {
     display: inline-flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 11px;
     padding: 3px 6px;
     border-radius: 15px;
     margin-top: 4px;
 }
 
-/* 상태에 따른 스타일링 */
+/* 충전기 상태 */
+.stat {
+    background-color: #007bff;
+	color:white;
+}
+
+.status-available {
+    background-color: #4CC417; /* 사용 가능 */
+    color:white;
+}
+
+.status-in-use {
+    background-color: #F62217; /* 사용 중 */
+    color:white;
+}
+
+.status-unavailable {
+    background-color: #F62217; /* 사용 불가 */
+    color:white;
+}
+
+.status-out-of-service {
+    background-color: #6c757d; /* 운영 중지 */
+    color:white;
+}
+
+.status-under-maintenance {
+    background-color: #FBB117; /* 점검 중 */
+    color:white;
+}
+
+.status-unknown {
+    background-color: #343a40; /* 상태 미확인 */
+    color:white;
+}
+
+
 .available {
     background-color: #007bff;
     color: white;
+    
 }
 
 .fast {
@@ -421,5 +473,38 @@ html, body {
 
 .autocomplete-item:hover {
     background-color: #eee;
+}
+
+.pagination-container {
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	margin: 10px auto;
+	
+}
+
+
+.page-button {
+    margin: 2px;
+    background-color: transparent;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 40px;
+    height: 40px;
+    font-family: 'SUIT-Regular', sans-serif;
+}
+
+.page-button:hover {
+    background-color: #0d8aff;
+}
+
+.page-button.active {
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
 }
 

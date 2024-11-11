@@ -246,3 +246,39 @@ async function getCoordinatesFromAddress(address) {
         return null;
     }
 }
+
+// 현재 위치를 받아 지도의 중심을 이동하는 함수
+function setMapToCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude; // 위도
+                const longitude = position.coords.longitude; // 경도
+                
+                const userLocation = new kakao.maps.LatLng(latitude, longitude); // 사용자의 현재 위치 좌표
+                map.setCenter(userLocation); // 지도의 중심을 현재 위치로 이동
+                
+                // 현재 위치에 마커 추가 (옵션)
+                const userMarker = new kakao.maps.Marker({
+                    position: userLocation,
+                    map: map
+                });
+                
+            },
+            function(error) {
+                alert("현재 위치를 가져올 수 없습니다. 위치 정보를 허용해 주세요.");
+            },
+            {
+                enableHighAccuracy: true, // 높은 정확도의 위치를 요청
+                timeout: 10000,           // 위치 요청 제한 시간 설정 (10초)
+                maximumAge: 0             // 항상 최신 위치 정보 요청
+            }
+        );
+    } else {
+        alert("이 브라우저에서는 현재 위치를 가져올 수 없습니다.");
+    }
+}
+
+// 페이지 로드 시 현재 위치로 지도 이동
+document.addEventListener("DOMContentLoaded", setMapToCurrentLocation);
+

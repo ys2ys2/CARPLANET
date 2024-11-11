@@ -73,29 +73,29 @@
 	</div>
 
     <!-- 입력 폼(검색용도) -->
-    <div class="searchinput-container">
+<%--     <div class="searchinput-container">
         <input type="text" placeholder="충전소를 검색해 주세요." class="searchinput">
         <div id="suggestions"></div>
    		<button class="searchicon">
         	<img src="${pageContext.request.contextPath}/resources/images/searchicon.png" alt="searchicon">
         </button>
-    </div>
+    </div> --%>
     
     <div class="searchbutton-container">
     	<button class="searchbutton" id="stationSearchButton">검색하기</button>
     	<button class="searchbutton" id="resetButton">초기화</button>
-    
     </div>
     
-<!-- 	<div class="chargetypetext">[충전타입]</div>
+	<div class="chargetypetext">[충전타입]</div>
 	
 	<div class="chargetype">
-	    <label><input type="checkbox" checked> 전체</label>
-	    <label><input type="checkbox" checked> DC콤보</label>
-	    <label><input type="checkbox" checked> DC차데모</label>
-	    <label><input type="checkbox" checked> AC3상</label>
-	    <label><input type="checkbox" checked> 완속</label>
-	</div> -->
+	    <label><input type="checkbox" value="chargetypeAllcheck" checked> 전체</label>
+	    <label><input type="checkbox" value="04" checked> DC콤보</label>
+	    <label><input type="checkbox" value="01" checked> DC차데모</label>
+	    <label><input type="checkbox" value="07" checked> AC3상</label>
+	    <label><input type="checkbox" value="02" checked> 완속</label>
+	</div>
+
 	
 	<div class="searchlist">
 		<h2>검색결과</h2>
@@ -103,6 +103,9 @@
 	 		<!-- 검색결과 리스트 -->
 	    </ul>
 	</div>
+	
+	<!-- 페이지네이션 버튼 -->
+	<div id="pagination" class="pagination-container"></div>
 
 	
 	</div> <!-- end of tab-content active-->
