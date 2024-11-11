@@ -137,6 +137,67 @@
 <div class="kakaomap" id="map"></div>
 
 
+<!-- 충전소 정보 팝업 -->
+<div id="stationInfoPopup" class="station-info-popup">
+	<button id="closePopupButton">X</button> <!-- 닫기 버튼 -->
+	<div class="real-popup">
+		    <div><h3 id="popupStationName">충전소 이름</h3></div>
+		<div class="popupchargebusi">
+			<p>충전소 운영기관</p>
+			<p>충전소 이용가능시간</p>
+		</div>
+		
+		<div class="popupchargeType">
+			<table>
+		        <thead>
+		            <tr>
+		                <th>구분</th>
+		                <th>충전기 타입</th>
+		                <th>충전기 상태<br>(갱신일시)</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr>
+		                <td>급속<br>(50kW 단독)</td>
+		                <td>
+		                    <img src="dc_chademo_icon.png" alt="DC차데모">
+		                    <img src="ac3_icon.png" alt="AC3상">
+		                    <img src="dc_combo_icon.png" alt="DC콤보">
+		                </td>
+		                <td>
+		                    <span class="status-button">사용가능</span><br>
+		                    2024.11.02 13:08
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+		<div class="popupchargeinfo">
+			<p>상세정보:</p>
+		
+			<span>도로명주소: </span>
+			<span>상세위치: </span>
+			<span>운영기관: </span>
+			<span>연락처: </span>
+			<span>충전요금: </span>
+			<span>참고사항: </span>
+			<span>이용자제한: </span>
+		
+		</div>
+		
+		<div class="popupchargephoto">
+			<p>위치사진</p>
+		
+		
+		</div>
+	
+
+	    
+    </div> <!-- end of real-popup -->
+</div> <!-- end of station-info-popup -->
+
+
 
 
 

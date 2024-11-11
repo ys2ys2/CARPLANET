@@ -435,7 +435,52 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	
 
-	// 검색 결과를 화면에 표시하는 함수
+	// 충전기 타입과 상태 매핑 객체를 전역에 정의
+	const chargerTypeMap = {
+	    "01": "DC차데모",
+	    "02": "AC완속",
+	    "03": "DC차데모+AC3상",
+	    "04": "DC콤보",
+	    "05": "DC차데모+DC콤보",
+	    "06": "DC차데모+AC3상+DC콤보",
+	    "07": "AC3상",
+	    "08": "DC콤보(완속)",
+	    "89": "H2"
+	};
+	
+	const chargerStatusMap = {
+	    "1": { text: "사용 불가", class: "status-unavailable" },
+	    "2": { text: "사용 가능", class: "status-available" },
+	    "3": { text: "사용 중", class: "status-in-use" },
+	    "4": { text: "운영 중지", class: "status-out-of-service" },
+	    "5": { text: "점검 중", class: "status-under-maintenance" },
+	    "9": { text: "상태 미확인", class: "status-unknown" }
+	};
+	
+	// 충전소 정보를 팝업에 표시하는 함수
+	function showStationInfoPopup(stationData) {
+	    // 타입과 상태 정보를 전역 매핑 객체를 사용해 변환
+	    const typeText = chargerTypeMap[stationData.type] || "알 수 없는 타입";
+	    const statusText = chargerStatusMap[stationData.status]?.text || "알 수 없는 상태";
+	
+	    // 팝업창에 데이터 설정
+	    //document.getElementById("popupStationName").textContent = stationData.name;
+	    //document.getElementById("popupAddress").textContent = stationData.address;
+	    //document.getElementById("popupStatus").textContent = `상태: ${statusText}`;
+	    //document.getElementById("popupType").textContent = `타입: ${typeText}`;
+	    //document.getElementById("popupOutput").textContent = `출력: ${stationData.output}kW`;
+	    //document.getElementById("popupUseTime").textContent = `사용 시간: ${stationData.useTime}`;
+	
+	    // 팝업창을 화면에 표시
+	    document.getElementById("stationInfoPopup").style.display = "block";
+	    
+    	// 팝업창 닫기 버튼 기능 추가
+		document.getElementById("closePopupButton").addEventListener("click", function () {
+		    document.getElementById("stationInfoPopup").style.display = "none"; // 팝업창 숨기기
+		});
+	}
+	
+	// displayResults 함수에서 전역 매핑 객체 사용
 	function displayResults(items) {
 	    const resultList = document.querySelector(".searchlist ul");
 	    resultList.innerHTML = ""; // 기존 리스트 초기화
@@ -443,46 +488,20 @@ document.addEventListener("DOMContentLoaded", function() {
 	    const stationNameCount = {}; // 충전소명 중복 여부 확인할 객체
 	
 	    for (let i = 0; i < items.length; i++) {
-	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;	//충전소명
-	        const addr = items[i].getElementsByTagName("addr")[0].textContent;		//주소
-	        const useTime = items[i].getElementsByTagName("useTime")[0].textContent;//이용 가능 시간
-	        const output = items[i].getElementsByTagName("output")[0].textContent;	//충전 용량
-	        const type = items[i].getElementsByTagName("chgerType")[0].textContent;	//충전기 타입
-            const stat = items[i].getElementsByTagName("stat")[0].textContent;		//충전기 상태
-        	const limitYn = items[i].getElementsByTagName("limitYn")[0]?.textContent || "N"; // limitYn 값 또는 기본값 'N'
-        	const limitDetail = items[i].getElementsByTagName("limitDetail")[0]?.textContent || ""; // limitDetail 값 또는 기본값 ''
-        	const lat = parseFloat(items[i].getElementsByTagName("lat")[0].textContent); 	// 위도
-			const lng = parseFloat(items[i].getElementsByTagName("lng")[0].textContent);	//경도
+	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;  // 충전소명
+	        const addr = items[i].getElementsByTagName("addr")[0].textContent;      // 주소
+	        const useTime = items[i].getElementsByTagName("useTime")[0].textContent; // 이용 가능 시간
+	        const output = items[i].getElementsByTagName("output")[0].textContent;   // 충전 용량
+	        const type = items[i].getElementsByTagName("chgerType")[0].textContent;  // 충전기 타입
+	        const stat = items[i].getElementsByTagName("stat")[0].textContent;       // 충전기 상태
+	        const limitDetail = items[i].getElementsByTagName("limitDetail")[0]?.textContent || ""; // 제한 사항
+	        const lat = parseFloat(items[i].getElementsByTagName("lat")[0].textContent); // 위도
+	        const lng = parseFloat(items[i].getElementsByTagName("lng")[0].textContent); // 경도
 	
-			//충전기 타입
-	        const chargerTypeMap = {
-	            "01": "DC차데모",
-	            "02": "AC완속",
-	            "03": "DC차데모+AC3상",
-	            "04": "DC콤보",
-	            "05": "DC차데모+DC콤보",
-	            "06": "DC차데모+AC3상+DC콤보",
-	            "07": "AC3상",
-	            "08": "DC콤보(완속)",
-	            "89": "H2"
-	        };
+	        // 타입과 상태 텍스트 변환
 	        const typeText = chargerTypeMap[type] || "알 수 없는 타입";
-	        
-            // 충전기 상태
-	        const chargerStatusMap = {
-            	"1": { text: "사용 불가", class: "status-unavailable" },
-	            "2": { text: "사용 가능", class: "status-available" },
-	            "3": { text: "사용 중", class: "status-in-use" },
-	            "4": { text: "운영 중지", class: "status-out-of-service" },
-	            "5": { text: "점검 중", class: "status-under-maintenance" },
-	            "9": { text: "상태 미확인", class: "status-unknown" }
-	        };
-	        
-        	const statusInfo = chargerStatusMap[stat] || { text: "알 수 없는 상태", class: "status-unknown" };
-	        
-	        // 이용 제한 정보 설정
-        	const limitText = limitDetail ? limitDetail : "제한 없음";
-        	
+	        const statusInfo = chargerStatusMap[stat] || { text: "알 수 없는 상태", class: "status-unknown" };
+	
 	        // 중복된 충전소명에 번호 붙이기
 	        if (stationNameCount[statNm]) {
 	            stationNameCount[statNm] += 1; // 중복 카운트 증가
@@ -490,49 +509,52 @@ document.addEventListener("DOMContentLoaded", function() {
 	            stationNameCount[statNm] = 1; // 처음 등장하는 충전소명
 	        }
 	        
-	        // 중복된 경우에만 번호 추가
-        	const displayName = stationNameCount[statNm] > 1 ? `${statNm} (${stationNameCount[statNm]})` : statNm;
-	
+	        const displayName = stationNameCount[statNm] > 1 ? `${statNm} (${stationNameCount[statNm]})` : statNm;
 	
 	        const listItem = document.createElement("li");
 	        listItem.className = "search-item";
-	        listItem.dataset.lat = lat;	//위도 data 추가
-	        listItem.dataset.lng = lng;	//경도 data 추가
+	        listItem.dataset.lat = lat;
+	        listItem.dataset.lng = lng;
 	        
 	        listItem.innerHTML = `
 	            <div class="info">
-	            	<h3>${displayName}</h3> <!-- 중복 시 번호가 추가된 충전소명 -->
+	                <h3>${displayName}</h3>
 	                <p>${addr}</p>
 	                <div class="status">
-                    	<span class="stat ${statusInfo.class}">${statusInfo.text}</span> <!-- 충전기 상태 표시 -->
+	                    <span class="stat ${statusInfo.class}">${statusInfo.text}</span>
 	                    <span class="fast">⚡ ${output}kW</span>
 	                    <span class="type">타입: ${typeText}</span>
 	                </div>
-                	<p>이용시간: ${useTime}</p>
-                	<p>이용자 제한사항: ${limitText}</p>
+	                <p>이용시간: ${useTime}</p>
+	                <p>이용자 제한사항: ${limitDetail ? limitDetail : "제한 없음"}</p>
 	            </div>
 	        `;
-	        
-	        
-	        // 리스트 항목 클릭 시 해당 위치로 이동 및 마커 표시
+	
 	        listItem.addEventListener("click", function () {
-	        	const selectedLat = parseFloat(this.dataset.lat);
-	        	const selectedLng = parseFloat(this.dataset.lng);
-	        	
-	        	//선택된 위치로 지도 중심 이동 및 마커 표시
-            	const selectedLocation = new kakao.maps.LatLng(selectedLat, selectedLng);
-            	map.setCenter(selectedLocation);
-            	
-	        	//새로운 마커 생성, 지도 표시하기
-	        	const marker = new kakao.maps.Marker({
-	        		position: selectedLocation,
-	        		map: map
-	        	});
+	            const stationData = {
+	                name: displayName,
+	                address: addr,
+	                status: stat,
+	                type: type,
+	                output: output,
+	                useTime: useTime
+	            };
+	
+	            showStationInfoPopup(stationData);
+	
+	            const selectedLocation = new kakao.maps.LatLng(lat, lng);
+	            map.setCenter(selectedLocation);
+	
+	            const marker = new kakao.maps.Marker({
+	                position: selectedLocation,
+	                map: map
+	            });
 	        });
-	        
+	
 	        resultList.appendChild(listItem);
 	    }
 	}
+
 
 	// 페이지네이션 버튼 설정 함수
 	function setupPagination() {
@@ -598,6 +620,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
 });
+
+
+
+
 
 	
 

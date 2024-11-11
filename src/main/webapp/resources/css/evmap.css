@@ -508,3 +508,69 @@ html, body {
     font-weight: bold;
 }
 
+
+/* 충전소 정보 */
+.station-info-popup {
+	font-family: 'SUIT-Regular', sans-serif;
+    position: fixed;
+    top: 50px;
+    right: 150px;
+    width: 300px;
+    height: 700px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none; /* 처음에는 숨김 상태 */
+    
+}
+
+.real-popup {
+	display: flex;
+	flex-direction: column;
+}
+
+.popupchargebusi {
+	display: flex;
+	justify-content: space-around;
+	
+}
+
+.popupchargeType {
+	
+}
+
+
+.popupchargeinfo {
+	display: flex;
+	flex-direction: column;
+	
+	
+	
+	
+}
+
+
+.popupchargephoto {
+	display: flex;
+	
+	
+}
+
+
+
+.station-info-popup h3 {
+    margin-top: 0;
+}
+
+#closePopupButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
