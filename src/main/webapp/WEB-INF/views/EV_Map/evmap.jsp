@@ -141,10 +141,12 @@
 <div id="stationInfoPopup" class="station-info-popup">
 	<button id="closePopupButton">X</button> <!-- 닫기 버튼 -->
 	<div class="real-popup">
-		    <div><h3 id="popupStationName">충전소 이름</h3></div>
+		<div class="popupStationName">
+			<span id="popupStationName"></span>
+		</div>
 		<div class="popupchargebusi">
-			<p>충전소 운영기관</p>
-			<p>충전소 이용가능시간</p>
+			<span class="popupOperator" data-value="popupOperator"></span>
+			<span class="popupOperator" id="popupUseTime"></span>
 		</div>
 		
 		<div class="popupchargeType">
@@ -153,20 +155,24 @@
 		            <tr>
 		                <th>구분</th>
 		                <th>충전기 타입</th>
-		                <th>충전기 상태<br>(갱신일시)</th>
+		                <th>충전기 상태<br>
+		                	<small>(갱신 시간)</small>
+		                </th>
 		            </tr>
 		        </thead>
 		        <tbody>
 		            <tr>
-		                <td>급속<br>(50kW 단독)</td>
 		                <td>
-		                    <img src="dc_chademo_icon.png" alt="DC차데모">
-		                    <img src="ac3_icon.png" alt="AC3상">
-		                    <img src="dc_combo_icon.png" alt="DC콤보">
+		                	<span id="popupOutput"></span>
 		                </td>
 		                <td>
-		                    <span class="status-button">사용가능</span><br>
-		                    2024.11.02 13:08
+		                    <span id="popupType"></span>
+		                </td>
+		                <td>
+		                    <span class="status-button">
+		                    	<span id="popupStatus"></span><br>
+		                    	<small id="popupStatusUpdateDate"></small> <!-- 갱신 일시 표시용 -->
+		                    </span>
 		                </td>
 		            </tr>
 		        </tbody>
@@ -174,24 +180,30 @@
 		</div>
 		
 		<div class="popupchargeinfo">
-			<p>상세정보:</p>
+			<span class="info-header">상세정보</span>
 		
-			<span>도로명주소: </span>
-			<span>상세위치: </span>
-			<span>운영기관: </span>
-			<span>연락처: </span>
-			<span>충전요금: </span>
-			<span>참고사항: </span>
-			<span>이용자제한: </span>
+		    <div class="info-item">
+		        <div class="label">주소</div><div class="info-stats"id="popupAddress"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">운영기관</div><div class="info-stats" data-value="popupOperator"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">연락처</div><div class="info-stats" id="popupContact"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">참고사항</div><div class="info-stats" id="popupNote"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">이용자제한</div><div class="info-stats" id="popupLimitDetail"></div>
+		    </div>
 		
 		</div>
 		
 		<div class="popupchargephoto">
-			<p>위치사진</p>
-		
-		
+			<div class="chargephoto-header">위치사진</div>
+			<div class="roadview" id="roadview"></div> <!-- 로드뷰 -->
 		</div>
-	
 
 	    
     </div> <!-- end of real-popup -->

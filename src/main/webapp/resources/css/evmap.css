@@ -15,6 +15,14 @@
     font-style: normal;
 }
 
+/* 페이퍼로지 */
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
 
 html, body {
 	margin: 0 auto;
@@ -323,43 +331,86 @@ html, body {
 .status-available {
     background-color: #4CC417; /* 사용 가능 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 .status-in-use {
     background-color: #F62217; /* 사용 중 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 .status-unavailable {
     background-color: #F62217; /* 사용 불가 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 .status-out-of-service {
     background-color: #6c757d; /* 운영 중지 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 .status-under-maintenance {
     background-color: #FBB117; /* 점검 중 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 .status-unknown {
     background-color: #343a40; /* 상태 미확인 */
     color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
 }
 
 
 .available {
     background-color: #007bff;
     color: white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
     
 }
 
 .fast {
     border: 1px solid #007bff;
     color: #007bff;
+    
 }
 
 .type {
@@ -514,9 +565,9 @@ html, body {
 	font-family: 'SUIT-Regular', sans-serif;
     position: fixed;
     top: 50px;
-    right: 150px;
+    right: 50px;
     width: 300px;
-    height: 700px;
+    height: 770px;
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
@@ -538,26 +589,98 @@ html, body {
 }
 
 .popupchargeType {
+	font-family: 'SUIT-Regular', sans-serif;
+}
+
+.popupchargeType table {
+    width: 100%;
+    height: 130px;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+.popupchargebusi p,
+.popupchargeType th,
+.popupchargeType td,
+.popupchargeinfo p,
+.popupchargeinfo span {
+    line-height: 1.2; /* 줄 간격 조정 */
+    
+}
+
+.info-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
 	
 }
 
+.popupchargeType th,
+.popupchargeType td {
+	font-size: 13px;
+	text-align: center; /* 텍스트 중앙 정렬 */
+	word-break: keep-all; /* 단어가 중간에 끊기지 않도록 설정 */
+	margin: 5px 0; /* 요소 사이의 간격 최소화 */
+	border: 1px solid #ccc;
+	padding: 5px;
+	
+}
+
+.popupchargeinfo span {
+    display: block; /* 각 항목을 새 줄에 표시 */
+    padding-bottom: 5px; /* 아래쪽 여백 추가 */
+}
 
 .popupchargeinfo {
 	display: flex;
 	flex-direction: column;
-	
-	
-	
-	
+    gap: 5px; /* 항목 사이 간격 */
+    width: 100%;
+}
+
+.info-item {
+    display: flex;
+    align-items: center; /* 라벨과 내용의 수평 정렬 */
+    padding-bottom: 2px;
+    border-bottom: 1px solid #ccc; /* 밑줄 */
+    font-size: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+.info-stats {
+	word-break: break-word; /* 단어가 길어질 경우 줄 바꿈 */
+    white-space: normal; /* 텍스트가 줄 바꿈될 수 있도록 */
+    overflow-wrap: break-word; /* 필요한 경우 줄 바꿈을 허용 */
+    flex: 1;
+	align-items: center;
+}
+
+
+.label {
+	width: 75px; /* 라벨 부분의 고정 너비를 설정하여 간격 유지 */
+    font-weight: bold;
+    margin-right: 5px; /* 제목과 값 간격 */
+    
 }
 
 
 .popupchargephoto {
 	display: flex;
-	
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	gap: 5px; /* 항목 사이 간격 */
 	
 }
 
+.popupchargephoto span {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
+}
 
 
 .station-info-popup h3 {
@@ -573,4 +696,42 @@ html, body {
     font-size: 16px;
     cursor: pointer;
 }
+
+
+.popupStationName {
+	font-family: 'KIMM_Bold', sans-serif;
+	font-size: 23px;
+	margin-bottom: 2vh;
+	
+}
+
+.popupOperator {
+	padding: 3px 20px;
+	border-radius: 15px;
+	align-items: center;
+	background-color: #4CC417;
+	color: white;
+	font-size: 13px;
+	
+}
+
+.roadview {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    object-fit: cover; /* 로드뷰 이미지가 컨테이너 크기에 맞게 조정됨 */
+    border-radius: 8px; /* 모서리 둥글게 (선택 사항) */
+}
+
+.chargephoto-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	margin: 10px 0;
+	
+}
+
+
+
+
+
 

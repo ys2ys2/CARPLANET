@@ -457,20 +457,64 @@ document.addEventListener("DOMContentLoaded", function() {
 	    "9": { text: "상태 미확인", class: "status-unknown" }
 	};
 	
+	
+	
 	// 충전소 정보를 팝업에 표시하는 함수
 	function showStationInfoPopup(stationData) {
+	
 	    // 타입과 상태 정보를 전역 매핑 객체를 사용해 변환
 	    const typeText = chargerTypeMap[stationData.type] || "알 수 없는 타입";
-	    const statusText = chargerStatusMap[stationData.status]?.text || "알 수 없는 상태";
+    	const statusInfo = chargerStatusMap[stationData.status] || { text: "알 수 없는 상태", class: "status-unknown" };
+	    
+        document.getElementById("popupType").textContent = typeText;
+    	document.getElementById("popupStatus").textContent = statusInfo.text; // 상태 텍스트 설정
+    	document.getElementById("popupStatus").className = `status-button ${statusInfo.class}`; // 상태 클래스 설정
+    	
+    	const formattedDate = formatDate(stationData.statusUpdateDate);
+    	
+    	
+    	// 로드뷰 설정을 위한 변수들
+	    const roadviewContainer = document.getElementById('roadview'); // 로드뷰를 표시할 div
+	    const roadview = new kakao.maps.Roadview(roadviewContainer); // 로드뷰 객체
+	    const roadviewClient = new kakao.maps.RoadviewClient(); // 좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper 객체
+    	
 	
 	    // 팝업창에 데이터 설정
-	    //document.getElementById("popupStationName").textContent = stationData.name;
-	    //document.getElementById("popupAddress").textContent = stationData.address;
-	    //document.getElementById("popupStatus").textContent = `상태: ${statusText}`;
-	    //document.getElementById("popupType").textContent = `타입: ${typeText}`;
-	    //document.getElementById("popupOutput").textContent = `출력: ${stationData.output}kW`;
-	    //document.getElementById("popupUseTime").textContent = `사용 시간: ${stationData.useTime}`;
-	
+	    document.getElementById("popupStationName").textContent = stationData.name;	//충전소 이름
+	    
+	    // 모든 data-value="popupOperator" 요소에 운영기관 이름 설정
+		document.querySelectorAll("[data-value='popupOperator']").forEach(el => {
+		    el.textContent = stationData.operator || "정보 없음";
+		});
+		
+	    document.getElementById("popupContact").textContent = stationData.contact || "정보 없음";	//운영기관 연락처
+	    document.getElementById("popupAddress").textContent = stationData.address;	//충전소 주소
+	    //document.getElementById("popupDetailedLocation").textContent = stationData.addressDetail || "상세 주소 없음";	//충전소 상세 주소
+	    document.getElementById("popupUseTime").textContent = stationData.useTime || "정보 없음";	//이용 가능 시간
+	    document.getElementById("popupType").textContent = chargerTypeMap[stationData.type] || "알 수 없는 타입"; //충전기 타입
+	    document.getElementById("popupStatus").textContent = chargerStatusMap[stationData.status]?.text || "알 수 없는 상태"; //충전기 상태
+		document.getElementById("popupOutput").textContent = `${stationData.output}kW` || "정보 없음";	// 충전 용량
+	    //document.getElementById("popupStatusUpdateDate").textContent = stationData.statusUpdateDate || "정보 없음"; //상태 갱신 일시
+	    //document.getElementById("popupLastStart").textContent = stationData.lastStart || "정보 없음";	// 마지막 충전 시작 일시
+	    //document.getElementById("popupLastEnd").textContent = stationData.lastEnd || "정보 없음";	// 마지막 충전 종료 일시
+	    //document.getElementById("popupChargingStart").textContent = stationData.chargingStart || "정보 없음";	// 현재 충전 시작 일시
+	    document.getElementById("popupNote").textContent = stationData.note || "안내 정보 없음";	//충전소 안내
+	    document.getElementById("popupLimitDetail").textContent = stationData.limitDetail || "제한 없음";	//이용자 제한사항
+	    
+        // 로드뷰 설정: 주어진 위도와 경도를 사용하여 로드뷰 표시
+	    const position = new kakao.maps.LatLng(stationData.lat, stationData.lng); // 충전소의 위도와 경도
+	    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+	        if (panoId) {
+	            roadview.setPanoId(panoId, position); // panoId와 중심좌표를 통해 로드뷰 실행
+	        } else {
+	            roadviewContainer.innerHTML = '<p>로드뷰를 사용할 수 없는 위치입니다.</p>'; // 로드뷰가 없는 경우 메시지 표시
+	        }
+	    });
+	    
+	    
+        // 갱신 일시를 포맷팅하여 표시
+		document.getElementById("popupStatusUpdateDate").textContent = formattedDate;
+		
 	    // 팝업창을 화면에 표시
 	    document.getElementById("stationInfoPopup").style.display = "block";
 	    
@@ -489,11 +533,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	    for (let i = 0; i < items.length; i++) {
 	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;  // 충전소명
+	        const busiNm = items[i].getElementsByTagName("busiNm")[0].textContent;	// 운영기관명
+	        const busiCall = items[i].getElementsByTagName("busiCall")[0].textContent;	//운영기관 연락처
 	        const addr = items[i].getElementsByTagName("addr")[0].textContent;      // 주소
+	        const addrDetail = items[i].getElementsByTagName("addrDetail")[0].textContent; //상세주소
 	        const useTime = items[i].getElementsByTagName("useTime")[0].textContent; // 이용 가능 시간
 	        const output = items[i].getElementsByTagName("output")[0].textContent;   // 충전 용량
 	        const type = items[i].getElementsByTagName("chgerType")[0].textContent;  // 충전기 타입
 	        const stat = items[i].getElementsByTagName("stat")[0].textContent;       // 충전기 상태
+	        const statUpdDt = items[i].getElementsByTagName("statUpdDt")[0].textContent; // 상태갱신일시
+	        const lastTsdt = items[i].getElementsByTagName("lastTsdt")[0].textContent; // 마지막 충전시작일시
+	        const lastTedt = items[i].getElementsByTagName("lastTedt")[0].textContent; // 마지막 충전종료일시
+	        const nowTsdt = items[i].getElementsByTagName("nowTsdt")[0].textContent; // 충전중 시작일시
+	        const note = items[i].getElementsByTagName("note")[0].textContent;	// 충전소 안내
 	        const limitDetail = items[i].getElementsByTagName("limitDetail")[0]?.textContent || ""; // 제한 사항
 	        const lat = parseFloat(items[i].getElementsByTagName("lat")[0].textContent); // 위도
 	        const lng = parseFloat(items[i].getElementsByTagName("lng")[0].textContent); // 경도
@@ -531,14 +583,25 @@ document.addEventListener("DOMContentLoaded", function() {
 	        `;
 	
 	        listItem.addEventListener("click", function () {
-	            const stationData = {
-	                name: displayName,
-	                address: addr,
-	                status: stat,
-	                type: type,
-	                output: output,
-	                useTime: useTime
-	            };
+			    const stationData = {
+			        name: displayName,             // 충전소명 (중복 구분 포함)
+			        operator: busiNm,              // 운영기관명
+			        contact: busiCall,             // 운영기관 연락처
+			        address: addr,                 // 주소
+			        addressDetail: addrDetail,     // 상세주소
+			        useTime: useTime,              // 이용 가능 시간
+			        output: output,                // 충전 용량
+			        type: type,                    // 충전기 타입 코드
+			        status: stat,                  // 충전기 상태 코드
+			        statusUpdateDate: statUpdDt,   // 상태갱신일시
+			        lastStart: lastTsdt,           // 마지막 충전 시작 일시
+			        lastEnd: lastTedt,             // 마지막 충전 종료 일시
+			        chargingStart: nowTsdt,        // 현재 충전 시작 일시
+			        note: note,                    // 충전소 안내
+			        limitDetail: limitDetail,      // 이용 제한 사항
+			        lat: lat,                      // 위도
+			        lng: lng                       // 경도
+			    };
 	
 	            showStationInfoPopup(stationData);
 	
@@ -618,8 +681,37 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     
+    function formatDate(dateString) {
+    
+    	if (dateString.length !== 14) return "유효하지 않은 날짜";
+	
+	    // 각 부분을 추출하여 숫자로 변환
+	    const year = parseInt(dateString.substring(0, 4), 10);
+	    const month = parseInt(dateString.substring(4, 6), 10) - 1; // 월은 0부터 시작하므로 -1
+	    const day = parseInt(dateString.substring(6, 8), 10);
+	    const hours = parseInt(dateString.substring(8, 10), 10);
+	    const minutes = parseInt(dateString.substring(10, 12), 10);
+	    const seconds = parseInt(dateString.substring(12, 14), 10);
+     
+     	// Date 객체 생성
+     	const date = new Date(year, month, day, hours, minutes, seconds);
+    
+	    // 포맷팅 (yyyy-mm-dd hh:mm)
+    	const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    	return formattedDate;
+	}
+	
+
+	
+
+	
+	
+    
     
 });
+
+
+
 
 
 
