@@ -38,14 +38,14 @@
             <label for="region">지역 선택:</label>
             <select id="province-select">
 		    <option value="">전체</option>
-		    <option value="서울특별시">서울특별시</option>
-		    <option value="부산광역시">부산광역시</option>
+		    <!-- <option value="서울특별시">서울특별시</option>
+		    <option value="부산광역시">부산광역시</option> -->
 		    <!-- 다른 지역 옵션 추가 -->
 			</select>
               <select id="city-select">
             <option value="">전체</option>
-            <option value="강남구">강남구</option>
-            <option value="해운대구">해운대구</option>
+            <!-- <option value="강남구">강남구</option>
+            <option value="해운대구">해운대구</option> -->
             <!-- 다른 세부 지역 옵션 추가 -->
         </select>
             <button onclick="applyRegionFilter()">검색하기</button>
@@ -61,10 +61,7 @@
         </div>
     
     	<!-- 페이지네이션 -->
-        <div class="pagination">
-            <button onclick="prevPage()">이전</button>
-           <span>현재 페이지: <span id="page-number">1</span></span>
-            <button onclick="nextPage()">다음</button>
+        <div id="pagination" class="pagination">
         </div>
     
 </div><!--검색바의 가장 큰 div  -->

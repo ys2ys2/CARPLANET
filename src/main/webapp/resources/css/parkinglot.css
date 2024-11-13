@@ -57,10 +57,6 @@ html, body{
     color: white;
 }
 
-.tab-content {
-    display: none;
-}
-
 /* 주차장 리스트 스타일 */
 .parking-list .parking-item {
 	padding: 10px;
@@ -154,3 +150,9 @@ html, body{
         top: 10px;
         right: 10px;
     }
+    
+    #pagination button.active {
+    font-weight: bold;
+    color: blue; /* 원하는 색상으로 변경 가능 */
+}
+    
