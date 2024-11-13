@@ -8,6 +8,9 @@ let allParkingData = [];
 let map;
 let filteredParkingData = [];
 
+// 한 페이지당 가져올 데이터 수
+const numOfRows = 100;
+
 //카카오 지도 불러오기
 $(document).ready(function() {
 
@@ -106,7 +109,7 @@ const App = {
         
         "광주광역시": ["동구", "서구", "남구", "북구", "광산구"],
         "울산광역시": ["중구", "남구", "동구", "북구", "울주군"],
-        "제주특별자치시": ["제주시", "서귀포시"],
+        "제주특별자치도": ["제주시", "서귀포시"],
         
         "경기도": ["수원시", "성남시", "고양시", "용인시", "부천시", "안산시", "안양시", "남양주시", "화성시", "평택시", "의정부시", "시흥시", "파주시", "김포시", "광명시", "군포시", "이천시", "양주시", "구리시", "오산시", "안성시", "포천시", "의왕시", "하남시", "여주시", "연천군", "가평군", "양평군", "광주시"],
         
@@ -166,11 +169,22 @@ function fetchParkingLotData(province, city ) {
     let pageNo = 1;       // 첫 페이지부터 시작
     const numOfRows = 100; // 한 페이지당 최대 데이터 개수
 
-     // 전체 데이터를 불러오기 위해 한 번만 API를 호출하고, 이미 데이터가 있으면 바로 필터링과 렌더링으로 이동
-     if (allParkingData.length > 0) {
-        applyFilterAndRender(allParkingData, tabName, province, city);
-        return;
-    }
+
+
+   // 이미 계산된 전체 페이지 수를 사용하여 모든 페이지 데이터를 가져옴
+  fetchTotalCount((totalCount) => {
+    const totalPages = Math.ceil(totalCount / numOfRows); // 전체 페이지 수 계산
+    console.log("총 데이터 개수:", totalCount, "전체 페이지 수:", totalPages);
+
+    // 2. 모든 페이지의 데이터를 순차적으로 가져오기
+    function fetchNextPage() {
+        console.log("함수호출");
+        if (pageNo > totalPages) {
+            console.log("모든 데이터를 가져왔습니다.");
+            console.log("전체 데이터:", allParkingData); // 전체 데이터를 출력
+            applyFilterAndRender(allParkingData, province, city); // 모든 데이터를 가져온 후 필터링 및 렌더링
+            return;
+        }
     $.ajax({
         url: 'http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api',
         data: {
@@ -212,20 +226,22 @@ function fetchParkingLotData(province, city ) {
                 spcmnt: item.spcmnt || '정보 없음',
                 institutionNm: item.institutionNm || '정보 없음',
                 phone: item.phoneNumber || '전화번호 정보 없음',
-                pwdbsPpkZoneYn: item.pwdbsPpkZoneYn || '정보 없음',
+                pwdbsPpkZoneYn: item.pwdbsPpkZoneYn === 'Y' ? '보유' : (item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'),
                 referenceDate: item.referenceDate || '정보 없음'
             }));
           
-            // 전체 데이터를 allParkingData에 저장
-            allParkingData = data;
-            
-            // 필터링과 렌더링을 수행
-            applyFilterAndRender(allParkingData,province, city);
+            allParkingData = allParkingData.concat(data); // 데이터 추가
+            pageNo++; // 다음 페이지로 넘어감
+            fetchNextPage(); // 재귀 호출로 다음 페이지 가져오기;
+            console.log("현재 페이지 번호:", pageNo); // 페이지 번호가 증가했는지 확인
         },
         error: function(error) {
             console.error("주차장 데이터를 불러오는데 실패했습니다:", error);
         }
     });
+}
+fetchNextPage(); // 첫 페이지 요청 시작
+});
 }
 
 
@@ -378,6 +394,7 @@ function nextPage() {
 }
 // 총 데이터 개수를 가져오는 함수
 function fetchTotalCount(callback) {
+    console.log("fetchTotalCount 함수 호출됨");  // 함수 호출 확인 로그
     $.ajax({
         url: 'http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api',
         data: {
@@ -402,6 +419,12 @@ function fetchTotalCount(callback) {
         }
     });
 }
+// fetchTotalCount 함수 호출 및 totalCount 확인
+fetchTotalCount(function(totalCount) {
+    console.log("총 데이터 개수:", totalCount); // 전체 데이터 개수 출력
+    
+});
+
 
 // 클릭한 주차장의 모든 정보를 표시하고 팝업을 여는 함수
 function showParkingDetails(item) {
