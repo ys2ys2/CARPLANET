@@ -522,8 +522,34 @@ document.addEventListener("DOMContentLoaded", function() {
 		document.getElementById("closePopupButton").addEventListener("click", function () {
 		    document.getElementById("stationInfoPopup").style.display = "none"; // 팝업창 숨기기
 		});
+		
+		// 길 찾기 버튼 클릭
+		document.querySelector(".roadviewnav").addEventListener("click", function () {
+		    const destination = {
+		        lat: stationData.lat,
+		        lng: stationData.lng,
+		        address: stationData.name
+		    };
+		
+		    // 기존 마커 제거
+		    if (lastMarker) {
+		        lastMarker.setMap(null);
+		        lastMarker = null;
+		    }
+		
+		    // kakaoevmap.js의 함수 호출 (도착지 위도, 경도, 주소 전달)
+		    setDestinationFromPopup(destination);
+		
+		    // 길찾기 탭으로 자동 이동
+    		showTab('route'); // '충전소 길 찾기' 탭 활성화
+		});
+		
 	}
 	
+	
+	// 마지막으로 생성된 마커를 추적할 전역 변수
+	let lastMarker = null;
+
 	// displayResults 함수에서 전역 매핑 객체 사용
 	function displayResults(items) {
 	    const resultList = document.querySelector(".searchlist ul");
@@ -603,16 +629,23 @@ document.addEventListener("DOMContentLoaded", function() {
 			        lng: lng                       // 경도
 			    };
 	
+				
 	            showStationInfoPopup(stationData);
 	
-	            const selectedLocation = new kakao.maps.LatLng(lat, lng);
-	            map.setCenter(selectedLocation);
-	
-	            const marker = new kakao.maps.Marker({
-	                position: selectedLocation,
-	                map: map
-	            });
-	        });
+	            // 기존 마커가 있다면 지도에서 제거
+		        if (lastMarker) {
+		            lastMarker.setMap(null);
+		        }
+		
+		        // 새로운 마커 추가 및 lastMarker에 저장
+		        const selectedLocation = new kakao.maps.LatLng(lat, lng);
+		        map.setCenter(selectedLocation);
+		
+		        lastMarker = new kakao.maps.Marker({
+		            position: selectedLocation,
+		            map: map
+		        });
+		    });
 	
 	        resultList.appendChild(listItem);
 	    }
@@ -700,11 +733,6 @@ document.addEventListener("DOMContentLoaded", function() {
     	const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     	return formattedDate;
 	}
-	
-
-	
-
-	
 	
     
     

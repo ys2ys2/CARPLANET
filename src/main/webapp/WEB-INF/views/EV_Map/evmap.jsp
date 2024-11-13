@@ -72,14 +72,7 @@
 	    </select>
 	</div>
 
-    <!-- 입력 폼(검색용도) -->
-<%--     <div class="searchinput-container">
-        <input type="text" placeholder="충전소를 검색해 주세요." class="searchinput">
-        <div id="suggestions"></div>
-   		<button class="searchicon">
-        	<img src="${pageContext.request.contextPath}/resources/images/searchicon.png" alt="searchicon">
-        </button>
-    </div> --%>
+
     
     <div class="searchbutton-container">
     	<button class="searchbutton" id="stationSearchButton">검색하기</button>
@@ -109,23 +102,23 @@
 
 	
 	</div> <!-- end of tab-content active-->
-        <!-- 충전소 길 찾기 내용 -->
-        <div id="routeContent" class="tab-content">
-            <div class="route-search">
-                <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
-                	<div id="originSuggestions" class="suggestions-container"></div>
-                <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
-                	<div id="destinationSuggestions" class="suggestions-container"></div>
-                <button id="searchButton" class="route-searchbutton">경로 검색</button>
-                    <input type="hidden" id="originCoords">
-   	 				<input type="hidden" id="destinationCoords">
-            </div>
-
-            <div class="route-result" id="routeResult">
-            <div id="directionsList" class="directions-list"></div>
-                <!-- 경로 결과 예시 -->
-            </div>
+    <!-- 충전소 길 찾기 내용 -->
+    <div id="routeContent" class="tab-content">
+        <div class="route-search">
+            <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
+            	<div id="originSuggestions" class="suggestions-container"></div>
+            <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
+            	<div id="destinationSuggestions" class="suggestions-container"></div>
+            <button id="searchButton" class="route-searchbutton">경로 검색</button>
+                <input type="hidden" id="originCoords">
+ 				<input type="hidden" id="destinationCoords">
         </div>
+
+        <div class="route-result" id="routeResult">
+        <div id="directionsList" class="directions-list"></div>
+            <!-- 경로 결과 예시 -->
+        </div>
+    </div>
 	
 	
 	</div> <!-- end of searchbar -->
@@ -139,7 +132,8 @@
 
 <!-- 충전소 정보 팝업 -->
 <div id="stationInfoPopup" class="station-info-popup">
-	<button id="closePopupButton">X</button> <!-- 닫기 버튼 -->
+	
+	<button id="closePopupButton">X</button>
 	<div class="real-popup">
 		<div class="popupStationName">
 			<span id="popupStationName"></span>
@@ -201,10 +195,15 @@
 		</div>
 		
 		<div class="popupchargephoto">
-			<div class="chargephoto-header">위치사진</div>
+			<div class="chargephoto-header">
+				<div>위치사진</div>
+				<button class="roadviewnav">
+					<img src="${pageContext.request.contextPath}/resources/images/navicon.png" alt="길찾기아이콘" />
+				<div>길 찾기</div>
+				</button>
+			</div>
 			<div class="roadview" id="roadview"></div> <!-- 로드뷰 -->
 		</div>
-
 	    
     </div> <!-- end of real-popup -->
 </div> <!-- end of station-info-popup -->

@@ -99,8 +99,6 @@ document.getElementById('searchButton').addEventListener('click', async function
     if (originCoords && destinationCoords) {
         const routeData = await getRoute(originCoords, destinationCoords);
         if (routeData) displayRoute(routeData);
-    } else {
-        alert("출발지와 목적지를 모두 입력해 주세요.");
     }
 });
 
@@ -281,4 +279,21 @@ function setMapToCurrentLocation() {
 
 // 페이지 로드 시 현재 위치로 지도 이동
 document.addEventListener("DOMContentLoaded", setMapToCurrentLocation);
+
+// evdropdown.js에서 호출하는 함수: 도착지 좌표 설정
+function setDestinationFromPopup(destination) {
+    const { lat, lng, address } = destination;
+
+    // 도착지 좌표 설정 및 마커 표시
+    const place = { x: lng, y: lat, place_name: address };
+    selectDestinationPlace(place); // 도착지 마커 표시
+
+    // 경로 탭 활성화 후 경로 검색 실행
+    setTimeout(() => {
+        document.getElementById("searchButton").click(); // 경로 검색 버튼 자동 클릭
+    }, 500);
+}
+
+
+
 
