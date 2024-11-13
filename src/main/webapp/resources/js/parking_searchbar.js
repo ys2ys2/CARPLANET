@@ -6,6 +6,7 @@ const itemsPerPage = 5;
 let allParkingData = [];
 // map 객체를 전역으로 선언
 let map;
+
 let filteredParkingData = [];
 
 //카카오 지도 불러오기
@@ -44,17 +45,14 @@ function showTab(tabName){
 
     //페이지 초기화
     currentPage=1;
-    loadPageData(tabName);
 
 }
 
     //페이지 데이터 로드
     function loadPageData(tabName){
         const parkingList = document.getElementById(tabName).querySelector('.parking-list');
-        parkingList.innerHTML='';//기존 데이터를 지우고
+        parkingList.innerHTML='';//기존 데이터를 지우기
 
-      //현재 탭에 맞는 데이터를 가져와 표시
-      fetchParkingLotData(tabName);
     }
     
 
@@ -122,14 +120,6 @@ function fetchParkingLotData(tabName, province, city ) {
     });
 }
 
-// 필터링과 렌더링을 수행하는 함수
-function applyFilterAndRender(data, tabName, province, city) {
-    const filteredData = filterParkingDataByRegion(data, province, city);
-    console.log("필터링된 데이터:", filteredData);
-
-    renderParkingList(filteredData, tabName); // 주차장 리스트 표시 함수 호출
-    displayMarkers(filteredData); // 마커 표시 함수 호출
-}
 
 // 주소 필드를 기준으로 주차장 데이터를 필터링하는 함수
 function filterParkingDataByRegion(data, province, city) {
@@ -158,6 +148,32 @@ function filterParkingDataByRegion(data, province, city) {
         return isMatch;
     });
 }
+
+
+
+// 필터링과 렌더링을 수행하는 함수
+function applyFilterAndRender(data, tabName, province, city) {
+    const filteredData = filterParkingDataByRegion(data, province, city);
+    console.log("필터링된 데이터:", filteredData);
+
+    renderParkingList(filteredData, tabName); // 주차장 리스트 표시 함수 호출
+    displayMarkers(filteredData); // 마커 표시 함수 호출
+}
+
+// 사용자가 선택한 지역을 기반으로 주차장 데이터를 불러오고 필터링하는 함수
+function applyRegionFilter() {
+    // 사용자 입력을 읽어옴
+    const province = document.getElementById('province-select').value; // 도/시 선택값
+    const city = document.getElementById('city-select').value; // 구/군 선택값
+    
+    console.log("사용자가 선택한 도/시:", province);
+    console.log("사용자가 선택한 구/군:", city);
+
+    // fetchParkingLotData 함수를 호출하여 데이터를 가져온 뒤 필터링 및 렌더링 수행
+    fetchParkingLotData('search', province, city);  // 'search' 탭에 데이터 렌더링
+    showTab('search'); // '주차장 검색' 탭으로 전환
+}
+
 
 
 // 주차장 리스트 데이터 표시 함수

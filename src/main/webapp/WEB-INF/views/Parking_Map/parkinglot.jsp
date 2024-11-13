@@ -50,11 +50,13 @@
         </select>
             <button onclick="applyRegionFilter()">검색하기</button>
         </div>
+
+
       <!-- 주차장 목록 및 페이지네이션 -->
-        <div id="nearby" class="tab-content">
+        <div id="search" class="tab-content">
             <div class="parking-list"></div>
         </div>
-        <div id="regional" class="tab-content" style="display:none;">
+        <div id="route" class="tab-content" style="display:none;">
             <div class="parking-list"></div>
         </div>
     
