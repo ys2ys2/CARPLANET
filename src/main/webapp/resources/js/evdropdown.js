@@ -462,6 +462,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 충전소 정보를 팝업에 표시하는 함수
 	function showStationInfoPopup(stationData) {
 	
+	
 	    // 타입과 상태 정보를 전역 매핑 객체를 사용해 변환
 	    const typeText = chargerTypeMap[stationData.type] || "알 수 없는 타입";
     	const statusInfo = chargerStatusMap[stationData.status] || { text: "알 수 없는 상태", class: "status-unknown" };
@@ -531,38 +532,44 @@ document.addEventListener("DOMContentLoaded", function() {
 		        address: stationData.name
 		    };
 		
-		    // 기존 마커 제거
-		    if (lastMarker) {
-		        lastMarker.setMap(null);
-		        lastMarker = null;
-		    }
+		    // 모든 마커 제거
+		    markers.forEach(marker => marker.setMap(null));
+		    markers = []; // markers 배열 초기화
 		
 		    // kakaoevmap.js의 함수 호출 (도착지 위도, 경도, 주소 전달)
 		    setDestinationFromPopup(destination);
 		
 		    // 길찾기 탭으로 자동 이동
-    		showTab('route'); // '충전소 길 찾기' 탭 활성화
+		    showTab('route'); // '충전소 길 찾기' 탭 활성화
 		});
-		
+				
 	}
 	
 	
 	// 마지막으로 생성된 마커를 추적할 전역 변수
 	let lastMarker = null;
-
+	let markers = []; // 지도에 표시될 마커를 관리할 배열
+	
 	// displayResults 함수에서 전역 매핑 객체 사용
 	function displayResults(items) {
 	    const resultList = document.querySelector(".searchlist ul");
 	    resultList.innerHTML = ""; // 기존 리스트 초기화
-	    
+	
 	    const stationNameCount = {}; // 충전소명 중복 여부 확인할 객체
+	
+	    // 기존 마커 제거
+    	markers.forEach(marker => marker.setMap(null));
+	    markers = []; // 마커 배열 초기화
+	
+	    // 지도 범위를 설정할 객체 생성
+	    const bounds = new kakao.maps.LatLngBounds();
 	
 	    for (let i = 0; i < items.length; i++) {
 	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;  // 충전소명
-	        const busiNm = items[i].getElementsByTagName("busiNm")[0].textContent;	// 운영기관명
-	        const busiCall = items[i].getElementsByTagName("busiCall")[0].textContent;	//운영기관 연락처
+	        const busiNm = items[i].getElementsByTagName("busiNm")[0].textContent;  // 운영기관명
+	        const busiCall = items[i].getElementsByTagName("busiCall")[0].textContent;  //운영기관 연락처
 	        const addr = items[i].getElementsByTagName("addr")[0].textContent;      // 주소
-	        const addrDetail = items[i].getElementsByTagName("addrDetail")[0].textContent; //상세주소
+	        const addrDetail = items[i].getElementsByTagName("addrDetail")[0].textContent; // 상세주소
 	        const useTime = items[i].getElementsByTagName("useTime")[0].textContent; // 이용 가능 시간
 	        const output = items[i].getElementsByTagName("output")[0].textContent;   // 충전 용량
 	        const type = items[i].getElementsByTagName("chgerType")[0].textContent;  // 충전기 타입
@@ -571,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	        const lastTsdt = items[i].getElementsByTagName("lastTsdt")[0].textContent; // 마지막 충전시작일시
 	        const lastTedt = items[i].getElementsByTagName("lastTedt")[0].textContent; // 마지막 충전종료일시
 	        const nowTsdt = items[i].getElementsByTagName("nowTsdt")[0].textContent; // 충전중 시작일시
-	        const note = items[i].getElementsByTagName("note")[0].textContent;	// 충전소 안내
+	        const note = items[i].getElementsByTagName("note")[0].textContent;  // 충전소 안내
 	        const limitDetail = items[i].getElementsByTagName("limitDetail")[0]?.textContent || ""; // 제한 사항
 	        const lat = parseFloat(items[i].getElementsByTagName("lat")[0].textContent); // 위도
 	        const lng = parseFloat(items[i].getElementsByTagName("lng")[0].textContent); // 경도
@@ -609,46 +616,76 @@ document.addEventListener("DOMContentLoaded", function() {
 	        `;
 	
 	        listItem.addEventListener("click", function () {
-			    const stationData = {
-			        name: displayName,             // 충전소명 (중복 구분 포함)
-			        operator: busiNm,              // 운영기관명
-			        contact: busiCall,             // 운영기관 연락처
-			        address: addr,                 // 주소
-			        addressDetail: addrDetail,     // 상세주소
-			        useTime: useTime,              // 이용 가능 시간
-			        output: output,                // 충전 용량
-			        type: type,                    // 충전기 타입 코드
-			        status: stat,                  // 충전기 상태 코드
-			        statusUpdateDate: statUpdDt,   // 상태갱신일시
-			        lastStart: lastTsdt,           // 마지막 충전 시작 일시
-			        lastEnd: lastTedt,             // 마지막 충전 종료 일시
-			        chargingStart: nowTsdt,        // 현재 충전 시작 일시
-			        note: note,                    // 충전소 안내
-			        limitDetail: limitDetail,      // 이용 제한 사항
-			        lat: lat,                      // 위도
-			        lng: lng                       // 경도
-			    };
+	            const stationData = {
+	                name: displayName,             // 충전소명 (중복 구분 포함)
+	                operator: busiNm,              // 운영기관명
+	                contact: busiCall,             // 운영기관 연락처
+	                address: addr,                 // 주소
+	                addressDetail: addrDetail,     // 상세주소
+	                useTime: useTime,              // 이용 가능 시간
+	                output: output,                // 충전 용량
+	                type: type,                    // 충전기 타입 코드
+	                status: stat,                  // 충전기 상태 코드
+	                statusUpdateDate: statUpdDt,   // 상태갱신일시
+	                lastStart: lastTsdt,           // 마지막 충전 시작 일시
+	                lastEnd: lastTedt,             // 마지막 충전 종료 일시
+	                chargingStart: nowTsdt,        // 현재 충전 시작 일시
+	                note: note,                    // 충전소 안내
+	                limitDetail: limitDetail,      // 이용 제한 사항
+	                lat: lat,                      // 위도
+	                lng: lng                       // 경도
+	            };
 	
-				
 	            showStationInfoPopup(stationData);
 	
 	            // 기존 마커가 있다면 지도에서 제거
-		        if (lastMarker) {
-		            lastMarker.setMap(null);
-		        }
-		
-		        // 새로운 마커 추가 및 lastMarker에 저장
-		        const selectedLocation = new kakao.maps.LatLng(lat, lng);
-		        map.setCenter(selectedLocation);
-		
-		        lastMarker = new kakao.maps.Marker({
-		            position: selectedLocation,
-		            map: map
-		        });
-		    });
+	            if (lastMarker) {
+	                lastMarker.setMap(null);
+	            }
+	            
+                // 선택한 마커로 lastMarker 업데이트
+            	lastMarker = marker;
+            	
+	            // 선택된 마커를 지도 중심으로 이동
+            	map.setCenter(markerPosition);
+			});
 	
 	        resultList.appendChild(listItem);
+	
+	        // 지도에 마커 추가
+	        const markerPosition = new kakao.maps.LatLng(lat, lng);
+	        const marker = new kakao.maps.Marker({
+	            position: markerPosition,
+	            map: map
+	        });
+	
+	        // 마커 클릭 시 팝업 표시 이벤트 추가
+	        kakao.maps.event.addListener(marker, 'click', function() {
+	            showStationInfoPopup({
+	                name: displayName,             
+	                operator: busiNm,              
+	                contact: busiCall,             
+	                address: addr,                 
+	                addressDetail: addrDetail,     
+	                useTime: useTime,              
+	                output: output,                
+	                type: type,                    
+	                status: stat,                  
+	                statusUpdateDate: statUpdDt,   
+	                lat: lat,                      
+	                lng: lng                       
+	            });
+	        });
+	
+	        // 마커 배열에 저장
+	        markers.push(marker);
+	
+	        // 지도 범위에 마커 위치 추가
+	        bounds.extend(markerPosition);
 	    }
+	
+	    // 모든 마커가 보이도록 지도 범위 설정
+	    map.setBounds(bounds);
 	}
 
 
