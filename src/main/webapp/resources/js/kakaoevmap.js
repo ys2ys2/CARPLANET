@@ -99,8 +99,6 @@ document.getElementById('searchButton').addEventListener('click', async function
     if (originCoords && destinationCoords) {
         const routeData = await getRoute(originCoords, destinationCoords);
         if (routeData) displayRoute(routeData);
-    } else {
-        alert("출발지와 목적지를 모두 입력해 주세요.");
     }
 });
 
@@ -159,18 +157,31 @@ function displayRoute(routeData) {
             }
         });
 
-        // 각 가이드(guide) 지침을 화면에 표시
-        routeData.routes[0].sections[0].guides.forEach(guide => {
-            const directionItem = document.createElement('div');
-            directionItem.className = 'direction-item';
+		// 출발지 이름 가져오기
+		const originName = document.getElementById("originInput").value; // 사용자가 입력한 출발지 이름
 
-            // 안내 문구 사용 (guidance 항목)
-            const guidanceText = guide.guidance || "이동";
+		// 각 가이드(guide) 지침을 화면에 표시
+		routeData.routes[0].sections[0].guides.forEach((guide, index) => {
+		    const directionItem = document.createElement('div');
+		    directionItem.className = 'direction-item';
+		
+		    // 첫 번째 안내 지침은 "출발지"로 표시, 마지막은 "목적지"로 표시
+		    let guidanceText;
+		    if (index === 0) {
+        		guidanceText = `출발 : ${originName}`; // 출발지 이름 포함
+		    } else if (index === routeData.routes[0].sections[0].guides.length - 1) {
+		        guidanceText = "목적지";
+		    } else {
+		        // 도로 이름(road name)을 포함하여 지침 텍스트 생성
+		        const roadName = guide.road && guide.road.name ? `${guide.road.name} 방면 ` : ""; // 도로 이름이 존재할 경우 추가
+		        guidanceText = `${roadName}${guide.guidance || "이동"} 후 ${guide.distance}m 이동`; // 지침 텍스트
+		    }
+		
+		    // 설정한 안내 지침을 HTML로 적용
+		    directionItem.innerHTML = `<strong>${guidanceText}</strong>`;
+		    directionsList.appendChild(directionItem);
+		});
 
-            // 지침과 거리 포함한 HTML로 설정
-            directionItem.innerHTML = `<strong>${guidanceText}</strong> 후  ${guide.distance}m 이동`;
-            directionsList.appendChild(directionItem);
-        });
 
         // 기존 경로가 있다면 제거
         if (polyline) {
@@ -233,3 +244,56 @@ async function getCoordinatesFromAddress(address) {
         return null;
     }
 }
+
+// 현재 위치를 받아 지도의 중심을 이동하는 함수
+function setMapToCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude; // 위도
+                const longitude = position.coords.longitude; // 경도
+                
+                const userLocation = new kakao.maps.LatLng(latitude, longitude); // 사용자의 현재 위치 좌표
+                map.setCenter(userLocation); // 지도의 중심을 현재 위치로 이동
+                
+                // 현재 위치에 마커 추가 (옵션)
+                const userMarker = new kakao.maps.Marker({
+                    position: userLocation,
+                    map: map
+                });
+                
+            },
+            function(error) {
+                alert("현재 위치를 가져올 수 없습니다. 위치 정보를 허용해 주세요.");
+            },
+            {
+                enableHighAccuracy: true, // 높은 정확도의 위치를 요청
+                timeout: 10000,           // 위치 요청 제한 시간 설정 (10초)
+                maximumAge: 0             // 항상 최신 위치 정보 요청
+            }
+        );
+    } else {
+        alert("이 브라우저에서는 현재 위치를 가져올 수 없습니다.");
+    }
+}
+
+// 페이지 로드 시 현재 위치로 지도 이동
+document.addEventListener("DOMContentLoaded", setMapToCurrentLocation);
+
+// evdropdown.js에서 호출하는 함수: 도착지 좌표 설정
+function setDestinationFromPopup(destination) {
+    const { lat, lng, address } = destination;
+
+    // 도착지 좌표 설정 및 마커 표시
+    const place = { x: lng, y: lat, place_name: address };
+    selectDestinationPlace(place); // 도착지 마커 표시
+
+    // 경로 탭 활성화 후 경로 검색 실행
+    setTimeout(() => {
+        document.getElementById("searchButton").click(); // 경로 검색 버튼 자동 클릭
+    }, 500);
+}
+
+
+
+

@@ -15,17 +15,41 @@
     font-style: normal;
 }
 
+/* 페이퍼로지 */
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* 이사만루 */
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 프리텐다드 */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
 
 
 html, body {
 	margin: 0 auto;
 	height: 100%;
+	overflow: hidden;
 	
 }
 
 .maincontainer {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	display: flex;
 	flex-direction: row;
 }
@@ -44,7 +68,7 @@ html, body {
 	width: 350px;
 	height: 100%;
 	background-color: white;
-	
+	overflow: hidden;
 }
 
 .searchlogo {
@@ -79,8 +103,13 @@ html, body {
 }
 
 .tab-content.active {
-    display: block;
+    display: flex;
     margin-top: 2vh;
+    height: 100%;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
 }
 
 .tabbarev, .tabbarroad {
@@ -177,6 +206,7 @@ html, body {
 .searchbutton-container {
 	display: flex;
 	justify-content: space-around;
+	margin: 10px;
 }
 
 .searchbutton {
@@ -236,21 +266,29 @@ html, body {
 }
 
 
+
+
+.searchlist {
+	font-family: 'SUIT-Regular', sans-serif;
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-left: 2vh;
+	overflow-y : auto;
+	max-height: 100%;
+	flex: 1;
+	box-sizing: border-box;
+	
+}
+
+
 .searchlist ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.searchlist {
-	font-family: 'SUIT-Regular', sans-serif;
-	width: 100%;
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	margin-left: 2vh;
-	
-}
 
 .searchlist h2 {
 	font-family: 'SUIT-Regular', sans-serif;
@@ -271,10 +309,19 @@ html, body {
     margin-right: 15px;
 }
 
+.info {
+	cursor: pointer;
+}
+
 .info h3 {
-    font-size: 18px;
+    font-size: 15px;
     margin: 0;
-    padding-bottom: 5px;
+}
+
+.info p {
+	font-size: 13px;
+	margin: 0;
+	margin-top: 5px;
 }
 
 .status {
@@ -285,21 +332,101 @@ html, body {
 .status span {
     display: inline-flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 11px;
     padding: 3px 6px;
     border-radius: 15px;
     margin-top: 4px;
 }
 
-/* 상태에 따른 스타일링 */
+/* 충전기 상태 */
+.stat {
+    background-color: #007bff;
+	color:white;
+}
+
+.status-available {
+    background-color: #4CC417; /* 사용 가능 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-in-use {
+    background-color: #F62217; /* 사용 중 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-unavailable {
+    background-color: #F62217; /* 사용 불가 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-out-of-service {
+    background-color: #6c757d; /* 운영 중지 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-under-maintenance {
+    background-color: #FBB117; /* 점검 중 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-unknown {
+    background-color: #343a40; /* 상태 미확인 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+
 .available {
     background-color: #007bff;
     color: white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+    
 }
 
 .fast {
     border: 1px solid #007bff;
     color: #007bff;
+    
 }
 
 .type {
@@ -414,4 +541,235 @@ html, body {
 .autocomplete-item:hover {
     background-color: #eee;
 }
+
+.pagination-container {
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	margin: 10px auto;
+	
+}
+
+
+.page-button {
+    margin: 2px;
+    background-color: transparent;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 40px;
+    height: 40px;
+    font-family: 'SUIT-Regular', sans-serif;
+}
+
+.page-button:hover {
+    background-color: #0d8aff;
+}
+
+.page-button.active {
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+}
+
+
+/* 충전소 정보 */
+.station-info-popup {
+	font-family: 'SUIT-Regular', sans-serif;
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    width: 300px;
+    height: 770px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none; /* 처음에는 숨김 상태 */
+    
+}
+
+.real-popup {
+	display: flex;
+	flex-direction: column;
+}
+
+.popupchargebusi {
+	display: flex;
+	justify-content: space-around;
+	
+}
+
+.popupchargeType {
+	font-family: 'SUIT-Regular', sans-serif;
+}
+
+.popupchargeType table {
+    width: 100%;
+    height: 130px;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+.popupchargebusi p,
+.popupchargeType th,
+.popupchargeType td,
+.popupchargeinfo p,
+.popupchargeinfo span {
+    line-height: 1.2; /* 줄 간격 조정 */
+    
+}
+
+.info-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
+	
+}
+
+.popupchargeType th,
+.popupchargeType td {
+	font-size: 13px;
+	text-align: center; /* 텍스트 중앙 정렬 */
+	word-break: keep-all; /* 단어가 중간에 끊기지 않도록 설정 */
+	margin: 5px 0; /* 요소 사이의 간격 최소화 */
+	border: 1px solid #ccc;
+	padding: 5px;
+	
+}
+
+.popupchargeinfo span {
+    display: block; /* 각 항목을 새 줄에 표시 */
+    padding-bottom: 5px; /* 아래쪽 여백 추가 */
+}
+
+.popupchargeinfo {
+	display: flex;
+	flex-direction: column;
+    gap: 5px; /* 항목 사이 간격 */
+    width: 100%;
+}
+
+.info-item {
+    display: flex;
+    align-items: center; /* 라벨과 내용의 수평 정렬 */
+    padding-bottom: 2px;
+    border-bottom: 1px solid #ccc; /* 밑줄 */
+    font-size: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+.info-stats {
+	word-break: break-word; /* 단어가 길어질 경우 줄 바꿈 */
+    white-space: normal; /* 텍스트가 줄 바꿈될 수 있도록 */
+    overflow-wrap: break-word; /* 필요한 경우 줄 바꿈을 허용 */
+    flex: 1;
+	align-items: center;
+}
+
+
+.label {
+	width: 75px; /* 라벨 부분의 고정 너비를 설정하여 간격 유지 */
+    font-weight: bold;
+    margin-right: 5px; /* 제목과 값 간격 */
+    
+}
+
+
+.popupchargephoto {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	gap: 5px; /* 항목 사이 간격 */
+	
+}
+
+.popupchargephoto span {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
+}
+
+
+.station-info-popup h3 {
+    margin-top: 0;
+}
+
+#closePopupButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.popupStationName {
+	font-family: 'KIMM_Bold', sans-serif;
+	font-size: 23px;
+	margin-bottom: 2vh;
+	
+}
+
+.popupOperator {
+	padding: 3px 20px;
+	border-radius: 15px;
+	align-items: center;
+	background-color: #4CC417;
+	color: white;
+	font-size: 13px;
+	
+}
+
+.roadview {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    object-fit: cover; /* 로드뷰 이미지가 컨테이너 크기에 맞게 조정됨 */
+    border-radius: 8px; /* 모서리 둥글게 (선택 사항) */
+}
+
+.chargephoto-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	margin: 10px 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.chargephoto-header img {
+	width: 25px;
+	height: 25px;
+	background-color: #4CC417;
+	border-radius: 5px;
+}
+
+.roadviewnav {
+	display: flex;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 15px;
+	align-items: center;
+	border: none;
+	background-color: #4CC417;
+	cursor: pointer;
+	border-radius: 10px;
+	color: white;
+	width: auto;
+}
+
+
+
+
+
+
 

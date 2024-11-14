@@ -72,86 +72,141 @@
 	    </select>
 	</div>
 
-    <!-- 입력 폼(검색용도) -->
-    <div class="searchinput-container">
-        <input type="text" placeholder="충전소를 검색해 주세요." class="searchinput">
-        <div id="suggestions"></div>
-   		<button class="searchicon">
-        	<img src="${pageContext.request.contextPath}/resources/images/searchicon.png" alt="searchicon">
-        </button>
-    </div>
+
     
     <div class="searchbutton-container">
-    	<button class="searchbutton">검색하기</button>
-    	<button class="searchbutton">초기화</button>
-    
+    	<button class="searchbutton" id="stationSearchButton">검색하기</button>
+    	<button class="searchbutton" id="resetButton">초기화</button>
     </div>
     
 	<div class="chargetypetext">[충전타입]</div>
 	
 	<div class="chargetype">
-	    <label><input type="checkbox" checked> 전체</label>
-	    <label><input type="checkbox" checked> DC콤보</label>
-	    <label><input type="checkbox" checked> DC차데모</label>
-	    <label><input type="checkbox" checked> AC3상</label>
-	    <label><input type="checkbox" checked> 완속</label>
+	    <label><input type="checkbox" value="chargetypeAllcheck" checked> 전체</label>
+	    <label><input type="checkbox" value="04" checked> DC콤보</label>
+	    <label><input type="checkbox" value="01" checked> DC차데모</label>
+	    <label><input type="checkbox" value="07" checked> AC3상</label>
+	    <label><input type="checkbox" value="02" checked> 완속</label>
 	</div>
+
 	
 	<div class="searchlist">
 		<h2>검색결과</h2>
-	    <!-- 검색 결과 리스트 -->
-    	<ul>
-	    <li class="search-item">
-<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
- -->	        <div class="info">
-	            <h3>도솔공원</h3>
-	            <div class="status">
-	                <span class="available">사용가능</span>
-	                <span class="fast">⚡ 급속</span>
-	                <span class="type">DC콤보</span>
-	            </div>
-	        </div>
-	    </li>
-        <!-- 두 번째 충전소 아이템 -->
-	    <li class="search-item">
-<!-- 	        <img src="아이콘이미지경로" alt="아이콘" class="icon">
- -->	        <div class="info">
-	            <h3>독립기념관</h3>
-	            <div class="status">
-	                <span class="available">사용가능</span>
-	                <span class="fast">⚡ 급속</span>
-	                <span class="type">DC차데모</span>
-	                <span class="type">DC콤보</span>
-	            </div>
-	        </div>
-	    </li>
+    	<ul id="resultList">
+	 		<!-- 검색결과 리스트 -->
 	    </ul>
 	</div>
-	</div> <!-- end of tab-content active-->
-        <!-- 충전소 길 찾기 내용 -->
-        <div id="routeContent" class="tab-content">
-            <div class="route-search">
-                <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
-                	<div id="originSuggestions" class="suggestions-container"></div>
-                <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
-                	<div id="destinationSuggestions" class="suggestions-container"></div>
-                <button id="searchButton" class="route-searchbutton">경로 검색</button>
-                    <input type="hidden" id="originCoords">
-   	 				<input type="hidden" id="destinationCoords">
-            </div>
-
-            <div class="route-result" id="routeResult">
-            <div id="directionsList" class="directions-list"></div>
-                <!-- 경로 결과 예시 -->
-            </div>
-        </div>
 	
+	<!-- 페이지네이션 버튼 -->
+	<div id="pagination" class="pagination-container"></div>
+
+	
+	</div> <!-- end of tab-content active-->
+    <!-- 충전소 길 찾기 내용 -->
+    <div id="routeContent" class="tab-content">
+        <div class="route-search">
+            <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
+            	<div id="originSuggestions" class="suggestions-container"></div>
+            <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
+            	<div id="destinationSuggestions" class="suggestions-container"></div>
+            <button id="searchButton" class="route-searchbutton">경로 검색</button>
+                <input type="hidden" id="originCoords">
+ 				<input type="hidden" id="destinationCoords">
+        </div>
+
+        <div class="route-result" id="routeResult">
+        <div id="directionsList" class="directions-list"></div>
+            <!-- 경로 결과 예시 -->
+        </div>
+    </div>
+	
+	
+	</div> <!-- end of searchbar -->
 
 
-</div> <!-- end of searchbar -->
+
 
 <!-- 카카오 맵 -->
 <div class="kakaomap" id="map"></div>
+
+
+<!-- 충전소 정보 팝업 -->
+<div id="stationInfoPopup" class="station-info-popup">
+	
+	<button id="closePopupButton">X</button>
+	<div class="real-popup">
+		<div class="popupStationName">
+			<span id="popupStationName"></span>
+		</div>
+		<div class="popupchargebusi">
+			<span class="popupOperator" data-value="popupOperator"></span>
+			<span class="popupOperator" id="popupUseTime"></span>
+		</div>
+		
+		<div class="popupchargeType">
+			<table>
+		        <thead>
+		            <tr>
+		                <th>구분</th>
+		                <th>충전기 타입</th>
+		                <th>충전기 상태<br>
+		                	<small>(갱신 시간)</small>
+		                </th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr>
+		                <td>
+		                	<span id="popupOutput"></span>
+		                </td>
+		                <td>
+		                    <span id="popupType"></span>
+		                </td>
+		                <td>
+		                    <span class="status-button">
+		                    	<span id="popupStatus"></span><br>
+		                    	<small id="popupStatusUpdateDate"></small> <!-- 갱신 일시 표시용 -->
+		                    </span>
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+		<div class="popupchargeinfo">
+			<span class="info-header">상세정보</span>
+		
+		    <div class="info-item">
+		        <div class="label">주소</div><div class="info-stats"id="popupAddress"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">운영기관</div><div class="info-stats" data-value="popupOperator"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">연락처</div><div class="info-stats" id="popupContact"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">참고사항</div><div class="info-stats" id="popupNote"></div>
+		    </div>
+		    <div class="info-item">
+		        <div class="label">이용자제한</div><div class="info-stats" id="popupLimitDetail"></div>
+		    </div>
+		
+		</div>
+		
+		<div class="popupchargephoto">
+			<div class="chargephoto-header">
+				<div>위치사진</div>
+				<button class="roadviewnav">
+					<img src="${pageContext.request.contextPath}/resources/images/navicon.png" alt="길찾기아이콘" />
+				<div>길 찾기</div>
+				</button>
+			</div>
+			<div class="roadview" id="roadview"></div> <!-- 로드뷰 -->
+		</div>
+	    
+    </div> <!-- end of real-popup -->
+</div> <!-- end of station-info-popup -->
 
 
 
