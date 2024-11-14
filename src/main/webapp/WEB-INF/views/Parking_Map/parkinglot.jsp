@@ -11,6 +11,27 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/parking_map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/parking_searchbar.js"></script>
 
+
+    <!-- 서치바 highlight 클래스 스타일 추가 -->
+    <style>
+        .autocomplete-item.highlight {
+            background-color: #e0e0e0; /* 강조 표시 배경색 */
+            font-weight: bold;         /* 글씨 강조 */
+        }
+.autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+}
+		     
+		/* 강조 표시된 항목 스타일 (이름 변경) */
+		.autocomplete-item.route-highlight {
+		    background-color: #e0e0e0; /* 강조 배경색 */
+		    font-weight: bold;         /* 글씨 강조 */
+		    color: #333;               /* 강조 텍스트 색상 */
+		    border-radius: 4px;        /* 부드러운 모서리 */
+		}
+        
+    </style>
 <title>주차장 찾기</title>
 
 </head>
@@ -22,10 +43,15 @@
 
 <div class="searchbar-parking">
 <!-- 검색바 -->
-    <div class="search-bar">
-        <input type="text" placeholder="주차장을 검색하세요">
-        <button type="submit">🔍</button>
-    </div>
+<div class="search-bar">
+    <input type="text" id="parking-search" placeholder="주차장을 검색하세요" onkeydown="searchParking(event)">
+    <button type="submit">🔍</button>
+</div>
+
+<!-- 자동완성 검색 결과 표시 영역 -->
+<div id="autocomplete-results" class="autocomplete-results" style="display: none;">
+    <!-- 검색 결과가 여기에 표시됩니다 -->
+</div>
 
   <!-- 탭 메뉴 -->
     <div class="parking-tabs">
@@ -56,14 +82,21 @@
         <div id="search" class="tab-content">
             <div class="parking-list"></div>
         </div>
+
         <div id="route" class="tab-content" style="display:none;">
              <!-- 출발지와 도착지 입력 -->
     <div class="route-search">
         <label for="start-location">출발지:</label>
-        <input type="text" id="start-location" placeholder="출발지를 입력하세요" oninput="searchAutocomplete('start')">
-        
+        <input type="text" id="start-location" placeholder="출발지를 입력하세요" onkeydown="searchAutocomplete(event, 'start')">
+        <div id="start-search-results" class="search-results" style="display: none;">
+            <!-- 출발지 검색 결과 목록이 여기에 표시됩니다 -->
+        </div>
+
         <label for="end-location">도착지:</label>
-        <input type="text" id="end-location" placeholder="도착지를 입력하세요" oninput="searchAutocomplete('end')">
+        <input type="text" id="end-location" placeholder="도착지를 입력하세요" onkeydown="searchAutocomplete(event, 'end')">
+        <div id="end-search-results" class="search-results" style="display: none;">
+            <!-- 도착지 검색 결과 목록이 여기에 표시됩니다 -->
+        </div>
         
         <button onclick="findRoute()">길찾기</button>
     </div>
