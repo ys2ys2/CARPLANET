@@ -270,6 +270,11 @@ const regionData = {
 
 
 $(document).ready(function () {
+
+	proj4.defs("EPSG:5178", "+proj=tmerc +lat_0=38 +lon_0=128 +k=1 +x_0=400000 +y_0=600000 +ellps=GRS80 +units=m +no_defs");
+	proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+	
+	
     // 지도 설정 코드
     var mapContainer = document.getElementById('map');
     var mapOption = {
@@ -284,7 +289,7 @@ $(document).ready(function () {
         start: null,
         end: null
     };
-    
+
     var ps = new kakao.maps.services.Places();
 
     function createMarkerImage(src, size) {
@@ -295,7 +300,7 @@ $(document).ready(function () {
     var endMarkerImage = createMarkerImage('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', 32);
 
     function addMarker(coords, type) {
-    	// markers는 전역 변수로 선언되어 있으며, 각 속성 (start, end)은 kakao.maps.Marker 객체를 참조합니다.
+        // markers는 전역 변수로 선언되어 있으며, 각 속성 (start, end)은 kakao.maps.Marker 객체를 참조합니다.
         if (markers[type] instanceof kakao.maps.Marker) {
             markers[type].setMap(null);
         }
@@ -341,37 +346,55 @@ $(document).ready(function () {
         }
     }
 
+    async function getoilgas(coords) {
+    // WGS84 좌표 (위도, 경도)
+    const regionY = coords.La; // 위도
+    const regionX = coords.Ma; // 경도
+    
+
+    // WGS84 -> KATEC 변환
+    const [katecY, katecX] = proj4("EPSG:4326", "EPSG:5178", [regionY, regionX]);
+
+    console.log("WGS84 좌표: X=" + regionX + ", Y=" + regionY);
+    console.log("KATEC (EPSG:5178) 좌표: X=" + katecY + ", Y=" + katecX);
+
+    // 다시 WGS84로 역변환해 정확성 확인
+    const [backX, backY] = proj4("EPSG:5178", "EPSG:4326", [katecY, katecX]);
+    console.log("다시 변환된 WGS84 좌표: X=" + backY + ", Y=" + backX);
+	}
+
+
     function drawRoute(routeData) {
-    try {
-        const linePath = [];
+        try {
+            const linePath = [];
 
-        // 각 도로(segment)에 대해 반복
-        routeData.routes[0].sections[0].roads.forEach(road => {
-            // road의 vertexes 배열에서 좌표를 추출하여 linePath에 추가
-            road.vertexes.forEach((vertex, index) => {
-                // 짝수 인덱스는 x(lng), 다음 인덱스는 y(lat)
-                if (index % 2 === 0) {
-                    linePath.push(new kakao.maps.LatLng(road.vertexes[index + 1], road.vertexes[index]));
-                }
+            // 각 도로(segment)에 대해 반복
+            routeData.routes[0].sections[0].roads.forEach(road => {
+                // road의 vertexes 배열에서 좌표를 추출하여 linePath에 추가
+                road.vertexes.forEach((vertex, index) => {
+                    // 짝수 인덱스는 x(lng), 다음 인덱스는 y(lat)
+                    if (index % 2 === 0) {
+                        linePath.push(new kakao.maps.LatLng(road.vertexes[index + 1], road.vertexes[index]));
+                    }
+                });
             });
-        });
 
-        // Polyline 객체 생성 및 맵에 경로 표시
-        var polyline = new kakao.maps.Polyline({
-            path: linePath,
-            strokeWeight: 5,
-            strokeColor: '#000000',
-            strokeOpacity: 0.7,
-            strokeStyle: 'solid'
-        });
+            // Polyline 객체 생성 및 맵에 경로 표시
+            var polyline = new kakao.maps.Polyline({
+                path: linePath,
+                strokeWeight: 5,
+                strokeColor: '#000000',
+                strokeOpacity: 0.7,
+                strokeStyle: 'solid'
+            });
 
-        polyline.setMap(map);
-        console.log("Polyline 경로가 지도에 성공적으로 그려졌습니다.");
-    } catch (error) {
-        console.error("Polyline 그리기 오류 발생:", error);
-        alert("경로를 그리는 중 오류가 발생했습니다.");
+            polyline.setMap(map);
+            console.log("Polyline 경로가 지도에 성공적으로 그려졌습니다.");
+        } catch (error) {
+            console.error("Polyline 그리기 오류 발생:", error);
+            alert("경로를 그리는 중 오류가 발생했습니다.");
+        }
     }
-}
 
     function createAutocompleteList(inputElement) {
         var list = $('<div class="destinationlist"></div>');
@@ -443,10 +466,10 @@ $(document).ready(function () {
 
         const regionName = `${sidoText}${cityText}${townText}`;
         console.log(`선택된 지역명: ${regionName}`);
-
         geocoder.addressSearch(regionName, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                getoilgas(coords);
                 map.setCenter(coords);
                 console.log("지도 위치가 업데이트되었습니다:", coords);
             } else {

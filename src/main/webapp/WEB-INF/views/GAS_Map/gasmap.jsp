@@ -11,6 +11,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/gas.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/gasdropdowndata.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"></script>
 <style>
 @font-face {
 	font-family: 'KIMM_Bold';
