@@ -9,8 +9,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MainController {
 		
+	//희진- 메인페이지 경로: localhost:9090/CarPlanet/
     @GetMapping("/") 
     public String home() {
         return "MainPage/mainpage";
+    }
+    
+    @GetMapping("/community")
+    public String community() {
+    	return "Community/community";
     }
 }

@@ -1,0 +1,97 @@
+/* 공통 스타일 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+}
+/* 애니메이션 정의 */
+@keyframes slide-up {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 푸터 스타일 */
+.footer-company-info {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 150px;
+  padding: 20px;
+  background-color: #ffffff;
+  font-size: 10px;
+  animation: slide-up 0.8s ease-out; /* 푸터가 하단에서 올라오는 애니메이션 */
+  
+}
+/* 맨 아래 도달 시 하단 고정 스타일 */
+.footer-company-info.sticky-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+.footer-company-info h1 {
+  font-family: 'KIMM_Bold';
+  font-size: 18px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.footer-company-info p,
+.footer-company-info a {
+  font-family: 'Freesentation-9Black';
+  font-weight: normal;
+  color: #333;
+  font-size: 12px;
+  text-decoration: none;
+  animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
+}
+
+/* 아이콘과 텍스트 스타일 */
+.icon-links-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1px;
+}
+
+.icon-item,
+.icon-item1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slide-up 0.8s ease-out; /* 아이콘들이 하단에서 올라오는 애니메이션 */
+}
+
+.icon-item img.icon {
+  width: 45px;
+  height: 45px;
+  margin: 10px 0 5px 0;
+  animation: slide-up 1s ease-out; /* 아이콘이 하단에서 올라오는 애니메이션 */
+}
+
+.icon-item1 img.icon {
+  width: 55px;
+  height: 55px;
+  margin: 15px 0 5px 0;
+  margin-bottom: -1px;
+  animation: slide-up 1s ease-out;
+}
+
+/* 아이콘 텍스트 스타일 */
+.icon-item a,
+.icon-item1 a {
+  width: 65px;
+  font-family: 'Freesentation-9Black';
+  font-weight: normal;
+  font-size: 11px;
+  color: #333;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 5px;
+  animation: slide-up 1s ease-out;
+}
