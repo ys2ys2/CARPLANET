@@ -10,8 +10,11 @@ public class HomeController {
 	// 메인페이지
 	@GetMapping("/evmap")
 	public String evmap() {
-		return "EV_Map/evmap";
-		
+		return "EV_Map/evmap";	
 	}
+	
+
+	
+		
 	
 }

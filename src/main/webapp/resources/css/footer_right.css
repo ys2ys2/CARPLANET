@@ -1,0 +1,84 @@
+@charset "UTF-8";
+@font-face { /*어그로체*/
+    font-family: 'SBAggroB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face { /*리아체*/
+    font-family: 'RiaSans-ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/RiaSans-ExtraBold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face { /*프리젠테이션*/
+    font-family: 'Freesentation-9Black';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+@font-face {/* 자이언츠체 */
+    font-family: 'Giants-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {/*한국기계연구원*/
+    font-family: 'KIMM_Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face { /*프리텐다드*/
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.right-fixed-menu {
+  position: fixed;
+  top: 50%;
+  right: 1px; /* 오른쪽에 약간 떨어뜨려서 고정 */
+  transform: translateY(-50%);
+  width: 50px; /* 메뉴 너비를 작게 설정 */
+  background-color: #f8f8f8;
+  border-radius: 15px 0 0 15px; /* 부드러운 둥근 모서리 */
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 약간의 그림자 추가 */
+}
+
+.right-fixed-menu .menu-item {
+  display: flex; /* Flexbox로 정렬 */
+  flex-direction: column; /* 수직 방향으로 아이템 정렬 */
+  align-items: center; /* 아이템을 수직 중앙에 정렬 */
+  justify-content: center; /* 아이템을 수평 중앙에 정렬 */
+  padding: 10px 0; /* 각 메뉴 아이템의 여백 조정 */
+  border-left: 1px solid #ddd; /* 왼쪽에만 선 추가 */
+}
+
+.right-fixed-menu .menu-item a {
+  font-family: 'Pretendard-Regular';
+  color: #333;
+  text-decoration: none;
+  font-size: 9px;
+  letter-spacing: 0; /* 자간 없앰 */
+  text-align: center; /* 텍스트를 가운데 정렬 */
+   font-family: 'Pretendard-Regular';
+}
+
+.right-fixed-menu .menu-item a:hover {
+  color: #007bff;
+}
+
+.right-fixed-menu .menu-item img {
+  width: 20px; /* 이미지 너비를 줄임 */
+  height: 20px; /* 이미지 높이를 줄임 */
+  margin: 0; /* 아이콘과 텍스트 간격 줄임 */
+  padding: 5px 0; /* 이미지와 텍스트 사이 여백 조정 */
+}
