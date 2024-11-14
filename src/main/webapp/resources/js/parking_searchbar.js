@@ -6,6 +6,11 @@ const itemsPerPage = 4;
 let allParkingData = [];
 // map 객체를 전역으로 선언
 let map;
+
+let startMarker, endMarker;
+
+const ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
+
 let filteredParkingData = [];
 
 // 한 페이지당 가져올 데이터 수
@@ -19,7 +24,7 @@ $(document).ready(function() {
 
     //1-2. 지도 초기화 옵션
     var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(37.5665, 126.9780),
         level: 3
     };
 
@@ -30,24 +35,39 @@ $(document).ready(function() {
     fetchParkingLotData();
 });
 
-// //탭 전환 함수
-// function showTab(tabName){
-//     document.querySelectorAll('.tab-content').forEach(tab => {
-//     });
-//     document.getElementById(tabName).style.display = 'block';
+// 탭 전환 함수
+function showTab(tabName) {
+    // 모든 탭 콘텐츠 숨기기
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+    });
 
-//     document.querySelectorAll('.tab-button').forEach(button => {
-//         button.classList.remove('active');
-//     });
-//     document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+    // 선택한 탭만 보이도록 설정
+    document.getElementById(tabName).style.display = 'block';
 
-//     const province = document.getElementById('province-select').value;
-//     const city = document.getElementById('city-select').value;
+    // 모든 탭 버튼에서 'active' 클래스 제거
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
 
-//     if (tabName === 'search') { // 검색 탭이 활성화될 때만 데이터를 로드
-//         fetchParkingLotData(province, city);
-//     }
-// }
+    // 선택된 탭 버튼에 'active' 클래스 추가
+    document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+
+    // 'search' 탭이 활성화될 때만 지역 선택 창을 보이게 함
+    const regionSelection = document.querySelector('.region-selection');
+    if (tabName === 'search') {
+     	regionSelection.style.display = 'block';  // 검색 탭에서는 보이도록
+        const province = document.getElementById('province-select').value;
+        const city = document.getElementById('city-select').value;
+        fetchParkingLotData(province, city);
+    } else {
+        regionSelection.style.display = 'none';  // 다른 탭에서는 숨기도록
+}
+}
+// 초기 로드시 'search' 탭을 기본으로 설정
+document.addEventListener('DOMContentLoaded', function() {
+    showTab('search');
+});
 
 
     // 페이지 데이터 로드
@@ -174,11 +194,9 @@ function fetchParkingLotData(province, city ) {
    // 이미 계산된 전체 페이지 수를 사용하여 모든 페이지 데이터를 가져옴
   fetchTotalCount((totalCount) => {
     const totalPages = Math.ceil(totalCount / numOfRows); // 전체 페이지 수 계산
-    console.log("총 데이터 개수:", totalCount, "전체 페이지 수:", totalPages);
 
     // 2. 모든 페이지의 데이터를 순차적으로 가져오기
     function fetchNextPage() {
-        console.log("함수호출");
         if (pageNo > totalPages) {
             console.log("모든 데이터를 가져왔습니다.");
             console.log("전체 데이터:", allParkingData); // 전체 데이터를 출력
@@ -454,6 +472,8 @@ function showParkingDetails(item) {
         <p>특기 사항: ${item.spcmnt || '정보 없음'}</p>
         <p>전화번호: ${item.phone || '정보 없음'}</p>
         <p>장애인 전용 주차 구역 보유 여부:  ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
+        <p>위도: ${item.latitude}</p> 
+         <p>경도: ${item.longitude}</p> 
         <p>데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
     `;
 
@@ -467,5 +487,76 @@ function closeParkingDetails() {
 }
 
 
-// 초기 데이터 로드
-showTab('search');
+// 길찾기 기능 구현 자바스크립트 함수들
+// 자동완성 검색 함수
+function searchAutocomplete(type) {
+    const keyword = document.getElementById(type === 'start' ? 'start-location' : 'end-location').value;
+
+    if (!keyword) {
+        document.getElementById('search-results').style.display = 'none';
+        return;
+    }
+
+    // 장소 검색 API 호출
+    ps.keywordSearch(keyword, function(data, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            displayAutocompleteResults(data, type);
+        } else {
+            document.getElementById('search-results').style.display = 'none';
+        }
+    });
+}
+
+// 자동완성 결과 표시 함수
+function displayAutocompleteResults(data, type) {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = ''; // 기존 검색 결과 초기화
+    resultsContainer.style.display = 'block';
+
+    data.forEach(place => {
+        const item = document.createElement('div');
+        item.textContent = place.place_name;
+        item.onclick = () => selectPlace(place, type); // 검색 결과 선택 시 동작
+        resultsContainer.appendChild(item);
+    });
+}
+
+// 장소 선택 함수
+function selectPlace(place, type) {
+    const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
+    inputField.value = place.place_name; // 선택한 장소 이름을 입력 창에 설정
+
+    // 마커 설정
+    const location = new kakao.maps.LatLng(place.y, place.x);
+    if (type === 'start') {
+        if (startMarker) startMarker.setMap(null); // 기존 마커 제거
+        startMarker = new kakao.maps.Marker({
+            position: location
+        });
+        startMarker.setMap(map);
+    } else {
+        if (endMarker) endMarker.setMap(null); // 기존 마커 제거
+        endMarker = new kakao.maps.Marker({
+            position: location
+        });
+        endMarker.setMap(map);
+    }
+
+    // 지도 중심 이동
+    map.panTo(location);
+
+    // 검색 결과 창 닫기
+    document.getElementById('search-results').style.display = 'none';
+}
+
+// 검색 결과 표시용 HTML 요소 (선택 사항)
+function setupSearchResultsContainer() {
+    const container = document.createElement('div');
+    container.id = 'search-results';
+    container.className = 'search-results';
+    container.style.display = 'none';
+    document.body.appendChild(container);
+}
+
+// 페이지 로드 시 검색 결과 표시용 컨테이너 생성
+document.addEventListener('DOMContentLoaded', setupSearchResultsContainer);

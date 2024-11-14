@@ -156,3 +156,48 @@ html, body{
     color: blue; /* 원하는 색상으로 변경 가능 */
 }
     
+/* 길찾기 CSS */
+.search-results {
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    position: absolute;
+    z-index: 1000;
+}
+
+.search-results div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.search-results div:hover {
+    background-color: #f0f0f0;
+}
+
+.route-search {
+    margin-bottom: 20px;
+}
+
+.route-search label {
+    display: inline-block;
+    width: 60px;
+    margin-right: 10px;
+}
+
+.route-search input {
+    width: 200px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.route-result {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.route-result h3 {
+    margin-top: 0;
+}
