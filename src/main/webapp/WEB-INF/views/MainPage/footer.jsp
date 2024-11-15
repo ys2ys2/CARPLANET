@@ -27,31 +27,38 @@
     <a href="#" class="copyright">저작권<br> 정책</a>
   </p>
 
-  <!-- 마이페이지와 커뮤니티 -->
-  <div class="icon-links-row">
-    <div class="icon-item">
+<!-- 마이페이지와 커뮤니티 -->
+<div class="icon-links-row">
+  <div class="icon-item">
+    <a href="${pageContext.request.contextPath}/mypage">
       <img src="${pageContext.request.contextPath}/resources/images/MyPage.png" alt="마이페이지" class="icon">
-      <a href="#">마이페이지</a>
-    </div>
-    <div class="icon-item1">
+      <span>마이페이지</span>
+    </a>
+  </div>
+  <div class="icon-item1">
+    <a href="${pageContext.request.contextPath}/community">
       <img src="${pageContext.request.contextPath}/resources/images/Community2.png" alt="커뮤니티" class="icon">
-      <a href="#">커뮤니티</a>
-    </div>
+      <span>커뮤니티</span>
+    </a>
   </div>
+</div>
 
-  <!-- 카카오톡 및 챗봇 -->
-  <div class="icon-links-row">
-    <div class="icon-item">
+<!-- 카카오톡 및 챗봇 -->
+<div class="icon-links-row">
+  <div class="icon-item">
+    <a href="javascript:void(0);">
       <img src="${pageContext.request.contextPath}/resources/images/talk.png" alt="카카오톡 문의하기" class="icon">
-      <a href="#">카카오톡<br>문의하기</a>
-    </div>
-
-    <!-- 챗봇 문의하기 아이콘과 텍스트 -->
-    <div class="icon-item">
-      <img src="${pageContext.request.contextPath}/resources/images/free-icon.png" alt="챗봇 문의하기" class="icon" onclick="openModal()"> <!-- 이미지 클릭 시 모달 열기 -->
-      <a href="javascript:void(0);" onclick="openModal()">챗봇<br>문의하기</a> <!-- 텍스트 클릭 시 모달 열기 -->
-    </div>
+      <span>카카오톡<br>문의하기</span>
+    </a>
   </div>
+  <div class="icon-item">
+    <a href="javascript:void(0);" onclick="openModal()">
+      <img src="${pageContext.request.contextPath}/resources/images/free-icon.png" alt="챗봇 문의하기" class="icon">
+      <span>챗봇<br>문의하기</span>
+    </a>
+  </div>
+</div>
+
 
   <!-- 챗봇 문의하기 모달 -->
   <div id="myModal" class="modal">

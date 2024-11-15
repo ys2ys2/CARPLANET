@@ -3,14 +3,14 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer_right.css?ver=1.0">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer_right.css">
 </head>
 <body>
 
 <!-- 오른쪽 고정 메뉴 -->
 <div class="right-fixed-menu">
   <div class="menu-item">
-    <a href="${pageContext.request.contextPath}/electric">
+    <a href="${pageContext.request.contextPath}/evmap">
       <img src="${pageContext.request.contextPath}/resources/images/ele.png" alt="전기차 충전소"><br>전기차
     </a>
   </div>

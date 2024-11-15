@@ -60,7 +60,7 @@
 
 <!-- 메뉴 아이콘 및 유가 정보 박스 -->
 <div class="menu-container">
-    <a href="${pageContext.request.contextPath}/electricCharging.jsp" class="menu-item">
+    <a href="${pageContext.request.contextPath}/evmap" class="menu-item">
         <img src="${pageContext.request.contextPath}/resources/images/ele.png" alt="전기차 충전소">
         <span>전기차 충전소</span>
     </a>
