@@ -1,8 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
+<title>CAR PLANET</title>
+<!-- Swiper CSS 추가 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 불러오기 -->
+  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"></script> -->
+  
+   <!--  <style>
+        .price-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .price-box {
+            text-align: center;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .value {
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>--> 
 <title>CAR PLANET</title>
 <!-- Swiper CSS 추가 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
@@ -225,3 +250,4 @@ const swiper = new Swiper('.mySwiper', {
 
 </body>
 </html>
+
