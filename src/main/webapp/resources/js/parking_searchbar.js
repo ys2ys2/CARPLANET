@@ -236,7 +236,7 @@ function fetchParkingLotData(province, city ) {
                 prkcmprt: item.prkcmprt || '정보 없음',
                 operDay: item.operDay || '정보 없음',
                 weekdayOperOpenHhmm: item.weekdayOperOpenHhmm || '정보 없음',
-                weekdayOperCloseHhmm: item.weekdayOperCloseHhmm || '정보 없음',
+                weekdayOperColseHhmm: item.weekdayOperColseHhmm || '정보 없음',
                 satOperOperOpenHhmm: item.satOperOperOpenHhmm || '정보 없음',
                 satOperCloseHhmm: item.satOperCloseHhmm || '정보 없음',
                 holidayOperOpenHhmm: item.holidayOperOpenHhmm || '정보 없음',
@@ -343,6 +343,7 @@ function renderParkingList(data) {
             moveToLocationAndShowMarker(item); // 클릭 시 마커와 지도 이동 함수 호출
         });
         parkingList.appendChild(parkingItem);
+        showParkingDetails(item);
     });
      // 페이지 번호가 있는 경우 설정
      const pageNumber = document.getElementById('page-number');
@@ -454,37 +455,38 @@ fetchTotalCount(function(totalCount) {
 
 // 클릭한 주차장의 모든 정보를 표시하고 팝업을 여는 함수
 function showParkingDetails(item) {
-    console.log("showParkingDetails 함수의 item 객체:", item); // parking 객체 확인
+    console.log("showParkingDetails 함수의 item 객체:", item); // address 포함 여부 확인
     const detailsContainer = document.getElementById('parking-details'); // 상세 정보 표시 영역
-
+  // 주소 표시 (지번 주소가 없으면 도로명 주소 사용)
+  const address = item.address || '주소 정보 없음';
     detailsContainer.innerHTML = `
-        <h2>${item.name}</h2>
-        <p>주차장 구분: ${item.prkplceSe || '정보 없음'}</p>
-        <p>주차장 유형: ${item.prkplceType || '정보 없음'}</p>
-        <p>도로명 주소: ${item.rdnmadr || '정보 없음'}</p>
-        <p>지번 주소: ${item.lnmadr || '정보 없음'}</p>
-        <p>주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
-        <p>운영 요일: ${item.operDay || '정보 없음'}</p>
-        <p>평일 운영 시간: ${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperCloseHhmm || '정보 없음'}</p>
-        <p>토요일 운영 시간: ${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</p>
-        <p>공휴일 운영 시간: ${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</p>
-        <p>요금 정보: ${item.parkingchrgeInfo || '정보 없음'}</p>
-        <p>기본 시간: ${item.basicTime || '정보 없음'}</p>
-        <p>기본 요금: ${item.basicCharge || '정보 없음'}</p>
-        <p>추가 단위 시간: ${item.addUnitTime || '정보 없음'}</p>
-        <p>추가 단위 요금: ${item.addUnitCharge || '정보 없음'}</p>
-        <p>1일 주차권 요금 적용 시간: ${item.dayCmmtktAdjTime || '정보 없음'}</p>
-        <p>1일 주차권 요금: ${item.dayCmmtkt || '정보 없음'}</p>
-        <p>월 정기권 요금: ${item.monthCmmtkt || '정보 없음'}</p>
-        <p>결제 방법: ${item.metpay || '정보 없음'}</p>
-        <p>특기 사항: ${item.spcmnt || '정보 없음'}</p>
-        <p>전화번호: ${item.phone || '정보 없음'}</p>
-        <p>장애인 전용 주차 구역 보유 여부:  ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
-        <p>위도: ${item.latitude}</p> 
-         <p>경도: ${item.longitude}</p> 
-        <p>데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
+        <h2 class="parking-title">${item.name}</h2>
+        <p class="info-type">${item.prkplceSe || '정보 없음'}</p>
+        <p class="info-type">${item.prkplceType || '정보 없음'}</p>
+        <p class="info-address"><strong>주소:</strong> ${address}</p>
+        <p class="info-parking">주차 정보</p>
+        <p class="info-capacity">주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
+        <p class="info-charge">운영 시간 </p>
+        <p class="info-time">평일: ${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperColseHhmm || '정보 없음'}</p>
+        <p class="info-time">토요일: ${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</p>
+        <p class="info-time">공휴일: ${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</p>
+        <p class="info-charge">요금 정보</p>
+        <p class="info-fee">기본 시간: ${item.basicTime || '정보 없음'}분</p>
+        <p class="info-fee">기본 요금: ${item.basicCharge || '정보 없음'}원</p>
+        <p class="info-fee">추가 단위 시간: ${item.addUnitTime || '정보 없음'}분</p>
+        <p class="info-fee">추가 단위 요금: ${item.addUnitCharge || '정보 없음'}원</p>
+        <p class="info-charge">추가 정보</p>
+        <p class="info-day-ticket">1일 주차권 요금 적용 시간: ${item.dayCmmtktAdjTime || '정보 없음'}</p>
+        <p class="info-day-ticket">1일 주차권 요금: ${item.dayCmmtkt || '정보 없음'}</p>
+        <p class="info-monthly-ticket">월 정기권 요금: ${item.monthCmmtkt || '정보 없음'}</p>
+        <p class="info-payment">결제 방법: ${item.metpay || '정보 없음'}</p>
+        <p class="info-notes">특기 사항: ${item.spcmnt || '정보 없음'}</p>
+        <p class="info-contact">전화번호: ${item.phone || '정보 없음'}</p>
+        <p class="info-accessibility">장애인 전용 주차 구역 보유 여부: ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
+        <p class="info-coordinates">위도: ${item.latitude}</p> 
+        <p class="info-coordinates">경도: ${item.longitude}</p> 
+        <p class="info-date">데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
     `;
-
     // 팝업을 보이도록 설정
     document.getElementById('parking-details-popup').style.display = 'block';
 }

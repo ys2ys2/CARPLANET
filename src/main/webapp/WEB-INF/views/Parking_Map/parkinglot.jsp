@@ -32,27 +32,37 @@
 		}
         
     </style>
+    
 <title>주차장 찾기</title>
 
 </head>
 <body>
+<!-- 헤더 -->
+<jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
 
-
+<div class="parking-map" id="map"></div><!--지도 div  -->
 <div class="maincontainer-parking">
 
+<!--전체 콘텐츠 묶는 컨테이너  -->
+<div class="content-container">
 
-<div class="searchbar-parking">
+<!--메인 서치바 큰 컨테이너 -->
+<div class="mainsearch-bar">
 <!-- 검색바 -->
 <div class="search-bar">
     <input type="text" id="parking-search" placeholder="주차장을 검색하세요" onkeydown="searchParking(event)">
     <button type="submit">🔍</button>
 </div>
 
+
 <!-- 자동완성 검색 결과 표시 영역 -->
 <div id="autocomplete-results" class="autocomplete-results" style="display: none;">
     <!-- 검색 결과가 여기에 표시됩니다 -->
 </div>
+</div>
 
+
+<div class="parking-contents">
   <!-- 탭 메뉴 -->
     <div class="parking-tabs">
         <button class="tab-button active" onclick="showTab('search')">주차장 검색</button>
@@ -61,15 +71,15 @@
 
 	<!-- 지역 선택 -->
         <div class="region-selection">
-            <label for="region">지역 선택:</label>
+            <label for="region">지역 선택</label>
             <select id="province-select">
-		    <option value="">전체</option>
+		    <option value="">시/도 선택</option>
 		    <!-- <option value="서울특별시">서울특별시</option>
 		    <option value="부산광역시">부산광역시</option> -->
 		    <!-- 다른 지역 옵션 추가 -->
 			</select>
               <select id="city-select">
-            <option value="">전체</option>
+            <option value="">시/구/군 선택</option>
             <!-- <option value="강남구">강남구</option>
             <option value="해운대구">해운대구</option> -->
             <!-- 다른 세부 지역 옵션 추가 -->
@@ -83,16 +93,18 @@
             <div class="parking-list"></div>
         </div>
 
+
         <div id="route" class="tab-content" style="display:none;">
-             <!-- 출발지와 도착지 입력 -->
-    <div class="route-search">
-        <label for="start-location">출발지:</label>
+        
+        <!-- 출발지와 도착지 입력 -->
+    	<div class="route-search">
+        
         <input type="text" id="start-location" placeholder="출발지를 입력하세요" onkeydown="searchAutocomplete(event, 'start')">
         <div id="start-search-results" class="search-results" style="display: none;">
             <!-- 출발지 검색 결과 목록이 여기에 표시됩니다 -->
         </div>
 
-        <label for="end-location">도착지:</label>
+       
         <input type="text" id="end-location" placeholder="도착지를 입력하세요" onkeydown="searchAutocomplete(event, 'end')">
         <div id="end-search-results" class="search-results" style="display: none;">
             <!-- 도착지 검색 결과 목록이 여기에 표시됩니다 -->
@@ -119,18 +131,16 @@
         <div id="pagination" class="pagination">
         </div>
     
-</div><!--검색바의 가장 큰 div  -->
-		<div class="parking-map" id="map"></div><!--지도 div  -->
-
+	
 <!-- HTML 내에 팝업 컨테이너 추가 -->
-<div id="parking-details-popup" style="display: none;">
-    <button onclick="closeParkingDetails()">닫기</button>
+<div id="parking-details-popup" class="parking-details-popup" style="display: none;">
+    <button class="close-button" onclick="closeParkingDetails()">✖</button>
     <div id="parking-details"></div>
 </div>
-	
+</div>	
 
-
-</div> <!-- 메인 컨테이너 닫는 div  -->
+</div> 
+ </div>  
 
 </body>
 </html>
