@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <script src="${pageContext.request.contextPath}/resources/js/chatbot.js"></script>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatbot.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css?ver=1.0">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css?ver=1.0"> 
+
 </head>
 <body>
 
@@ -22,8 +23,8 @@
 
   <!-- 개인정보 처리방침 및 저작권 정책 -->
   <p>
-    <a href="#" class="privacy">개인정보 처리방침</a> 
-    <a href="#" class="copyright">저작권 정책</a>
+    <a href="#" class="privacy">개인정보<br> 처리방침</a> 
+    <a href="#" class="copyright">저작권<br> 정책</a>
   </p>
 
   <!-- 마이페이지와 커뮤니티 -->
@@ -92,22 +93,24 @@
 
 </div> <!-- .footer-company-info 닫힘 -->
 
-<!-- 스크롤 시 footer 고정 스크립트 -->
+<!-- 스크롤 시 footer 고정 스크립트  -->
 <script>
-  window.addEventListener('scroll', function () {
-    const footer = document.querySelector('.footer-company-info');
-    const documentHeight = document.documentElement.scrollHeight;
-    const viewportHeight = window.innerHeight;
-    const scrollPosition = window.scrollY;
+/* 푸터 고정 스크립트 수정 */
+window.addEventListener('scroll', function () {
+  const footer = document.querySelector('.footer-company-info');
+  const documentHeight = document.documentElement.scrollHeight;
+  const viewportHeight = window.innerHeight;
+  const scrollPosition = window.scrollY;
 
-    if (scrollPosition + viewportHeight >= documentHeight - footer.offsetHeight) {
-      footer.style.position = 'absolute';
-      footer.style.bottom = '0';
-    } else {
-      footer.style.position = 'fixed';
-      footer.style.bottom = '0';
-    }
-  });
+  if (scrollPosition + viewportHeight >= documentHeight) {
+    footer.style.position = 'fixed';  // 고정된 위치 유지
+    footer.style.bottom = '0';
+  } else {
+    footer.style.position = 'fixed';  // 항상 고정되도록 설정
+    footer.style.bottom = '0';
+  }
+});
+
 </script>
 
 </body>

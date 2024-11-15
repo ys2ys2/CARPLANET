@@ -1,3 +1,46 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // 전체 체크박스와 개별 체크박스를 가져오기
+    const allCheckbox = document.querySelector('.chargetype input[value="chargetypeAllcheck"]');
+    const typeCheckboxes = document.querySelectorAll('.chargetype input:not([value="chargetypeAllcheck"])');
+
+    // '전체' 체크박스를 클릭했을 때 모든 타입 체크박스를 선택/해제
+    allCheckbox.addEventListener("change", function () {
+        const isChecked = allCheckbox.checked;
+        typeCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스가 변경될 때 '전체' 체크박스 상태를 업데이트
+    typeCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            // 모든 개별 체크박스가 체크된 상태면 '전체' 체크박스를 체크
+            if (Array.from(typeCheckboxes).every(checkbox => checkbox.checked)) {
+                allCheckbox.checked = true;
+            } else {
+                allCheckbox.checked = false;
+            }
+        });
+    });
+});
+
+
+function showTab(tab) {
+    // 모든 탭과 콘텐츠를 비활성화
+    document.querySelectorAll('.tabbar span').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // 선택된 탭과 콘텐츠를 활성화
+    if (tab === 'search') {
+        document.querySelector('.tabbarev').classList.add('active');
+        document.getElementById('searchContent').classList.add('active');
+    } else if (tab === 'route') {
+        document.querySelector('.tabbarroad').classList.add('active');
+        document.getElementById('routeContent').classList.add('active');
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     // 시/군 데이터를 저장한 객체
     const districtData = {
@@ -267,16 +310,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	    
 	};   	    
 	    
-	    
 
     // 시/도 선택 시 시/군 목록 업데이트
-    document.getElementById("citySelect").addEventListener("change", function() {
+    document.getElementById("citySelect").addEventListener("change", function () {
         const selectedCity = this.value;
         const districtSelect = document.getElementById("districtSelect");
-        
+
         // 시/군 옵션 초기화
         districtSelect.innerHTML = '<option value="">시/군</option>';
-        
+
         // 시/군 데이터가 있는 경우에만 옵션 추가
         if (districtData[selectedCity]) {
             districtData[selectedCity].forEach(district => {
@@ -290,4 +332,422 @@ document.addEventListener("DOMContentLoaded", function() {
             districtSelect.disabled = true; // 비활성화
         }
     });
+    
+    
+	// 기본 변수 설정
+	const apiKey = "rBOARBGR6WewzR+zYF+kQmTdL/uXaOHo8Xi8oSkMFzA/7fiYa80eViuXxb9mLDalaBCEyQPIIt3abBnIMVwU0Q==";
+	const numOfRows = 30; // 한 페이지에 표시할 결과 개수
+	let currentPage = 1; // 현재 페이지 번호
+	let totalPage = 1; // 총 페이지 수
+	const buttonsPerPage = 10; // 페이지네이션 그룹당 표시할 페이지 버튼 수
+	let currentButtonGroup = 1; // 현재 페이지네이션 버튼 그룹
+	let fetchedItems = []; // 전체 데이터를 저장할 배열
+	
+	
+	// 검색하기 버튼 클릭 시 호출
+    document.getElementById("stationSearchButton").addEventListener("click", async function () {
+	    currentPage = 1; // 검색할 때마다 페이지를 1로 초기화
+	    currentButtonGroup = 1; // 버튼 그룹도 초기화
+        await fetchChargers(); // 전체 데이터 로드
+        filterAndDisplayResults(); // 필터링 후 첫 페이지의 데이터 표시
+        
+	});
+
+	// 특정 페이지에 해당하는 데이터를 가져오는 함수
+    async function fetchChargers() {
+	    const cityCode = document.getElementById("citySelect").value;
+	    const districtCode = document.getElementById("districtSelect").value;
+	
+	    if (!cityCode || !districtCode) {
+	        alert("시/도와 시/군을 선택해 주세요.");
+	        return;
+	    }
+	    
+	
+        const apiUrl = `http://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=${encodeURIComponent(apiKey)}&numOfRows=1000&pageNo=1&dataType=XML&zcode=${cityCode}&zscode=${districtCode}`;
+	
+	    try {
+	        const response = await fetch(apiUrl);
+	        if (!response.ok) throw new Error("API 호출 오류");
+	
+	        const data = await response.text();
+	        const parser = new DOMParser();
+	        const xmlDoc = parser.parseFromString(data, "application/xml");
+            fetchedItems = Array.from(xmlDoc.getElementsByTagName("item")); // 전체 데이터 저장
+	
+	        // 총 페이지 수 계산
+	        // const totalCount = parseInt(xmlDoc.getElementsByTagName("totalCount")[0].textContent);
+	        // totalPage = Math.ceil(totalCount / numOfRows);
+			
+	        // displayResults(items); // 결과 화면에 표시
+	        // setupPagination(); // 페이지네이션 버튼 설정
+	    } catch (error) {
+	        console.error("API 호출 오류:", error);
+	    }
+	}
+	
+		// 필터링 후 결과를 표시하는 함수
+		function filterAndDisplayResults() {
+		    // 선택된 타입 체크박스 값을 배열로 수집
+		    const selectedTypes = Array.from(document.querySelectorAll('.chargetype input:checked'))
+		        .map(checkbox => checkbox.value)
+        		.filter(value => value !== 'chargetypeAllcheck'); // 전체 체크박스는 제외
+        		
+		    // 전체가 선택된 경우 모든 데이터를 필터링 없이 표시
+		    if (selectedTypes.length === 0 || selectedTypes.includes('chargetypeAllcheck')) {
+		        displayResults(fetchedItems.slice((currentPage - 1) * numOfRows, currentPage * numOfRows));
+		        totalPage = Math.ceil(fetchedItems.length / numOfRows);
+		        setupPagination();
+		        return;
+		    }
+		    
+		    // 타입 코드와 각 타입에 대응되는 가능한 조합의 매핑 객체
+		    const chargerTypeMap = {
+		        "01": ["01", "03", "05", "06"], // DC차데모
+		        "02": ["02", "08"],             // AC완속
+		        "03": ["03", "06"],             // DC차데모+AC3상
+		        "04": ["04", "05", "06", "08"], // DC콤보
+		        "05": ["05", "06"],             // DC차데모+DC콤보
+		        "06": ["06"],                   // DC차데모+AC3상+DC콤보
+		        "07": ["07", "03", "06"],       // AC3상
+		        "08": ["02", "08"],             // DC콤보(완속)
+		        "89": ["89"]                    // H2
+		    };
+		    
+	   	 	// 선택된 타입이 각 아이템의 타입에 포함되는지 확인하여 필터링
+	    	const filteredItems = fetchedItems.filter(item => {
+	        const chgerType = item.getElementsByTagName("chgerType")[0].textContent;
+		        
+	        // 선택된 타입 중 하나라도 충전기 타입 코드에 포함되는지 확인
+	        return selectedTypes.some(selectedType => {
+	            // 선택된 타입이 포함된 조합 목록에 현재 충전기의 타입이 있는지 확인
+	            return chargerTypeMap[selectedType] && chargerTypeMap[selectedType].includes(chgerType);
+	        	});
+	    	});
+		    
+		    totalPage = Math.ceil(filteredItems.length / numOfRows); // 필터링된 데이터 기준으로 페이지 수 계산
+		
+		    // 현재 페이지의 항목만 표시
+		    const currentPageItems = filteredItems.slice((currentPage - 1) * numOfRows, currentPage * numOfRows);
+		    displayResults(currentPageItems); // 필터링된 데이터 화면에 표시
+		    setupPagination(); // 페이지네이션 버튼 재설정
+		}
+	
+	
+
+	// 충전기 타입과 상태 매핑 객체를 전역에 정의
+	const chargerTypeMap = {
+	    "01": "DC차데모",
+	    "02": "AC완속",
+	    "03": "DC차데모+AC3상",
+	    "04": "DC콤보",
+	    "05": "DC차데모+DC콤보",
+	    "06": "DC차데모+AC3상+DC콤보",
+	    "07": "AC3상",
+	    "08": "DC콤보(완속)",
+	    "89": "H2"
+	};
+	
+	const chargerStatusMap = {
+	    "1": { text: "사용 불가", class: "status-unavailable" },
+	    "2": { text: "사용 가능", class: "status-available" },
+	    "3": { text: "사용 중", class: "status-in-use" },
+	    "4": { text: "운영 중지", class: "status-out-of-service" },
+	    "5": { text: "점검 중", class: "status-under-maintenance" },
+	    "9": { text: "상태 미확인", class: "status-unknown" }
+	};
+	
+	
+	
+	// 충전소 정보를 팝업에 표시하는 함수
+	function showStationInfoPopup(stationData) {
+	
+	    // 타입과 상태 정보를 전역 매핑 객체를 사용해 변환
+	    const typeText = chargerTypeMap[stationData.type] || "알 수 없는 타입";
+    	const statusInfo = chargerStatusMap[stationData.status] || { text: "알 수 없는 상태", class: "status-unknown" };
+	    
+        document.getElementById("popupType").textContent = typeText;
+    	document.getElementById("popupStatus").textContent = statusInfo.text; // 상태 텍스트 설정
+    	document.getElementById("popupStatus").className = `status-button ${statusInfo.class}`; // 상태 클래스 설정
+    	
+    	const formattedDate = formatDate(stationData.statusUpdateDate);
+    	
+    	
+    	// 로드뷰 설정을 위한 변수들
+	    const roadviewContainer = document.getElementById('roadview'); // 로드뷰를 표시할 div
+	    const roadview = new kakao.maps.Roadview(roadviewContainer); // 로드뷰 객체
+	    const roadviewClient = new kakao.maps.RoadviewClient(); // 좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper 객체
+    	
+	
+	    // 팝업창에 데이터 설정
+	    document.getElementById("popupStationName").textContent = stationData.name;	//충전소 이름
+	    
+	    // 모든 data-value="popupOperator" 요소에 운영기관 이름 설정
+		document.querySelectorAll("[data-value='popupOperator']").forEach(el => {
+		    el.textContent = stationData.operator || "정보 없음";
+		});
+		
+	    document.getElementById("popupContact").textContent = stationData.contact || "정보 없음";	//운영기관 연락처
+	    document.getElementById("popupAddress").textContent = stationData.address;	//충전소 주소
+	    //document.getElementById("popupDetailedLocation").textContent = stationData.addressDetail || "상세 주소 없음";	//충전소 상세 주소
+	    document.getElementById("popupUseTime").textContent = stationData.useTime || "정보 없음";	//이용 가능 시간
+	    document.getElementById("popupType").textContent = chargerTypeMap[stationData.type] || "알 수 없는 타입"; //충전기 타입
+	    document.getElementById("popupStatus").textContent = chargerStatusMap[stationData.status]?.text || "알 수 없는 상태"; //충전기 상태
+		document.getElementById("popupOutput").textContent = `${stationData.output}kW` || "정보 없음";	// 충전 용량
+	    //document.getElementById("popupStatusUpdateDate").textContent = stationData.statusUpdateDate || "정보 없음"; //상태 갱신 일시
+	    //document.getElementById("popupLastStart").textContent = stationData.lastStart || "정보 없음";	// 마지막 충전 시작 일시
+	    //document.getElementById("popupLastEnd").textContent = stationData.lastEnd || "정보 없음";	// 마지막 충전 종료 일시
+	    //document.getElementById("popupChargingStart").textContent = stationData.chargingStart || "정보 없음";	// 현재 충전 시작 일시
+	    document.getElementById("popupNote").textContent = stationData.note || "안내 정보 없음";	//충전소 안내
+	    document.getElementById("popupLimitDetail").textContent = stationData.limitDetail || "제한 없음";	//이용자 제한사항
+	    
+        // 로드뷰 설정: 주어진 위도와 경도를 사용하여 로드뷰 표시
+	    const position = new kakao.maps.LatLng(stationData.lat, stationData.lng); // 충전소의 위도와 경도
+	    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+	        if (panoId) {
+	            roadview.setPanoId(panoId, position); // panoId와 중심좌표를 통해 로드뷰 실행
+	        } else {
+	            roadviewContainer.innerHTML = '<p>로드뷰를 사용할 수 없는 위치입니다.</p>'; // 로드뷰가 없는 경우 메시지 표시
+	        }
+	    });
+	    
+	    
+        // 갱신 일시를 포맷팅하여 표시
+		document.getElementById("popupStatusUpdateDate").textContent = formattedDate;
+		
+	    // 팝업창을 화면에 표시
+	    document.getElementById("stationInfoPopup").style.display = "block";
+	    
+    	// 팝업창 닫기 버튼 기능 추가
+		document.getElementById("closePopupButton").addEventListener("click", function () {
+		    document.getElementById("stationInfoPopup").style.display = "none"; // 팝업창 숨기기
+		});
+		
+		// 길 찾기 버튼 클릭
+		document.querySelector(".roadviewnav").addEventListener("click", function () {
+		    const destination = {
+		        lat: stationData.lat,
+		        lng: stationData.lng,
+		        address: stationData.name
+		    };
+		
+		    // 기존 마커 제거
+		    if (lastMarker) {
+		        lastMarker.setMap(null);
+		        lastMarker = null;
+		    }
+		
+		    // kakaoevmap.js의 함수 호출 (도착지 위도, 경도, 주소 전달)
+		    setDestinationFromPopup(destination);
+		
+		    // 길찾기 탭으로 자동 이동
+    		showTab('route'); // '충전소 길 찾기' 탭 활성화
+		});
+		
+	}
+	
+	
+	// 마지막으로 생성된 마커를 추적할 전역 변수
+	let lastMarker = null;
+
+	// displayResults 함수에서 전역 매핑 객체 사용
+	function displayResults(items) {
+	    const resultList = document.querySelector(".searchlist ul");
+	    resultList.innerHTML = ""; // 기존 리스트 초기화
+	    
+	    const stationNameCount = {}; // 충전소명 중복 여부 확인할 객체
+	
+	    for (let i = 0; i < items.length; i++) {
+	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;  // 충전소명
+	        const busiNm = items[i].getElementsByTagName("busiNm")[0].textContent;	// 운영기관명
+	        const busiCall = items[i].getElementsByTagName("busiCall")[0].textContent;	//운영기관 연락처
+	        const addr = items[i].getElementsByTagName("addr")[0].textContent;      // 주소
+	        const addrDetail = items[i].getElementsByTagName("addrDetail")[0].textContent; //상세주소
+	        const useTime = items[i].getElementsByTagName("useTime")[0].textContent; // 이용 가능 시간
+	        const output = items[i].getElementsByTagName("output")[0].textContent;   // 충전 용량
+	        const type = items[i].getElementsByTagName("chgerType")[0].textContent;  // 충전기 타입
+	        const stat = items[i].getElementsByTagName("stat")[0].textContent;       // 충전기 상태
+	        const statUpdDt = items[i].getElementsByTagName("statUpdDt")[0].textContent; // 상태갱신일시
+	        const lastTsdt = items[i].getElementsByTagName("lastTsdt")[0].textContent; // 마지막 충전시작일시
+	        const lastTedt = items[i].getElementsByTagName("lastTedt")[0].textContent; // 마지막 충전종료일시
+	        const nowTsdt = items[i].getElementsByTagName("nowTsdt")[0].textContent; // 충전중 시작일시
+	        const note = items[i].getElementsByTagName("note")[0].textContent;	// 충전소 안내
+	        const limitDetail = items[i].getElementsByTagName("limitDetail")[0]?.textContent || ""; // 제한 사항
+	        const lat = parseFloat(items[i].getElementsByTagName("lat")[0].textContent); // 위도
+	        const lng = parseFloat(items[i].getElementsByTagName("lng")[0].textContent); // 경도
+	
+	        // 타입과 상태 텍스트 변환
+	        const typeText = chargerTypeMap[type] || "알 수 없는 타입";
+	        const statusInfo = chargerStatusMap[stat] || { text: "알 수 없는 상태", class: "status-unknown" };
+	
+	        // 중복된 충전소명에 번호 붙이기
+	        if (stationNameCount[statNm]) {
+	            stationNameCount[statNm] += 1; // 중복 카운트 증가
+	        } else {
+	            stationNameCount[statNm] = 1; // 처음 등장하는 충전소명
+	        }
+	        
+	        const displayName = stationNameCount[statNm] > 1 ? `${statNm} (${stationNameCount[statNm]})` : statNm;
+	
+	        const listItem = document.createElement("li");
+	        listItem.className = "search-item";
+	        listItem.dataset.lat = lat;
+	        listItem.dataset.lng = lng;
+	        
+	        listItem.innerHTML = `
+	            <div class="info">
+	                <h3>${displayName}</h3>
+	                <p>${addr}</p>
+	                <div class="status">
+	                    <span class="stat ${statusInfo.class}">${statusInfo.text}</span>
+	                    <span class="fast">⚡ ${output}kW</span>
+	                    <span class="type">타입: ${typeText}</span>
+	                </div>
+	                <p>이용시간: ${useTime}</p>
+	                <p>이용자 제한사항: ${limitDetail ? limitDetail : "제한 없음"}</p>
+	            </div>
+	        `;
+	
+	        listItem.addEventListener("click", function () {
+			    const stationData = {
+			        name: displayName,             // 충전소명 (중복 구분 포함)
+			        operator: busiNm,              // 운영기관명
+			        contact: busiCall,             // 운영기관 연락처
+			        address: addr,                 // 주소
+			        addressDetail: addrDetail,     // 상세주소
+			        useTime: useTime,              // 이용 가능 시간
+			        output: output,                // 충전 용량
+			        type: type,                    // 충전기 타입 코드
+			        status: stat,                  // 충전기 상태 코드
+			        statusUpdateDate: statUpdDt,   // 상태갱신일시
+			        lastStart: lastTsdt,           // 마지막 충전 시작 일시
+			        lastEnd: lastTedt,             // 마지막 충전 종료 일시
+			        chargingStart: nowTsdt,        // 현재 충전 시작 일시
+			        note: note,                    // 충전소 안내
+			        limitDetail: limitDetail,      // 이용 제한 사항
+			        lat: lat,                      // 위도
+			        lng: lng                       // 경도
+			    };
+	
+				
+	            showStationInfoPopup(stationData);
+	
+	            // 기존 마커가 있다면 지도에서 제거
+		        if (lastMarker) {
+		            lastMarker.setMap(null);
+		        }
+		
+		        // 새로운 마커 추가 및 lastMarker에 저장
+		        const selectedLocation = new kakao.maps.LatLng(lat, lng);
+		        map.setCenter(selectedLocation);
+		
+		        lastMarker = new kakao.maps.Marker({
+		            position: selectedLocation,
+		            map: map
+		        });
+		    });
+	
+	        resultList.appendChild(listItem);
+	    }
+	}
+
+
+	// 페이지네이션 버튼 설정 함수
+	function setupPagination() {
+	    const paginationContainer = document.getElementById("pagination");
+	    paginationContainer.innerHTML = ""; // 기존 페이지네이션 버튼 초기화
+	
+	    // 현재 페이지 그룹의 첫 번째와 마지막 페이지 번호 계산
+	    const startPage = (currentButtonGroup - 1) * buttonsPerPage + 1;
+	    const endPage = Math.min(currentButtonGroup * buttonsPerPage, totalPage);
+	
+	    // 이전 버튼 생성
+	    if (currentButtonGroup > 1) {
+	        const prevButton = document.createElement("button");
+	        prevButton.textContent = "◀";
+	        prevButton.className = "page-button";
+	        prevButton.addEventListener("click", function () {
+	            currentButtonGroup--; // 이전 그룹으로 이동
+	            setupPagination(); // 페이지네이션 버튼 재설정
+	        });
+	        paginationContainer.appendChild(prevButton);
+	    }
+	
+	    // 페이지 번호 버튼 생성
+	    for (let i = startPage; i <= endPage; i++) {
+	        const pageButton = document.createElement("button");
+	        pageButton.textContent = i;
+	        pageButton.className = "page-button";
+	        if (i === currentPage) pageButton.classList.add("active");
+	
+	        pageButton.addEventListener("click", function () {
+	            currentPage = i; // 선택한 페이지로 업데이트
+                filterAndDisplayResults(); // 페이지 변경 시 필터링된 결과 표시
+	        });
+	
+	        paginationContainer.appendChild(pageButton);
+	    }
+	
+	    // 다음 버튼 생성
+	    if (endPage < totalPage) {
+	        const nextButton = document.createElement("button");
+	        nextButton.textContent = "▶";
+	        nextButton.className = "page-button";
+	        nextButton.addEventListener("click", function () {
+	            currentButtonGroup++; // 다음 그룹으로 이동
+	            setupPagination(); // 페이지네이션 버튼 재설정
+	        });
+	        paginationContainer.appendChild(nextButton);
+	    }
+	    
+	    // 검색 결과 리스트 스크롤을 상단으로 이동
+	    const searchListDiv = document.querySelector(".searchlist");
+	    searchListDiv.scrollTop = 0;  // 스크롤 위치를 최상단으로 설정
+	}
+	
+
+    // 초기화 버튼 기능
+    document.getElementById("resetButton").addEventListener("click", function () {
+        document.getElementById("citySelect").value = "";
+        document.getElementById("districtSelect").value = "";
+        document.querySelector(".searchlist ul").innerHTML = ""; // 결과 초기화
+    });
+    
+    
+    function formatDate(dateString) {
+    
+    	if (dateString.length !== 14) return "유효하지 않은 날짜";
+	
+	    // 각 부분을 추출하여 숫자로 변환
+	    const year = parseInt(dateString.substring(0, 4), 10);
+	    const month = parseInt(dateString.substring(4, 6), 10) - 1; // 월은 0부터 시작하므로 -1
+	    const day = parseInt(dateString.substring(6, 8), 10);
+	    const hours = parseInt(dateString.substring(8, 10), 10);
+	    const minutes = parseInt(dateString.substring(10, 12), 10);
+	    const seconds = parseInt(dateString.substring(12, 14), 10);
+     
+     	// Date 객체 생성
+     	const date = new Date(year, month, day, hours, minutes, seconds);
+    
+	    // 포맷팅 (yyyy-mm-dd hh:mm)
+    	const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    	return formattedDate;
+	}
+	
+    
+    
 });
+
+
+
+
+
+
+
+
+	
+
+
+
+
+

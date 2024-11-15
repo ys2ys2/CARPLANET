@@ -15,17 +15,41 @@
     font-style: normal;
 }
 
+/* 페이퍼로지 */
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* 이사만루 */
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 프리텐다드 */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
 
 
 html, body {
 	margin: 0 auto;
 	height: 100%;
+	overflow: hidden;
 	
 }
 
 .maincontainer {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	display: flex;
 	flex-direction: row;
 }
@@ -44,13 +68,13 @@ html, body {
 	width: 350px;
 	height: 100%;
 	background-color: white;
-	
+	overflow: hidden;
 }
 
 .searchlogo {
 	width: 100%;
 	height: auto;
-	background-color: blue;
+	background-color: #0d8aff;
 	
 }
 
@@ -69,13 +93,52 @@ html, body {
 	
 }
 
+/* .tabbar .active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+} */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: flex;
+    margin-top: 2vh;
+    height: 100%;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
+}
+
 .tabbarev, .tabbarroad {
-	margin-top: 3vh;
+	margin-top: 2vh;
 	color: black;
 	font-family: 'SUIT-Regular', sans-serif;
-	font-size: 18px;
+	font-size: 16px;
+	cursor: pointer;
+	position: relative; /* ::after 가상 요소 위치 기준을 위해 필요 */
 	
 }
+
+/* 활성화된 탭의 스타일 */
+.tabbar .active {
+    color: #007bff;
+}
+
+/* 활성화된 탭에 언더바 추가 */
+.tabbar .active::after {
+    content: "";
+    position: absolute;
+    bottom: -5px; /* 텍스트 바로 아래에 언더바 위치 */
+    left: -15px; /* 왼쪽으로 10px 더 길게 시작 */
+    width: calc(100% + 35px); /* 언더바 길이를 요소 너비보다 20px 더 길게 설정 */
+    height: 2px;
+    background-color: #007bff;
+    border-radius: 2px; /* 언더바의 양끝을 약간 둥글게 만듦 */
+}
+
 
 .selectlocal {
 	display: flex;
@@ -87,7 +150,7 @@ html, body {
 }
 
 .selectlocal h3 {
-	margin-top: 4vh;
+	margin-top: 1vh;
 	margin-left: 2vh;
 	font-family: 'SUIT-Regular', sans-serif;
 	font-size: 18px;
@@ -102,8 +165,604 @@ html, body {
 	font-size: 16px;
 	border-radius: 5px;
 	
+}
+
+.searchinput-container {
+	position: relative;
+	width: 90%;
+	margin: 3px auto;
+	padding: 10px;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 16px;
+	border-radius: 5px;
+	display:flex;
+	
+}
+
+.searchinput {
+	width: 90%;
+	margin: 3px auto;
+    padding: 10px 40px 10px 15px; /* 아이콘 공간 확보를 위해 오른쪽 padding 추가 */
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 16px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid #ccc;
+	
+}
+
+.searchicon {
+	position: absolute;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transform: translateY(-50%);
+    right: 15px; 
+    top: 50%;
+    
+}
+
+.searchbutton-container {
+	display: flex;
+	justify-content: space-around;
+	margin: 10px;
+}
+
+.searchbutton {
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	width: 130px;
+	background-color: #0d8aff;
+	font-family: 'SUIT-Regular', sans-serif;
+	
+}
+
+.chargetype {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #ccc;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 2vh;
+	
+	
+}
+
+.chargetype h3 {
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 18px;
+	margin-top: 1vh;
+	margin-left: 2vh;
+	
+}
+
+.chargetype label {
+    font-family: 'SUIT-Regular', sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin: 2px;
+    
+}
+
+.chargetype input[type="checkbox"] {
+    margin-right: 1vh;
+    width: 15px;
+    height: 15px;
+    
+}
+
+.chargetypetext {
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	margin-top: 2vh;
+	margin-left: 2vh;
 	
 }
 
 
 
+
+.searchlist {
+	font-family: 'SUIT-Regular', sans-serif;
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-left: 2vh;
+	overflow-y : auto;
+	max-height: 100%;
+	flex: 1;
+	box-sizing: border-box;
+	
+}
+
+
+.searchlist ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.searchlist h2 {
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 18px;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd; /* 아이템 구분선 */
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.info {
+	cursor: pointer;
+}
+
+.info h3 {
+    font-size: 15px;
+    margin: 0;
+}
+
+.info p {
+	font-size: 13px;
+	margin: 0;
+	margin-top: 5px;
+}
+
+.status {
+    display: flex;
+    gap: 4px; /* 각 상태 간 간격 */
+}
+
+.status span {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+/* 충전기 상태 */
+.stat {
+    background-color: #007bff;
+	color:white;
+}
+
+.status-available {
+    background-color: #4CC417; /* 사용 가능 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-in-use {
+    background-color: #F62217; /* 사용 중 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-unavailable {
+    background-color: #F62217; /* 사용 불가 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-out-of-service {
+    background-color: #6c757d; /* 운영 중지 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-under-maintenance {
+    background-color: #FBB117; /* 점검 중 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+.status-unknown {
+    background-color: #343a40; /* 상태 미확인 */
+    color:white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+}
+
+
+.available {
+    background-color: #007bff;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 15px;
+    margin-top: 4px;
+    
+}
+
+.fast {
+    border: 1px solid #007bff;
+    color: #007bff;
+    
+}
+
+.type {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 충전소 길 찾기 탭 스타일 */
+.route-search {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 10px auto;
+    margin-top: 4vh;
+}
+
+.route-input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-family: 'SUIT-Regular', sans-serif;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    
+}
+
+.route-searchbutton {
+	width: 100%;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: #0d8aff;
+    font-family: 'SUIT-Regular', sans-serif;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+
+
+/* 경로 결과 스타일 */
+.route-result {
+    width: 90%;
+    margin: 10px auto;
+    font-family: 'SUIT-Regular', sans-serif;
+}
+
+.route-result h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.route-result ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.route-result li {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd; /* 아이템 구분선 */
+    font-size: 14px;
+    color: #555;
+    list-style-type: none;
+}
+
+.route-result li::before {
+    color: #007bff;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+
+/* 카카오 지도 */
+.wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+.wrap * {padding: 0;margin: 0;}
+.wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+.info .close:hover {cursor: pointer;}
+.info .body {position: relative;overflow: hidden;}
+.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.info .link {color: #5085BB;}
+
+/* 자동완성 목록 스타일 */
+#autocompleteSuggestions {
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    width: 200px;
+}
+
+.autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.autocomplete-item:hover {
+    background-color: #eee;
+}
+
+.pagination-container {
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	margin: 10px auto;
+	
+}
+
+
+.page-button {
+    margin: 2px;
+    background-color: transparent;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 40px;
+    height: 40px;
+    font-family: 'SUIT-Regular', sans-serif;
+}
+
+.page-button:hover {
+    background-color: #0d8aff;
+}
+
+.page-button.active {
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+}
+
+
+/* 충전소 정보 */
+.station-info-popup {
+	font-family: 'SUIT-Regular', sans-serif;
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    width: 300px;
+    height: 770px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none; /* 처음에는 숨김 상태 */
+    
+}
+
+.real-popup {
+	display: flex;
+	flex-direction: column;
+}
+
+.popupchargebusi {
+	display: flex;
+	justify-content: space-around;
+	
+}
+
+.popupchargeType {
+	font-family: 'SUIT-Regular', sans-serif;
+}
+
+.popupchargeType table {
+    width: 100%;
+    height: 130px;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+.popupchargebusi p,
+.popupchargeType th,
+.popupchargeType td,
+.popupchargeinfo p,
+.popupchargeinfo span {
+    line-height: 1.2; /* 줄 간격 조정 */
+    
+}
+
+.info-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
+	
+}
+
+.popupchargeType th,
+.popupchargeType td {
+	font-size: 13px;
+	text-align: center; /* 텍스트 중앙 정렬 */
+	word-break: keep-all; /* 단어가 중간에 끊기지 않도록 설정 */
+	margin: 5px 0; /* 요소 사이의 간격 최소화 */
+	border: 1px solid #ccc;
+	padding: 5px;
+	
+}
+
+.popupchargeinfo span {
+    display: block; /* 각 항목을 새 줄에 표시 */
+    padding-bottom: 5px; /* 아래쪽 여백 추가 */
+}
+
+.popupchargeinfo {
+	display: flex;
+	flex-direction: column;
+    gap: 5px; /* 항목 사이 간격 */
+    width: 100%;
+}
+
+.info-item {
+    display: flex;
+    align-items: center; /* 라벨과 내용의 수평 정렬 */
+    padding-bottom: 2px;
+    border-bottom: 1px solid #ccc; /* 밑줄 */
+    font-size: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+.info-stats {
+	word-break: break-word; /* 단어가 길어질 경우 줄 바꿈 */
+    white-space: normal; /* 텍스트가 줄 바꿈될 수 있도록 */
+    overflow-wrap: break-word; /* 필요한 경우 줄 바꿈을 허용 */
+    flex: 1;
+	align-items: center;
+}
+
+
+.label {
+	width: 75px; /* 라벨 부분의 고정 너비를 설정하여 간격 유지 */
+    font-weight: bold;
+    margin-right: 5px; /* 제목과 값 간격 */
+    
+}
+
+
+.popupchargephoto {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	gap: 5px; /* 항목 사이 간격 */
+	
+}
+
+.popupchargephoto span {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	
+}
+
+
+.station-info-popup h3 {
+    margin-top: 0;
+}
+
+#closePopupButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.popupStationName {
+	font-family: 'KIMM_Bold', sans-serif;
+	font-size: 23px;
+	margin-bottom: 2vh;
+	
+}
+
+.popupOperator {
+	padding: 3px 20px;
+	border-radius: 15px;
+	align-items: center;
+	background-color: #4CC417;
+	color: white;
+	font-size: 13px;
+	
+}
+
+.roadview {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    object-fit: cover; /* 로드뷰 이미지가 컨테이너 크기에 맞게 조정됨 */
+    border-radius: 8px; /* 모서리 둥글게 (선택 사항) */
+}
+
+.chargephoto-header {
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size: 25px;
+	margin: 10px 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.chargephoto-header img {
+	width: 25px;
+	height: 25px;
+	background-color: #4CC417;
+	border-radius: 5px;
+}
+
+.roadviewnav {
+	display: flex;
+	font-family: 'SUIT-Regular', sans-serif;
+	font-size: 15px;
+	align-items: center;
+	border: none;
+	background-color: #4CC417;
+	cursor: pointer;
+	border-radius: 10px;
+	color: white;
+	width: auto;
+}

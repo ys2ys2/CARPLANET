@@ -48,7 +48,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #161938;
+
     color: #ffffff;
 }
 
@@ -202,54 +202,82 @@ body {
 }
 
 /*아래부분*/
-/* 가격 정보 슬라이더 */
+/* 슬라이더 전체 컨테이너 */
 .slider-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    height: 300px;
-    padding: 40px;
+    display: flex; /* 텍스트와 카드들이 가로로 나열되도록 설정 */
+    justify-content: flex-start; /* 슬라이더 내 컨텐츠를 왼쪽 정렬 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+   /*  max-width: 950px;*/
+    width: 100%; /* 배경의 너비를 늘림 */
+    height: 250px; /* 배경의 높이를 줄임 */
+    padding:  40px;
     background-color: #161938;
-    border-radius: 8px;
-    margin-left: auto;
-    position: relative; /* 텍스트 위치 조정을 위해 상대 위치 설정 */
+    border-radius: 10px;
+    margin: 0 auto;  /* 슬라이더를 가운데 정렬 */
+    position: relative;
+    overflow: hidden;  /* 슬라이더가 컨테이너 밖으로 넘치지 않도록 숨기기 */
+    gap: 20px; /* 텍스트와 카드 사이 간격 */
 }
-.card-slider {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 70%;
-}
-
 
 /* 텍스트 영역 스타일 */
 .text-content1 {
-    position: absolute; /* 텍스트를 슬라이더의 왼쪽으로 고정 */
-    left: 40px; /* 왼쪽으로 40px 간격을 두고 배치 */
-    color: #ffffff; /* 텍스트 색상 */
-    width: 300px; /* 텍스트 영역 너비 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+    color: #ffffff;
+    width: 300px;
+    text-align: left;
+    padding: 20px;
+    z-index: 10;
+    position: static; /* 슬라이더 내 다른 요소와 나란히 배치 */
+    flex-shrink: 0; /* 텍스트 크기가 줄어들지 않도록 설정 */
 }
 
 
+/* 슬라이드 영역 */
+.card-slider {
+    display: flex;
+    flex-direction: row; /* 카드들을 가로로 나열 */
+    align-items: center;
+    gap: 50px; /* 카드 간격을 적절히 설정 */
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+}
+
+/* 카드 컨테이너 */
 .card-container {
-    display: grid;
-    grid-template-columns: 350px 150px 150px;
-    grid-template-rows: 1fr 1fr;
-    gap: 20px;
-    width: 70%;
+    display: flex;
+    gap: 50px; /* 카드 간격을 적절하게 설정 (여기서는 50px로 설정) */
+    flex-shrink: 0;
     justify-items: center;
     align-items: center;
+    margin-right: 0;
 }
 
-/* 공통 카드 스타일 */
-.card {
+
+/* 큰 카드 스타일 (첫 번째 섹션) */
+.usage-history-card {
+    background-color: #ffffff; /* 카드 배경색 */
+    color: #333; /* 텍스트 색상 */
+    width: 150px; /* 카드 너비 */
+    height: 200px; /* 카드 높이 */
+    padding: 20px; /* 카드 내부 여백 */
+    border-radius: 8px; /* 카드 모서리를 둥글게 처리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드 그림자 설정 */
+    font-size: 14px; /* 텍스트 크기 설정 */
+    display: flex; /* 카드 내부 요소를 플렉스 컨테이너로 설정 */
+    flex-direction: column; /* 내부 요소를 세로로 배치 */
+    justify-content: center; /* 카드 내용 세로 중앙 정렬 */
+    align-items: center; /* 카드 내용 가로 중앙 정렬 */
+    margin-right: 130px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+    margin-left: -50px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 중간 카드 스타일 (두 번째 섹션) */
+.low-emission-card,
+.insurance-status-card {
     background-color: #ffffff;
     color: #333;
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 70px; /* 두 번째 섹션의 카드 높이 조정 */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -258,51 +286,45 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-right: 150px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+     margin-left: -50px; /* 첫 번째 카드 왼쪽 여백 추가 */
 }
 
-.usage-history-card {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-    width: 150px;
-    height: 250px;
-    margin-left: -200px; /* 왼쪽으로 100px 이동 */
-}
-
-.low-emission-card {
-    grid-column: 2 / 3;
-    grid-row: 1;
-    color: #161938;
-    width: 250px;
-    height: 80px;
-    margin-left: -200px; /* 왼쪽으로 100px 이동 */
-}
-
-.insurance-status-card {
-    grid-column: 2 / 3;
-    grid-row: 2;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-      width: 250px;
-    height: 80px;
-    margin-left: -200px; /* 왼쪽으로 100px 이동 */
-}
-
-.inspection-card {
-    grid-column: 3 / 4;
-    grid-row: 1;
-    background-color: #fcfcfc;
-    color: #444444;
-    width: 250px;
-    height: 80px;
-    margin-left: 100px; /* 왼쪽으로 100px 이동 */
-}
-
+/* 작은 카드 스타일 (세 번째 섹션) */
+.inspection-card,
 .mileage-change-card {
-    grid-column: 3 / 4;
-    grid-row: 2;
-    background-color: #f1f1f1;
-    color: #161938;
-    width: 250px;
-    height: 80px;
-    margin-left: 100px; /* 왼쪽으로 100px 이동 */
+    background-color: #ffffff;
+    color: #333;
+    width: 200px;
+    height: 70px; /* 세 번째 섹션의 카드 높이 조정 */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 150px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+    margin-left: -20px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 각 슬라이드 간격 설정 */
+.swiper-slide {
+    display: flex; /* 슬라이드 내 요소를 가로로 배치 */
+    flex-direction: column; /* 카드들을 세로로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 0; /* 슬라이드 간 간격 제거 */
+    width: 100%; /* 슬라이드가 전체 너비 차지 */
+}
+
+/* 카드들이 부드럽게 이어지도록 */
+.card-container .swiper-slide {
+    flex: 0 0 auto; /* 슬라이드가 축소되지 않도록 설정 */
+}
+
+/* 슬라이드 전환을 부드럽게 하기 위한 스타일 */
+.swiper-slide-active {
+    transform: scale(1.1); /* 활성화된 슬라이드 확대 */
+    transition: transform 0.3s ease-in-out; /* 슬라이드 전환 애니메이션 */
 }

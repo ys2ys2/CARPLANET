@@ -43,7 +43,7 @@
         <img src="${pageContext.request.contextPath}/resources/images/gas.png" alt="주유소">
         <span>주유소</span>
     </a>
-    <a href="${pageContext.request.contextPath}/parking.jsp" class="menu-item">
+    <a href="${pageContext.request.contextPath}/parkinglot" class="menu-item">
         <img src="${pageContext.request.contextPath}/resources/images/par.png" alt="주차장">
         <span>주차장</span>
     </a>
@@ -146,7 +146,7 @@
 
 
 <!-- 슬라이더 컨테이너 -->
-<div class="slider-container" style="display: flex; align-items: center; max-width: 1200px;">
+<div class="slider-container" style="display: flex; align-items: center; max-width: 900px;">
     <!-- 고정된 텍스트 영역 -->
     <div class="text-content1" style="flex: 1; padding: 20px;">
         <h1>계속 변동이 되는</h1>
@@ -159,7 +159,7 @@
         <div class="swiper-wrapper" style="display: flex;">
             <!-- 첫 번째 슬라이드 -->
             <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card usage-history-card" style="width: 300px;">
+                <div class="card usage-history-card">
                     <h3>용도 이력</h3>
                     <p>사용기간: 2019년 10월 1일 ~ 2022년 12월 3일</p>
                     <p>이력구분: 대여용(렌터카) 이력</p>
@@ -168,12 +168,12 @@
 
             <!-- 두 번째 슬라이드 -->
             <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card low-emission-card" style="width: 300px;">
+                <div class="card low-emission-card">
                     <h3>저공해차 인증</h3>
                     <p>제작사: BMW코리아㈜</p>
                     <p>차명: BMW 430i Convertible</p>
                 </div>
-                <div class="card insurance-status-card" style="width: 300px;">
+                <div class="card insurance-status-card">
                     <h3>자동차 보험 미가입</h3>
                     <p>보험 미가입 기간: 2019년 10월 ~ 2022년 12월</p>
                 </div>
@@ -181,12 +181,12 @@
 
             <!-- 세 번째 슬라이드 -->
             <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card inspection-card" style="width: 300px;">
+                <div class="card inspection-card">
                     <h3>자동차 검사</h3>
                     <p>검사일자: 2022년 8월 16일</p>
                     <p>주행거리: 24,500km</p>
                 </div>
-                <div class="card mileage-change-card" style="width: 300px;">
+                <div class="card mileage-change-card">
                     <h3>주행거리 변경</h3>
                     <p>변경일자: 2020년 8월 2일</p>
                     <p>주행거리: 46,120km</p>
@@ -196,30 +196,23 @@
     </div> <!-- swiper-container 끝 -->
 </div> <!-- slider-container 끝 -->
 
-<style>
-  /* 각 슬라이드 간격 설정 */
-  .swiper-slide {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-</style>
 
 <!-- Swiper JavaScript 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 
 <!-- Swiper 초기화 스크립트 -->
 <script>
-  const swiper = new Swiper('.mySwiper', {
-    slidesPerView: 'auto', // 카드 크기에 맞춰 슬라이드 너비 설정
-    spaceBetween: 20, // 슬라이드 간격 설정 (CSS의 gap 속성으로 보완)
-    loop: true, // 루프 설정
-    centeredSlides: false, // 가운데 정렬 끄기
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false,
-    },
-  });
+const swiper = new Swiper('.mySwiper', {
+	  slidesPerView: 3, // 한 화면에 3개의 카드 보여줌
+	  spaceBetween: 200, // 카드 간 간격
+	  loop: true, // 무한 루프
+	  autoplay: {
+	    delay: 3000, // 3초마다 반복
+	    disableOnInteraction: false,
+	  },
+	  centeredSlides: false, // 카드가 왼쪽에서 오른쪽으로 슬라이드 되도록 설정
+	});
+
 </script>
 
 
