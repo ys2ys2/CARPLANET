@@ -1,3 +1,6 @@
+// 카카오모빌리티 사용을 위한 REST API 키
+const REST_API_KEY = '8d162536747ffddff1f5576cb3b7f971'; 
+
 //현재 페이지와 데이터 세팅
 let currentPage = 1;
 //페이지당 아이템 수
@@ -6,10 +9,21 @@ const itemsPerPage = 4;
 let allParkingData = [];
 // map 객체를 전역으로 선언
 let map;
+
+//길찾기 마커
+let startMarker, endMarker;
+
+//길찾기 장소 검색
+const ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
+
+//필터된 주차장 데이터
 let filteredParkingData = [];
 
 // 한 페이지당 가져올 데이터 수
 const numOfRows = 100;
+
+// 현재 선택된 항목의 인덱스를 저장하는 변수
+let selectedIndex = -1; 
 
 //카카오 지도 불러오기
 $(document).ready(function() {
@@ -19,7 +33,7 @@ $(document).ready(function() {
 
     //1-2. 지도 초기화 옵션
     var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(37.5665, 126.9780),
         level: 3
     };
 
@@ -30,24 +44,39 @@ $(document).ready(function() {
     fetchParkingLotData();
 });
 
-// //탭 전환 함수
-// function showTab(tabName){
-//     document.querySelectorAll('.tab-content').forEach(tab => {
-//     });
-//     document.getElementById(tabName).style.display = 'block';
+// 탭 전환 함수
+function showTab(tabName) {
+    // 모든 탭 콘텐츠 숨기기
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+    });
 
-//     document.querySelectorAll('.tab-button').forEach(button => {
-//         button.classList.remove('active');
-//     });
-//     document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+    // 선택한 탭만 보이도록 설정
+    document.getElementById(tabName).style.display = 'block';
 
-//     const province = document.getElementById('province-select').value;
-//     const city = document.getElementById('city-select').value;
+    // 모든 탭 버튼에서 'active' 클래스 제거
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
 
-//     if (tabName === 'search') { // 검색 탭이 활성화될 때만 데이터를 로드
-//         fetchParkingLotData(province, city);
-//     }
-// }
+    // 선택된 탭 버튼에 'active' 클래스 추가
+    document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+
+    // 'search' 탭이 활성화될 때만 지역 선택 창을 보이게 함
+    const regionSelection = document.querySelector('.region-selection');
+    if (tabName === 'search') {
+     	regionSelection.style.display = 'block';  // 검색 탭에서는 보이도록
+        const province = document.getElementById('province-select').value;
+        const city = document.getElementById('city-select').value;
+        fetchParkingLotData(province, city);
+    } else {
+        regionSelection.style.display = 'none';  // 다른 탭에서는 숨기도록
+}
+}
+// 초기 로드시 'search' 탭을 기본으로 설정
+document.addEventListener('DOMContentLoaded', function() {
+    showTab('search');
+});
 
 
     // 페이지 데이터 로드
@@ -174,11 +203,9 @@ function fetchParkingLotData(province, city ) {
    // 이미 계산된 전체 페이지 수를 사용하여 모든 페이지 데이터를 가져옴
   fetchTotalCount((totalCount) => {
     const totalPages = Math.ceil(totalCount / numOfRows); // 전체 페이지 수 계산
-    console.log("총 데이터 개수:", totalCount, "전체 페이지 수:", totalPages);
 
     // 2. 모든 페이지의 데이터를 순차적으로 가져오기
     function fetchNextPage() {
-        console.log("함수호출");
         if (pageNo > totalPages) {
             console.log("모든 데이터를 가져왔습니다.");
             console.log("전체 데이터:", allParkingData); // 전체 데이터를 출력
@@ -209,7 +236,7 @@ function fetchParkingLotData(province, city ) {
                 prkcmprt: item.prkcmprt || '정보 없음',
                 operDay: item.operDay || '정보 없음',
                 weekdayOperOpenHhmm: item.weekdayOperOpenHhmm || '정보 없음',
-                weekdayOperCloseHhmm: item.weekdayOperCloseHhmm || '정보 없음',
+                weekdayOperColseHhmm: item.weekdayOperColseHhmm || '정보 없음',
                 satOperOperOpenHhmm: item.satOperOperOpenHhmm || '정보 없음',
                 satOperCloseHhmm: item.satOperCloseHhmm || '정보 없음',
                 holidayOperOpenHhmm: item.holidayOperOpenHhmm || '정보 없음',
@@ -312,11 +339,11 @@ function renderParkingList(data) {
         `;
            // 주차장 항목 클릭 시 상세 정보 표시 이벤트 추가
         parkingItem.addEventListener('click', function() {
-            console.log("주차장 항목 클릭됨:", item); // 클릭 로그 추가
             showParkingDetails(item); // 클릭 시 상세 정보 함수 호출
             moveToLocationAndShowMarker(item); // 클릭 시 마커와 지도 이동 함수 호출
         });
         parkingList.appendChild(parkingItem);
+        showParkingDetails(item);
     });
      // 페이지 번호가 있는 경우 설정
      const pageNumber = document.getElementById('page-number');
@@ -428,35 +455,38 @@ fetchTotalCount(function(totalCount) {
 
 // 클릭한 주차장의 모든 정보를 표시하고 팝업을 여는 함수
 function showParkingDetails(item) {
-    console.log("showParkingDetails 함수의 item 객체:", item); // parking 객체 확인
+    console.log("showParkingDetails 함수의 item 객체:", item); // address 포함 여부 확인
     const detailsContainer = document.getElementById('parking-details'); // 상세 정보 표시 영역
-
+  // 주소 표시 (지번 주소가 없으면 도로명 주소 사용)
+  const address = item.address || '주소 정보 없음';
     detailsContainer.innerHTML = `
-        <h2>${item.name}</h2>
-        <p>주차장 구분: ${item.prkplceSe || '정보 없음'}</p>
-        <p>주차장 유형: ${item.prkplceType || '정보 없음'}</p>
-        <p>도로명 주소: ${item.rdnmadr || '정보 없음'}</p>
-        <p>지번 주소: ${item.lnmadr || '정보 없음'}</p>
-        <p>주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
-        <p>운영 요일: ${item.operDay || '정보 없음'}</p>
-        <p>평일 운영 시간: ${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperCloseHhmm || '정보 없음'}</p>
-        <p>토요일 운영 시간: ${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</p>
-        <p>공휴일 운영 시간: ${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</p>
-        <p>요금 정보: ${item.parkingchrgeInfo || '정보 없음'}</p>
-        <p>기본 시간: ${item.basicTime || '정보 없음'}</p>
-        <p>기본 요금: ${item.basicCharge || '정보 없음'}</p>
-        <p>추가 단위 시간: ${item.addUnitTime || '정보 없음'}</p>
-        <p>추가 단위 요금: ${item.addUnitCharge || '정보 없음'}</p>
-        <p>1일 주차권 요금 적용 시간: ${item.dayCmmtktAdjTime || '정보 없음'}</p>
-        <p>1일 주차권 요금: ${item.dayCmmtkt || '정보 없음'}</p>
-        <p>월 정기권 요금: ${item.monthCmmtkt || '정보 없음'}</p>
-        <p>결제 방법: ${item.metpay || '정보 없음'}</p>
-        <p>특기 사항: ${item.spcmnt || '정보 없음'}</p>
-        <p>전화번호: ${item.phone || '정보 없음'}</p>
-        <p>장애인 전용 주차 구역 보유 여부:  ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
-        <p>데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
+        <h2 class="parking-title">${item.name}</h2>
+        <p class="info-type">${item.prkplceSe || '정보 없음'}</p>
+        <p class="info-type">${item.prkplceType || '정보 없음'}</p>
+        <p class="info-address"><strong>주소:</strong> ${address}</p>
+        <p class="info-parking">주차 정보</p>
+        <p class="info-capacity">주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
+        <p class="info-charge">운영 시간 </p>
+        <p class="info-time">평일: ${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperColseHhmm || '정보 없음'}</p>
+        <p class="info-time">토요일: ${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</p>
+        <p class="info-time">공휴일: ${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</p>
+        <p class="info-charge">요금 정보</p>
+        <p class="info-fee">기본 시간: ${item.basicTime || '정보 없음'}분</p>
+        <p class="info-fee">기본 요금: ${item.basicCharge || '정보 없음'}원</p>
+        <p class="info-fee">추가 단위 시간: ${item.addUnitTime || '정보 없음'}분</p>
+        <p class="info-fee">추가 단위 요금: ${item.addUnitCharge || '정보 없음'}원</p>
+        <p class="info-charge">추가 정보</p>
+        <p class="info-day-ticket">1일 주차권 요금 적용 시간: ${item.dayCmmtktAdjTime || '정보 없음'}</p>
+        <p class="info-day-ticket">1일 주차권 요금: ${item.dayCmmtkt || '정보 없음'}</p>
+        <p class="info-monthly-ticket">월 정기권 요금: ${item.monthCmmtkt || '정보 없음'}</p>
+        <p class="info-payment">결제 방법: ${item.metpay || '정보 없음'}</p>
+        <p class="info-notes">특기 사항: ${item.spcmnt || '정보 없음'}</p>
+        <p class="info-contact">전화번호: ${item.phone || '정보 없음'}</p>
+        <p class="info-accessibility">장애인 전용 주차 구역 보유 여부: ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
+        <p class="info-coordinates">위도: ${item.latitude}</p> 
+        <p class="info-coordinates">경도: ${item.longitude}</p> 
+        <p class="info-date">데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
     `;
-
     // 팝업을 보이도록 설정
     document.getElementById('parking-details-popup').style.display = 'block';
 }
@@ -467,5 +497,318 @@ function closeParkingDetails() {
 }
 
 
-// 초기 데이터 로드
-showTab('search');
+// 길찾기 기능 구현 자바스크립트 함수들
+
+//1. 검색하면 출발지, 도착지가 맵에 찍히게 구현
+
+// 자동완성 검색 함수
+function searchAutocomplete(event, type) {
+    const keyword = document.getElementById(type === 'start' ? 'start-location' : 'end-location').value;
+    const resultsContainer = document.getElementById(type === 'start' ? 'start-search-results' : 'end-search-results'); // 각 검색 필드에 맞는 결과 컨테이너 선택
+
+    if (!keyword) {
+        resultsContainer.style.display = 'none';
+        selectedIndex = -1; // 인덱스 초기화
+        return;
+    }
+
+    // 키보드 이벤트 처리
+    if (event.key === "ArrowDown") {
+        selectedIndex = (selectedIndex + 1) % resultsContainer.querySelectorAll('.autocomplete-item').length;
+        highlightRouteItem(selectedIndex, resultsContainer); // highlightRouteItem으로 변경
+        event.preventDefault();
+        return;
+    } else if (event.key === "ArrowUp") {
+        selectedIndex = (selectedIndex - 1 + resultsContainer.querySelectorAll('.autocomplete-item').length) % resultsContainer.querySelectorAll('.autocomplete-item').length;
+        highlightRouteItem(selectedIndex, resultsContainer); // highlightRouteItem으로 변경
+        event.preventDefault();
+        return;
+    } else if (event.key === "Enter" && selectedIndex >= 0) {
+        const selectedItem = resultsContainer.querySelectorAll('.autocomplete-item')[selectedIndex];
+        selectedItem.click(); // 선택된 항목 클릭 시 검색 실행
+        selectedIndex = -1;
+        return;
+    }
+
+    // 장소 검색 API 호출 (Arrow 키 및 Enter 키가 아닌 경우에만 호출)
+    if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) {
+        ps.keywordSearch(keyword, function(data, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                displayRouteAutocompleteResults(data, type, resultsContainer);
+            } else {
+                resultsContainer.style.display = 'none';
+            }
+        });
+    }
+}
+
+// 자동완성 결과 표시 함수
+function displayRouteAutocompleteResults(data, type, resultsContainer) {
+    resultsContainer.innerHTML = ''; // 기존 검색 결과 초기화
+    resultsContainer.style.display = 'block';
+    selectedIndex = -1; // 새로운 검색어가 입력될 때마다 선택 초기화
+
+    data.forEach((place, index) => {
+        const item = document.createElement('div');
+        item.textContent = place.place_name;
+        item.classList.add('autocomplete-item');
+        
+        // 마우스 클릭 시 해당 항목 선택 가능
+        item.onclick = () => {
+            selectPlace(place, type);
+            resultsContainer.style.display = 'none';
+        };
+
+        resultsContainer.appendChild(item);
+    });
+}
+
+// 특정 항목을 강조 표시하는 함수 (이름 변경)
+function highlightRouteItem(index, container) {
+    const items = container.querySelectorAll('.autocomplete-item');
+    
+    // 모든 항목의 강조 표시 제거
+    items.forEach(item => item.classList.remove('route-highlight'));
+
+    // 인덱스가 유효할 때만 강조 표시 추가
+    if (index >= 0 && index < items.length) {
+        items[index].classList.add('route-highlight');
+    }
+}
+
+
+// 장소 선택 함수
+function selectPlace(place, type) {
+    const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
+    inputField.value = place.place_name; // 선택한 장소 이름을 입력 창에 설정
+
+
+
+    // 마커 설정
+    const location = new kakao.maps.LatLng(place.y, place.x);
+    if (type === 'start') {
+        if (startMarker) startMarker.setMap(null); // 기존 마커 제거
+        startMarker = new kakao.maps.Marker({
+            position: location
+        });
+        startMarker.setMap(map);
+    } else {
+        if (endMarker) endMarker.setMap(null); // 기존 마커 제거
+        endMarker = new kakao.maps.Marker({
+            position: location
+        });
+        endMarker.setMap(map);
+    }
+
+    // 지도 중심 이동
+    map.panTo(location);
+
+     // 검색 결과 창 닫기
+    const resultsContainer = document.getElementById(type === 'start' ? 'start-search-results' : 'end-search-results');
+    resultsContainer.style.display = 'none';
+}
+
+// 검색 결과 표시용 HTML 요소 (선택 사항)
+function setupSearchResultsContainer() {
+    const container = document.createElement('div');
+    container.id = 'search-results';
+    container.className = 'search-results';
+    container.style.display = 'none';
+    document.body.appendChild(container);
+}
+
+// 페이지 로드 시 검색 결과 표시용 컨테이너 생성
+document.addEventListener('DOMContentLoaded', setupSearchResultsContainer);
+
+
+
+//길찾기 기능
+//2. 카카오 모빌리티로 연결
+
+
+// 출발지와 도착지의 좌표를 저장할 변수
+let startCoords = null;
+let endCoords = null;
+
+function selectPlace(place, type) {
+    const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
+    inputField.value = place.place_name; // 선택한 장소 이름을 입력 창에 설정
+
+    // 선택된 장소의 좌표 저장
+    const location = `${place.x},${place.y}`; // 경도, 위도 형식
+
+    if (type === 'start') {
+        startCoords = location;
+        console.log("출발지 좌표 저장:", startCoords); // 출발지 좌표 확인용 로그
+        if (startMarker) startMarker.setMap(null); // 기존 마커 제거
+        startMarker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(place.y, place.x)
+        });
+        startMarker.setMap(map);
+    } else {
+        endCoords = location;
+        console.log("도착지 좌표 저장:", endCoords); // 도착지 좌표 확인용 로그
+        if (endMarker) endMarker.setMap(null); // 기존 마커 제거
+        endMarker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(place.y, place.x)
+        });
+        endMarker.setMap(map);
+    }
+
+    // 지도 중심 이동
+    map.panTo(new kakao.maps.LatLng(place.y, place.x));
+
+    // 검색 결과 창 닫기
+    document.getElementById('search-results').style.display = 'none';
+}
+
+
+//길찾기 API 호출 및 결과 표시
+function findRoute() {
+    // 출발지와 도착지 좌표가 모두 설정되었는지 확인
+    if (!startCoords || !endCoords) {
+        alert("출발지와 도착지를 모두 선택해 주세요.");
+        return;
+    }
+
+    // 길찾기 API 요청 URL 생성
+    const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
+
+    // 길찾기 API 호출
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `KakaoAK ${REST_API_KEY}` // REST API 키 설정
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayRoute(data); // 경로 데이터를 화면에 표시하는 함수 호출
+    })
+    .catch(error => {
+        alert("길찾기 API 요청에 실패했습니다.");
+    });
+}
+
+
+
+//경로 데이터 표시
+function displayRoute(data) {
+    const routeDirections = document.getElementById("route-directions");
+    routeDirections.innerHTML = ''; // 기존 결과 초기화
+
+    // 경로 데이터에서 주요 정보 추출 및 표시
+    if (data.routes && data.routes[0]) {
+        const route = data.routes[0];
+        const summary = route.summary;
+        const sections = route.sections;
+
+        // 요약 정보 표시
+        const distance = summary.distance; // 총 거리 (미터 단위)
+        const duration = summary.duration; // 예상 소요 시간 (초 단위)
+        
+        routeDirections.innerHTML += `
+            <h3>경로 요약</h3>
+            <p>총 거리: ${(distance / 1000).toFixed(2)} km</p>
+            <p>예상 소요 시간: ${(duration / 60).toFixed(0)} 분</p>
+        `;
+
+
+        // 길 안내 정보 표시
+        routeDirections.innerHTML += `<h3>길 안내</h3>`;
+        sections.forEach(section => {
+            section.guides.forEach(guide => {
+                routeDirections.innerHTML += `
+                    <p>${guide.guidance} (${guide.distance} m)</p>
+                `;
+            });
+        });
+    } else {
+        routeDirections.innerHTML = '<p>경로를 찾을 수 없습니다.</p>';
+    }
+}
+
+
+//큰 서치바 검색 기능
+
+// 검색 함수
+function searchParking() {
+    const searchInput = document.getElementById("parking-search").value.toLowerCase();
+    const resultsContainer = document.getElementById("autocomplete-results");
+
+    if (!searchInput) {
+        resultsContainer.style.display = 'none'; // 검색어가 없으면 자동완성 창 숨기기
+        selectedIndex = -1; // 인덱스 초기화
+        return;
+    }
+
+    // 검색어와 일치하는 주차장 목록 필터링
+    const filteredData = allParkingData.filter(parking =>
+        parking.name && parking.name.toLowerCase().includes(searchInput)
+    );
+
+    // 자동완성 결과 표시
+    displayAutocompleteResults(filteredData);
+
+      // 키보드 이벤트 처리
+      if (event.key === "ArrowDown") {
+        // 아래 방향키를 누르면 인덱스 증가
+        selectedIndex = (selectedIndex + 1) % filteredData.length;
+        highlightItem(selectedIndex);
+    } else if (event.key === "ArrowUp") {
+        // 위 방향키를 누르면 인덱스 감소
+        selectedIndex = (selectedIndex - 1 + filteredData.length) % filteredData.length;
+        highlightItem(selectedIndex);
+    } else if (event.key === "Enter" && selectedIndex >= 0) {
+        // 엔터 키로 선택 항목 검색
+        const selectedParking = filteredData[selectedIndex];
+        document.getElementById("parking-search").value = selectedParking.name;
+        resultsContainer.style.display = 'none';
+        renderParkingList([selectedParking]); // 선택한 항목을 리스트에 표시
+        selectedIndex = -1; // 인덱스 초기화
+    }
+}
+// 자동완성 항목을 강조 표시하는 함수
+function highlightItem(index) {
+    const resultsContainer = document.getElementById("autocomplete-results");
+    const items = resultsContainer.querySelectorAll('.autocomplete-item');
+    
+    // 모든 항목의 강조 표시 제거
+    items.forEach(item => item.classList.remove('highlight'));
+
+    // 인덱스가 유효할 때만 강조 표시 추가
+    if (index >= 0 && index < items.length) {
+        items[index].classList.add('highlight');
+    }
+}
+
+// 자동완성 결과 표시 함수
+function displayAutocompleteResults(data) {
+    const resultsContainer = document.getElementById("autocomplete-results");
+    resultsContainer.innerHTML = ''; // 기존 검색 결과 초기화
+
+    if (data.length === 0) {
+        resultsContainer.style.display = 'none'; // 검색 결과가 없으면 자동완성 창 숨기기
+        return;
+    }
+
+    // 필터링된 주차장 데이터를 자동완성 목록에 표시
+    data.forEach(parking => {
+        const item = document.createElement('div');
+        item.textContent = parking.name;
+        item.classList.add('autocomplete-item');
+        
+        // 주차장 이름을 클릭했을 때 검색창에 선택된 이름을 설정하고 자동완성 목록 숨김
+        item.onclick = () => {
+            document.getElementById("parking-search").value = parking.name;
+            resultsContainer.style.display = 'none';
+             // 선택한 주차장 정보를 parking-list에 표시
+              renderParkingList([parking]); // 배열 형식으로 전달하여 단일 항목 표시
+        };
+
+        resultsContainer.appendChild(item);
+    });
+
+    resultsContainer.style.display = 'block'; // 자동완성 결과 표시
+}
+

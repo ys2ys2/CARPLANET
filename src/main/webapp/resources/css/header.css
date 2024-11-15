@@ -44,7 +44,8 @@
 
 /* 헤더 스타일 */
 .header-container {
-  position: realative;
+  position: relative; /* 위치 설정을 위해 relative 추가 */
+  z-index: 20; /* 헤더가 지도보다 위에 표시되도록 설정 */
   display: flex;
   z-index: 2000;
   justify-content: space-between;
