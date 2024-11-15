@@ -15,8 +15,15 @@ public class MainController {
         return "MainPage/mainpage";
     }
     
+    @GetMapping("/mypage")
+    public String mypage() {
+    	return "MyPage/mypage";
+    }
+    
     @GetMapping("/community")
     public String community() {
     	return "Community/community";
     }
+    
+    
 }
