@@ -44,7 +44,9 @@
 
 /* 헤더 스타일 */
 .header-container {
+  position: realative;
   display: flex;
+  z-index: 2000;
   justify-content: space-between;
   align-items: center;
   padding: 10px 150px; /* 좌우 여백 추가 */

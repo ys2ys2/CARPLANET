@@ -28,13 +28,15 @@
 
 <body>
 
+<jsp:include page="/WEB-INF/views/MainPage/header.jsp"/>
+
 <div class="maincontainer">
 
 <!-- 검색 창 -->
 <div class="searchbar">
-	<div class="searchlogo">
+<!-- 	<div class="searchlogo">
 		<p>CAR PLANET</p>
-	</div>
+	</div> -->
 	<div class="tabbar">
         <span class="tabbarev active" onclick="showTab('search')">충전소 검색</span>
 		<span class="tabbarroad" onclick="showTab('route')">충전소 길 찾기</span>
@@ -104,7 +106,9 @@
 	</div> <!-- end of tab-content active-->
     <!-- 충전소 길 찾기 내용 -->
     <div id="routeContent" class="tab-content">
+    		
         <div class="route-search">
+        	<h3>길 찾기</h3>
             <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
             	<div id="originSuggestions" class="suggestions-container"></div>
             <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
@@ -202,7 +206,7 @@
 				<div>길 찾기</div>
 				</button>
 			</div>
-			<div class="roadview" id="roadview"></div> <!-- 로드뷰 -->
+				<div class="roadview" id="roadview"></div> <!-- 로드뷰 -->
 		</div>
 	    
     </div> <!-- end of real-popup -->

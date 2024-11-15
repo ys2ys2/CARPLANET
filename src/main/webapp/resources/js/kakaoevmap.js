@@ -57,14 +57,49 @@ function autoComplete(query, suggestionsContainer, selectPlaceCallback) {
         if (status === kakao.maps.services.Status.OK) {
             suggestionsContainer.innerHTML = ""; // 기존 목록을 초기화
             data.forEach(function(place) {
-                const item = document.createElement("div");
-                item.className = "autocomplete-item";
-                item.textContent = place.place_name;
-                item.onclick = () => selectPlaceCallback(place);
-                suggestionsContainer.appendChild(item);
-            });
+			    const item = document.createElement("div"); // 첫 번째 item 선언
+			    item.className = "autocomplete-item";
+			    
+			    // 아이콘 추가 부분
+			    const icon = document.createElement("div"); // 아이콘을 위한 div 요소 생성
+			    icon.className = "autocomplete-icon";
+			
+			    // category_group_code에 따른 아이콘 URL 설정
+			    const iconUrl = getIconUrl(place.category_group_code);
+			    icon.style.backgroundImage = `url('${iconUrl}')`;
+
+			
+			    // 장소 이름과 카테고리 정보를 함께 표시
+			    item.innerHTML = `<strong>${place.place_name}</strong> <small>(${place.category_group_name})</small>`;
+			    
+			    // 아이콘을 item에 추가
+			    item.prepend(icon);
+			    item.onclick = () => selectPlaceCallback(place);
+			    suggestionsContainer.appendChild(item);
+			});
         }
     });
+}
+
+// category_group_code에 따른 아이콘 URL을 반환하는 함수
+function getIconUrl(categoryCode) {
+    switch (categoryCode) {
+        case 'MT1':
+            return '/icons/mart.png'; // 대형마트 아이콘
+        case 'CS2':
+            return '/icons/convenience.png'; // 편의점 아이콘
+        case 'SW8':
+            return '/icons/subway.png'; // 지하철역 아이콘
+        case 'BK9':
+            return '/icons/bank.png'; // 은행 아이콘
+        case 'HP8':
+            return '/icons/hospital.png'; // 병원 아이콘
+        case 'PM9':
+            return '/icons/pharmacy.png'; // 약국 아이콘
+        // 추가 카테고리에 따른 아이콘 URL
+        default:
+            return '/icons/default.png'; // 기본 아이콘
+    }
 }
 
 // 출발지 선택 시 처리 함수
@@ -74,6 +109,8 @@ function selectOriginPlace(place) {
     originSuggestions.innerHTML = "";
     setOriginMarker(place);
 }
+
+
 
 // 도착지 선택 시 처리 함수
 function selectDestinationPlace(place) {
@@ -139,9 +176,18 @@ function displayRoute(routeData) {
         
         // 총 예상 이동 시간 계산
         const totalDurationInSeconds = routeData.routes[0].summary.duration;
-        const totalMinutes = Math.floor(totalDurationInSeconds / 60);
-        const totalSeconds = totalDurationInSeconds % 60;
-        const totalDurationText = `총 예상 이동 시간: 약 ${totalMinutes}분 `; //초는 이렇게 사용! ${totalSeconds}초
+        const totalHours = Math.floor(totalDurationInSeconds / 3600); // 시간 계산
+		const totalMinutes = Math.floor((totalDurationInSeconds % 3600) / 60); // 분 계산
+        
+        // 예상 이동 시간을 시간과 분 형식으로 표시
+		let totalDurationText;
+		if (totalHours > 0) {
+		    // 1시간 이상인 경우: "1시간 20분" 형식으로 표시
+		    totalDurationText = `총 예상 이동 시간: 약 ${totalHours}시간 ${totalMinutes}분`;
+		} else {
+		    // 1시간 미만인 경우: "20분" 형식으로 표시
+		    totalDurationText = `총 예상 이동 시간: 약 ${totalMinutes}분`;
+		}
         
         // 예상 이동 시간 표시
         const totalDurationElement = document.createElement('div');
@@ -172,9 +218,14 @@ function displayRoute(routeData) {
 		    } else if (index === routeData.routes[0].sections[0].guides.length - 1) {
 		        guidanceText = "목적지";
 		    } else {
-		        // 도로 이름(road name)을 포함하여 지침 텍스트 생성
-		        const roadName = guide.road && guide.road.name ? `${guide.road.name} 방면 ` : ""; // 도로 이름이 존재할 경우 추가
-		        guidanceText = `${roadName}${guide.guidance || "이동"} 후 ${guide.distance}m 이동`; // 지침 텍스트
+	        // 도로 이름(road name)을 포함하여 지침 텍스트 생성
+	        const roadName = guide.road && guide.road.name ? `${guide.road.name} 방면 ` : ""; // 도로 이름이 존재할 경우 추가
+            // 거리 값을 km 단위로 변환
+	        const distanceText = guide.distance >= 1000 
+	            ? `${(guide.distance / 1000).toFixed(1)}km` // 1000m 이상일 경우 km 단위로 변환하고 소수점 한 자리 표시
+	            : `${guide.distance}m`; // 1000m 미만은 m 단위로 표시
+	
+	        guidanceText = `${roadName}${guide.guidance || "이동"} 후 ${distanceText} 이동`; // 지침 텍스트
 		    }
 		
 		    // 설정한 안내 지침을 HTML로 적용
