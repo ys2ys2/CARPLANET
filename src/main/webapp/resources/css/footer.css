@@ -5,6 +5,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #ffffff;
 }
+
 /* 애니메이션 정의 */
 @keyframes slide-up {
   from {
@@ -24,32 +25,60 @@ body {
   bottom: 0;
   width: 150px;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: transparent; /* 배경을 투명하게 설정 */
   font-size: 10px;
   animation: slide-up 0.8s ease-out; /* 푸터가 하단에서 올라오는 애니메이션 */
-  
-}
-/* 맨 아래 도달 시 하단 고정 스타일 */
-.footer-company-info.sticky-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-}
-.footer-company-info h1 {
-  font-family: 'KIMM_Bold';
-  font-size: 18px;
-  margin: 0 0 10px 0;
-  font-weight: bold;
 }
 
-.footer-company-info p,
+/* 푸터 제목 스타일 */
+.footer-company-info h1 {
+  font-family: 'KIMM_Bold';
+  font-size: 15px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+  color: #161938; /* 글자 색상 변경 */
+}
+
+/* 일반 텍스트 스타일 */
+.footer-company-info p {
+  font-family: 'Freesentation-9Black';
+  font-weight: normal;
+  color: #333;
+  font-size: 10px;
+  margin: 0;
+  text-decoration: none;
+  animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
+  margin-bottom: 2px; /* 아래 여백 추가 */
+}
+.footer-company-info p {
+  line-height: 1.5; /* 줄 간격을 1.5배로 설정 */
+}
+
+/* 링크 텍스트 스타일 */
 .footer-company-info a {
   font-family: 'Freesentation-9Black';
   font-weight: normal;
   color: #333;
-  font-size: 12px;
+  font-size: 10px;
   text-decoration: none;
   animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
+}
+
+/* 이용약관 및 공지사항 링크 스타일 */
+.footer-company-info .terms,
+.footer-company-info .notice {
+  margin-right: 10px;
+  margin-top: 3px;   /* 위 여백 추가 */
+  margin-bottom: 3px; /* 아래 여백 추가 */
+}
+
+/* 개인정보 처리방침 및 저작권 정책 링크 스타일 */
+.footer-company-info .privacy,
+.footer-company-info .copyright {
+  display: inline-block;  /* 한 줄로 나열되도록 설정 */
+  margin-right: 10px;     /* 항목 간 10px 여백 추가 */
+  margin-top: 3px;   /* 위 여백 추가 */
+  margin-bottom: 3px; /* 아래 여백 추가 */
 }
 
 /* 아이콘과 텍스트 스타일 */
@@ -68,16 +97,16 @@ body {
 }
 
 .icon-item img.icon {
-  width: 45px;
-  height: 45px;
-  margin: 10px 0 5px 0;
+  width: 35px;
+  height: 35px;
+  margin: 5px 0 5px -15px; /* 아이콘의 위, 아래 여백을 5px로 설정 */
   animation: slide-up 1s ease-out; /* 아이콘이 하단에서 올라오는 애니메이션 */
 }
 
 .icon-item1 img.icon {
-  width: 55px;
-  height: 55px;
-  margin: 15px 0 5px 0;
+  width: 45px;
+  height: 45px;
+  margin: 2px 0 3px -5px;
   margin-bottom: -1px;
   animation: slide-up 1s ease-out;
 }
@@ -93,5 +122,10 @@ body {
   text-decoration: none;
   text-align: center;
   margin-top: 5px;
+  margin-left: -15px; /* 왼쪽 여백을 10px 줄임 */
+  display: flex; /* 수평 및 수직 중앙 정렬을 위해 flexbox 사용 */
+  flex-direction: column; /* 아이콘과 텍스트를 세로로 나열 */
+  justify-content: center; /* 수직 중앙 정렬 */
+  align-items: center; /* 수평 중앙 정렬 */
   animation: slide-up 1s ease-out;
 }
