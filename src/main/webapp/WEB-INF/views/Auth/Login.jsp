@@ -252,7 +252,7 @@ body {
 </head>
 <body>
 	<div class="container" id="container">
-		<form action="joinProcess.do" method="POST">
+		<form id="signupForm" action="joinProcess.do" method="POST">
 			<div class="formbox sign-up-container">
 				<div class="formlogo">
 					<h2>회원가입</h2>
@@ -300,19 +300,19 @@ body {
 			</div>
 		</div>
 
-		<form>
+		<form method="post" action="loginProcess.do">
 			<div class="formbox sign-in-container">
 				<div class="formlogo">
 					<h2 class="signinlogo">Car<br>Planet</h2>
 				</div>
 				<h2>로그인</h2>
-				<input class="signininput" type="text" placeholder="아이디">
-				<input class="signininput" type="password" placeholder="비밀번호">
+				<input class="signininput" name="carId" type="text" placeholder="아이디">
+				<input class="signininput" name="carPw" type="password" placeholder="비밀번호">
 				<div class="pbox">
 					<p>아이디를 잊어버리셨나요?</p>
 					<p>비밀번호를 잊어버리셨나요?</p>
 				</div>
-				<button class="signinbut" type="submit">로그인</button>
+				<button class="signinbut" id="signin-btn" type="submit">로그인</button>
 				<div class="s-login">
 					<img src="${pageContext.request.contextPath}/resources/images/googlebutton.png" alt="Google">
 					<img src="${pageContext.request.contextPath}/resources/images/kakaobutton.png" alt="Kakao">
@@ -321,6 +321,8 @@ body {
 			</div>
 		</form>
 	</div>
+
+
 
 	<script>
 	$(document).ready(function() {
@@ -467,9 +469,9 @@ body {
 
 	        return true;
 	    }
-	    
+	   
 	    // 폼 제출 이벤트 핸들러
-	    $("form").on("submit", function (event) {
+	    $("#signupForm").on("submit", function (event) {
 	        if (!validateForm()) {
 	            event.preventDefault(); // 제출 중단
 	        }

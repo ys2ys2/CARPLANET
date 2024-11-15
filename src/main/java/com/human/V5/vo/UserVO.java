@@ -21,4 +21,6 @@ public class UserVO {
 	private String email;
 
 	private String birthday;
+	
+	private String carstatus;
 }
