@@ -43,7 +43,7 @@ public class UserEntity {
 	private String birthday;
 	
 	@Column(name="status", columnDefinition="TINYINT DEFAULT 1")
-	private String car_status;
+	private Integer carstatus;
 	
 	@Column(name="reg_date", columnDefinition="DATETIME DEFAULT NOW()")
 	private Date regDate;//가입일
@@ -59,6 +59,9 @@ public class UserEntity {
 		this.carPw = carPw;
 		this.email = email;
 		this.birthday = birthday;
+		this.carstatus = 1;
+		this.regDate = new Date();
+		this.modDate = new Date();
 	}
 	
 	public void updatecIdx(int cIdx) {

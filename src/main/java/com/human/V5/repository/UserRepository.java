@@ -7,4 +7,6 @@ import com.human.V5.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 
 	int countByCarId(String carId);
+
+	UserEntity findByCarIdAndCarPwAndCarstatus(String carId, String carPw, int i);
 }

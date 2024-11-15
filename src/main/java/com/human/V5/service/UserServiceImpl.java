@@ -69,4 +69,9 @@ public class UserServiceImpl implements UserService {
         // 입력한 인증 코드와 저장된 인증 코드 비교
         return code.equals(verificationCodes.get(email));
     }
+
+	@Override
+	public UserEntity findByCarIdAndCarPwAndCarstatus(String carId, String carPw, int i) {
+		return repository.findByCarIdAndCarPwAndCarstatus(carId, carPw, 1);
+	}
 }
