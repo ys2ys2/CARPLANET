@@ -2,6 +2,9 @@ package com.human.V5.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,5 +97,30 @@ public class AuthController {
 	        }
 	    }
 		
+	  //로그인 처리 요청
+		@PostMapping("/loginProcess.do")
+		public ModelAndView loginProcess(String carId, String carPw,
+				HttpServletRequest request, ModelAndView mav) {
+			
+			String viewName = "Auth/Login"; //로그인 실패시 뷰이름
+			
+//			MemberEntity vo = memberServiceImpl.login(memberId, memberPw);
+			//쿼리메소드를 이용해서 로그인 처리하기
+			//:findByMemberIdAndMemberPwAndMemStatus(memberId, memberPw, 1)
+			UserEntity vo = userService.findByCarIdAndCarPwAndCarstatus(carId, carPw, 1);
+			
+			//로그인 성공여부를 vo객체에 저장된 값으로 판단
+			if(vo != null) {//로그인 성공
+				//세션객체에 회원정보를 저장함(request객체의 getSession()메소드 이용)
+				HttpSession session = request.getSession();
+				session.setAttribute("user", vo);
+				viewName = "redirect:/";//메인 페이지 재요청
+			}else {//로그인 실패
+				mav.addObject("msg", "아이디나 비밀번호가 일치하지 않습니다");
+			}
+			mav.setViewName(viewName);
+			
+			return mav;
+		}
 
 }

@@ -14,5 +14,7 @@ public interface UserService {
 	String authEmail(String email);
 
 	boolean verifyCode(String email, String code);
+
+	UserEntity findByCarIdAndCarPwAndCarstatus(String carId, String carPw, int i);
 	
 }
