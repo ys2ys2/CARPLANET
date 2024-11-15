@@ -14,8 +14,8 @@
       </div>
       <div class="menu">
         <a href="${pageContext.request.contextPath}/company/about">회사소개</a>
-        <a href="${pageContext.request.contextPath}/user/login">로그인</a>
-        <a href="${pageContext.request.contextPath}/user/signup">회원가입</a>
+      <a href="${pageContext.request.contextPath}/Auth/Login.do">로그인</a>
+      
       </div>
     </div>
   </header>
