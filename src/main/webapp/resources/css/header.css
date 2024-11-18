@@ -41,21 +41,27 @@
     font-weight: 400;
     font-style: normal;
 }
-
 /* 헤더 스타일 */
 .header-container {
-  position: relative; /* 위치 설정을 위해 relative 추가 */
-  z-index: 20; /* 헤더가 지도보다 위에 표시되도록 설정 */
   display: flex;
-  z-index: 2000;
-  justify-content: space-between;
+  justify-content: space-between; /* flex-grow를 space-between으로 변경 */
   align-items: center;
-  padding: 10px 150px; /* 좌우 여백 추가 */
-  background-color: #ffffff; /* 배경색을 흰색으로 설정 */
+  width: 100%;
+  font-size: 14px;
+  position: relative;
+  max-width: 1920px;
+  margin: 0 auto;
+  z-index: 120;
+  font-family: 'Pretendard-Regular';
+  font-weight: 700;
 }
 
+/* 로고 스타일 */
 .logo {
-  margin-left: 20px; /* 로고 왼쪽에 공백 추가 */
+  margin-left: 150px; /* 로고 왼쪽에 공백을 없앰 */
+    margin-top: 20px; /* 로고 위쪽에 100px 공백 추가 */
+  display: flex; /* 로고를 flex로 배치하여 다른 요소들과 균형을 맞춤 */
+  align-items: center; /* 세로 중앙 정렬 */
 }
 
 .logo a {
@@ -66,12 +72,31 @@
   text-decoration: none;
 }
 
-.menu {
-  display: flex; /* 메뉴를 가로로 정렬 */
-  gap: 20px; /* 메뉴 간 간격 */
+/* 전체 헤더를 오른쪽으로 배치 */
+.header-container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  width: 100%; /* 부모 요소의 전체 너비를 차지 */
+  padding: 10px; /* 헤더 패딩 */
+  margin-top: -35px; /* 위쪽 여백 20px */
+   margin-left: -160px;
 }
 
-.menu a {
+.member,
+.menu {
+  display: flex; /* 가로로 정렬 */
+  gap: 20px; /* 항목 간 간격 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.userprofile {
+  font-family: 'Pretendard-Regular';
+  font-size: 16px;
+  color: #000;
+}
+
+.member a {
    font-family: 'Pretendard-Regular';
   font-size: 16px;
   color: #000;
@@ -80,9 +105,8 @@
   transition: background-color 0.3s, color 0.3s; /* 부드러운 호버 효과 */
 }
 
-.menu a:hover {
+.member a:hover {
   background-color: #f0f0f0; /* 호버 시 배경색 변경 */
   color: #161938; /* 호버 시 텍스트 색상 변경 */
   text-decoration: none; /* 호버 시에도 실선 제거 */
 }
-
