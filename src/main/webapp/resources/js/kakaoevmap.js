@@ -125,12 +125,45 @@ function getIconUrl(categoryCode) {
     }
 }
 
+// 출발지와 도착지 데이터를 관리할 객체
+const routeDataManager = {
+    origin: null, // 출발지 정보 저장
+    destination: null, // 도착지 정보 저장
+
+    // 출발지 설정
+    setOrigin(place) {
+        this.origin = place;
+        document.getElementById("originInput").value = place.place_name;
+        document.getElementById("originCoords").value = `${place.x},${place.y}`;
+        originSuggestions.innerHTML = "";
+        setOriginMarker(place);
+    },
+
+    // 도착지 설정
+    setDestination(place) {
+        this.destination = place;
+        document.getElementById("destinationInput").value = place.place_name;
+        document.getElementById("destinationCoords").value = `${place.x},${place.y}`;
+        destinationSuggestions.innerHTML = "";
+        setDestinationMarker(place);
+    },
+
+    // 값 초기화
+    clear() {
+        this.origin = null;
+        this.destination = null;
+    }
+};
+
+
+
 // 출발지 선택 시 처리 함수
 function selectOriginPlace(place) {
     document.getElementById("originInput").value = place.place_name;
     document.getElementById("originCoords").value = `${place.x},${place.y}`;
     originSuggestions.innerHTML = "";
     setOriginMarker(place);
+    routeDataManager.setOrigin(place);
 }
 
 
@@ -141,6 +174,7 @@ function selectDestinationPlace(place) {
     document.getElementById("destinationCoords").value = `${place.x},${place.y}`;
     destinationSuggestions.innerHTML = "";
     setDestinationMarker(place);
+    routeDataManager.setDestination(place);
 }
 
 // 출발지와 목적지 자동완성 설정
@@ -153,12 +187,24 @@ document.getElementById('destinationInput').addEventListener('input', function()
 
 // 길찾기 버튼 클릭 시 경로 찾기
 document.getElementById('searchButton').addEventListener('click', async function() {
-    const originCoords = document.getElementById("originCoords").value;
-    const destinationCoords = document.getElementById("destinationCoords").value;
+    if (!routeDataManager.origin || !routeDataManager.destination) {
+        alert("출발지와 도착지를 입력해주세요.");
+        return;
+    }
 
-    if (originCoords && destinationCoords) {
+    const originCoords = `${routeDataManager.origin.x},${routeDataManager.origin.y}`;
+    const destinationCoords = `${routeDataManager.destination.x},${routeDataManager.destination.y}`;
+
+    try {
         const routeData = await getRoute(originCoords, destinationCoords);
-        if (routeData) displayRoute(routeData);
+        if (routeData) {
+            displayRoute(routeData);
+        } else {
+            alert("경로를 찾을 수 없습니다.");
+        }
+    } catch (error) {
+        console.error("경로 검색 중 오류:", error);
+        alert("경로 검색에 실패했습니다. 다시 시도해주세요.");
     }
 });
 
@@ -269,19 +315,46 @@ const typeIconMap = {
 };
 
 
+
+function ensureRouteDOMElements() {
+    let routeHeader = document.querySelector('.route-header');
+    let routeMain = document.querySelector('.route-main');
+    let routeFooter = document.querySelector('.route-footer');
+
+    // 각 요소가 없으면 동적으로 생성
+    if (!routeHeader) {
+        routeHeader = document.createElement('div');
+        routeHeader.className = 'route-header';
+        document.body.appendChild(routeHeader); // 적절한 부모 요소에 추가
+    }
+    if (!routeMain) {
+        routeMain = document.createElement('div');
+        routeMain.className = 'route-main';
+        document.body.appendChild(routeMain); // 적절한 부모 요소에 추가
+    }
+    if (!routeFooter) {
+        routeFooter = document.createElement('div');
+        routeFooter.className = 'route-footer';
+        document.body.appendChild(routeFooter); // 적절한 부모 요소에 추가
+    }
+
+    return { routeHeader, routeMain, routeFooter };
+}
+
+
 // 경로와 안내 지침 표시 함수
 function displayRoute(routeData) {
     if (routeData && routeData.routes && routeData.routes[0]) {
-        const linePath = [];
-        const routeHeader = document.querySelector('.route-header'); // 헤더 영역
-        const routeMain = document.querySelector('.route-main'); // 메인 영역
-        const routeFooter = document.querySelector('.route-footer'); // 푸터 영역
-        
+        const { routeHeader, routeMain, routeFooter } = ensureRouteDOMElements(); // DOM 요소 보장
+    
+    
     	// 기존 데이터 초기화
         routeHeader.innerHTML = '';
         routeMain.innerHTML = '';
         routeFooter.innerHTML = '';
-        
+    
+    
+        const linePath = [];
         // 총 예상 이동 시간 계산
         const totalDurationInSeconds = routeData.routes[0].summary.duration;
         const totalHours = Math.floor(totalDurationInSeconds / 3600); // 시간 계산
@@ -381,6 +454,25 @@ function displayRoute(routeData) {
     }
 }
 
+//초기화 함수
+function clearPreviousRoute() {
+    // 기존 폴리라인 제거
+    if (polyline) {
+        polyline.setMap(null);
+        polyline = null;
+    }
+
+    // 기존 경로 결과 초기화
+    const routeHeader = document.querySelector(".route-header");
+    const routeMain = document.querySelector(".route-main");
+    const routeFooter = document.querySelector(".route-footer");
+
+    if (routeHeader) routeHeader.innerHTML = "";
+    if (routeMain) routeMain.innerHTML = "";
+    if (routeFooter) routeFooter.innerHTML = "";
+}
+
+
 
 
 // 지도에 마커를 표시하는 함수
@@ -471,51 +563,31 @@ function setDestinationFromPopup(destination) {
 
 // 스왑 버튼 기능 추가
 document.getElementById('swapButton').addEventListener('click', function () {
-    const originInput = document.getElementById('originInput'); // 출발지 입력 필드
-    const destinationInput = document.getElementById('destinationInput'); // 도착지 입력 필드
-    const originCoords = document.getElementById('originCoords'); // 출발지 좌표
-    const destinationCoords = document.getElementById('destinationCoords'); // 도착지 좌표
-
-    // 입력값 교환
-    const tempInput = originInput.value;
-    originInput.value = destinationInput.value;
-    destinationInput.value = tempInput;
-
-    // 좌표 교환
-    const tempCoords = originCoords.value;
-    originCoords.value = destinationCoords.value;
-    destinationCoords.value = tempCoords;
-
-    // 마커 위치 교환
-    if (originCoords.value) {
-        const [originX, originY] = originCoords.value.split(',');
-        setOriginMarker({ x: originX, y: originY, place_name: originInput.value });
-    } else {
-        originMarker.setMap(null); // 출발지 마커 제거
-    }
-
-    if (destinationCoords.value) {
-        const [destinationX, destinationY] = destinationCoords.value.split(',');
-        setDestinationMarker({ x: destinationX, y: destinationY, place_name: destinationInput.value });
-    } else {
-        destinationMarker.setMap(null); // 도착지 마커 제거
+	    if (routeDataManager.origin && routeDataManager.destination) {
+        // 출발지와 도착지를 스왑
+        const temp = routeDataManager.origin;
+        routeDataManager.setOrigin(routeDataManager.destination);
+        routeDataManager.setDestination(temp);
     }
 });
 
 // 취소 버튼 기능 추가 (출발지와 도착지 입력 필드 모두 초기화)
 document.getElementById('cancelButton').addEventListener('click', function () {
+
+    routeDataManager.clear();
+    clearPreviousRoute();
+    
+    if (polyline) {
+        polyline.setMap(null);
+    }
+
     // 출발지 입력 필드와 좌표 초기화
-    const originInput = document.getElementById('originInput'); // 출발지 입력 필드
-    const originCoords = document.getElementById('originCoords'); // 출발지 좌표
-    originInput.value = '';
-    originCoords.value = '';
+    document.getElementById("originInput").value = '';
+    document.getElementById("originCoords").value = '';
     originMarker.setMap(null); // 출발지 마커 제거
 
     // 도착지 입력 필드와 좌표 초기화
-    const destinationInput = document.getElementById('destinationInput'); // 도착지 입력 필드
-    const destinationCoords = document.getElementById('destinationCoords'); // 도착지 좌표
-    destinationInput.value = '';
-    destinationCoords.value = '';
+    document.getElementById("destinationInput").value = '';
+    document.getElementById("destinationCoords").value = '';
     destinationMarker.setMap(null); // 도착지 마커 제거
 });
-
