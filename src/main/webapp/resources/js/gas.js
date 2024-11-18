@@ -270,9 +270,6 @@ const regionData = {
 
 
 $(document).ready(function () {
-
-	proj4.defs("EPSG:5178", "+proj=tmerc +lat_0=38 +lon_0=128 +k=1 +x_0=400000 +y_0=600000 +ellps=GRS80 +units=m +no_defs");
-	proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
 	
 	
     // 지도 설정 코드
@@ -345,23 +342,69 @@ $(document).ready(function () {
             alert("경로를 탐색하는 데 문제가 발생했습니다.");
         }
     }
+    
+    proj4.defs("EPSG:5178", "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=GRS80 +units=m +no_defs");
+	proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
 
     async function getoilgas(coords) {
-    // WGS84 좌표 (위도, 경도)
     const regionY = coords.La; // 위도
     const regionX = coords.Ma; // 경도
+
+    const [katecX, katecY] = proj4("EPSG:4326", "EPSG:5178", [regionY, regionX]);
+
+    console.log("WGS84 좌표 (요청): X=" + regionX + ", Y=" + regionY);
+    console.log("KATEC (EPSG:5178) 좌표: X=" + katecX + ", Y=" + katecY);
     
-
-    // WGS84 -> KATEC 변환
-    const [katecY, katecX] = proj4("EPSG:4326", "EPSG:5178", [regionY, regionX]);
-
-    console.log("WGS84 좌표: X=" + regionX + ", Y=" + regionY);
-    console.log("KATEC (EPSG:5178) 좌표: X=" + katecY + ", Y=" + katecX);
-
-    // 다시 WGS84로 역변환해 정확성 확인
-    const [backX, backY] = proj4("EPSG:5178", "EPSG:4326", [katecY, katecX]);
+     const [backX, backY] = proj4("EPSG:5178", "EPSG:4326", [katecX, katecY]);
     console.log("다시 변환된 WGS84 좌표: X=" + backY + ", Y=" + backX);
-	}
+
+    try {
+        const response = await $.ajax({
+            url: 'getNearbyStations',
+            method: 'GET',
+            data: {
+                x: katecX,
+                y: katecY,
+                radius: 2000,
+                sort: 1,
+                prodcd: 'B027'
+            }
+        });
+
+        console.log("API 응답 데이터:", JSON.stringify(response, null, 2));
+
+        const parsedResponse = typeof response === "string" ? JSON.parse(response) : response;
+        const stationList = parsedResponse.RESULT?.OIL || [];
+
+        console.log("주유소 리스트:", stationList);
+
+        if (!stationList.length) {
+            console.warn("주유소 데이터가 없습니다.");
+            return;
+        }
+
+        stationList.forEach(station => {
+            const [lng, lat] = proj4("EPSG:5178", "EPSG:4326", [station.GIS_X_COOR, station.GIS_Y_COOR]);
+            console.log(`주유소: ${station.OS_NM}, 변환된 좌표: (${lng}, ${lat})`);
+
+            const coords = new kakao.maps.LatLng(lat, lng);
+            new kakao.maps.Marker({
+                position: coords,
+                map: map,
+                title: station.OS_NM
+            });
+        });
+
+    } catch (error) {
+        console.error("오류 발생:", error);
+    }
+}
+
+
+
+
+
+
 
 
     function drawRoute(routeData) {
