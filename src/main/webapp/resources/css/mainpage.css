@@ -119,87 +119,99 @@ body {
     color: #000000;
 }
 
-/* 주차장 슬라이더 */
-.container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 5px;
-    margin: 0;
-    padding: 0;
-    margin-top: 100px;
-}
 
+/* 주차장 슬라이더 */
+  .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        position: relative; /* Essential for positioning arrows */
+    }
+    .arrows {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+        z-index: 10;
+    }
+
+    .arrows span {
+        font-size: 30px;
+        color: #161938;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 10px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+
+    .arrows span:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
 .text-content {
-    width: 50%;
-    padding: 0 5px;
-    text-align: center;
+    width: 50%; /* 텍스트 영역의 너비 */
+    padding: 0 10px; /* 좌우 여백 줄임 */
+    text-align: center; /* 텍스트 가운데 정렬 */
 }
 
 .title-text {
-    font-size: 15px;
-    margin: 0 0 15px 185px;
-    text-align: center;
-    font-family: 'Pretendard-Regular';
-    font-weight: normal;
-    color: #000000;
+    font-size: 15px; /* 텍스트 크기 */
+    margin: 0 0 30px; /* 아래쪽 여백 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-family: 'Pretendard-Regular'; /* 폰트 설정 */
+    font-weight: normal; /* 기본 폰트 두께 */
+    color: #000000; /* 텍스트 색상 */
+    margin-left: -390px; /* 왼쪽으로 20px 이동 (조정) */
 }
 
 .subtitle-text {
-    font-size: 30px;
-    margin: 0 0 5px 380px;
-    text-align: left;
-    font-family: 'Pretendard-Regular';
-    color: #000000;
+    font-size: 30px; /* 부제목 텍스트 크기 */
+    margin: 0 0 5px; /* 아래쪽 여백 설정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    font-family: 'Pretendard-Regular'; /* 폰트 설정 */
+    color: #000000; /* 텍스트 색상 */
+    margin-left: 30px; /* 왼쪽으로 300px 이동 (조정) */
 }
+
 
 .btn {
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #161938;
-    color: #fff;
-    font-size: 16px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-left: 150px;
-    margin-top: 20px;
-}
-
-.arrows {
-    font-size: 16px;
-    cursor: pointer;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: middle;
-    color: #161938;
+    display: inline-block; /* 인라인 블록 요소 */
+    padding: 10px 20px; /* 버튼 내부 여백 */
+    background-color: #161938; /* 버튼 배경색 */
+    color: #fff; /* 버튼 텍스트 색상 */
+    font-size: 16px; /* 버튼 텍스트 크기 */
+    text-decoration: none; /* 밑줄 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    margin-top: 20px; /* 버튼과 위 요소 간 간격 */
+    margin-left: -460px; /* 왼쪽으로 20px 이동 (조정) */
 }
 
 .image-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 0;
-    margin-left: 150px;
+    position: relative; /* 위치 조정을 위해 relative 사용 */
+    display: flex; /* 플렉스박스 사용 */
+    flex-direction: column; /* 자식 요소를 수직으로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    margin: 0 5px; /* 이미지 좌우 간격 줄임 */
 }
 
 .image-content img {
-    width: 400px;
-    height: 200px;
-    margin: 0;
-    padding: 0;
+    width: 450px; /* 이미지 너비 */
+    height: 200px; /* 이미지 높이 */
+    margin: 0; /* 기본 여백 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    margin-left: -300px; /* 이미지 왼쪽으로 100px 이동 */
+     margin-bottom: 30px; /* 이미지 아래 여백 100px 추가 */
 }
 
-.search-text {
-    font-size: 16px;
-    font-weight: bold;
-    position: absolute;
-    top: -10px;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 3px 6px;
-    border-radius: 5px;
-}
 
 /*아래부분*/
 /* 슬라이더 전체 컨테이너 */

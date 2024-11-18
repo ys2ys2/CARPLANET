@@ -46,7 +46,7 @@
 <!-- 카카오톡 및 챗봇 -->
 <div class="icon-links-row">
   <div class="icon-item">
-    <a href="javascript:void(0);">
+    <a href="javascript:void(0);" onclick="openChatBotModal()">
       <img src="${pageContext.request.contextPath}/resources/images/talk.png" alt="카카오톡 문의하기" class="icon">
       <span>카카오톡<br>문의하기</span>
     </a>
@@ -56,6 +56,18 @@
       <img src="${pageContext.request.contextPath}/resources/images/free-icon.png" alt="챗봇 문의하기" class="icon">
       <span>챗봇<br>문의하기</span>
     </a>
+  </div>
+</div>
+
+<!-- 카카오톡 팝업 모달 -->
+<div id="chatbotModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeChatBotModal()">&times;</span>
+<iframe 
+  src="https://pf.kakao.com/_abcd/chat" 
+  frameborder="0" 
+  style="width: 100%; height: 400px;"></iframe>
+
   </div>
 </div>
 
@@ -115,6 +127,26 @@ window.addEventListener('scroll', function () {
   } else {
     footer.style.position = 'fixed';  // 항상 고정되도록 설정
     footer.style.bottom = '0';
+  }
+});
+
+</script>
+
+<script>
+//카카오톡 모달 열기
+function openChatBotModal() {
+  document.getElementById("chatbotModal").style.display = "block";
+}
+
+// 카카오톡 모달 닫기
+function closeChatBotModal() {
+  document.getElementById("chatbotModal").style.display = "none";
+}
+
+// ESC 키로 모달 닫기
+window.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeChatBotModal();
   }
 });
 

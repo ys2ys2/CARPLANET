@@ -7,8 +7,8 @@
 <title>CAR PLANET</title>
 <!-- Swiper CSS 추가 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 불러오기 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css?ver=1.0">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"></script> -->
   
    <!--  <style>
@@ -28,30 +28,7 @@
             color: #333;
         }
     </style>--> 
-<title>CAR PLANET</title>
-<!-- Swiper CSS 추가 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 불러오기 -->
-  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"></script> -->
-  
-   <!--  <style>
-        .price-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .price-box {
-            text-align: center;
-        }
-        .label {
-            font-weight: bold;
-        }
-        .value {
-            font-size: 1.2em;
-            color: #333;
-        }
-    </style>--> 
+
 </head>
 <body>
 
@@ -64,7 +41,7 @@
         <img src="${pageContext.request.contextPath}/resources/images/ele.png" alt="전기차 충전소">
         <span>전기차 충전소</span>
     </a>
-    <a href="${pageContext.request.contextPath}/gasStation.jsp" class="menu-item">
+    <a href="${pageContext.request.contextPath}/gasmap.jsp" class="menu-item">
         <img src="${pageContext.request.contextPath}/resources/images/gas.png" alt="주유소">
         <span>주유소</span>
     </a>
@@ -101,19 +78,20 @@
 
 
 <!-- 콘텐츠 전환 영역 (주차장 슬라이더) -->
-<div class="container parking-slider">
+<div class="container parking-slider" style="position: relative;">
     <div class="text-content">
         <p id="title" class="title-text">주변 주차할 공간이 없다고요?</p>
         <h2 id="subtitle" class="subtitle-text">주차장과 주차장의<br> 후기가 궁금하면</h2>
         <a id="button" href="#" class="btn">자세히 보기</a>
-        <div class="arrows">
-            <span onclick="prevContent()">&#9664;</span>
-            <span onclick="nextContent()">&#9654;</span>
-        </div>
     </div>
     <div class="image-content">
         <div id="searchText" class="search-text">주차장 찾기</div>
         <img id="image" alt="주차장 이미지">
+    </div>
+    <!-- 화살표 컨트롤 -->
+    <div class="arrows">
+        <span onclick="prevContent()">&#9664;</span>
+        <span onclick="nextContent()">&#9654;</span>
     </div>
 </div>
 
@@ -126,7 +104,7 @@
             buttonText: "자세히 보기",
             buttonLink: "${pageContext.request.contextPath}/parking",
             searchText: "주차장 찾기",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/00.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
         },
         {
             title: "주변 주유소를 찾고 있다고요?",
@@ -134,7 +112,7 @@
             buttonText: "자세히 보기",
             buttonLink: "${pageContext.request.contextPath}/gasStation",
             searchText: "주유소 찾기",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/00.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
         },
         {
             title: "주변 충전소를 찾고 있다고요?",
@@ -142,7 +120,7 @@
             buttonText: "자세히 보기",
             buttonLink: "${pageContext.request.contextPath}/electricCharging",
             searchText: "전기차 충전소 찾기",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/00.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/11.png"
         }
     ];
 

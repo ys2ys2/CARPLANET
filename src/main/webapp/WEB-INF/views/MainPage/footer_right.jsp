@@ -15,7 +15,7 @@
     </a>
   </div>
   <div class="menu-item">
-    <a href="${pageContext.request.contextPath}/gasstation">
+    <a href="${pageContext.request.contextPath}/gasmap">
       <img src="${pageContext.request.contextPath}/resources/images/gas.png" alt="주유소"><br>주유소
     </a>
   </div>
