@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <meta charset="UTF-8">
 <title>로그인 및 회원가입</title>
 <style>
@@ -16,10 +19,11 @@
 
 * { box-sizing: border-box; }
 
-body {
+.section {
 	background: #f6f5f7;
 	display: flex;
 	justify-content: center;
+	flex-direction:column;
 	align-items: center;
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
@@ -251,8 +255,11 @@ body {
 </style>
 </head>
 <body>
+<!-- 헤더 -->
+<jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
+<div class="section">
 	<div class="container" id="container">
-		<form action="joinProcess.do" method="POST">
+		<form id="signupForm" action="joinProcess.do" method="POST">
 			<div class="formbox sign-up-container">
 				<div class="formlogo">
 					<h2>회원가입</h2>
@@ -291,6 +298,7 @@ body {
 					<h2>다시 오셨네요!<br>맞춤 충전소 정보를 확인하세요!</h2>
 					<p>아직 가입한 계정이 없으신가요?</p>
 					<button class="signupinbtn" id="signUp">회원가입</button>
+					<button class="signupinbtn" id="logout">로그아웃</button>
 				</div>
 				<div class="overlay-right">
 					<h2>환영합니다<br>회원님만의 맞춤형 서비스를 만나보세요!</h2>
@@ -300,27 +308,29 @@ body {
 			</div>
 		</div>
 
-		<form>
+		<form id="loginForm" method="post" action="loginProcess.do">
 			<div class="formbox sign-in-container">
 				<div class="formlogo">
 					<h2 class="signinlogo">Car<br>Planet</h2>
 				</div>
 				<h2>로그인</h2>
-				<input class="signininput" type="text" placeholder="아이디">
-				<input class="signininput" type="password" placeholder="비밀번호">
+				<input class="signininput" id="loginCarId" name="carId" type="text" placeholder="아이디">
+				<input class="signininput" id="loginCarPw" name="carPw" type="password" placeholder="비밀번호">
+				<div id="loginErrorMsg" style="color: red; font-size: 14px; display: none; margin-top: 10px;"></div>
 				<div class="pbox">
-					<p>아이디를 잊어버리셨나요?</p>
-					<p>비밀번호를 잊어버리셨나요?</p>
+					<a href="${pageContext.request.contextPath}/Auth/IdPwsearch.do">계정을 잊어버리셨나요?</a>
 				</div>
-				<button class="signinbut" type="submit">로그인</button>
+				<button class="signinbut" id="signin-btn" type="submit">로그인</button>
 				<div class="s-login">
-					<img src="${pageContext.request.contextPath}/resources/images/googlebutton.png" alt="Google">
-					<img src="${pageContext.request.contextPath}/resources/images/kakaobutton.png" alt="Kakao">
+					<img id="googleLogin" src="${pageContext.request.contextPath}/resources/images/googlebutton.png" alt="Google">
+					<img id="kakaologin" src="${pageContext.request.contextPath}/resources/images/kakaobutton.png" alt="Kakao">
 					<img src="${pageContext.request.contextPath}/resources/images/naverbutton.png" alt="Naver">
 				</div>
 			</div>
 		</form>
 	</div>
+	</div>
+
 
 	<script>
 	$(document).ready(function() {
@@ -467,15 +477,148 @@ body {
 
 	        return true;
 	    }
-	    
+	   
 	    // 폼 제출 이벤트 핸들러
-	    $("form").on("submit", function (event) {
+	    $("#signupForm").on("submit", function (event) {
 	        if (!validateForm()) {
 	            event.preventDefault(); // 제출 중단
 	        }
 	    });
+	    
+	    document.getElementById("loginForm").addEventListener("submit", function (event) {
+	        const carId = document.getElementById("loginCarId").value.trim();
+	        const carPw = document.getElementById("loginCarPw").value.trim();
+	        const errorMsg = document.getElementById("loginErrorMsg");
+
+	        // 기본 제출 동작 막기
+	        event.preventDefault();
+
+	        // 유효성 검사
+	        if (carId === "" || carPw === "") {
+	            errorMsg.textContent = "아이디와 비밀번호를 입력해주세요.";
+	            errorMsg.style.display = "block";
+	            return; // 폼 제출 중단
+	        }
+
+	        // 유효성 검사가 통과된 경우 폼 제출
+	        errorMsg.style.display = "none"; // 에러 메시지 숨기기
+	        this.submit();
+	    });
+	    
+	 // 로그인 실패 시 메시지를 alert로 표시
+        const serverMessage = "${msg}"; // EL로 모델 메시지 가져오기
+                if (serverMessage && serverMessage.trim() !== "") {
+                    alert(serverMessage); // 서버 메시지를 alert로 표시
+                }
+        
+        Kakao.init('4e64d93f08866447cfc28a75eec83485'); // YOUR_JAVASCRIPT_KEY를 카카오 개발자 콘솔에서 복사한 JavaScript 키로 대체
+        console.log(Kakao.isInitialized()); // Kakao SDK가 초기화되었는지 확인
+        
+        $('#kakaologin').on('click', function () {
+            Kakao.Auth.login({
+                scope: 'profile_nickname', // 필요한 동의 항목
+                success: function (authObj) {
+                    console.log('로그인 성공:', authObj);
+
+                    // 사용자 정보 요청
+                    Kakao.API.request({
+                        url: '/v2/user/me',
+                        success: function (res) {
+                            console.log('사용자 정보:', res);
+
+                            // 서버로 사용자 정보 전송
+                            $.ajax({
+                                type: 'POST',
+                                url: 'kakaoLoginProcess.do', // 서버의 처리 엔드포인트
+                                contentType: 'application/json',
+                                data: JSON.stringify(res), // 사용자 정보를 JSON으로 전송
+                                success: function (response) {
+                                    alert('로그인 성공');
+                                    window.location.href = '/V5/'; // 성공 후 리다이렉트
+                                },
+                                error: function (error) {
+                                    console.error('서버 처리 에러:', error);
+                                    alert('로그인 처리 중 문제가 발생했습니다.');
+                                }
+                            });
+                        },
+                        fail: function (error) {
+                            console.error('사용자 정보 요청 실패:', error);
+                        }
+                    });
+                },
+                fail: function (error) {
+                    console.error('로그인 실패:', error);
+                    alert('카카오 로그인에 실패했습니다.');
+                }
+            });
+        });
+        
+        // 구글 로그인 초기화
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: '965683450029-68l8v3esl34io1oj9rn0cjavk5addr1c.apps.googleusercontent.com', // 구글 클라이언트 ID
+                callback: handleGoogleLoginResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('googleLogin'), // 구글 로그인 버튼 ID
+                { theme: 'outline', size: 'large' }
+            );
+        };
+
+        // 구글 로그인 응답 처리
+        function handleGoogleLoginResponse(response) {
+            console.log('구글 로그인 성공:', response);
+
+            // 구글 ID 토큰 서버 전송
+            $.ajax({
+                type: 'POST',
+                url: 'googleLoginProcess.do',
+                contentType: 'application/json',
+                data: JSON.stringify({ id_token: response.credential }),
+                success: function (res) {
+                    alert('구글 로그인 성공');
+                    window.location.href = '/V5/';
+                },
+                error: function (err) {
+                    console.error('구글 로그인 실패:', err);
+                    alert('구글 로그인 처리 중 문제가 발생했습니다.');
+                }
+            });
+        }
+        
+        
+        $("#logout").on("click", function () {
+            // 확인 알림창
+            const confirmation = confirm("정말 로그아웃 하시겠습니까?");
+            
+            if (confirmation) {
+                // 사용자가 '확인'을 누르면 로그아웃 요청 전송
+                $.ajax({
+                    url: "logout.do", // 서버 로그아웃 URL
+                    type: "GET", // 로그아웃 요청 방식
+                    success: function (response) {
+                        // 로그아웃 성공 시 메인 페이지로 리다이렉트
+                        alert("로그아웃되었습니다.");
+                        window.location.href = "/V5/"; // 메인 페이지로 이동
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("로그아웃 요청 중 오류 발생:", error);
+                        alert("로그아웃에 실패했습니다.");
+                    },
+                });
+            } else {
+                // 사용자가 '취소'를 누르면 아무 동작도 하지 않음
+                console.log("사용자가 로그아웃을 취소했습니다.");
+            }
+        });
+        
 	});
 
 	</script>
+	<!-- 푸터 -->
+<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
+<jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
 </body>
 </html>
