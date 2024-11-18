@@ -1,0 +1,18 @@
+# 빌드 디렉토리 제외
+/target/
+
+# IntelliJ IDEA 설정 파일 제외
+.idea/
+*.iml
+
+# STS/Eclipse 설정 파일 제외
+.project
+.classpath
+.settings/
+
+# 로그 파일 제외
+*.log
+
+# OS 관련 파일 제외
+.DS_Store
+Thumbs.db
