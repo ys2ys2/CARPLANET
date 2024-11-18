@@ -561,8 +561,8 @@ document.addEventListener("DOMContentLoaded", function() {
     	markers.forEach(marker => marker.setMap(null));
 	    markers = []; // 마커 배열 초기화
 	
-	    // 지도 범위를 설정할 객체 생성
-	    const bounds = new kakao.maps.LatLngBounds();
+	    // 지도 범위를 설정할 객체 생성 (잠시 사용 X)
+	    // const bounds = new kakao.maps.LatLngBounds();
 	
 	    for (let i = 0; i < items.length; i++) {
 	        const statNm = items[i].getElementsByTagName("statNm")[0].textContent;  // 충전소명
@@ -680,12 +680,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	        // 마커 배열에 저장
 	        markers.push(marker);
 	
-	        // 지도 범위에 마커 위치 추가
-	        bounds.extend(markerPosition);
+	        // 지도 범위에 마커 위치 추가 (잠시 사용 X)
+	        // bounds.extend(markerPosition);
 	    }
 	
-	    // 모든 마커가 보이도록 지도 범위 설정
-	    map.setBounds(bounds);
+	    // 모든 마커가 보이도록 지도 범위 설정(잠시 사용 X)
+	    // map.setBounds(bounds);
 	}
 
 
@@ -743,12 +743,24 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 	
 
-    // 초기화 버튼 기능
-    document.getElementById("resetButton").addEventListener("click", function () {
-        document.getElementById("citySelect").value = "";
-        document.getElementById("districtSelect").value = "";
-        document.querySelector(".searchlist ul").innerHTML = ""; // 결과 초기화
-    });
+
+	// 초기화 버튼 기능
+	document.getElementById("resetButton").addEventListener("click", function () {
+	    // 1. 선택 필드 초기화
+	    document.getElementById("citySelect").value = "";
+	    document.getElementById("districtSelect").value = "";
+	    document.querySelector(".searchlist ul").innerHTML = ""; // 검색 결과 초기화
+	
+	    // 2. 지도에 표시된 모든 마커 제거
+	    markers.forEach(marker => marker.setMap(null)); // 모든 마커를 지도에서 제거
+	    markers = []; // 마커 배열 초기화
+	    
+	    // 3. 검색 데이터 초기화
+    	fetchedItems = []; // 이전 검색 데이터를 초기화
+	
+	    // 4. 지도 범위 초기화 (원하는 경우)
+	    //map.setLevel(3); // 기본 줌 레벨 설정
+	});
     
     
     function formatDate(dateString) {

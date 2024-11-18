@@ -40,6 +40,8 @@
 }
 
 
+
+
 html, body {
 	margin: 0 auto;
 	height: 100%;
@@ -76,6 +78,8 @@ html, body {
 	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 	border-radius: 20px;
 }
+
+
 
 .searchlogo {
 	width: 100%;
@@ -454,6 +458,12 @@ html, body {
     margin-left: 2vh;
 }
 
+.input-container {
+    display: flex; /* 수평 배치 */
+    width: 100%; /* 전체 너비 사용 */
+}
+
+
 .route-search h3 {
     font-family: 'SUIT-Regular', sans-serif;
     font-size: 18px;
@@ -462,7 +472,7 @@ html, body {
 
 
 .route-input {
-    width: 80%;
+    flex: 1; /* 입력 필드가 가능한 많은 공간을 차지 */
     padding: 10px;
     margin-bottom: 10px;
     font-family: 'SUIT-Regular', sans-serif;
@@ -470,6 +480,8 @@ html, body {
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
+    margin-right: 5px; /* 스왑 버튼과의 간격 */
+    
     
 }
 
@@ -486,29 +498,57 @@ html, body {
     margin-top: 10px;
 }
 
+
+.route-swapbutton {
+    padding: 10px 12px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1; 
+    width: 20px;
+    height: 20px;
+    border: none;
+    
+}
+
+.route-swapbutton img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	
+}
+.route-swapbutton:hover {
+    opacity: 0.5; 
+}
+
+
+
 .suggestions-container {
 	width: 100%;
 	height: auto;
-	font-family: 'GongGothicMedium', sans-serif;
+	font-family: 'Pretendard-Regular', sans-serif;
 	
 }
 
 .autocomplete-icon {
-	background-color: black;
 	width: 20px;
 	height: 20px;
 	margin-right: 8px;
+    background-size: cover; 
+    background-position: center; 
+    display: inline-block;
 }
-
-
 
 
 /* 경로 결과 스타일 */
 .route-result {
-    width: 90%;
-    margin: 10px auto;
+    width: auto;
+    margin: 10px 12px;
     font-family: 'SUIT-Regular', sans-serif;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .route-result h3 {
@@ -540,6 +580,56 @@ html, body {
     font-size: 18px;
 }
 
+.route-header {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	height: auto;
+	
+}
+
+.route-main {
+	overflow-y: auto;
+	overflow-x: hidden;
+	
+	
+}
+
+.route-icon {
+	width: auto;
+	height: 35px;
+	flex-shrink: 0;
+	text-align: center;
+	align-items: center;
+	display: flex;
+	margin: 0;
+	padding: 0;
+}
+
+
+.route-icon img{
+	width: 30px;
+	height: 30px;
+	
+	
+}
+
+
+.direction-item {
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #ddd; 
+    background-color: #fff;
+    padding: 6px;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    white-space: pre-line;
+    gap: 10px;
+ 
+}
+
+
 
 /* 카카오 지도 */
 .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
@@ -568,7 +658,7 @@ html, body {
 
 .autocomplete-item {
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
     padding: 8px;
     display: flex;
     text-align: center;
@@ -808,3 +898,263 @@ html, body {
 	color: white;
 	width: auto;
 }
+
+
+/* 태블릿 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+    .searchbar {
+        width: 300px; /* 검색 바 너비 축소 */
+    }
+
+    .route-main, .route-result {
+        max-height: 60vh; /* 경로 리스트 높이 제한 */
+    }
+
+    .route-input {
+        font-size: 14px; /* 입력 필드 폰트 축소 */
+    }
+
+    .route-icon img {
+        width: 25px;
+        height: 25px; /* 아이콘 크기 조정 */
+    }
+}
+
+/* 모바일 화면 (768px 이하) */
+@media (max-width: 768px) {
+	
+	.tab-content {
+		margin-top: 1vh;
+	}
+	
+	.route-search h3 {
+		margin: 10px 0;
+	}
+	
+	
+    .maincontainer {
+        flex-direction: column; /* 검색 바와 지도를 세로로 배치 */
+    }
+    
+	.tabbarev, .tabbarroad {
+		font-size: 13px;
+	}
+
+    .searchbar {
+        width: 250px; /* 검색 바 전체 화면 너비 */
+        height: 650px; /* 높이 자동 조정 */
+        margin: 20px; 
+    }
+    
+    .selectlocal h3 {
+    	font-size: 16px;
+    }
+    
+    .dropdown {
+   		width: 80%;
+   		
+   	}
+   	
+   	.chargetypetext {
+   		font-size: 16px;
+   	
+   	}
+   	
+   	
+	.chargetype label {
+	    font-family: 'SUIT-Regular', sans-serif;
+	    font-size: 12px;
+	    display: flex;
+	    align-items: center;
+	    margin: 1px;
+	    
+	}
+
+    .kakaomap {
+        width: 100%; /* 지도 전체 화면 너비 */
+        height: 100vh; /* 지도 높이를 화면 절반으로 */
+    }
+
+	.route-header {
+		padding: 3px 0;
+		margin: 5px 0;
+	
+	}
+
+    .route-main, .route-result {
+        max-height: 100vh; /* 경로 리스트 높이 축소 */
+        overflow-y: auto; /* 스크롤 활성화 */
+    }
+    
+
+    .direction-item {
+    	width: 90%;
+    	display: flex;
+        align-items: center;
+        padding: 3px;
+        font-size: 14px;
+    }
+
+    .route-input {
+        font-size: 14px; /* 입력 필드 폰트 축소 */
+        margin: 5px 0;
+    }
+    
+    
+    .route-searchbutton {
+    	width: 82%;
+    	font-size: 14px;
+    
+    }
+
+    .searchbutton {
+        width: 100%; /* 검색 버튼 전체 너비 */
+        margin: 5px 15px;
+    }
+    
+    .input-container {
+    	display: flex;
+    	text-align: center;
+    	align-items: center;
+    
+    }
+    
+    .searchlist {
+	font-family: 'SUIT-Regular', sans-serif;
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-left: 2vh;
+	overflow-y : auto;
+	max-height: 100%;
+	flex: 1;
+	box-sizing: border-box;
+	
+	}
+    
+    .searchlist h2 {
+    	font-size: 16px;
+    }
+    
+    .search-item {
+    	padding: 5px 0;
+    }
+    
+    .status {
+    	gap: 1px;
+    }
+    
+
+    .route-icon img {
+        width: 20px;
+        height: 20px; /* 아이콘 크기 축소 */
+    }
+    
+    .status span {
+	    display: inline-flex;
+	    align-items: center;
+	    font-size: 8px;
+	    border-radius: 15px;
+	    margin-top: 4px;
+    }
+    
+    .station-info-popup	{
+	    max-width: 250px;
+	    width: 300px;
+	    height: 640px;
+    }
+    
+    .page-button {
+    	font-size: 10px;
+    	height: 30px;
+    
+    }
+    
+    
+    .popupStationName {
+    	font-size: 20px;
+    	margin-bottom: 1vh;
+    
+    }
+    
+
+	.popupchargebusi {
+		margin: 5px;
+	}    
+    
+    .popupOperator {
+    	padding: 3px 13px;
+    	font-size: 12px;
+    
+    }
+    
+    .popupchargeinfo {
+    	gap: 2px;
+    }
+    
+    .info-header {
+    	font-size: 20px;
+    }
+    
+    .info-item {
+    	font-size: 12px;
+    }
+    
+    .chargephoto-header {
+    	font-size: 20px;
+    	margin: 7px 0;
+    	margin-top: 1vh;
+    }
+    
+    .roadviewnav {
+    	font-size: 12px;
+    	padding: 1px 9px;
+    
+    }
+    
+    .roadview {
+    	width: 100%;
+    	height: 220px;
+    }
+    
+    
+    .autocomplete-item {
+    	font-size: 12px;
+    	padding: 3px 0;
+    }
+    
+    .autocomplete-icon {
+    	margin-right: 3px;
+    }
+    
+    
+    
+}
+
+/* 초소형 화면 (480px 이하) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px; /* 전체 폰트 크기 축소 */
+    }
+
+    .searchbar {
+        padding: 10px; /* 검색 바 여백 축소 */
+    }
+
+    .route-main {
+        max-height: 30vh; /* 경로 리스트 높이 더 축소 */
+    }
+
+    .route-icon img {
+        width: 18px;
+        height: 18px; /* 아이콘 크기 최소화 */
+    }
+
+    .direction-item {
+        gap: 3px; /* 리스트 간격 축소 */
+    }
+}
+
+
+
