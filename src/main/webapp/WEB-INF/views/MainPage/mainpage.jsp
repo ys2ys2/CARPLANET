@@ -7,9 +7,9 @@
 <title>CAR PLANET</title>
 <!-- Swiper CSS 추가 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css?ver=1.0">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"></script> -->
+  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"?ver=1.0></script> -->
   
    <!--  <style>
         .price-container {
@@ -153,7 +153,7 @@
     <!-- 고정된 텍스트 영역 -->
     <div class="text-content1" style="flex: 1; padding: 20px;">
         <h1>계속 변동이 되는</h1>
-        <p>휘발유 경유 LPG의 가격을</p>
+        <p>휘발유 경유<br> LPG의 가격을</p>
         <p>실시간으로 확인을 해보세요.</p>
     </div>
 

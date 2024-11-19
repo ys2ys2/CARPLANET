@@ -20,14 +20,14 @@
 <c:choose>
   <c:when test="${not empty user}">
     <!-- 로그인 성공 시, 마이페이지와 로그아웃 표시 -->
-    <div class="header-container">
+ <div class="header-container">
       <div class="member">
         <span class="userprofile">${user.carId}님 환영합니다!</span>
-       <button onclick="location.href='./mypage'" 
-        style="display: flex; align-items: center; gap: 8px; padding: 10px; border: none; background-color: #007BFF; color: white; border-radius: 5px; cursor: pointer;">
-    <img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" style="width: 20px; height: 20px;">
-    <span>마이페이지</span>
-</button>
+        <button class="mypage-btn" onclick="location.href='./mypage'">
+          <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
+          <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
+          <span>마이페이지</span>
+        </button>
 
         <!-- 로그아웃을 링크로 변경 -->
         <span><a href="#" id="logout">로그아웃</a></span>
