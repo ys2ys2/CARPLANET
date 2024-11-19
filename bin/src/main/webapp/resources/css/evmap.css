@@ -621,7 +621,7 @@ html, body {
 	border-bottom: 1px solid #ddd; 
     background-color: #fff;
     padding: 6px;
-    width: 95%;
+    width: 100%;
     height: auto;
     align-items: center;
     white-space: pre-line;
@@ -668,15 +668,6 @@ html, body {
 .autocomplete-item:hover {
     background-color: #eee;
 }
-
-
-.pagination-wrapper {
-    width: 100%; /* 부모 요소의 크기를 따라감 */
-    display: flex;
-    justify-content: center; /* 가운데 정렬 */
-	
-}
-
 
 .pagination-container {
 	width: 100%;
@@ -915,7 +906,6 @@ html, body {
         width: 300px; /* 검색 바 너비 축소 */
     }
 
-
     .route-main, .route-result {
         max-height: 60vh; /* 경로 리스트 높이 제한 */
     }
@@ -924,147 +914,10 @@ html, body {
         font-size: 14px; /* 입력 필드 폰트 축소 */
     }
 
-	.route-icon {
-		height: 30px;
-	
-	}
-
     .route-icon img {
-        width: 22px;
-        height: 22px; /* 아이콘 크기 조정 */
+        width: 25px;
+        height: 25px; /* 아이콘 크기 조정 */
     }
-    
-    .route-search {
-    
-    
-    
-    }
-    
-    .route-searchbutton {
-    	width: 83%;
-    	margin-top: 1px;
-    	padding: 9px;
-    	font-size: 14px;
-    
-    
-    
-    }
-    
-    
-    
-    .dropdown {
-    	font-size: 14px;
-    	padding: 7px;
-    	
-    }
-    
-    .chargetypetext {
-    	margin-top: 1vh;
-    	
-    
-    }
-    
-    .chargetype label {
-    	font-size: 13px;
-    	margin: 1px;
-    
-    }
-    
-    
-    .searchbutton {
-    	padding: 7px;
-    }
-    
-    
-    .status {
-    
-    	gap: 2px;
-    }
-    
-    .status span {
-    	padding: 1px 3px;
-    	
-    }
-    
-    .status-available {
-    	margin: 1px 0;
-    }
-    
-    .info p {
-    	font-size: 12px;
-    }
-    
-    
-    .station-info-popup {
-    	width: 280px;
-    	height: 650px;
-    
-    }
-    
-    .popupStationName {
-    	margin-bottom: 1vh;
-    	font-size: 20px;
-    
-    }
-    
-    .popupchargebusi {
-    	margin: 5px 0;
-    }
-    
-    .popupOperator {
-    	padding: 4px 14px;
-    	font-size: 12px;
-    
-    }
-    
-    .popupchargeinfo span {
-    	margin: 1px 0;
-    	padding-bottom: 3px;
-    	    	
-    }
-    
-    .info-header {
-    	font-size: 21px;
-    	
-    }
-    
-    .info-item {
-    	font-size: 14px;
-    }
-    
-    .chargephoto-header {
-    	font-size: 21px;
-    	margin: 8px 0;
-    
-    }
-    
-    .chargephoto-header img {
-    	width: 20px;
-    	height: 20px;
-    
-    }
-    
-    .roadviewnav {
-    	font-size: 13px;
-
-    }
-    
-    .roadview {
-    	height: 200px;
-    	max-height: 200px;
-    
-    }
-    
-    .direction-item {
-    	padding: 3px;
-    	gap: 8px;
-    	font-size: 14px;
-    	
-    
-    }
-    
-    
-    
 }
 
 /* 모바일 화면 (768px 이하) */
@@ -1209,7 +1062,7 @@ html, body {
     .station-info-popup	{
 	    max-width: 250px;
 	    width: 300px;
-	    height: 660px;
+	    height: 640px;
     }
     
     .page-button {
@@ -1279,8 +1132,8 @@ html, body {
     
 }
 
-/* 초소형 화면 (425px 이하) */
-@media (max-width: 425px) {
+/* 초소형 화면 (480px 이하) */
+@media (max-width: 480px) {
     body {
         font-size: 14px; /* 전체 폰트 크기 축소 */
     }
