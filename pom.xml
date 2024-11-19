@@ -281,6 +281,12 @@
 			<version>2.10.1</version> <!-- 최신 버전 확인 후 업데이트 -->
 		</dependency>
 
+		<!-- 커뮤니티 파일 업로드 -->
+	    <dependency>
+	            <groupId>commons-fileupload</groupId>
+	            <artifactId>commons-fileupload</artifactId>
+	            <version>1.4</version>
+	        </dependency>
 
 	</dependencies>
 	<build>
