@@ -1,5 +1,7 @@
 package com.human.V5.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.human.V5.entity.UserEntity;
@@ -12,7 +14,9 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 
 	UserEntity findByCarId(String carId); // 카카오 ID로 조회 시 사용
 
-	UserEntity findByCarNameAndEmail(String name, String email);
+	List<UserEntity> findByCarNameAndEmail(String name, String email);
 
 	UserEntity findByCarIdAndEmail(String id, String email);
+
+	boolean existsByCarNickname(String carNickname);
 }

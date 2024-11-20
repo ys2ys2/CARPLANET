@@ -1,7 +1,10 @@
 package com.human.V5.controller;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -37,13 +41,18 @@ public class AuthController {
 		return "Auth/Login";
 	}
 	
-	@GetMapping("IdPwsearch.do")
+	@GetMapping("/IdPwsearch.do")
 	public String IdPwsearch() {
 		return "Auth/IdPwsearch";
 	}
 	
+	@GetMapping("/Authsetname.do")
+	public String Authsetname() {
+		return "Auth/Authsetname";
+	}
+	
 	@PostMapping("/joinProcess.do")
-	public ModelAndView joinProcess(UserVO vo) {
+	public ModelAndView joinProcess(UserVO vo, RedirectAttributes redirectModel) {
 	    ModelAndView mav = new ModelAndView();
 
 	    UserEntity entity = UserEntity.builder()
@@ -59,13 +68,56 @@ public class AuthController {
 
 	    // 회원가입 성공 여부에 따라 리다이렉션 처리
 	    if (savedVo != null) {
-	        mav.setViewName("redirect:/Auth/Login.do");  // 로그인으로 리다이렉트
+	    	redirectModel.addFlashAttribute("carId", vo.getCarId());
+	        mav.setViewName("redirect:/Auth/Authsetname.do");  // 로그인으로 리다이렉트
 	    } else {
 	        mav.addObject("msg", "회원가입이 정상적으로 이루어지지 않았습니다.");
 	        mav.setViewName("Auth/Login");  // 실패 시 로그인 페이지로 돌아가기
 	    }
 	    return mav;
 	}
+	
+	@PostMapping("setnickname.do")
+	public ModelAndView setNickname(@RequestParam String carId, @RequestParam String carNickname, HttpServletRequest request, ModelAndView mav) {
+	    try {
+	        // 1. 닉네임 중복 확인
+	        if (userService.existsByCarNickname(carNickname)) {
+	            mav.addObject("msg", "이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.");
+	            mav.setViewName("Auth/Authsetname");
+	            return mav;
+	        }
+
+	        // 2. 기존 사용자 정보 가져오기
+	        UserEntity userEntity = userService.findByCarId(carId);
+	        if (userEntity == null) {
+	            mav.addObject("msg", "사용자 정보를 찾을 수 없습니다. 다시 시도해주세요.");
+	            mav.setViewName("Auth/Authsetname");
+	            return mav;
+	        }
+
+	        // 3. 닉네임 업데이트
+	        userEntity.updateNickname(carNickname); // 엔티티 내 수정 메서드 활용
+
+	        // 4. 엔티티 업데이트
+	        userService.updateUser(userEntity); // 닉네임만 반영됨
+
+	        // 5. 세션 갱신
+	        HttpSession session = request.getSession();
+	        session.setAttribute("user", userEntity);
+
+	        // 6. 성공적으로 처리 후 메인 페이지로 리다이렉트
+	        mav.setViewName("redirect:/");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("msg", "닉네임 설정 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        mav.setViewName("Auth/Authsetname");
+	    }
+
+	    return mav;
+	}
+
+
+
 	
 	//아이디 중복검사
 		@PostMapping("/checkId.do")
@@ -143,40 +195,54 @@ public class AuthController {
 		}
 		
 		@PostMapping("/kakaoLoginProcess.do")
-		public ResponseEntity<String> kakaoLoginProcess(@RequestBody Map<String, Object> userInfo, HttpServletRequest request) {
+		public ResponseEntity<Map<String, String>> kakaoLoginProcess(@RequestBody Map<String, Object> userInfo, HttpServletRequest request) {
 		    try {
-		        // 카카오 사용자 ID 및 닉네임 추출
-		        String kakaoId = userInfo.get("id").toString(); // 카카오 ID
+		        String kakaoId = userInfo.get("id").toString();
 		        String nickname = (String) ((Map<String, Object>) userInfo.get("properties")).get("nickname");
 
-		        // 데이터베이스에서 carId로 사용자 조회
 		        UserEntity user = userService.findByKakaoId(kakaoId);
-
 		        if (user == null) {
-		            // 신규 사용자일 경우 회원 가입 처리
 		            user = UserEntity.builder()
-		                    .carId(kakaoId) // 카카오 ID를 carId로 저장
-		                    .carNickname(nickname)
+		                    .carId(kakaoId)
+		                    .carName(nickname)
 		                    .build();
+		            userService.save(user);
 
-		            userService.save(user); // 사용자 정보 저장
-		            System.out.println("새로운 카카오 사용자 저장 완료: " + user);
+		            HttpSession session = request.getSession();
+		            session.setAttribute("user", user);
+
+		            Map<String, String> response = new HashMap<>();
+		            response.put("redirectUrl", "/CarPlanet/Auth/Authsetname.do");
+		            response.put("carId", user.getCarId());
+
+		            // JSON 응답 강제 설정
+		            return ResponseEntity.ok()
+		                    .header("Content-Type", "application/json")
+		                    .body(response);
 		        }
 
-		        // 세션에 사용자 정보 저장
 		        HttpSession session = request.getSession();
 		        session.setAttribute("user", user);
 
-		        // 성공 응답 반환
-		        return ResponseEntity.ok("SUCCESS");
+		        Map<String, String> response = new HashMap<>();
+		        response.put("redirectUrl", "/CarPlanet");
+
+		        return ResponseEntity.ok()
+		                .header("Content-Type", "application/json")
+		                .body(response);
 		    } catch (Exception e) {
 		        e.printStackTrace();
-		        return ResponseEntity.status(500).body("FAIL");
+		        return ResponseEntity.status(500).body(Collections.singletonMap("error", "FAIL"));
 		    }
 		}
 
+
+
+
+
+
 		@PostMapping("/googleLoginProcess.do")
-		public ResponseEntity<String> googleLoginProcess(@RequestBody Map<String, String> payload, HttpServletRequest request) {
+		public ResponseEntity<Map<String, String>> googleLoginProcess(@RequestBody Map<String, String> payload, HttpServletRequest request) {
 		    try {
 		        // Google 클라이언트 ID
 		        String clientId = "965683450029-68l8v3esl34io1oj9rn0cjavk5addr1c.apps.googleusercontent.com";
@@ -206,40 +272,65 @@ public class AuthController {
 		                        .email(email)
 		                        .build();
 		                userService.save(user);
+
+		                // 세션 저장
+		                HttpSession session = request.getSession();
+		                session.setAttribute("user", user);
+
+		                // 응답 데이터 생성
+		                Map<String, String> response = new HashMap<>();
+		                response.put("redirectUrl", "/CarPlanet/Auth/Authsetname.do");
+		                response.put("carId", user.getCarId());
+
+		                return ResponseEntity.ok()
+		                        .header("Content-Type", "application/json")
+		                        .body(response);
 		            }
 
-		            // 세션 저장
+		            // 기존 사용자라면 메인 페이지로 리다이렉트
 		            HttpSession session = request.getSession();
 		            session.setAttribute("user", user);
 
-		            return ResponseEntity.ok("SUCCESS");
+		            Map<String, String> response = new HashMap<>();
+		            response.put("redirectUrl", "/CarPlanet");
+
+		            return ResponseEntity.ok()
+		                    .header("Content-Type", "application/json")
+		                    .body(response);
 		        } else {
-		            return ResponseEntity.badRequest().body("Invalid ID Token");
+		            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Invalid ID Token"));
 		        }
 		    } catch (Exception e) {
 		        e.printStackTrace();
-		        return ResponseEntity.status(500).body("Google Login Failed");
+		        return ResponseEntity.status(500).body(Collections.singletonMap("error", "Google Login Failed"));
 		    }
 		}
+
 		
 		//아이디 찾기
+
 		@PostMapping("/findId")
-		public ResponseEntity<String> findId(@RequestParam String name, @RequestParam String email) {
+		public ResponseEntity<?> findId(@RequestParam String name, @RequestParam String email) {
 		    try {
 		        // 이름과 이메일로 사용자 검색
-		        UserEntity user = userService.findByNameAndEmail(name, email);
+		        List<UserEntity> users = userService.findByNameAndEmail(name, email);
 
-		        if (user != null) {
-		            // 아이디 반환
-		            return ResponseEntity.ok(user.getCarId());
-		        } else {
+		        if (users.isEmpty()) {
 		            return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
 		        }
+
+		        // 여러 사용자 ID 반환
+		        List<String> userIds = users.stream()
+		                                    .map(UserEntity::getCarId) // ID 추출
+		                                    .collect(Collectors.toList());
+
+		        return ResponseEntity.ok(userIds); // 리스트 반환
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		        return ResponseEntity.status(500).body("아이디 찾기 중 오류가 발생했습니다.");
 		    }
 		}
+
 		
 		//비밀번호 찾기
 		@PostMapping("/sendTemporaryPassword")

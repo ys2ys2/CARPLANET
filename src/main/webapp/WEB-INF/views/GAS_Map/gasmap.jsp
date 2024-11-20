@@ -4,14 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${pageContext.request.contextPath}/resources/css/evmap.css?v=1.0" rel="stylesheet" type="text/css">
 <title>Car Planet 주유소</title>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9dc9962fd8d9c313d5ca5a57212228ab&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gas.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gasroad.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/gasdropdowndata.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"></script>
 <style>
 @font-face {
 	font-family: 'KIMM_Bold';
@@ -27,16 +31,39 @@
 	box-sizing: border-box;
 }
 
-.section {
-	width: 1270px;
+body, html {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.main-container {
+	display: flex;
 	height: 100vh;
 }
 
-.grid-container {
-	display: grid;
-	grid-template-columns: 350px 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
-	height: 100%;
+.gas-sidebar {
+	position: absolute;
+	left: 0;
+	width: 350px; /* 사이드바 너비 */
+	height: 90vh;
+	background-color: rgba(255, 255, 255, 0.95); /* 반투명 효과 */
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+	overflow-y: auto;
+	z-index: 10;
+	border-radius: 20px;
+	margin: 20px; /* 사이드바와 화면 경계 사이 여백 */
+}
+
+.map-container {
+	flex: 1; /* 지도 영역 확장 */
+	position: relative;
+}
+
+#map {
+	width: 100%;
+	height: 100vh; /* 전체 화면 차지 */
+	position: relative;
 }
 
 .gassearchlogo {
@@ -52,16 +79,6 @@
 	color: white;
 	margin-left: 1vh;
 	padding: 25px 0 25px 0;
-}
-
-.map {
-	grid-column: 2/5;
-	grid-row: 1/4;
-}
-
-.gas-sidebar {
-	grid-column: 1/2;
-	grid-row: 1/4;
 }
 
 #regsec, #rousec {
@@ -119,14 +136,6 @@
 	font-weight: bold;
 	color: white;
 	text-align: center;
-	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px
-		rgba(0, 0, 0, 0.23);
-	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px
-		rgba(0, 0, 0, 0.23);
-	-ms-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px
-		rgba(0, 0, 0, 0.23);
-	-o-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px
-		rgba(0, 0, 0, 0.23);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
@@ -175,11 +184,55 @@
 }
 
 .gaslist {
-	width: 90%;
-	height: 300px;
-	background-color: grey;
-	text-align: center;
-	margin-top: 5px;
+    width: 90%;
+    max-width: 600px; /* 최대 너비 */
+    height: 300px;
+    border: 2px solid #2a2a5d; /* 테두리 색상 변경 */
+    border-radius: 10px; /* 둥근 모서리 */
+    margin: 10px auto; /* 가운데 정렬 및 위아래 여백 */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 항목 간 간격 추가 */
+    background-color: #f9fafb; /* 밝은 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    padding: 10px; /* 내부 여백 */
+}
+
+.gaslist::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+.gaslist::-webkit-scrollbar-thumb {
+    background: #007BFF; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 모서리 */
+}
+
+.gaslist::-webkit-scrollbar-track {
+    background: #e6e6e6; /* 스크롤 트랙 배경 */
+}
+
+.gas-item {
+    background-color: #ffffff; /* 카드 배경색 */
+    border: 1px solid #d1d1d1; /* 카드 테두리 */
+    border-radius: 8px; /* 카드 둥근 모서리 */
+    padding: 15px; /* 카드 내부 여백 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 카드 그림자 */
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* 왼쪽 정렬 */
+    cursor:pointer;
+}
+
+.gas-item p {
+    margin: 5px 0; /* 텍스트 간격 */
+    font-size: 14px; /* 기본 글씨 크기 */
+    color: #333333; /* 텍스트 색상 */
+}
+
+.gas-item strong {
+    font-size: 16px; /* 강조 텍스트 크기 */
+    color: #007BFF; /* 강조 텍스트 색상 */
 }
 
 .additional-info {
@@ -258,34 +311,131 @@
 }
 
 .destinationlist p {
-	test-align: start;
+	text-align: start;
 	width: 100%;
 	padding: 8px;
+}
+
+.empty-message {
+	color: #333;
+	font-size: 14px;
+	text-align: center;
+	padding: 20px;
+}
+
+#stationInfoBox {
+    display: none; /* 처음에는 숨김 */
+    position: absolute; /* 부모인 #map-container 기준으로 배치 */
+    flex-direction:column;
+    top: 20px; /* 위쪽 여백 */
+    right: 20px; /* 오른쪽 여백 */
+    width: 300px; /* 박스 너비 */
+    background: white; /* 배경색 */
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 10px; /* 내부 여백 */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+    z-index: 1000; /* 지도보다 위로 표시되도록 설정 */
+    border-radius: 10px; /* 모서리 둥글게 */
+}
+#stationName{
+	padding: 0px 0px 5px 0px;
+		
+}
+
+
+#infocate{
+	display:flex;
+	justify-content: space-around;
+}
+#oilKND{
+	background-color: #4CC417;
+	border-radius: 15px;
+	width: max-content;
+	padding: 5px 15px;
+	color:white;
+}
+#CONM{
+	background-color: #4CC417;
+	border-radius: 15px;
+	width: max-content;
+	padding: 5px 15px;
+	color:white;
+}
+
+.detailline{
+	border-bottom:1px solid black;
+	padding:10px;
+}
+
+.gasnavigate{
+	width:100%;
+	height:auto;
+	display:flex;
+	flex-direction:column;
+}
+/* 테블릿pc */
+@media (max-width: 1024px) {
+	.gas-sidebar{
+		width: 200px; /* 사이드바 너비 */
+		height: 90vh;
+	}
+	
+	.sidetap {
+	width: 15%;
+	text-align: center;
+	font-size:11px;
+	color: black;
+	font-weight: bold;
+	}
+	
+	#sido, #city, #town {
+    height: 15px;
+    font-size: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-right: 5px;
+	}
+	
+	.additional-info label {
+	display: flex;
+	align-items: center;
+	background-color: #f5f5f5;
+	padding: 2px 1px;
+	border-radius: 5px;
+	font-size: 5px;
+}
+
+#stationInfoBox{
+	width:180px;
+}
+
+ }
+/* 모바일 */
+@media (max-width: 768px) {
+
+ }
+/* 중형 모바일 */
+@media (max-width: 425px) {
+
 }
 </style>
 </head>
 
 <body>
-	<div class="section">
-		<div class="grid-container">
-			<div class="gas-sidebar">
-				<div id="regsec">
-					<div class="gassearchlogo">
-						<p>CAR PLANET</p>
-					</div>
-					<div class="sidebarheader">
-						<p class="regionban active">지역별</p>
-						<p class="routeban">경로별</p>
-					</div>
-					<div class="gasinfo">
-						<p>주유소 정보</p>
-					</div>
-					<div class="sidemiddle">
+<jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
+	<div class="main-container">
+		<div class="gas-sidebar">
+			<div id="regsec">
+				<div class="sidebarheader">
+					<p class="regionban active">지역별</p>
+					<p class="routeban">경로별</p>
+				</div>
+				<div class="sidemiddle">
+					<div>
+						<p class="sidetap">지역</p>
 						<div>
-							<p class="sidetap">지역</p>
-							<div>
-								<select id="sido" name="sido">
-									<option selected disabled>시도</option>
+							<select id="sido" name="sido">
+									<option selected disabled>시/도</option>
 									<option value="11">서울특별시</option>
 									<option value="26">부산광역시</option>
 									<option value="27">대구광역시</option>
@@ -302,66 +452,107 @@
 									<option value="47">경상북도</option>
 									<option value="48">경상남도</option>
 									<option value="50">제주특별자치도</option>
-								</select> <select id="city" name="city">
-									<option selected disabled>시군구 선택</option>
-								</select> <select id="town" name="town">
-									<option selected disabled>읍면동 선택</option>
-								</select>
-							</div>
+							</select>
+							<select id="city" name="city">
+								<option selected disabled>시군구 선택</option>
+							</select>
+							<select id="town" name="town">
+								<option selected disabled>읍면동 선택</option>
+							</select>
 						</div>
-						<hr>
-						<div>
-							<p class="sidetap">부가정보</p>
-							<div class="additional-info">
-								<label><input type="checkbox">세차장</label> <label><input
-									type="checkbox">경정비</label> <label><input
-									type="checkbox">편의점</label> <label><input
-									type="checkbox">24시간</label>
-							</div>
-						</div>
-						<hr>
-						<div>
-							<p class="sidetap">상표</p>
-							<div>상표명</div>
-						</div>
-						<hr>
 					</div>
-					<div class="siderbarbottom">
-						<div class="gaslist">리스트 들어와유</div>
+					<hr>
+					<div>
+						<p class="sidetap">부가정보</p>
+						<div class="additional-info">
+							<label><input type="checkbox">세차장</label>
+							<label><input type="checkbox">경정비</label>
+							<label><input type="checkbox">편의점</label>
+							<label><input type="checkbox">품질인증</label>
+						</div>
+					</div>
+					<hr>
+					<div>
+						<p class="sidetap">상표</p>
+						<div class="additional-info">
+							<label><input type="checkbox">SKE</label>
+							<label><input type="checkbox">GSC</label>
+							<label><input type="checkbox">HDO</label>
+							<label><input type="checkbox">SOIL</label>
+							<label><input type="checkbox">RTE</label>
+							<label><input type="checkbox">RTX</label>
+							<label><input type="checkbox">NHO</label>
+							<label><input type="checkbox">ETC</label>
+							<label><input type="checkbox">E1G</label>
+							<label><input type="checkbox">SKG</label>
+						</div>
+					</div>
+				<hr>
+				</div>
+				<div class="gasinfo">
+					<p>주유소 정보</p>
+				</div>
+				<div class="siderbarbottom">
+					<div class="gaslist">
+						<p class="empty-message">지역 또는 경로를 선택하여 주유소 정보를 확인하세요!</p>
 					</div>
 				</div>
-
-				<div id="rousec">
-					<div class="gassearchlogo">
-						<p>CAR PLANET</p>
-					</div>
-					<div class="sidebarheader">
-						<p class="regionban">지역별</p>
-						<p class="routeban">경로별</p>
-					</div>
-					<div class="gasinfo">
-						<p>주유소 정보</p>
-					</div>
-					<div class="sidemiddle">
-						<div class="resetbox">
-							<p>초기화</p>
-						</div>
-						<input id="startPoint" class="Gasroute-input" type="text"
-							placeholder="출발지를 입력하세요" /> <input id="endPoint"
-							class="Gasroute-input" type="text" placeholder="도착지를 입력하세요" />
-						<button class="Gasroute-btn">
-							<p>경로검색</p>
-						</button>
-					</div>
-				</div>
-
 			</div>
-
-
-			<div class="map" id="map"></div>
+			<div id="rousec">
+				<div class="sidebarheader">
+					<p class="regionban">지역별</p>
+					<p class="routeban">경로별</p>
+				</div>
+				<div class="gasinfo">
+					<p>주유소 정보</p>
+				</div>
+				<div class="sidemiddle">
+					<div class="resetbox">
+						<p>초기화</p>
+					</div>
+					<input id="startPoint" class="Gasroute-input" type="text"
+						placeholder="출발지를 입력하세요" />
+					<input id="endPoint" class="Gasroute-input" type="text"
+						placeholder="도착지를 입력하세요" />
+					<button class="Gasroute-btn">
+						<p>경로검색</p>
+					</button>
+				</div>
+			<div class="gasnavigate">
+				<div class="startnavi"></div>
+				<div class="routenavi"></div>
+				<div class="endnavi"></div>			
+			</div>
+			</div>
 		</div>
+		<div class="map-container">
+    <div id="map"></div>
+    <div id="stationInfoBox">
+        <h2 id="stationName">주유소 이름</h2>
+        <div id="infocate"><div id="oilKND"></div><div id="CONM"></div></div>
+        <table id="stationTable" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">연료 종류</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">가격</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 데이터가 여기에 추가될 예정 -->
+        </tbody>
+        
+    </table>
+        <h2 style="padding: 5px 0px 5px 5px;">상세정보</h2>
+        <div class="detailline"><h5>지번주소</h5><p></p></div>
+        <div class="detailline"><h5>도로명주소</h5><p></p></div>
+        <div class="detailline"><h5>전화번호</h5><p></p></div>
+        <div class="detailline"><h5>기준일자</h5><p></p></div>
+        <div class="detailline"><h5>기준시간</h5><p></p></div>
+        
+        <h2 style="padding: 5px 0px 5px 5px;">기타정보</h2>
+        
+    </div>
+</div>
 	</div>
-
-
 </body>
 </html>
