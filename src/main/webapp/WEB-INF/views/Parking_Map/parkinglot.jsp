@@ -5,10 +5,11 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="${pageContext.request.contextPath}/resources/css/parkinglot.css?v=1.0" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/parkinglot.css"> 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fd90a39c953cfb75632633381ca03afc&libraries=services" ></script>	
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/parking_map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/parking_searchbar.js"></script>
 
 
@@ -40,9 +41,38 @@
 <!-- 헤더 -->
 <jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
 
-<div class="parking-map" id="map"></div><!--지도 div  -->
-<div class="maincontainer-parking">
 
+<div class="maincontainer-parking">
+<div class="parking-map" id="map"></div>
+
+<div class="map_wrap">
+   <div class="custom_typecontrol radius_border">
+        <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
+        <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
+    </div>
+    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
+    <div class="custom_zoomcontrol radius_border"> 
+        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>  
+        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+    </div>
+    
+ <img 
+        src="${pageContext.request.contextPath}/resources/images/mylocation.png" 
+        alt="현재 위치 표시" 
+        onclick="showCurrentLocation()" 
+        style="
+            width: 30px; 
+            height: 30px; 
+            cursor: pointer; 
+            position: absolute; 
+            bottom: 20px; 
+            right: 500px; 
+            z-index: 1000;">
+
+</div>
+
+
+    
 <!--전체 콘텐츠 묶는 컨테이너  -->
 <div class="content-container">
 
@@ -100,15 +130,16 @@
     	<div class="route-search">
         
         <input type="text" id="start-location" placeholder="출발지를 입력하세요" onkeydown="searchAutocomplete(event, 'start')">
-        <div id="start-search-results" class="search-results" style="display: none;">
+        <div id="start-search-results" class="start_search-results" style="display: none;">
             <!-- 출발지 검색 결과 목록이 여기에 표시됩니다 -->
         </div>
 
        
         <input type="text" id="end-location" placeholder="도착지를 입력하세요" onkeydown="searchAutocomplete(event, 'end')">
-        <div id="end-search-results" class="search-results" style="display: none;">
+        <div id="end-search-results" class="end_search-results" style="display: none;">
             <!-- 도착지 검색 결과 목록이 여기에 표시됩니다 -->
         </div>
+        
         
         <button onclick="findRoute()">길찾기</button>
     </div>
@@ -120,7 +151,6 @@
 
     <!-- 길찾기 경로 표시 영역 -->
     <div class="route-result">
-        <h3>길찾기 경로</h3>
         <div id="route-directions">
             <!-- 길찾기 결과가 표시될 영역 -->
         </div>
@@ -136,6 +166,9 @@
 <div id="parking-details-popup" class="parking-details-popup" style="display: none;">
     <button class="close-button" onclick="closeParkingDetails()">✖</button>
     <div id="parking-details"></div>
+
+    <div class="roadview-container" id="roadview-container">
+    </div>
 </div>
 </div>	
 
