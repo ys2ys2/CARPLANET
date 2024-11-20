@@ -66,19 +66,25 @@
 
 /* 로고 스타일 */
 .logo {
-  margin-left: 150px; /* 로고 왼쪽에 공백을 없앰 */
-    margin-top: 20px; /* 로고 위쪽에 100px 공백 추가 */
-  display: flex; /* 로고를 flex로 배치하여 다른 요소들과 균형을 맞춤 */
+  margin-left: 20px; /* 왼쪽 공백을 없앰 */
+  margin-top: 20px; /* 위쪽 공백 추가 */
+  display: flex; /* Flexbox 사용 */
   align-items: center; /* 세로 중앙 정렬 */
+  justify-content: flex-start; /* 로고를 왼쪽으로 정렬 */
+  position: relative; /* z-index 적용을 위해 relative 설정 */
+  z-index: 10; /* 다른 요소 위로 표시 */
 }
 
+
 .logo a {
-  font-family: 'Paperlogy-8ExtraBold';
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
-  text-decoration: none;
+  font-family: 'Paperlogy-8ExtraBold'; /* 폰트 스타일 유지 */
+  font-size: 24px; /* 글자 크기 */
+  font-weight: bold; /* 굵기 설정 */
+  color: #000; /* 글자 색 */
+  text-decoration: none; /* 밑줄 제거 */
+  cursor: pointer; /* 마우스 포인터를 클릭 모양으로 변경 */
 }
+
 
 /* 전체 헤더를 오른쪽으로 배치 */
 .header-container {
@@ -88,7 +94,7 @@
   width: 100%; /* 부모 요소의 전체 너비를 차지 */
   padding: 10px; /* 헤더 패딩 */
   margin-top: -35px; /* 위쪽 여백 20px */
-   margin-left: -160px;
+   margin-left: -20px;
 }
 
 
@@ -97,7 +103,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 15px; /* 버튼의 여백 */
+  padding: 10px 10px; /* 버튼의 여백 */
   border: none; /* 버튼의 기본 테두리 제거 */
   background-color: #0D8AFF; /* 버튼 배경색 */
   color: white; /* 텍스트 색상 */

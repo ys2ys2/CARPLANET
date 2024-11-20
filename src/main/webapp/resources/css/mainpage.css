@@ -93,37 +93,89 @@ body {
     color: #161938;
 }
 
+
 /* 유가 정보 스타일 */
+
+/* 제목 스타일 */
+.section-title {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 24px;
+    color: #333; /* 제목 텍스트 색상 */
+    margin-left: 250px; /* 왼쪽 여백으로 위치 조정 */
+    margin-top: 50px; /* 위쪽 여백 추가 */
+    margin-bottom: -50px; /* 제목과 그래프 간격 조정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+
 .price-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    gap: 30px;
+    gap: 20px; /* 박스 간 간격을 조금 더 넓게 */
 }
 
 .price-box {
-    width: 200px;
-    height: 100px;
-    border: 2px solid #000;
-    border-radius: 10px;
-    text-align: left;
-    padding: 10px;
+    width: 220px; /* 기존 250px에서 더 넓게 */
+    height: 170px; /* 기존 300px에서 더 높게 */
+    border: 0.5px solid #000; /* 검은색 테두리 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    text-align: center; /* 텍스트와 내용을 중앙 정렬 */
+    padding: 10px; /* 내부 여백 증가 */
     font-family: Arial, sans-serif;
     margin-top: 40px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* 그림자 강조 */
+    display: flex; /* 내부 요소를 정렬하기 위한 flexbox */
+    flex-direction: column; /* 위에서 아래로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: space-between; /* 요소 간 간격 균등 분배 */
+    background-color: #f5f5f5; /* 박스 배경색 */
 }
 
+/* 전국평균 텍스트 */
 .price-box .label {
     font-family: 'Pretendard-Regular';
-    font-size: 10px;
+    font-size: 10px; /* 기존 14px에서 크기를 증가 */
     color: gray;
+    margin-bottom: 5px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
 }
 
+/* 유종 이름 (고급휘발유, 보통휘발유 등) */
+.price-box .fuel-type {
+    font-family: 'Arial, sans-serif'; /* 기본 서체 */
+    font-size: 12px; /* 폰트 크기 적당히 증가 */
+    color: #000; /* 검정색으로 변경 */
+    font-weight: bold;
+    margin-bottom: 10px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
+}
+
+/* 가격 부분 */
 .price-box .value {
     font-family: 'Freesentation-9Black';
-    font-size: 18px;
-    margin-top: 5px;
+    font-size: 15px; /* 기존 20px에서 약간 증가 */
+    margin-top: -5px;
     color: #000000;
+    width: 100%; /* 부모 컨테이너의 너비를 박스 너비와 맞춤 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    padding: -3px; /* 텍스트 주변에 여백 추가 */
+    box-sizing: border-box; /* 패딩 포함 너비 조정 */
 }
+
+/* 그래프 캔버스 스타일 */
+canvas {
+    margin-top: 5px;
+    border: 1px solid #ddd; /* 캔버스 테두리 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    background-color: #ffffff;
+    width: 280px; /* 그래프 너비 설정 */
+    height: 150px; /* 그래프 높이 설정 */
+ 
+}
+
 
 
 /* 주차장 슬라이더 */
@@ -134,7 +186,10 @@ body {
         margin: 0 auto;
         padding: 0;
         position: relative; /* Essential for positioning arrows */
+        margin-top: 50px; /* 위쪽여백 추가 */
+        margin-bottom: 50px;
     }
+    
 .arrows {
     display: flex; /* 자식 요소를 가로로 정렬 */
     justify-content: flex-end; /* 화살표를 오른쪽 끝으로 배치 */
@@ -145,11 +200,11 @@ body {
     top: 70%; /* 세로 방향으로 위치 */
     /*right: 90;  오른쪽 끝에 위치 */
      left: 400px; /* 왼쪽 끝에서 10px 위치로 이동 */
-    z-index: 10; /* 다른 요소 위에 화살표 표시 */
+   
 }
 
 .arrows span {
-    font-size: 20px; /* 화살표 아이콘의 크기 설정 */
+    font-size: 15px; /* 화살표 아이콘의 크기 설정 */
     color: #161938; /* 화살표의 색상 설정 */
     cursor: pointer; /* 마우스 오버 시 포인터 커서로 변경 */
     background-color: rgba(255, 255, 255, 0.7); /* 반투명한 흰색 배경 적용 */
@@ -172,7 +227,7 @@ body {
     font-family: 'Paperlogy-8ExtraBold';
     font-weight: normal; /* 기본 폰트 두께 */
     color: #0D8AFF; /* 텍스트 색상 */
-    margin-left: -365px; /* 왼쪽으로 20px 이동 (조정) */
+    margin-left: -380px; /* 왼쪽으로 20px 이동 (조정) */
 }
 
 .subtitle-text {
@@ -181,7 +236,7 @@ body {
     text-align: left; /* 텍스트 왼쪽 정렬 */
        font-family: 'Paperlogy-8ExtraBold';
     color: #000000; /* 텍스트 색상 */
-    margin-left: 30px; /* 왼쪽으로 300px 이동 (조정) */
+    margin-left: 20px; /* 왼쪽으로 300px 이동 (조정) */
 }
 
 
@@ -194,8 +249,8 @@ body {
     text-decoration: none; /* 밑줄 제거 */
     border-radius: 5px; /* 둥근 모서리 */
     margin-top: 20px; /* 버튼과 위 요소 간 간격 */
-    margin-left: -460px; /* 왼쪽으로 20px 이동 (조정) */
-     font-family: 'Paperlogy-8ExtraBold';
+    margin-left: -480px; /* 왼쪽으로 20px 이동 (조정) */
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .image-content {
@@ -208,23 +263,23 @@ body {
 }
 
 .image-content img {
-    width: 450px; /* 이미지 너비 */
+    width: 400px; /* 이미지 너비 */
     height: 200px; /* 이미지 높이 */
     margin: 0; /* 기본 여백 제거 */
     padding: 0; /* 내부 여백 제거 */
-    margin-left: -300px; /* 이미지 왼쪽으로 100px 이동 */
+    margin-left: -350px; /* 이미지 왼쪽으로 100px 이동 */
      margin-bottom: 30px; /* 이미지 아래 여백 100px 추가 */
 }
 
 
-/*아래부분  #161938; #0D8AFF; */
+/*아래부분  */
 /* 슬라이더 전체 컨테이너 */
 .slider-container {
     display: flex; /* 텍스트와 카드들이 가로로 나열되도록 설정 */
     justify-content: flex-start; /* 슬라이더 내 컨텐츠를 왼쪽 정렬 */
     align-items: center; /* 세로 방향 중앙 정렬 */
-    width: 100%; /* 배경의 너비를 늘림 */
-    height: 250px; /* 배경의 높이를 줄임 */
+    width: 800px; /* 배경의 너비를 늘림 */
+    height: 200px; /* 배경의 높이를 줄임 */
     padding: 40px;
     background-color: #F6F5F7; /* 회색 배경 색상 (밝은 회색) */
     border-radius: 10px;
@@ -273,7 +328,7 @@ body {
 .usage-history-card {
     background-color: #ffffff; /* 카드 배경색 */
     color: #333; /* 텍스트 색상 */
-    width: 150px; /* 카드 너비 */
+    width: 130px; /* 카드 너비 */
     height: 200px; /* 카드 높이 */
     padding: 20px; /* 카드 내부 여백 */
     border-radius: 8px; /* 카드 모서리를 둥글게 처리 */
@@ -283,8 +338,8 @@ body {
     flex-direction: column; /* 내부 요소를 세로로 배치 */
     justify-content: center; /* 카드 내용 세로 중앙 정렬 */
     align-items: center; /* 카드 내용 가로 중앙 정렬 */
-    margin-right: 130px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
-    margin-left: -50px; /* 첫 번째 카드 왼쪽 여백 추가 */
+    margin-right: 45px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+    margin-left: 20px; /* 첫 번째 카드 왼쪽 여백 추가 */
 }
 
 /* 중간 카드 스타일 (두 번째 섹션) */
@@ -292,7 +347,7 @@ body {
 .insurance-status-card {
     background-color: #ffffff;
     color: #333;
-    width: 200px;
+    width: 180px;
     height: 70px; /* 두 번째 섹션의 카드 높이 조정 */
     padding: 20px;
     border-radius: 8px;
@@ -302,8 +357,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 150px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
-     margin-left: -50px; /* 첫 번째 카드 왼쪽 여백 추가 */
+    margin-right: 40px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+     /*margin-left: 10px; /* 첫 번째 카드 왼쪽 여백 추가 */
 }
 
 /* 작은 카드 스타일 (세 번째 섹션) */
@@ -311,7 +366,7 @@ body {
 .mileage-change-card {
     background-color: #ffffff;
     color: #333;
-    width: 200px;
+    width: 180px;
     height: 70px; /* 세 번째 섹션의 카드 높이 조정 */
     padding: 20px;
     border-radius: 8px;
@@ -321,8 +376,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 150px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
-    margin-left: -20px; /* 첫 번째 카드 왼쪽 여백 추가 */
+    margin-right: 30px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+   margin-left: 25px; /* 첫 번째 카드 왼쪽 여백 추가 */
 }
 
 /* 각 슬라이드 간격 설정 */
@@ -464,4 +519,800 @@ body {
     width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
 }
 
+@media (max-width: 1024px) {
+
+/* 메뉴 아이콘 스타일 */
+.menu-item img {
+    width: 70px;
+    height: 70px;
+    margin-top: 50px;
+}
+
+/* 유가 정보 스타일 */
+
+/* 제목 스타일 */
+.section-title {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px;
+    color: #333; /* 제목 텍스트 색상 */
+    margin-left: 220px; /* 왼쪽 여백으로 위치 조정 */
+    margin-top: 50px; /* 위쪽 여백 추가 */
+    margin-bottom: -50px; /* 제목과 그래프 간격 조정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+
+.price-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px; /* 박스 간 간격을 조금 더 넓게 */
+}
+
+.price-box {
+    width: 160px; /* 기존 250px에서 더 넓게 */
+    height: 150px; /* 기존 300px에서 더 높게 */
+    border: 0.5px solid #000; /* 검은색 테두리 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    text-align: center; /* 텍스트와 내용을 중앙 정렬 */
+    padding: 10px; /* 내부 여백 증가 */
+    font-family: Arial, sans-serif;
+    margin-top: 40px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* 그림자 강조 */
+    display: flex; /* 내부 요소를 정렬하기 위한 flexbox */
+    flex-direction: column; /* 위에서 아래로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: space-between; /* 요소 간 간격 균등 분배 */
+    background-color: #f5f5f5; /* 박스 배경색 */
+}
+
+/* 전국평균 텍스트 */
+.price-box .label {
+    font-family: 'Pretendard-Regular';
+    font-size: 10px; /* 기존 14px에서 크기를 증가 */
+    color: gray;
+    margin-bottom: 5px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
+}
+
+/* 유종 이름 (고급휘발유, 보통휘발유 등) */
+.price-box .fuel-type {
+    font-family: 'Arial, sans-serif'; /* 기본 서체 */
+    font-size: 12px; /* 폰트 크기 적당히 증가 */
+    color: #000; /* 검정색으로 변경 */
+    font-weight: bold;
+    margin-bottom: 10px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
+}
+
+/* 그래프 캔버스 스타일 */
+canvas {
+    margin-top: 5px;
+    border: 1px solid #ddd; /* 캔버스 테두리 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    background-color: #ffffff;
+    width: 8px; /* 그래프 너비 설정 */
+    height: 5px; /* 그래프 높이 설정 */
+ 
+}
+
+/* 주차장 슬라이더 */
+  .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        position: relative; /* Essential for positioning arrows */
+        margin-top: 50px; /* 위쪽여백 추가 */
+        margin-bottom: 50px;
+    }
+    
+.arrows {
+    display: flex; /* 자식 요소를 가로로 정렬 */
+    justify-content: flex-end; /* 화살표를 오른쪽 끝으로 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 5px; /* 화살표 사이 간격 */
+    width: 100px; /* 컨테이너 너비 */
+    position: absolute; /* 부모 요소 기준으로 절대 위치 */
+    top: 65%; /* 세로 방향으로 위치 */
+    /*right: 90;  오른쪽 끝에 위치 */
+     left: 300px; /* 왼쪽 끝에서 10px 위치로 이동 */
+   
+}
+
+.arrows span {
+    font-size: 15px; /* 화살표 아이콘의 크기 설정 */
+    color: #161938; /* 화살표의 색상 설정 */
+    cursor: pointer; /* 마우스 오버 시 포인터 커서로 변경 */
+    background-color: rgba(255, 255, 255, 0.7); /* 반투명한 흰색 배경 적용 */
+    padding: 10px; /* 화살표 주변 클릭 영역을 키우기 위한 패딩 추가 */
+ border-radius: 50%;     /* 배경을 원형으로 설정 */
+    transition: background-color 0.3s ease; /* 배경색 변경 시 부드러운 전환 효과 */
+}
+
+    
+.text-content {
+    width: 50%; /* 텍스트 영역의 너비 */
+    padding: 0 10px; /* 좌우 여백 줄임 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.title-text {
+    font-size: 13px; /* 텍스트 크기 */
+    margin-left: -320px; /* 왼쪽으로 20px 이동 (조정) */
+}
+
+.subtitle-text {
+    font-size: 20px; /* 부제목 텍스트 크기 */
+    margin: 0 0 5px; /* 아래쪽 여백 설정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+       font-family: 'Paperlogy-8ExtraBold';
+    color: #000000; /* 텍스트 색상 */
+    margin-left: 20px; /* 왼쪽으로 300px 이동 (조정) */
+}
+
+
+.btn {
+    display: inline-block; /* 인라인 블록 요소 */
+    padding: 5px 10px; /* 버튼 내부 여백 */
+    background-color: #0D8AFF; /* 버튼 배경색 */
+    color: #fff; /* 버튼 텍스트 색상 */
+    font-size: 12px; /* 버튼 텍스트 크기 */
+    text-decoration: none; /* 밑줄 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    margin-top: 20px; /* 버튼과 위 요소 간 간격 */
+    margin-left: -400px; /* 왼쪽으로 20px 이동 (조정) */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.image-content {
+    position: relative; /* 위치 조정을 위해 relative 사용 */
+    display: flex; /* 플렉스박스 사용 */
+    flex-direction: column; /* 자식 요소를 수직으로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    margin: 0 5px; /* 이미지 좌우 간격 줄임 */
+}
+
+.image-content img {
+    width: 320px; /* 이미지 너비 */
+    height: 150px; /* 이미지 높이 */
+    margin-left: -350px; /* 이미지 왼쪽으로 100px 이동 */
+    
+}
+/* 슬라이더 전체 컨테이너 */
+.slider-container {
+    display: flex; /* 텍스트와 카드들이 가로로 나열되도록 설정 */
+    justify-content: flex-start; /* 슬라이더 내 컨텐츠를 왼쪽 정렬 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+    width: 600px; /* 배경의 너비를 늘림 */
+    height: 160px; /* 배경의 높이를 줄임 */
+    padding: 30px;
+    background-color: #F6F5F7; /* 회색 배경 색상 (밝은 회색) */
+    border-radius: 10px;
+    margin: 0 auto; /* 슬라이더를 가운데 정렬 */
+    position: relative;
+    overflow: hidden; /* 슬라이더가 컨테이너 밖으로 넘치지 않도록 숨기기 */
+    gap: 20px; /* 텍스트와 카드 사이 간격 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+/* 텍스트 영역 스타일 */
+.text-content1 {
+    color: #ffffff;
+    width: 300px;
+    text-align: left;
+    padding: 20px;
+    z-index: 10;
+    position: static; /* 슬라이더 내 다른 요소와 나란히 배치 */
+    flex-shrink: 0; /* 텍스트 크기가 줄어들지 않도록 설정 */
+}
+/* 슬라이드 영역 */
+.card-slider {
+    display: flex;
+    flex-direction: row; /* 카드들을 가로로 나열 */
+    align-items: center;
+    gap: 50px; /* 카드 간격을 적절히 설정 */
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+}
+
+/* 큰 카드 스타일 (첫 번째 섹션) */
+.usage-history-card {
+    background-color: #ffffff; /* 카드 배경색 */
+    color: #333; /* 텍스트 색상 */
+    width: 130px; /* 카드 너비 */
+    height: 200px; /* 카드 높이 */
+    padding: 20px; /* 카드 내부 여백 */
+    border-radius: 8px; /* 카드 모서리를 둥글게 처리 */
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3); /* 카드 그림자 설정 */
+    font-size: 14px; /* 텍스트 크기 설정 */
+    display: flex; /* 카드 내부 요소를 플렉스 컨테이너로 설정 */
+    flex-direction: column; /* 내부 요소를 세로로 배치 */
+    justify-content: center; /* 카드 내용 세로 중앙 정렬 */
+    align-items: center; /* 카드 내용 가로 중앙 정렬 */
+    margin-right: 45px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+    margin-left: 20px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 중간 카드 스타일 (두 번째 섹션) */
+.low-emission-card,
+.insurance-status-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 180px;
+    height: 70px; /* 두 번째 섹션의 카드 높이 조정 */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+     /*margin-left: 10px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 작은 카드 스타일 (세 번째 섹션) */
+.inspection-card,
+.mileage-change-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 180px;
+    height: 70px; /* 세 번째 섹션의 카드 높이 조정 */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+   margin-left: 25px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 각 슬라이드 간격 설정 */
+.swiper-slide {
+    display: flex; /* 슬라이드 내 요소를 가로로 배치 */
+    flex-direction: column; /* 카드들을 세로로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 0; /* 슬라이드 간 간격 제거 */
+    width: 100%; /* 슬라이드가 전체 너비 차지 */
+}
+
+/* 카드들이 부드럽게 이어지도록 */
+.card-container .swiper-slide {
+    flex: 0 0 auto; /* 슬라이드가 축소되지 않도록 설정 */
+}
+
+/* 슬라이드 전환을 부드럽게 하기 위한 스타일 */
+.swiper-slide-active {
+    transform: scale(1.1); /* 활성화된 슬라이드 확대 */
+    transition: transform 0.3s ease-in-out; /* 슬라이드 전환 애니메이션 */
+}
+
+
+/*글자 부분*/
+/* 스타일 복제를 위한 CSS */
+.text-content1 h1 {
+     font-family: 'Paperlogy-8ExtraBold';
+    font-size: 1.5rem;  /* 글자 크기를 필요에 맞게 조정 */
+    font-weight: bold;  /* 굵은 글씨체 */
+    color: #0D8AFF;  /* 주요 텍스트의 파란색 */
+    margin-bottom: 5px;  /* 제목과 부제목 사이의 간격 */
+    line-height: 1;  /* 줄 간격 조절로 줄 사이의 여백 조정 */
+}
+
+.text-content1 p {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 1.5rem;  /* 부제목의 조금 작은 글자 크기 */
+    font-weight: bold;  /* 굵은 글씨체 */
+     color: #000000;  /* 보조 텍스트의 흰색 */
+    margin-bottom: 5px;  /* 각 문단 사이의 간격 */
+    line-height: 1.5;  /* 가독성을 위해 줄 간격 조절 */
+}
+
+
+.text-content1 p:last-child {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 0.8rem;  /* 추가 정보의 작은 글자 크기 */
+    color: #666;  /* 연한 회색 색상 */
+    margin-bottom: 0;  /* 마지막 문단에 대한 하단 여백 없음 */
+}
+
+/* 슬라이드 글자 부분 */
+/* 저공해차 카드 제목 스타일 */
+.low-emission-card h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 5px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 저공해차 카드 본문 스타일 */
+.low-emission-card p {
+    font-size: 13px; /* 본문 글씨 크기 */
+    line-height: 1; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+    
+}
+
+/* 자동차 보험 미가입 카드 제목 스타일 */
+.insurance-status-card h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 3px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 자동차 보험 미가입 카드 본문 스타일 */
+.insurance-status-card p {
+    font-size: 13px; /* 본문 글씨 크기 */
+    line-height: 1.3; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 자동차 검사 카드 제목 스타일 */
+.inspection-card h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 3px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 자동차 검사 카드 본문 스타일 */
+.inspection-card p {
+    font-size: 13px; /* 본문 글씨 크기 */
+    line-height: 0.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 주행거리 변경 카드 제목 스타일 */
+.mileage-change-card h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 3px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 주행거리 변경 카드 본문 스타일 */
+.mileage-change-card p {
+    font-size: 13px; /* 본문 글씨 크기 */
+    line-height: 0.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 용도 이력 카드 제목 스타일 */
+.usage-history-card h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 10px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 용도 이력 카드 본문 스타일 */
+.usage-history-card p {
+    font-size: 13px; /* 본문 글씨 크기 */
+    line-height: 1.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+
+
+}
+
+
+@media (max-width: 768px) {
+
+/* 메뉴 아이콘 스타일 */
+.menu-item img {
+    width: 40px;
+    height: 40px;
+    margin-top: 50px;
+}
+
+/* 유가 정보 스타일 */
+
+/* 제목 스타일 */
+.section-title {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 15px;
+    color: #333; /* 제목 텍스트 색상 */
+    margin-left: 170px; /* 왼쪽 여백으로 위치 조정 */
+    margin-top: 50px; /* 위쪽 여백 추가 */
+    margin-bottom: -50px; /* 제목과 그래프 간격 조정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+
+.price-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px; /* 박스 간 간격을 조금 더 넓게 */
+}
+
+.price-box {
+    width: 120px; /* 기존 250px에서 더 넓게 */
+    height: 150px; /* 기존 300px에서 더 높게 */
+    border: 0.5px solid #000; /* 검은색 테두리 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    text-align: center; /* 텍스트와 내용을 중앙 정렬 */
+    padding: 10px; /* 내부 여백 증가 */
+    font-family: Arial, sans-serif;
+    margin-top: 40px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* 그림자 강조 */
+    display: flex; /* 내부 요소를 정렬하기 위한 flexbox */
+    flex-direction: column; /* 위에서 아래로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: space-between; /* 요소 간 간격 균등 분배 */
+    background-color: #f5f5f5; /* 박스 배경색 */
+}
+
+/* 전국평균 텍스트 */
+.price-box .label {
+    font-family: 'Pretendard-Regular';
+    font-size: 10px; /* 기존 14px에서 크기를 증가 */
+    color: gray;
+    margin-bottom: -18px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
+}
+
+/* 유종 이름 (고급휘발유, 보통휘발유 등) */
+.price-box .fuel-type {
+    font-family: 'Arial, sans-serif'; /* 기본 서체 */
+    font-size: 10px; /* 폰트 크기 적당히 증가 */
+    color: #000; /* 검정색으로 변경 */
+    font-weight: bold;
+    margin-bottom: -12px; /* 아래 간격 추가 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    width: 100%; /* 정렬 효과를 명확히 하기 위해 너비를 지정 */
+}
+
+/* 그래프 캔버스 스타일 */
+canvas {
+    margin-top: 6px;
+    border: 1px solid #ddd; /* 캔버스 테두리 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    background-color: #ffffff;
+    width: 10px; /* 그래프 너비 설정 */
+    height: 5px; /* 그래프 높이 설정 */
+ 
+}
+
+
+/* 주차장 슬라이더 */
+  .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        position: relative; /* Essential for positioning arrows */
+        margin-top: 50px; /* 위쪽여백 추가 */
+        margin-bottom: 50px;
+    }
+    
+.arrows {
+    display: flex; /* 자식 요소를 가로로 정렬 */
+    justify-content: flex-end; /* 화살표를 오른쪽 끝으로 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 3px; /* 화살표 사이 간격 */
+    width: 100px; /* 컨테이너 너비 */
+    position: absolute; /* 부모 요소 기준으로 절대 위치 */
+    top: 70%; /* 세로 방향으로 위치 */
+    /*right: 90;  오른쪽 끝에 위치 */
+     left: 200px; /* 왼쪽 끝에서 10px 위치로 이동 */
+   
+}
+
+.arrows span {
+    font-size: 10px; /* 화살표 아이콘의 크기 설정 */
+    color: #161938; /* 화살표의 색상 설정 */
+    cursor: pointer; /* 마우스 오버 시 포인터 커서로 변경 */
+    background-color: rgba(255, 255, 255, 0.7); /* 반투명한 흰색 배경 적용 */
+    padding: 10px; /* 화살표 주변 클릭 영역을 키우기 위한 패딩 추가 */
+ border-radius: 50%;     /* 배경을 원형으로 설정 */
+    transition: background-color 0.3s ease; /* 배경색 변경 시 부드러운 전환 효과 */
+}
+
+    
+.text-content {
+    width: 50%; /* 텍스트 영역의 너비 */
+    padding: 0 10px; /* 좌우 여백 줄임 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.title-text {
+    font-size: 10px; /* 텍스트 크기 */
+    margin-left: -220px; /* 왼쪽으로 20px 이동 (조정) */
+}
+
+.subtitle-text {
+    font-size: 18px; /* 부제목 텍스트 크기 */
+    margin: 0 0 5px; /* 아래쪽 여백 설정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+       font-family: 'Paperlogy-8ExtraBold';
+    color: #000000; /* 텍스트 색상 */
+    margin-left: 25px; /* 왼쪽으로 300px 이동 (조정) */
+}
+
+
+.btn {
+    display: inline-block; /* 인라인 블록 요소 */
+    padding: 3px 8px; /* 버튼 내부 여백 */
+    background-color: #0D8AFF; /* 버튼 배경색 */
+    color: #fff; /* 버튼 텍스트 색상 */
+    font-size: 8px; /* 버튼 텍스트 크기 */
+    text-decoration: none; /* 밑줄 제거 */
+    border-radius: 3px; /* 둥근 모서리 */
+    margin-top: 20px; /* 버튼과 위 요소 간 간격 */
+    margin-left: -280px; /* 왼쪽으로 20px 이동 (조정) */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.image-content {
+    position: relative; /* 위치 조정을 위해 relative 사용 */
+    display: flex; /* 플렉스박스 사용 */
+    flex-direction: column; /* 자식 요소를 수직으로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    margin: 0 5px; /* 이미지 좌우 간격 줄임 */
+}
+
+.image-content img {
+    width: 220px; /* 이미지 너비 */
+    height: 120px; /* 이미지 높이 */
+    margin-left: -200px; /* 이미지 왼쪽으로 100px 이동 */
+    
+}
+
+
+/* 슬라이더 전체 컨테이너 */
+.slider-container {
+    display: flex; /* 텍스트와 카드들이 가로로 나열되도록 설정 */
+    justify-content: flex-start; /* 슬라이더 내 컨텐츠를 왼쪽 정렬 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+    width: 400px; /* 배경의 너비를 늘림 */
+    height: 130px; /* 배경의 높이를 줄임 */
+    padding: 20px;
+    background-color: #F6F5F7; /* 회색 배경 색상 (밝은 회색) */
+    border-radius: 10px;
+    margin: 0 auto; /* 슬라이더를 가운데 정렬 */
+    position: relative;
+    overflow: hidden; /* 슬라이더가 컨테이너 밖으로 넘치지 않도록 숨기기 */
+    gap: 20px; /* 텍스트와 카드 사이 간격 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+/* 텍스트 영역 스타일 */
+.text-content1 {
+    color: #ffffff;
+    width: 300px;
+    text-align: left;
+    padding: 20px;
+    z-index: 10;
+    position: static; /* 슬라이더 내 다른 요소와 나란히 배치 */
+    flex-shrink: 0; /* 텍스트 크기가 줄어들지 않도록 설정 */
+}
+/* 슬라이드 영역 */
+.card-slider {
+    display: flex;
+    flex-direction: row; /* 카드들을 가로로 나열 */
+    align-items: center;
+    gap: 50px; /* 카드 간격을 적절히 설정 */
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+}
+
+/* 큰 카드 스타일 (첫 번째 섹션) */
+.usage-history-card {
+    background-color: #ffffff; /* 카드 배경색 */
+    color: #333; /* 텍스트 색상 */
+    width: 80px; /* 카드 너비 */
+    height: 65px; /* 카드 높이 */
+    padding: 5px; /* 카드 내부 여백 */
+    border-radius: 8px; /* 카드 모서리를 둥글게 처리 */
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3); /* 카드 그림자 설정 */
+    font-size: 14px; /* 텍스트 크기 설정 */
+    display: flex; /* 카드 내부 요소를 플렉스 컨테이너로 설정 */
+    flex-direction: column; /* 내부 요소를 세로로 배치 */
+    justify-content: center; /* 카드 내용 세로 중앙 정렬 */
+    align-items: center; /* 카드 내용 가로 중앙 정렬 */
+    margin-right: 45px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+    margin-left: 20px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 중간 카드 스타일 (두 번째 섹션) */
+.low-emission-card,
+.insurance-status-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 100px;
+    height: 35px; /* 두 번째 섹션의 카드 높이 조정 */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+     /*margin-left: 10px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 작은 카드 스타일 (세 번째 섹션) */
+.inspection-card,
+.mileage-change-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 100px;
+    height: 35px; /* 세 번째 섹션의 카드 높이 조정 */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0.3, 0.3, 0.3, 0.3);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px; /* 첫 번째 카드와 두 번째 카드 사이에 오른쪽 여백 추가 */
+   margin-left: 25px; /* 첫 번째 카드 왼쪽 여백 추가 */
+}
+
+/* 각 슬라이드 간격 설정 */
+.swiper-slide {
+    display: flex; /* 슬라이드 내 요소를 가로로 배치 */
+    flex-direction: column; /* 카드들을 세로로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 0; /* 슬라이드 간 간격 제거 */
+    width: 100%; /* 슬라이드가 전체 너비 차지 */
+}
+
+/* 카드들이 부드럽게 이어지도록 */
+.card-container .swiper-slide {
+    flex: 0 0 auto; /* 슬라이드가 축소되지 않도록 설정 */
+}
+
+/* 슬라이드 전환을 부드럽게 하기 위한 스타일 */
+.swiper-slide-active {
+    transform: scale(1.1); /* 활성화된 슬라이드 확대 */
+    transition: transform 0.3s ease-in-out; /* 슬라이드 전환 애니메이션 */
+}
+
+/*글자 부분*/
+/* 스타일 복제를 위한 CSS */
+.text-content1 h1 {
+     font-family: 'Paperlogy-8ExtraBold';
+    font-size: 1rem;  /* 글자 크기를 필요에 맞게 조정 */
+    font-weight: bold;  /* 굵은 글씨체 */
+    color: #0D8AFF;  /* 주요 텍스트의 파란색 */
+    margin-bottom: 5px;  /* 제목과 부제목 사이의 간격 */
+    line-height: 1;  /* 줄 간격 조절로 줄 사이의 여백 조정 */
+}
+
+.text-content1 p {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 1rem;  /* 부제목의 조금 작은 글자 크기 */
+    font-weight: bold;  /* 굵은 글씨체 */
+     color: #000000;  /* 보조 텍스트의 흰색 */
+    margin-bottom: 5px;  /* 각 문단 사이의 간격 */
+    line-height: 1.5;  /* 가독성을 위해 줄 간격 조절 */
+}
+
+
+.text-content1 p:last-child {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 0.5rem;  /* 추가 정보의 작은 글자 크기 */
+    color: #666;  /* 연한 회색 색상 */
+    margin-bottom: 0;  /* 마지막 문단에 대한 하단 여백 없음 */
+}
+
+/* 슬라이드 글자 부분 */
+/* 저공해차 카드 제목 스타일 */
+.low-emission-card h3 {
+    font-size: 10px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 1px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 저공해차 카드 본문 스타일 */
+.low-emission-card p {
+    font-size: 8px; /* 본문 글씨 크기 */
+    line-height: 0.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+    
+}
+
+/* 자동차 보험 미가입 카드 제목 스타일 */
+.insurance-status-card h3 {
+    font-size: 10px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 1px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 자동차 보험 미가입 카드 본문 스타일 */
+.insurance-status-card p {
+    font-size: 8px; /* 본문 글씨 크기 */
+    line-height: 2.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 자동차 검사 카드 제목 스타일 */
+.inspection-card h3 {
+    font-size: 10px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 1px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 자동차 검사 카드 본문 스타일 */
+.inspection-card p {
+    font-size: 8px; /* 본문 글씨 크기 */
+    line-height: 0.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 주행거리 변경 카드 제목 스타일 */
+.mileage-change-card h3 {
+    font-size: 10px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 1px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 주행거리 변경 카드 본문 스타일 */
+.mileage-change-card p {
+    font-size: 8px; /* 본문 글씨 크기 */
+    line-height: 0.5; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+/* 용도 이력 카드 제목 스타일 */
+.usage-history-card h3 {
+    font-size: 10px; /* 제목 글씨 크기 조정 */
+    margin-bottom: 1px; /* 제목과 본문 사이 간격 */
+    text-align: left; /* 제목 왼쪽 정렬 */
+    width: 100%; /* 제목이 카드 전체 너비를 사용하도록 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 용도 이력 카드 본문 스타일 */
+.usage-history-card p {
+    font-size: 8px; /* 본문 글씨 크기 */
+    line-height: 1; /* 본문 줄 간격 */
+    text-align: left; /* 본문 왼쪽 정렬 */
+    width: 100%; /* 본문이 카드 전체 너비를 사용하도록 설정 */
+}
+
+
+
+}
 

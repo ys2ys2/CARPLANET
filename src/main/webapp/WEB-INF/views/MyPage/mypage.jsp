@@ -32,43 +32,10 @@
             <!-- 차량 정보 등록하기 버튼 -->
             <a href="${pageContext.request.contextPath}/registerCarInfo.jsp" class="register-car-info-btn">차량정보 등록하기</a>
         </div>
-
-        <!-- 자주 가는 장소 섹션 -->
-        <h4>자주가는 장소</h4>
-        <div class="frequent-places">
-            <div class="place-card">
-                <span>주차장</span>
-                <a href="${pageContext.request.contextPath}/parking.jsp" class="more-btn">장소 더보기</a>
-            </div>
-            <div class="place-card">
-                <span>전기차 충전소</span>
-                <a href="${pageContext.request.contextPath}/evCharging.jsp" class="more-btn">장소 더보기</a>
-            </div>
-            <div class="place-card">
-                <span>주유소</span>
-                <a href="${pageContext.request.contextPath}/gasStation.jsp" class="more-btn">장소 더보기</a>
             </div>
         </div>
 
-        <!-- 나의 리뷰 관리 섹션 -->
-        <h4>나의 리뷰관리</h4>
-        <div class="review-management">
-            <div class="review-card">
-                <span>주차장</span>
-                <a href="${pageContext.request.contextPath}/editParkingReview.jsp" class="edit-btn">리뷰 수정</a>
-            </div>
-            <div class="review-card">
-                <span>전기차 충전소</span>
-                <a href="${pageContext.request.contextPath}/editEvChargingReview.jsp" class="edit-btn">리뷰 수정</a>
-            </div>
-            <div class="review-card">
-                <span>주유소</span>
-                <a href="${pageContext.request.contextPath}/editGasStationReview.jsp" class="edit-btn">리뷰 수정</a>
-            </div>
-        </div>
-    </div>
-</div>
-
+        
 <!-- 푸터 -->
 <jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
 <jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />

@@ -64,7 +64,7 @@
   <div class="modal-content">
     <span class="close" onclick="closeChatBotModal()">&times;</span>
 <iframe 
-  src="https://pf.kakao.com/_abcd/chat" 
+  src="http://pf.kakao.com/_CxgFxdn/chat" 
   frameborder="0" 
   style="width: 100%; height: 400px;"></iframe>
 

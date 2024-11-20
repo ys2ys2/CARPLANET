@@ -13,10 +13,13 @@
 </head>
 <body>
 <header>
-  <div class="logo">
-    <a href="${pageContext.request.contextPath}/HomePage/mainpage">CAR PLANET</a>
-  </div>
-  
+
+
+<div class="logo">
+  <!-- 메인 페이지 URL을 '/'로 설정 -->
+  <a href="${pageContext.request.contextPath}/" id="logo-link">CAR PLANET</a>
+</div>
+
 <c:choose>
   <c:when test="${not empty user}">
     <!-- 로그인 성공 시, 마이페이지와 로그아웃 표시 -->
@@ -51,6 +54,8 @@
 </header>
    
 <script>
+
+
   // 로그아웃 버튼 클릭 이벤트
   $("#logout").on("click", function (e) {
     e.preventDefault(); // 기본 동작(링크 이동) 방지
@@ -75,5 +80,7 @@
     }
   });
 </script>
+
+
 </body>
 </html>

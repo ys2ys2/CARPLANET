@@ -15,18 +15,13 @@
     </a>
   </div>
   <div class="menu-item">
-    <a href="${pageContext.request.contextPath}/gasmap">
+    <a href="${pageContext.request.contextPath}/Gas/Gasmap.do">
       <img src="${pageContext.request.contextPath}/resources/images/gas.png" alt="주유소"><br>주유소
     </a>
   </div>
   <div class="menu-item">
     <a href="${pageContext.request.contextPath}/parkinglot">
       <img src="${pageContext.request.contextPath}/resources/images/par.png" alt="주차장"><br>주차장
-    </a>
-  </div>
-  <div class="menu-item">
-    <a href="${pageContext.request.contextPath}/repairshop">
-      <img src="${pageContext.request.contextPath}/resources/images/rep.png" alt="정비소"><br>정비소
     </a>
   </div>
   <div class="menu-item">
