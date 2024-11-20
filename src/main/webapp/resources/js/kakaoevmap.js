@@ -7,12 +7,49 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-// 지도 타입과 줌 컨트롤을 추가합니다
-var mapTypeControl = new kakao.maps.MapTypeControl();
-map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+// 지도 타입 컨트롤과 줌 컨트롤 변수 선언
+var mapTypeControl = null;
+var zoomControl = null;
 
-var zoomControl = new kakao.maps.ZoomControl();
-map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+// 초기 화면 크기를 확인하고 컨트롤 추가 여부 결정
+if (window.innerWidth > 425) {
+    addControls(); // 화면이 425px 초과일 경우 컨트롤 추가
+}
+
+// 화면 크기가 변경될 때 이벤트 처리
+window.addEventListener("resize", function () {
+    if (window.innerWidth <= 425) {
+        // 화면이 425px 이하일 경우 컨트롤 제거
+        removeControls();
+    } else {
+        // 화면이 425px 초과일 경우 컨트롤 추가
+        addControls();
+    }
+});
+
+// 컨트롤 추가 함수
+function addControls() {
+    if (!mapTypeControl && !zoomControl) { // 컨트롤이 없을 때만 추가
+        mapTypeControl = new kakao.maps.MapTypeControl();
+        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+        zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    }
+}
+
+// 컨트롤 제거 함수
+function removeControls() {
+    if (mapTypeControl && zoomControl) { // 컨트롤이 있을 때만 제거
+        map.removeControl(mapTypeControl);
+        map.removeControl(zoomControl);
+
+        // 변수 초기화
+        mapTypeControl = null;
+        zoomControl = null;
+    }
+}
+
 
 // 교통정보를 지도에 표시
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
@@ -362,8 +399,8 @@ function displayRoute(routeData) {
         
         // 예상 이동 시간을 시간과 분 형식으로 표시
         const totalDurationText = totalHours > 0
-            ? `총 예상 이동 시간: 약 ${totalHours}시간 ${totalMinutes}분`
-            : `총 예상 이동 시간: 약 ${totalMinutes}분`;
+            ? `예상 이동 시간: 약 ${totalHours}시간 ${totalMinutes}분`
+            : `예상 이동 시간: 약 ${totalMinutes}분`;
 
         // 예상 이동 시간(route-header)에 표시
         routeHeader.innerHTML = `<strong>${totalDurationText}</strong>`;

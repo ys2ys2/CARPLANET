@@ -447,8 +447,6 @@ html, body {
 
 
 
-
-
 /* 충전소 길 찾기 탭 스타일 */
 .route-search {
     display: flex;
@@ -934,9 +932,9 @@ html, body {
         height: 22px; /* 아이콘 크기 조정 */
     }
     
-    .route-search {
-    
-    
+    .page-button {
+    	width: 20px;
+    	height: 20px;
     
     }
     
@@ -946,10 +944,7 @@ html, body {
     	padding: 9px;
     	font-size: 14px;
     
-    
-    
     }
-    
     
     
     .dropdown {
@@ -998,6 +993,8 @@ html, body {
     .station-info-popup {
     	width: 280px;
     	height: 650px;
+    	top: 95px;
+    	right: 40px;
     
     }
     
@@ -1018,7 +1015,7 @@ html, body {
     }
     
     .popupchargeinfo span {
-    	margin: 1px 0;
+    	margin: 5px 0;
     	padding-bottom: 3px;
     	    	
     }
@@ -1060,7 +1057,6 @@ html, body {
     	gap: 8px;
     	font-size: 14px;
     	
-    
     }
     
     
@@ -1209,14 +1205,22 @@ html, body {
     .station-info-popup	{
 	    max-width: 250px;
 	    width: 300px;
-	    height: 660px;
+	    height: 640px;
     }
+    
+    .pagination-container {
+    	margin-right: 3px;
+    	
+    }
+    
     
     .page-button {
-    	font-size: 10px;
-    	height: 30px;
+    	font-size: 12px;
+    	width: 16px;
+    	height: 16px;
     
     }
+    
     
     
     .popupStationName {
@@ -1251,7 +1255,7 @@ html, body {
     .chargephoto-header {
     	font-size: 20px;
     	margin: 7px 0;
-    	margin-top: 1vh;
+    	margin-top: 1.5vh;
     }
     
     .roadviewnav {
@@ -1282,15 +1286,232 @@ html, body {
 /* 초소형 화면 (425px 이하) */
 @media (max-width: 425px) {
     body {
-        font-size: 14px; /* 전체 폰트 크기 축소 */
+    
     }
 
     .searchbar {
-        padding: 10px; /* 검색 바 여백 축소 */
+    	width: 150px;
+    	height: 650px;
+        padding: 2px; /* 검색 바 여백 축소 */
+        margin: 8px;
+        
+    }
+    
+    
+    .tabbarev, .tabbarroad {
+    	font-size: 9px;
+    	margin-top: 1vh;
+    
+    }
+    
+    .tab-content {
+    	margin-top: 1vh;
+    
+    }
+    
+    .selectlocal h3 {
+    	font-size: 11px;
+    	padding: 0;
+    	margin: 4px;
+    	margin-left: 1vh;
+    }
+    
+    
+    .dropdown {
+    	font-size: 9px;
+    	padding: 3px;
+    	margin: 2px auto;
+    
+    }
+    
+    .searchbutton {
+    	margin: 0px 8px;
+    	font-size: 9px;
+    	padding: 3px;
+    	
+    }
+    
+    .searchbutton-container {
+    	margin: 7px;
+    	
+    }
+    
+    .search-item {
+    	padding: 2px 0;
+    }
+    
+    .info h3 {
+    	font-size: 10px;
+    }
+    
+    
+    .info p {
+    	font-size: 9px;
+    	margin-top: 2px;
+    }
+    
+    .status span {
+    	font-size: 5px;
+    	margin-top: 2px;
+    }
+    
+    
+    .tabbar .active {
+    
     }
 
+	.tabbar .active::after {
+		bottom: -4px;
+		left: -10px;
+		width: calc(100% + 21px);
+	
+	}
+	
+	.searchlist {
+		margin-left: 1vh;
+		margin-top: 0.5vh;
+		
+	}
+	
+	.searchlist h2 {
+		font-size: 11px;
+		margin-top: 0.5vh;
+	}
+	
+	.chargetypetext {
+		font-size: 11px;
+		margin-top: 0.5vh;
+		margin-left: 1vh;
+	
+	}
+	
+	.chargetype {
+		margin-top: 1vh;
+	
+	}
+	
+	
+	.chargetype label {
+		font-size: 10px;
+		margin: 0px;
+	
+	}
+	
+	.chargetype input[type="checkbox"] {
+		margin-right: 0.5vh;
+    	width: 11px;
+    	height: 11px;
+	
+	}
+	
+	.pagination-container {
+		margin: 0 -3px;
+	
+	}
+	
+	.page-button {
+		height: 18px;
+		font-size: 8px;
+		margin: 0;
+		width: 10px;
+	}
+	
+	.pagination-wrapper {
+		display: table;
+	}
+	
+	
+	.station-info-popup {
+		width: 150px;
+		height: 580px;
+		top: 65px;
+		right: 8px;
+		padding: 15px;
+	
+	}
+	
+	#closePopupButton {
+		top: 2px;
+		right: 0px;
+		font-size: 13px;
+		
+	}
+	
+	.popupStationName {
+		font-size: 12px;
+		
+	}
+	
+	
+	.popupOperator {
+		padding: 2px 6px;
+		font-size: 9px;
+	
+	}
+	
+	.popupchargeType table {
+		margin: 8px auto;
+	
+	}
+	
+	.popupchargeType th, .popupchargeType td {
+		font-size: 9px;
+		padding: 0;
+	
+	}
+	
+	.popupchargeType span {
+		width: auto;
+		height: auto;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		font-size: 9px;
+		padding: 2px 6px;
+	
+	}
+
+	.popupchargeinfo span {
+		font-size: 12px;
+	
+	}
+	
+	.info-item {
+		font-size: 9px;
+	}
+	
+	.label {
+		width: 40px;
+	}
+	
+	.chargephoto-header {
+		font-size: 12px;
+		display: flex;
+		justify-content: space-between;
+		
+	}
+	
+	.roadviewnav {
+		font-size: 10px;
+		padding: 1px 3px;
+	}
+	
+	.chargephoto-header img {
+		width: 15px;
+		height: 15px;
+		
+	}
+	
+	.roadview {
+		width: 100%;
+		height: 220px;
+		max-height: 220px;
+	
+	}
+
     .route-main {
-        max-height: 30vh; /* 경로 리스트 높이 더 축소 */
+        max-height: 100vh;
     }
 
     .route-icon img {
@@ -1300,7 +1521,70 @@ html, body {
 
     .direction-item {
         gap: 3px; /* 리스트 간격 축소 */
+        padding: 0;
+        font-size: 10px;
+        width: 95%;
+        
     }
+		
+	.route-icon {
+		height: 27px;
+		margin-right: 2px;
+	
+	}    
+
+    
+    .route-search {
+    	margin-left: 1vh;
+    
+    }
+    
+    .route-search h3 {
+    	font-size: 11px;
+    	margin: 3px 0;
+    
+    }
+    
+    .route-input {
+    	font-size: 9px;
+    	padding: 7px;
+    	margin: 3px 0;
+    
+    }
+    
+    .route-swapbutton {
+    	padding: 3px 3px;
+    	width: 12px;
+    	height: 12px;
+    
+    }
+    
+    .route-searchbutton {
+    	width: 91%;
+    	font-size: 10px;
+    	padding: 6px;
+    }
+    
+    .route-header {
+    	margin: 0;
+    	padding: 0;
+    	font-size: 10px;
+    
+    }
+    
+    .autocomplete-item {
+    	font-size: 9px;
+    	padding: 2px 0;
+    
+    }
+    
+    .autocomplete-icon {
+    	width: 15px;
+    	height: 15px;
+    
+    }
+    
+    
 }
 
 

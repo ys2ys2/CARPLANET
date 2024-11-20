@@ -26,10 +26,10 @@
 
 
 html, body{
+	overflow: hidden;
 	margin:0 auto;
 	height: 100%;
 }
-
 
 /* maincontainer-parking을 전체 화면의 지도 배경으로 설정 */
 .maincontainer-parking {
@@ -39,6 +39,12 @@ html, body{
     overflow: hidden;
 }
 
+
+/* .map_wrap {position:relative;overflow:hidden;width:100%;height:350px;} */
+
+.map_wrap {
+	
+}
 /* 지도 전체 화면을 차지하도록 설정 */
 .parking-map {
     position: absolute;
@@ -106,24 +112,25 @@ html, body{
 .autocomplete-results {
     position: absolute; /* 부모인 search-container 아래에 붙게 설정 */
     top: 60px; /* 검색창 바로 아래에 위치 */
-    left: 0;
-    width: 100%;
+    left: 10px;
+    width: 95%;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 100; /* 지도 위에 표시되도록 설정 */
+    z-index: 1000; /* 지도 위에 표시되도록 설정 */
 }
 
 /* 자동완성 항목 스타일 */
 .autocomplete-item {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
     cursor: pointer;
     transition: background-color 0.2s;
     border-bottom: 1px solid #f0f0f0;
+    font-family: 'Pretendard-Regular';
 }
 
 .autocomplete-item:hover {
@@ -140,7 +147,12 @@ html, body{
     color: #666;
     margin-top: 2px;
 }
-
+/* 아이콘 스타일 */
+.autocomplete-icon {
+    width: 24px; /* 아이콘 크기 */
+    height: 24px;
+    flex-shrink: 0; /* 아이콘 크기 고정 */
+}
 
 .parking-contents{
 	display: flex;
@@ -218,8 +230,8 @@ html, body{
     color: #333;
     font-family: 'GongGothicMedium';
     font-weight: bold;
-    margin-right: 5px; /* 라벨과 select 사이의 간격 */
-	margin-left:17px;
+    margin-right:11px; /* 라벨과 select 사이의 간격 */
+	margin-left:11px;
 }
 /* select 요소 스타일 */
 .region-selection select {
@@ -231,6 +243,7 @@ html, body{
     background-color: #fff;
     color: #333;
     outline: none;
+    margin-top: 5px;
     margin-left:10px;
     margin-bottom:7px;
 }
@@ -411,12 +424,16 @@ html, body{
     right: 50px;
     max-width: 300px;
     width: 300px;
-    height: 750px;
+    height: 700px;
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     z-index: 1000;
+    
+     /* 스크롤바 추가 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 제거 */
     }
  
     
@@ -433,23 +450,58 @@ html, body{
 
 /* 제목 스타일 */
 .parking-title {
+	font-family: 'GongGothicMedium';
     font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
+    font-weight: 700;
+    color: black;
+    margin-top:0px;
+    
 }
 
 /* 각각의 정보 스타일 */
-.info-type, .info-address, .info-capacity, .info-operating, .info-time, .info-fee,
+.info-capacity, .info-operating, .info-time, .info-fee,
 .info-day-ticket, .info-monthly-ticket, .info-payment, .info-notes, .info-contact, 
 .info-accessibility, .info-coordinates, .info-date {
-    font-size: 14px;
+  }
+  
+
+.info-address{
+	font-size: 14px;
     color: #555;
-    margin-bottom: 8px;
+    font-family: 'Pretendard-Regular';
+    font-weight: 500;
+    margin-top: -10px;
 }
 
+/* 운영 시간 테이블 스타일 */
+.info-table {
+    width: 100%; /* 테이블 너비 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: 10px; /* 위쪽 여백 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+.info-table td {
+    padding: 8px; /* 셀 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    font-family: 'Pretendard-Regular';
+}
+
+.info-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경 */
+}
+
+.info-table tr:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 행 배경 */
+    font-family: 'Pretendard-Regular';
+}
+
+
+.info-type-label{
+	margin-top: -15px;
+}
 /* 특정 정보 스타일링 예시 */
-.info-type {
+.info-type-se {
     display: inline-block; /* 인라인 블록으로 설정하여 여백이 적용된 작은 라벨 형태 */
     color: white; /* 글자색을 흰색으로 */
     background-color: #4CAF50; /* 배경색을 녹색으로 강조 */
@@ -457,33 +509,59 @@ html, body{
     border-radius: 12px; /* 라벨 모양을 위한 둥근 모서리 */
     font-size: 12px; /* 폰트 크기 조절 */
     font-weight: bold; /* 글자 굵게 */
+    font-family: 'Pretendard-Regular';
     margin-right: 5px; /* 라벨 간 간격 추가 */
+
 }
 
-.info-time {
-    color: #007bff; /* 운영 시간 관련 항목은 파란색으로 강조 */
+.info-type-ty {
+    display: inline-block; /* 인라인 블록으로 설정하여 여백이 적용된 작은 라벨 형태 */
+    color: white; /* 글자색을 흰색으로 */
+    background-color: #0c10ec; 
+    padding: 4px 8px; /* 내부 여백 추가 */
+    border-radius: 12px; /* 라벨 모양을 위한 둥근 모서리 */
+    font-size: 12px; /* 폰트 크기 조절 */
+    font-weight: bold; /* 글자 굵게 */
+    font-family: 'Pretendard-Regular';
 }
 
-.info-fee {
-    color: #FF5733; /* 요금 정보는 주황색으로 강조 */
+.info-coordinates-btn{
+	background-color: #4CAF50; /* 배경색을 녹색으로 강조 */
+	color: white; /* 글자색을 흰색으로 */
+	font-weight: bold; /* 글자 굵게 */
+    font-family: 'Pretendard-Regular';
+    font-size: 14px; /* 폰트 크기 조절 */
+     border-radius: 12px; /* 라벨 모양을 위한 둥근 모서리 */
+     border: none;
+     
+     padding: 4px 8px; /* 내부 여백 추가 */
+     }
+
+
+
+/* 구분선을 추가할 클래스 */
+.info-divider {
+    border-bottom: 1px solid #ddd; /* 실선 스타일 */
+    padding-bottom: 5px; /* 구분선과 텍스트 사이 간격 */
+    margin-bottom: 10px; /* 다음 요소와 간격 */
+    font-family: 'Pretendard-Regular';
+    
+}
+.info-charge{
+	font-family: 'Pretendard-Regular';
+	font-weight:700;
+	font-size: 17px;
+	
 }
 
-.info-contact {
-    color: #333; /* 연락처는 기본 색상으로 표시 */
+#roadview-container {
+    width: 100%; /* 부모 요소의 너비를 채우도록 설정 */
+    height: 400px; /* 고정된 높이 설정 */
+    position: relative; /* 부모 컨텍스트 내 배치 */
+    border: 1px solid #ddd; /* 컨테이너 확인을 위한 테두리 */
+   
 }
 
-.info-coordinates {
-    color: #888; /* 좌표는 회색으로 */
-}
-
-.info-date {
-    font-style: italic; /* 데이터 기준 일자를 기울임꼴로 표시 */
-    color: #999;
-}
-/* 로드뷰 섹션 스타일 */
-.road-view {
-    margin-top: 15px;
-}
 
 .road-view-image {
     width: 100%;
@@ -568,21 +646,37 @@ html, body{
 
 .route-result {
     margin-top: 20px;
-    padding: 10px;
+    padding: 20px;
     background-color: #f9f9f9;
 }
 
+.route-result h4{
+	 margin-top: -30px;
+	 font-family: 'GongGothicMedium';
+	 font-size:18px;
+}
 .route-result h3 {
-    margin-top: 0;
+    font-family: 'GongGothicMedium';
 }
 
-.search-results {
+.route-result p{
+	font-family: 'Pretendard-Regular';
+	font-weight:500;
+}
+
+.start_search-results {
     border: 1px solid #ddd;
     max-height: 200px;
     overflow-y: auto;
     background-color: #fff;
     position: absolute;
+    width:90%;
     z-index: 1000;
+    font-family: 'Pretendard-Regular';
+    top:127px;
+    left:20px;
+    
+
 }
 
 .search-results div {
@@ -594,5 +688,277 @@ html, body{
     background-color: #f0f0f0;
 }
 
+.end_search-results{
+	 border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    position: absolute;
+    width:90%;
+    z-index: 1000;
+    font-family: 'Pretendard-Regular';
+    top:190px;
+    left:20px;
+    
+}
 
-      
+
+/* 길 안내 정보 스타일 */
+.guide-info {
+    display: flex;
+    align-items: center; /* 아이콘과 텍스트를 수직 정렬 */
+    gap: 10px; /* 아이콘과 텍스트 간격 */
+    margin-bottom: 10px; /* 가이드 항목 간 간격 */
+    font-family: 'Pretendard-Regular';
+}
+
+.guide-icon {
+    width: 24px; /* 아이콘 크기 */
+    height: 24px;
+    flex-shrink: 0; /* 아이콘 크기 고정 */
+}
+
+.currentlocation{
+	position: absolute; /* 지도 위에 버튼을 위치시킴 */
+    bottom: 20px; /* 아래쪽에서 20px */
+    left: 50%; /* 왼쪽에서 50% */
+    background-image: url('/resources/images/mylocation.png'); 
+    transform: translateX(-50%); /* 버튼을 가로축 중앙 정렬 */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1000; /* 지도 위에 표시되도록 z-index 추가 */
+}
+.radius_border{
+	border:1px solid #919191;
+	border-radius:5px;}
+	     
+.custom_typecontrol {
+	position:absolute;
+	top:50px;
+	right:4px;
+	overflow:hidden;
+	width:130px;
+	height:30px;
+	margin:0;
+	padding:0;
+	z-index:1;
+	font-size:12px;
+	font-family:'Malgun Gothic', '맑은 고딕', sans-serif;
+	}
+	
+	
+.custom_typecontrol span {
+	display:block;
+	width:65px;
+	height:30px;
+	float:left;
+	text-align:center;
+	line-height:30px;
+	cursor:pointer;
+	}
+	
+.custom_typecontrol .btn {
+	background:#fff;
+	background:linear-gradient(#fff,  #e6e6e6);
+	}       
+	
+.custom_typecontrol .btn:hover {
+	background:#f5f5f5;
+	background:linear-gradient(#f5f5f5,#e3e3e3);
+	}
+	
+.custom_typecontrol .btn:active {
+	background:#e6e6e6;
+	background:linear-gradient(#e6e6e6, #fff);
+	}    
+	
+.custom_typecontrol .selected_btn {
+	color:#fff;
+	background:#425470;
+	background:linear-gradient(#425470, #5b6d8a);
+	}
+	
+.custom_typecontrol .selected_btn:hover {
+	color:#fff;
+	}   
+.custom_zoomcontrol {
+	position:absolute;
+	top:85px;
+	right:4px;
+	width:36px;
+	height:80px;
+	overflow:hidden;
+	z-index:1;
+	background-color:#f5f5f5;
+	} 
+	
+.custom_zoomcontrol span {
+	display:block;
+	width:36px;
+	height:40px;
+	text-align:center;
+	cursor:pointer;
+	}    
+	 
+.custom_zoomcontrol span img {
+	width:15px;
+	height:15px;
+	padding:12px 0;
+	border:none;
+	}        
+	     
+.custom_zoomcontrol span:first-child{
+	border-bottom:1px solid #bfbfbf;
+	}            
+	
+	
+/*media 모바일화면 (425px이하)*/
+@media(max-width: 425px){
+	.parking-contents{
+	width: 200px;
+	height: 500px;
+	}
+	.region-selection select {
+    width: 170px;
+    font-family: 'GongGothicMedium';
+    font-size: 10px;}
+    .region-selection label {
+    font-size: 12px;}
+    
+    .region-selection button {
+    width: 173px;
+    padding: 12px;
+    font-size: 12px;
+    }
+    
+    .tab-button {
+    font-size: 10px;
+    }
+	.region-selection select option {
+    font-size: 11px;
+	}
+	.route-search input[type="text"] {
+    width: 130px;
+    font-family: 'GongGothicMedium';
+    font-size: 10px; 
+	}
+	.route-search button {
+    width: 155px;
+    font-size: 10px;
+	}
+	
+	.autocomplete-item {
+    font-size: 11px;
+	}
+	
+	.search-bar {
+    width: 160px;
+	}
+	.search-bar input[type="text"] {
+    font-size: 11px;
+}
+
+	.search-bar button {
+    font-size: 15px;
+    margin-left: -30px;
+	}
+.autocomplete-icon {
+    width: 13px;
+    height: 13px;
+}
+
+.parking-item h3 {
+    font-size: 12px;
+}
+
+.parking-item p {
+    font-size: 10px;
+    }
+    
+  .label_gubun {
+    font-size: 9px;
+  }
+  .label_charge{
+    font-size: 9px;
+  }
+  
+  .label_type{
+    font-size: 9px;
+  }
+    
+   .route-result h4 {
+    font-size: 12px;
+} 
+
+.route-result p {
+    font-size: 11px;
+} 
+	.custom_zoomcontrol {
+    top: 150px;
+    right: 4px;
+    width: 20px;
+    height: 50px;
+
+}
+
+.custom_zoomcontrol span img {
+    width: 10px;
+    height: 10px;
+}
+.custom_typecontrol span {
+  		width: 30px; /* 버튼 폭 축소 */
+        height: 35px; /* 버튼 높이 축소 */
+        font-size: 12px; /* 폰트 크기 축소 */
+        line-height: 35px; /* 텍스트 정렬 조정 */
+        margin: 3px auto; /* 간격 조정 */
+        border-radius: 3px; /* 모서리 라운드 축소 */
+}	
+
+#parking-details-popup {
+    position: fixed;
+    top: 237px;
+    right: 10px;
+    width: 150px;
+    height: 450px;
+ 
+}
+.parking-title {
+    font-family: 'GongGothicMedium';
+    font-size: 15px;
+}
+
+.info-charge {
+    font-size: 13px;}
+    
+  .info-table td {
+    font-size: 11px;
+    }
+    
+    .info-divider {
+    font-size: 11px;
+    }
+    .guide-info{
+     font-size: 11px;}
+     
+    .guide-icon {
+    width: 13px; /* 아이콘 크기 */
+    height: 13px;
+     
+}
+ 
+
+
+}
+
+
+	
+	
+}	
