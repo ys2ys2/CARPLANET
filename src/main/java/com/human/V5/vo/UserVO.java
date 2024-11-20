@@ -22,5 +22,7 @@ public class UserVO {
 
 	private String birthday;
 	
-	private String carstatus;
+	private Integer carstatus;
+	
+	private String carNickname;
 }

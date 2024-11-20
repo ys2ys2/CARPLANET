@@ -127,9 +127,15 @@
 	margin-top: 20px;
 	display: flex;
 	justify-content: center;
-	width: 100%;
+	flex-direction:column;
+	width: 70%;
 	gap: 20px;
 }
+.s-loginImg{
+	display: flex;
+	justify-content: space-evenly;
+}
+
 
 .s-login img {
 	width: 40px;
@@ -252,6 +258,193 @@
 	justify-content: center;
 	text-align: center;
 }
+
+.terms-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center; /* 기본적으로 가운데 정렬 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#modalContent {
+	margin:0 auto;
+	width: 80%;
+    text-align: Left; /* 텍스트만 왼쪽 정렬 */
+    line-height: 1.6; /* 읽기 편하도록 줄 간격 설정 */
+    background-color: #f9f9f9; /* 연한 배경색으로 박스 구분 */
+    border: 1px solid #ddd; /* 연한 테두리 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+    padding: 20px; /* 내부 여백 */
+    margin-top: 10px; /* 상위 요소와 간격 추가 */
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+#confirmTerms, #cancelTerms {
+    padding: 10px 20px; /* 버튼 크기 */
+    font-size: 14px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 두께 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    background: linear-gradient(to right, #f6f6f6, #e9e9e9); /* 부드러운 배경 그라데이션 */
+    color: #333; /* 텍스트 색상 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    transition: all 0.3s ease; /* 부드러운 애니메이션 */
+}
+
+/* 호버 효과 */
+#confirmTerms:hover, #cancelTerms:hover {
+    background: linear-gradient(to right, #e0e0e0, #d4d4d4); /* 호버 시 배경 그라데이션 변경 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 확대 */
+    border-color: #aaa; /* 테두리 색상 변경 */
+}
+
+/* 활성화된 확인 버튼 */
+#confirmTerms:disabled {
+    background: #f0f0f0; /* 비활성화 시 배경색 */
+    color: #aaa; /* 비활성화 시 텍스트 색상 */
+    border-color: #ddd; /* 비활성화 시 테두리 색상 */
+    cursor: not-allowed; /* 커서를 '금지'로 변경 */
+    box-shadow: none; /* 그림자 제거 */
+}
+
+.pwterm{
+	width:80%;
+	font-weight: normal !important;
+	font-size: 9px !important;
+	text-align: left;
+	cursor: text !important;
+}
+
+/* 테블릿 PC */
+@media (max-width: 1024px) {
+    .container {
+        width: 70%; /* 너비를 줄여서 레이아웃 조정 */
+        height: 70vh; /* 높이도 조금 줄임 */
+    }
+	
+	.formbox{
+		width: 50%
+	}
+	
+    .formbox, .pagebox {
+        padding: 10px; /* 내부 여백 조정 */
+    }
+
+    .signininput, .signupinput {
+        font-size: 12px; /* 입력 필드 글씨 크기 줄임 */
+        padding: 8px; /* 패딩 조정 */
+    }
+
+    .signinbut, .signupinbtn {
+        font-size: 14px; /* 버튼 텍스트 크기 조정 */
+        padding: 8px; /* 패딩 줄임 */
+    }
+
+    .s-login img {
+        width: 30px; /* 소셜 로그인 버튼 크기 줄임 */
+        height: 30px;
+    }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    .container {
+        width: 100%; /* 너비를 100%로 확장 */
+        height: auto; /* 높이를 자동으로 */
+        flex-direction: column; /* 세로 방향으로 나열 */
+    }
+
+    .formbox, .pagebox {
+        height: 50vh; /* 높이를 자동으로 */
+        padding: 15px; /* 여백 약간 추가 */
+    }
+
+    .signininput, .signupinput {
+        font-size: 10px; /* 글씨 크기 더 줄임 */
+        padding: 6px; /* 패딩 줄임 */
+    }
+
+    .signinbut, .signupinbtn {
+        font-size: 12px; /* 버튼 텍스트 더 줄임 */
+        padding: 6px;
+    }
+
+    .s-login {
+        width: 100%; /* 소셜 로그인 섹션 전체 너비 사용 */
+    }
+
+    .s-login img {
+        width: 25px; /* 버튼 크기 더 줄임 */
+        height: 25px;
+    }
+
+    .wrapbut {
+        font-size: 12px; /* 버튼 텍스트 크기 조정 */
+        padding: 5px; /* 패딩 줄임 */
+        height: auto; /* 높이 자동으로 */
+    }
+}
+
+/* 중형 모바일 */
+@media (max-width: 425px) {
+    .container {
+        flex-direction: column; /* 세로 방향으로 정렬 */
+        width: 100%; /* 전체 너비 사용 */
+        height: auto; /* 높이 자동으로 */
+    }
+
+    .formbox, .pagebox {
+        width: 50%; /* 박스가 전체 너비를 차지 */
+        padding: 10px; /* 내부 여백 줄임 */
+    }
+
+    .signininput, .signupinput {
+        font-size: 9px; /* 글씨 크기 더 줄임 */
+        padding: 5px; /* 패딩 줄임 */
+    }
+
+    .signinbut, .signupinbtn {
+        font-size: 10px; /* 버튼 텍스트 줄임 */
+        padding: 5px;
+    }
+
+    .s-login img {
+        width: 20px; /* 소셜 로그인 버튼 크기 더 줄임 */
+        height: 20px;
+    }
+
+    .wrapbut {
+        font-size: 10px; /* 버튼 텍스트 더 줄임 */
+        padding: 4px; /* 패딩 줄임 */
+        height: auto; /* 높이 자동으로 */
+    }
+}
+
 </style>
 </head>
 <body>
@@ -273,20 +466,24 @@
 				</div>
 				
 				<div id="resultMsg" style="display:none; font-size:13px; color:red; margin-top:5px;"></div>
-				<input class="signupinput" id="carPw" name="carPw" type="password" placeholder="비밀번호" required>
+				<p class="pwterm">※비밀번호는 8~16자 영문 소문자 및 특수문자 1개이상 포함 공백금지 </p>
+				<input style="margin-top:0;" class="signupinput" id="carPw" name="carPw" type="password" placeholder="비밀번호" required>
 				<input class="signupinput" name="checkPw" type="password" placeholder="비밀번호 확인" required>
-				<div class="wrapbox"><input class="signupinput" name="email" type="text" placeholder="이메일" required>
+				<p class="pwterm">※이메일 주소를 입력해주세요. 올바른 형식 예: user@example.com</p>
+				<div class="wrapbox">
+				<input style="margin-top:0;" class="signupinput" name="email" type="text" placeholder="이메일" required>
 				<button id="emailnumber" type="button" class="wrapbut">인증번호 받기</button>
 				</div>			
 				<div class="wrapbox">
 				<input class="signupinput" name="emailkey" type="text" placeholder="인증번호입력" required>
 				<button type="button" class="wrapbut" id="verifyCodeButton">인증확인</button>
 				</div>
-				<input class="signupinput" name="birthday" type="text" placeholder="생년월일" required>
+				<input class="signupinput" name="birthday" type="text" placeholder="생년월일 8자리" required>
 				<div class="checkbox-group">
-					<label><input type="checkbox" required> 이용약관 필수 동의</label>
-					<label><input type="checkbox" required> 위치정보 이용약관 필수 동의</label>
-					<label><input type="checkbox" required> 개인정보 처리방침 필수 동의</label>
+					<label><input type="checkbox" required data-type="termsOfService" class="terms-detail"> 이용약관 필수 동의</label>
+   					<label><input type="checkbox" required data-type="locationPolicy" class="terms-detail"> 위치정보 이용약관 필수 동의</label>
+    				<label><input type="checkbox" required data-type="privacyPolicy" class="terms-detail"> 개인정보 처리방침 필수 동의</label>
+
 				</div>
 				<button type="submit" id="signup-btn" class="signinbut">회원가입</button>
 			</div>
@@ -298,7 +495,6 @@
 					<h2>다시 오셨네요!<br>맞춤 충전소 정보를 확인하세요!</h2>
 					<p>아직 가입한 계정이 없으신가요?</p>
 					<button class="signupinbtn" id="signUp">회원가입</button>
-					<button class="signupinbtn" id="logout">로그아웃</button>
 				</div>
 				<div class="overlay-right">
 					<h2>환영합니다<br>회원님만의 맞춤형 서비스를 만나보세요!</h2>
@@ -322,12 +518,28 @@
 				</div>
 				<button class="signinbut" id="signin-btn" type="submit">로그인</button>
 				<div class="s-login">
-					<img id="googleLogin" src="${pageContext.request.contextPath}/resources/images/googlebutton.png" alt="Google">
-					<img id="kakaologin" src="${pageContext.request.contextPath}/resources/images/kakaobutton.png" alt="Kakao">
-					<img src="${pageContext.request.contextPath}/resources/images/naverbutton.png" alt="Naver">
+					<div id="googleLogin"></div>
+					<div class="s-loginImg"><img id="kakaologin" src="${pageContext.request.contextPath}/resources/images/kakaobutton.png" alt="Kakao">
+					<img src="${pageContext.request.contextPath}/resources/images/naverbutton.png" alt="Naver"></div>
 				</div>
 			</div>
 		</form>
+	</div>
+	
+	<div class="terms-modal" id="termsModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button" id="closeModal">&times;</span>
+        <h2 id="modalTitle">약관 제목</h2>
+        <div id="modalContent">약관 상세 내용</div>
+        <!-- 모달 내 체크박스와 버튼 -->
+        <div style="margin-top: 20px;">
+            <label><input type="checkbox" id="modalCheckbox"> 약관을 읽고 동의합니다.</label>
+        </div>
+        <div style="margin:20px 0 20px 0;">
+            <button id="confirmTerms" disabled>확인</button>
+            <button id="cancelTerms">취소</button>
+        </div>
+    </div>
 	</div>
 	</div>
 
@@ -337,6 +549,85 @@
 	    const signUpButton = document.getElementById('signUp');
 	    const signInButton = document.getElementById('signIn');
 	    const container = document.getElementById('container');
+	    const termsModal = $("#termsModal");
+	    const modalTitle = $("#modalTitle");
+	    const modalContent = $("#modalContent");
+	    const closeModal = $("#closeModal");
+	    const confirmTerms = $("#confirmTerms");
+	    const modalCheckbox = $("#modalCheckbox");
+	    const cancelTerms = $("#cancelTerms");
+	    const termsDetails = {
+	    	    termsOfService: `
+	    	        1. 본 서비스는 사용자에게 정보를 제공하기 위해 운영됩니다.<br>
+	    	        2. 사용자는 서비스를 개인적인 목적으로만 사용할 수 있으며, 상업적 목적으로 사용할 수 없습니다.<br>
+	    	        3. 서비스를 악용하거나 불법적인 행위를 하지 않을 의무가 있습니다.<br>
+	    	        4. 회사는 서비스 운영과 관련된 변경, 중단 또는 종료를 할 권리가 있습니다.
+	    	    `,
+	    	    locationPolicy: `
+	    	        1. 본 서비스는 사용자의 위치정보를 기반으로 맞춤형 서비스를 제공합니다.<br>
+	    	        2. 위치정보는 사용자 동의 하에 수집되며, 서비스 제공을 위한 목적으로만 사용됩니다.<br>
+	    	        3. 사용자는 언제든지 위치정보 제공을 중단할 수 있습니다.<br>
+	    	        4. 위치정보는 서비스 종료 후 즉시 삭제됩니다.
+	    	    `,
+	    	    privacyPolicy: `
+	    	        1. 개인정보는 사용자의 동의 하에 수집되며, 법적 근거에 따라 안전하게 처리됩니다.<br>
+	    	        2. 수집된 개인정보는 서비스 제공, 계정 관리 및 법적 의무 준수를 위해 사용됩니다.<br>
+	    	        3. 사용자는 언제든지 개인정보 열람, 수정 및 삭제를 요청할 권리가 있습니다.<br>
+	    	        4. 회사는 개인정보를 제3자와 공유하지 않으며, 보안을 위해 최선을 다합니다.
+	    	    `
+	    	};
+
+	    
+	    $(".terms-detail").on("click", function (event) {
+	        event.preventDefault(); // 기본 체크 방지
+	        const type = $(this).data("type");
+	        const parentCheckbox = $(this); // 부모 체크박스 참조 저장
+
+	        // 약관 상세내용 설정
+	        if (termsDetails[type]) {
+	            modalTitle.text(type === "termsOfService" ? "이용약관" : 
+	                            type === "locationPolicy" ? "위치정보 이용약관" : 
+	                            "개인정보 처리방침");
+	            modalContent.html(termsDetails[type]);
+	        } else {
+	            modalTitle.text("약관 내용");
+	            modalContent.text("약관 내용을 불러오지 못했습니다.");
+	        }
+
+	        // 초기화
+	        modalCheckbox.prop("checked", false);
+	        confirmTerms.prop("disabled", true);
+
+	        // 모달 보이기
+	        termsModal.fadeIn();
+
+	        // 모달 내 체크박스 상태 변경
+	        modalCheckbox.on("change", function () {
+	            confirmTerms.prop("disabled", !$(this).is(":checked")); // 체크 상태에 따라 버튼 활성화
+	        });
+
+	        // 확인 버튼 클릭 시
+	        confirmTerms.off("click").on("click", function () {
+	            parentCheckbox.prop("checked", true); // 상위 체크박스 활성화
+	            termsModal.fadeOut(); // 모달 닫기
+	        });
+
+	        // 취소 버튼 또는 닫기 버튼 클릭 시
+	        cancelTerms.off("click").on("click", function () {
+	            termsModal.fadeOut(); // 모달 닫기
+	        });
+
+	        closeModal.off("click").on("click", function () {
+	            termsModal.fadeOut(); // 모달 닫기
+	        });
+	    });
+
+	    // 모달 배경 클릭 시 닫기
+	    $(window).on("click", function (e) {
+	        if ($(e.target).is(termsModal)) {
+	            termsModal.fadeOut();
+	        }
+	    });
 
 	    signUpButton.addEventListener('click', () => {
 	        container.classList.add("right-panel-active");
@@ -516,11 +807,10 @@
         
         $('#kakaologin').on('click', function () {
             Kakao.Auth.login({
-                scope: 'profile_nickname', // 필요한 동의 항목
+                scope: 'profile_nickname',
                 success: function (authObj) {
                     console.log('로그인 성공:', authObj);
 
-                    // 사용자 정보 요청
                     Kakao.API.request({
                         url: '/v2/user/me',
                         success: function (res) {
@@ -529,12 +819,28 @@
                             // 서버로 사용자 정보 전송
                             $.ajax({
                                 type: 'POST',
-                                url: 'kakaoLoginProcess.do', // 서버의 처리 엔드포인트
+                                url: 'kakaoLoginProcess.do',
                                 contentType: 'application/json',
-                                data: JSON.stringify(res), // 사용자 정보를 JSON으로 전송
+                                data: JSON.stringify(res),
                                 success: function (response) {
-                                    alert('로그인 성공');
-                                    window.location.href = '/V5/'; // 성공 후 리다이렉트
+                                    console.log('서버 응답:', response);
+
+                                    // 응답 데이터 전체 확인
+                                    console.log('리다이렉트 URL:', response.redirectUrl);
+                                    console.log('carId:', response.carId);
+
+                                    if (response.redirectUrl) {
+                                        if (response.redirectUrl.includes("Authsetname.do") && response.carId) {
+                                        	const finalRedirectUrl = response.redirectUrl+"?carId="+response.carId;
+                                        	console.log('Final Redirect URL:', finalRedirectUrl); // 최종 URL
+                                        	window.location.href = finalRedirectUrl;
+                                        } else {
+                                            window.location.href = response.redirectUrl;
+                                        }
+                                    } else {
+                                        console.error("리다이렉트 URL이 응답에 없습니다.");
+                                        alert("리다이렉트 정보가 누락되었습니다.");
+                                    }
                                 },
                                 error: function (error) {
                                     console.error('서버 처리 에러:', error);
@@ -553,66 +859,57 @@
                 }
             });
         });
+
+
         
-        // 구글 로그인 초기화
         window.onload = function () {
             google.accounts.id.initialize({
-                client_id: '965683450029-68l8v3esl34io1oj9rn0cjavk5addr1c.apps.googleusercontent.com', // 구글 클라이언트 ID
-                callback: handleGoogleLoginResponse
+                client_id: "965683450029-68l8v3esl34io1oj9rn0cjavk5addr1c.apps.googleusercontent.com", // Google 클라이언트 ID
+                callback: handleGoogleLoginResponse, // 성공 시 콜백
             });
 
+            // Google에서 제공하는 버튼 렌더링
             google.accounts.id.renderButton(
-                document.getElementById('googleLogin'), // 구글 로그인 버튼 ID
-                { theme: 'outline', size: 'large' }
+                document.getElementById('googleLogin'), // 버튼이 렌더링될 요소
+                { theme: 'outline', size: 'large' } // 버튼 스타일
             );
         };
 
-        // 구글 로그인 응답 처리
+// Google 로그인 성공 후 응답 처리
         function handleGoogleLoginResponse(response) {
-            console.log('구글 로그인 성공:', response);
+            console.log('Google 로그인 성공:', response);
 
-            // 구글 ID 토큰 서버 전송
+            // ID 토큰(credential)을 서버로 전송하여 처리
             $.ajax({
                 type: 'POST',
-                url: 'googleLoginProcess.do',
+                url: 'googleLoginProcess.do', // 서버의 처리 URL
                 contentType: 'application/json',
-                data: JSON.stringify({ id_token: response.credential }),
-                success: function (res) {
-                    alert('구글 로그인 성공');
-                    window.location.href = '/V5/';
+                data: JSON.stringify({ id_token: response.credential }), // ID 토큰을 JSON 형식으로 서버에 전송
+                success: function (response) {
+                    console.log('서버 응답:', response);
+
+                    // 응답 데이터에서 리다이렉트 URL 확인
+                    if (response.redirectUrl) {
+                        // 신규 사용자라면 닉네임 설정 페이지로 이동
+                        if (response.redirectUrl.includes("Authsetname.do") && response.carId) {
+                            window.location.href = response.redirectUrl+"?carId="+response.carId;
+                        } else {
+                            // 기존 사용자는 메인 페이지로 이동
+                            window.location.href = response.redirectUrl;
+                        }
+                    } else {
+                        console.error("리다이렉트 URL이 응답에 없습니다.");
+                        alert("리다이렉트 정보가 누락되었습니다.");
+                    }
                 },
-                error: function (err) {
-                    console.error('구글 로그인 실패:', err);
-                    alert('구글 로그인 처리 중 문제가 발생했습니다.');
+                error: function (error) {
+                    console.error('구글 로그인 처리 중 오류:', error);
+                    alert('Google 로그인 처리 중 문제가 발생했습니다.');
                 }
             });
         }
-        
-        
-        $("#logout").on("click", function () {
-            // 확인 알림창
-            const confirmation = confirm("정말 로그아웃 하시겠습니까?");
-            
-            if (confirmation) {
-                // 사용자가 '확인'을 누르면 로그아웃 요청 전송
-                $.ajax({
-                    url: "logout.do", // 서버 로그아웃 URL
-                    type: "GET", // 로그아웃 요청 방식
-                    success: function (response) {
-                        // 로그아웃 성공 시 메인 페이지로 리다이렉트
-                        alert("로그아웃되었습니다.");
-                        window.location.href = "/V5/"; // 메인 페이지로 이동
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("로그아웃 요청 중 오류 발생:", error);
-                        alert("로그아웃에 실패했습니다.");
-                    },
-                });
-            } else {
-                // 사용자가 '취소'를 누르면 아무 동작도 하지 않음
-                console.log("사용자가 로그아웃을 취소했습니다.");
-            }
-        });
+
+
         
 	});
 
