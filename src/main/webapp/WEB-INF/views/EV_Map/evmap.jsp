@@ -101,7 +101,9 @@
 	    </ul>
 	</div>
 	<!-- 페이지네이션 버튼 -->
-	<div id="pagination" class="pagination-container"></div>
+	<div class="pagination-wrapper">
+		<div id="pagination" class="pagination-container"></div>
+	</div>
 
 	
 	</div> <!-- end of tab-content active-->

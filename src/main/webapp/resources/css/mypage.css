@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 차량 정보 섹션 */
+.car-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.car-image {
+    width: 200px;
+    height: auto;
+    border: 3px solid #2b7cd3; /* 파란색 테두리 */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.car-details {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.car-detail {
+    background-color: #2b2b2b;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.register-car-info-btn {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2b7cd3;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.register-car-info-btn:hover {
+    text-decoration: underline;
+}
+
+/* 자주 가는 장소 */
+h4 {
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
+.frequent-places, .review-management {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.place-card, .review-card {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.place-card span, .review-card span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.more-btn, .edit-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #2b7cd3;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 12px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.more-btn:hover, .edit-btn:hover {
+    background-color: #1f5a9d;
+}
