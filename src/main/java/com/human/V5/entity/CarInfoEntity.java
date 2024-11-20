@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class CarInfoEntity {
 	@Id
-	@Column(name = "car_idx") //primary key 컬럼
+	@Column(name = "car_idx") //세션에 저장된 idx값 가져오기
 	private Long carIdx;
 	
 	@Column(name = "car_type", nullable = false) //차량 종류
