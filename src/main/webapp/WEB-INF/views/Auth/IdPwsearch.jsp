@@ -12,12 +12,12 @@ html, body {
 	margin: 0;
 	padding: 0;
 	display: flex;
-	background: linear-gradient(135deg, #f9f9f9, #ececec); /* 배경 유지 */
 	flex-direction: column;
 }
 
 .section {
 	display: flex;
+	background-color:#f6f5f7;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
@@ -389,28 +389,30 @@ button:active {
 							const email = $("#emailId").val();
 
 							$.ajax({
-								type : "post",
-								url : "findId",
-								data : {
-									name : name,
-									email : email
-								},
-								success : function(response) {
-									$("#idResult").text("찾은 아이디: " + response)
-											.css("color", "green");
-								},
-								error : function(xhr) {
-									if (xhr.status === 404) {
-										$("#idResult").text(
-												"해당 이름과 이메일로 아이디를 찾을 수 없습니다.")
-												.css("color", "red");
-									} else {
-										$("#idResult").text(
-												"아이디 찾기 요청 중 오류가 발생했습니다.").css(
-												"color", "red");
-									}
-								},
+							    type: "post",
+							    url: "findId",
+							    data: {
+							        name: name,
+							        email: email
+							    },
+							    dataType: "json",
+							    success: function(response) {
+							        if (Array.isArray(response)) {
+							            const ids = response.join(", "); // 여러 ID를 쉼표로 구분
+							            $("#idResult").text("찾은 아이디들: " + ids).css("color", "green");
+							        } else {
+							            $("#idResult").text("찾은 아이디: " + response).css("color", "green");
+							        }
+							    },
+							    error: function(xhr) {
+							        if (xhr.status === 404) {
+							            $("#idResult").text("해당 이름과 이메일로 아이디를 찾을 수 없습니다.").css("color", "red");
+							        } else {
+							            $("#idResult").text("아이디 찾기 요청 중 오류가 발생했습니다.").css("color", "red");
+							        }
+							    }
 							});
+
 						});
 
 				// 비밀번호 찾기 폼 제출 시 처리
