@@ -36,7 +36,7 @@
     </a>
   </div>
   <div class="icon-item1">
-    <a href="${pageContext.request.contextPath}/community">
+    <a href="${pageContext.request.contextPath}/community/getPostList.do">
       <img src="${pageContext.request.contextPath}/resources/images/Community2.png" alt="커뮤니티" class="icon">
       <span>커뮤니티</span>
     </a>

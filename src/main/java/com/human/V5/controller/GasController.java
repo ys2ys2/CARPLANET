@@ -44,4 +44,25 @@ public class GasController {
             return ResponseEntity.status(500).body("API 호출 실패");
         }
     }
+    
+    @GetMapping("/getStationDetails")
+    @ResponseBody
+    public ResponseEntity<String> getStationDetails(@RequestParam String id) {
+        String apiUrl = String.format(
+            "https://www.opinet.co.kr/api/detailById.do?code=F241117453&id=%s&out=json", id
+        );
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String response = restTemplate.getForObject(apiUrl, String.class);
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/json; charset=UTF-8")
+                    .body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("API 호출 실패");
+        }
+    }
+    
+    
 }

@@ -11,26 +11,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"?ver=1.0></script> -->
-  
-   <!--  <style>
-        .price-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .price-box {
-            text-align: center;
-        }
-        .label {
-            font-weight: bold;
-        }
-        .value {
-            font-size: 1.2em;
-            color: #333;
-        }
-    </style>--> 
-
 </head>
 <body>
 
@@ -209,21 +189,21 @@ fetchData();
             subtitle: "주차장과 주차장의<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink: "${pageContext.request.contextPath}/parkinglot",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/003.png"
         },
         {
             title: "주변 주유소를 찾고 있다고요?",
             subtitle: "주유소와 가격<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink:  "${pageContext.request.contextPath}/Gas/Gasmap.do",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/002.png"
         },
         {
             title: "주변 충전소를 찾고 있다고요?",
             subtitle: "전기차 충전소의 가격<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink:  "${pageContext.request.contextPath}/evmap",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/11.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/001.png"
         }
     ];
 

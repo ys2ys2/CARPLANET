@@ -1,6 +1,7 @@
 package com.human.V5.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity findByNameAndEmail(String name, String email) {
+	public List<UserEntity> findByNameAndEmail(String name, String email) {
 		// TODO Auto-generated method stub
 		return repository.findByCarNameAndEmail(name, email);
 	}
@@ -187,6 +188,23 @@ public class UserServiceImpl implements UserService {
 	        e.printStackTrace();
 	        System.err.println("임시 비밀번호 이메일 전송 중 오류 발생: " + e.getMessage());
 	    }
+	}
+
+	@Override
+	public boolean existsByCarNickname(String carNickname) {
+		// TODO Auto-generated method stub
+		return repository.existsByCarNickname(carNickname);
+	}
+
+	@Override
+	public UserEntity findByCarId(String carId) {
+		// TODO Auto-generated method stub
+		return repository.findByCarId(carId);
+	}
+
+	@Override
+	public void updateUser(UserEntity userEntity) {
+		repository.save(userEntity);		
 	}
 
 	

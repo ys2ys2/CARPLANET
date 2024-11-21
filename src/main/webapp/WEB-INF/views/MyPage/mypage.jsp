@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +13,7 @@
 
 <div class="profile-section">
     <div class="profile-card">
+    <input type="hidden" id="carIdx" value="${sessionScope.user.carIdx}" />
         <!-- 차량 정보 섹션 -->
         <h4>나의 차량 정보</h4>
         <div class="car-info">
@@ -21,19 +21,28 @@
             <div class="car-details">
                 <div class="car-detail">
                     <div class="label-box">차량 종류</div>
-                    <div class="value-box">아우디 A6</div>
+                    <input type="text" id="carType" class="value-box input-field" placeholder="차량 종류를 입력해 주세요." />
                 </div>
                 <div class="car-detail">
                     <div class="label-box">차량 번호</div>
-                    <div class="value-box">123가 1234</div>
+                    <input type="text" id="carNumber" class="value-box input-field" placeholder="차량 번호를 입력해 주세요." />
                 </div>
                 <div class="car-detail">
                     <div class="label-box">차량 유종</div>
-                    <div class="value-box">디젤</div>
+                    <div class="value-box">
+                        <!-- 차량 유종 드롭다운 -->
+                        <select id="fuelType" class="value-box input-field">
+                            <option value="" disabled selected>차량 유종을 선택해 주세요</option>
+                            <option value="디젤">디젤</option>
+                            <option value="휘발유">휘발유</option>
+                            <option value="전기">전기</option>
+                            <option value="lpg">LPG</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <!-- 차량 정보 등록하기 버튼 -->
-            <a href="${pageContext.request.contextPath}/registerCarInfo.jsp" class="register-car-info-btn">차량정보 등록하기</a>
+            <div class="register-car-info-btn">등록하기</div>
         </div>
     </div>
     
@@ -57,5 +66,79 @@
 <!-- 푸터 -->
 <jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
 <jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
+
+
+<script>
+
+document.querySelector('.register-car-info-btn').addEventListener('click', () => {
+    const carInfo = {
+        carType: document.querySelector('input[placeholder="차량 종류를 입력해 주세요."]').value,
+        carNumber: document.querySelector('input[placeholder="차량 번호를 입력해 주세요."]').value,
+        fuelType: document.querySelector('select').value,
+    };
+
+    fetch('${pageContext.request.contextPath}/car/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(carInfo),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('서버 오류: ' + response.status);
+        }
+        return response.text();
+    })
+    .then(message => {
+        alert(message);
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('저장 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    });
+});
+
+// session.car_idx = car_info table.car_idx
+$(document).ready(function() {
+    const carIdx = $('#carIdx').val();
+    console.log("carIdx:", carIdx);
+    console.log("carIdx (from hidden input):", carIdx, "Type:", typeof carIdx);
+
+    if (carIdx) {
+    	const url = "/CarPlanet/car/" + carIdx;
+        console.log("const로 만든 url 체크:  ", url);
+        
+        $.ajax({
+        	url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: function(carInfo) {
+            	console.log("Response Data:", carInfo);
+                
+                if (carInfo) {
+                	$('#carType').val(carInfo.carType);
+                    $('#carNumber').val(carInfo.carNumber);
+                    $('#fuelType').val(carInfo.fuelType);
+                    
+                    if (!$('#fuelType').val()) {
+                        $('#fuelType').val('');
+                    }
+                }
+            },
+            error: function(err) {
+                console.error("차량 정보를 불러오는데 실패했습니다.", err);
+            }
+        });
+    }
+});
+
+
+</script>
+
+
+
+
 </body>
 </html>

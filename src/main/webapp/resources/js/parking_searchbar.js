@@ -25,6 +25,8 @@ const numOfRows = 100;
 // 현재 선택된 항목의 인덱스를 저장하는 변수
 let selectedIndex = -1; 
 
+let polyline = null; // 전역 변수로 폴리라인 선언
+
 //카카오 지도 불러오기
 $(document).ready(function() {
 
@@ -81,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 페이지 데이터 로드
 function loadPageData(data) {
-    console.log("loadPageData 호출됨"); // 함수 호출 로그
 
 
     const tabContent = document.getElementById('search'); // 검색 탭의 요소를 지정
@@ -92,7 +93,6 @@ function loadPageData(data) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageData = data.slice(startIndex, endIndex);
-    console.log("페이지 데이터:", pageData); // 전달되는 데이터 확인
     renderParkingList(pageData);
     displayPagination(data.length);
 }
@@ -191,112 +191,102 @@ const App = {
 document.addEventListener('DOMContentLoaded', App.initializeRegionSelection);
 
 
-// 공공데이터 API에서 주차장 리스트 가져오기
-function fetchParkingLotData(province, city ) {
+  // 공공데이터 API에서 주차장 리스트 가져오기
+  function fetchParkingLotData(province, city ) {
 
-    allParkingData = [];  // 전체 데이터를 저장할 배열 초기화
-    let pageNo = 1;       // 첫 페이지부터 시작
-    const numOfRows = 100; // 한 페이지당 최대 데이터 개수
+      allParkingData = [];  // 전체 데이터를 저장할 배열 초기화
+      let pageNo = 1;       // 첫 페이지부터 시작
+      const numOfRows = 100; // 한 페이지당 최대 데이터 개수
 
 
 
-   // 이미 계산된 전체 페이지 수를 사용하여 모든 페이지 데이터를 가져옴
-  fetchTotalCount((totalCount) => {
-    const totalPages = Math.ceil(totalCount / numOfRows); // 전체 페이지 수 계산
+    // 이미 계산된 전체 페이지 수를 사용하여 모든 페이지 데이터를 가져옴
+   fetchTotalCount((totalCount) => {
+     const totalPages = Math.ceil(totalCount / numOfRows); // 전체 페이지 수 계산
 
-    // 2. 모든 페이지의 데이터를 순차적으로 가져오기
-    function fetchNextPage() {
-        if (pageNo > totalPages) {
-            console.log("모든 데이터를 가져왔습니다.");
-            console.log("전체 데이터:", allParkingData); // 전체 데이터를 출력
-            applyFilterAndRender(allParkingData, province, city); // 모든 데이터를 가져온 후 필터링 및 렌더링
-            return;
-        }
-    $.ajax({
-        url: 'http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api',
-        data: {
-            serviceKey: 'oI8TfXEtYCINlcIZ8eXq9tri/7FV0Fr8dSuiooyeWFio2DRnWvwjql8OYqTAdWY1r7Et21qrdPkUw6Ad/iL3xQ==', // 
-            pageNo: pageNo,
-            numOfRows: numOfRows,
-            type: 'json'
-        },
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            console.log("API 응답:", response); // API 응답 데이터 구조 확인
-            const data = response.response.body.items.map(item => ({
-                name: item.prkplceNm || '이름 정보 없음', // 이름이 없는 경우 기본 텍스트
-                prkplceSe: item.prkplceSe || '구분 정보 없음', // 구분 정보
-                prkplceType: item.prkplceType || '유형 정보 없음', // 유형 정보
-                parkingchrgeInfo: item.parkingchrgeInfo || '요금 정보 없음', // 요금 정보
-                address: item.lnmadr || item.rdnmadr || '주소 정보 없음', // 지번주소가 도로명주소 사용, 둘 다 없으면 기본 메시지
-                phone: item.phoneNumber || '전화번호 정보 없음', // 전화번호 정보
-                latitude: item.latitude, // 위도
-                longitude: item.longitude, // 경도
-                prkcmprt: item.prkcmprt || '정보 없음',
-                operDay: item.operDay || '정보 없음',
-                weekdayOperOpenHhmm: item.weekdayOperOpenHhmm || '정보 없음',
-                weekdayOperColseHhmm: item.weekdayOperColseHhmm || '정보 없음',
-                satOperOperOpenHhmm: item.satOperOperOpenHhmm || '정보 없음',
-                satOperCloseHhmm: item.satOperCloseHhmm || '정보 없음',
-                holidayOperOpenHhmm: item.holidayOperOpenHhmm || '정보 없음',
-                holidayCloseOpenHhmm: item.holidayCloseOpenHhmm || '정보 없음',
-                parkingchrgeInfo: item.parkingchrgeInfo || '정보 없음',
-                basicTime: item.basicTime || '정보 없음',
-                basicCharge: item.basicCharge || '정보 없음',
-                addUnitTime: item.addUnitTime || '정보 없음',
-                addUnitCharge: item.addUnitCharge || '정보 없음',
-                dayCmmtktAdjTime: item.dayCmmtktAdjTime || '정보 없음',
-                dayCmmtkt: item.dayCmmtkt || '정보 없음',
-                monthCmmtkt: item.monthCmmtkt || '정보 없음',
-                metpay: item.metpay || '정보 없음',
-                spcmnt: item.spcmnt || '정보 없음',
-                institutionNm: item.institutionNm || '정보 없음',
-                phone: item.phoneNumber || '전화번호 정보 없음',
-                pwdbsPpkZoneYn: item.pwdbsPpkZoneYn === 'Y' ? '보유' : (item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'),
-                referenceDate: item.referenceDate || '정보 없음'
-            }));
+     // 2. 모든 페이지의 데이터를 순차적으로 가져오기
+     function fetchNextPage() {
+         if (pageNo > totalPages) {
+             applyFilterAndRender(allParkingData, province, city); // 모든 데이터를 가져온 후 필터링 및 렌더링
+             return;
+         }
+     $.ajax({
+         url: 'http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api',
+         data: {
+             serviceKey: 'oI8TfXEtYCINlcIZ8eXq9tri/7FV0Fr8dSuiooyeWFio2DRnWvwjql8OYqTAdWY1r7Et21qrdPkUw6Ad/iL3xQ==', // 
+             pageNo: pageNo,
+             numOfRows: numOfRows,
+             type: 'json'
+         },
+         type: 'GET',
+         dataType: 'json',
+         success: function(response) {
+             console.log("API 응답:", response); // API 응답 데이터 구조 확인
+             const data = response.response.body.items.map(item => ({
+                 name: item.prkplceNm || '이름 정보 없음', // 이름이 없는 경우 기본 텍스트
+                 prkplceSe: item.prkplceSe || '구분 정보 없음', // 구분 정보
+                 prkplceType: item.prkplceType || '유형 정보 없음', // 유형 정보
+                 parkingchrgeInfo: item.parkingchrgeInfo || '요금 정보 없음', // 요금 정보
+                 address: item.lnmadr || item.rdnmadr || '주소 정보 없음', // 지번주소가 도로명주소 사용, 둘 다 없으면 기본 메시지
+                 phone: item.phoneNumber || '전화번호 정보 없음', // 전화번호 정보
+                 latitude: item.latitude, // 위도
+                 longitude: item.longitude, // 경도
+                 prkcmprt: item.prkcmprt || '정보 없음',
+                 operDay: item.operDay || '정보 없음',
+                 weekdayOperOpenHhmm: item.weekdayOperOpenHhmm || '정보 없음',
+                 weekdayOperColseHhmm: item.weekdayOperColseHhmm || '정보 없음',
+                 satOperOperOpenHhmm: item.satOperOperOpenHhmm || '정보 없음',
+                 satOperCloseHhmm: item.satOperCloseHhmm || '정보 없음',
+                 holidayOperOpenHhmm: item.holidayOperOpenHhmm || '정보 없음',
+                 holidayCloseOpenHhmm: item.holidayCloseOpenHhmm || '정보 없음',
+                 parkingchrgeInfo: item.parkingchrgeInfo || '정보 없음',
+                 basicTime: item.basicTime || '정보 없음',
+                 basicCharge: item.basicCharge || '정보 없음',
+                 addUnitTime: item.addUnitTime || '정보 없음',
+                 addUnitCharge: item.addUnitCharge || '정보 없음',
+                 dayCmmtktAdjTime: item.dayCmmtktAdjTime || '정보 없음',
+                 dayCmmtkt: item.dayCmmtkt || '정보 없음',
+                 monthCmmtkt: item.monthCmmtkt || '정보 없음',
+                 metpay: item.metpay || '정보 없음',
+                 spcmnt: item.spcmnt || '정보 없음',
+                 institutionNm: item.institutionNm || '정보 없음',
+                 phone: item.phoneNumber || '전화번호 정보 없음',
+                 pwdbsPpkZoneYn: item.pwdbsPpkZoneYn === 'Y' ? '보유' : (item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'),
+                 referenceDate: item.referenceDate || '정보 없음'
+             }));
           
-            allParkingData = allParkingData.concat(data); // 데이터 추가
-            pageNo++; // 다음 페이지로 넘어감
-            fetchNextPage(); // 재귀 호출로 다음 페이지 가져오기;
-            console.log("현재 페이지 번호:", pageNo); // 페이지 번호가 증가했는지 확인
-        },
-        error: function(error) {
-            console.error("주차장 데이터를 불러오는데 실패했습니다:", error);
-        }
-    });
-}
-fetchNextPage(); // 첫 페이지 요청 시작
-});
-}
+             allParkingData = allParkingData.concat(data); // 데이터 추가
+             pageNo++; // 다음 페이지로 넘어감
+             fetchNextPage(); // 재귀 호출로 다음 페이지 가져오기;
+         },
+         error: function(error) {
+             console.error("주차장 데이터를 불러오는데 실패했습니다:", error);
+         }
+     });
+ }
+ fetchNextPage(); // 첫 페이지 요청 시작
+ });
+ }
 
 
-// 주소 필드를 기준으로 주차장 데이터를 필터링하는 함수
-function filterParkingDataByRegion(data, province, city) {
-    return data.filter(item => {
-        const address = item.address; // 지번주소 또는 도로명주소 선택
-        if (!address) return false; // 주소가 없으면 필터링 제외
+ // 주소 필드를 기준으로 주차장 데이터를 필터링하는 함수
+ function filterParkingDataByRegion(data, province, city) {
+     return data.filter(item => {
+         const address = item.address; // 지번주소 또는 도로명주소 선택
+         if (!address) return false; // 주소가 없으면 필터링 제외
 
-        console.log("주소 필드:", address); // 주소 출력
         
-        const isMatch = address.includes(province) && address.includes(city);
-        // 디버그용 로그 출력
-        console.log("주소 필드:", address);
-        console.log("사용자가 선택한 도/시:", province);
-        console.log("사용자가 선택한 구/군:", city);
-        console.log("필터링 일치 여부:", isMatch);
+         const isMatch = address.includes(province) && address.includes(city);
 
-        return isMatch;
-    });
-}
+         return isMatch;
+     });
+ }
 
 
 
 // 필터링과 렌더링을 수행하는 함수
 function applyFilterAndRender(data, province, city) {
     const filteredData = filterParkingDataByRegion(data, province, city);
-    console.log("필터링된 데이터:", filteredData);
 
     renderParkingList(filteredData); // 주차장 리스트 표시 함수 호출
     displayMarkers(filteredData); // 마커 표시 함수 호출
@@ -320,7 +310,6 @@ function applyRegionFilter() {
 function renderParkingList(data) {
     
     const parkingList = document.getElementById('search').querySelector('.parking-list'); // 검색 탭 요소만 지정
-    console.log("parkingList 요소 확인:", parkingList); // parkingList 요소가 null이 아닌지 확인
     parkingList.innerHTML = '';
 
      
@@ -343,7 +332,7 @@ function renderParkingList(data) {
             moveToLocationAndShowMarker(item); // 클릭 시 마커와 지도 이동 함수 호출
         });
         parkingList.appendChild(parkingItem);
-        showParkingDetails(item);
+        // showParkingDetails(item);
     });
      // 페이지 번호가 있는 경우 설정
      const pageNumber = document.getElementById('page-number');
@@ -358,7 +347,6 @@ function displayMarkers(parkingData) {
     parkingData.forEach(item => {
         // 마커 위치 설정
         var markerPosition = new kakao.maps.LatLng(item.latitude, item.longitude);
- 		console.log("마커 위치 설정 - 위도:", item.latitude, "경도:", item.longitude); // 마커 위치 확인 로그
        
         // 마커 생성
         var marker = new kakao.maps.Marker({
@@ -380,7 +368,6 @@ function moveToLocationAndShowMarker(item) {
     var latitude = item.latitude;
     var longitude = item.longitude;
  // 좌표값 확인
- console.log("주차장 위치 좌표 - 위도:", latitude, "경도:", longitude);
 
     // 카카오맵 LatLng 객체 생성 (위도, 경도 순서)
     var moveLatLon = new kakao.maps.LatLng(latitude, longitude);
@@ -421,7 +408,6 @@ function nextPage() {
 }
 // 총 데이터 개수를 가져오는 함수
 function fetchTotalCount(callback) {
-    console.log("fetchTotalCount 함수 호출됨");  // 함수 호출 확인 로그
     $.ajax({
         url: 'http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api',
         data: {
@@ -448,53 +434,118 @@ function fetchTotalCount(callback) {
 }
 // fetchTotalCount 함수 호출 및 totalCount 확인
 fetchTotalCount(function(totalCount) {
-    console.log("총 데이터 개수:", totalCount); // 전체 데이터 개수 출력
     
 });
 
 
 // 클릭한 주차장의 모든 정보를 표시하고 팝업을 여는 함수
 function showParkingDetails(item) {
-    console.log("showParkingDetails 함수의 item 객체:", item); // address 포함 여부 확인
     const detailsContainer = document.getElementById('parking-details'); // 상세 정보 표시 영역
-  // 주소 표시 (지번 주소가 없으면 도로명 주소 사용)
-  const address = item.address || '주소 정보 없음';
+    const roadviewContainer = document.getElementById('roadview-container');
+
+    // 주소 표시 (지번 주소가 없으면 도로명 주소 사용)
+    const address = item.address || '주소 정보 없음';
     detailsContainer.innerHTML = `
         <h2 class="parking-title">${item.name}</h2>
-        <p class="info-type">${item.prkplceSe || '정보 없음'}</p>
-        <p class="info-type">${item.prkplceType || '정보 없음'}</p>
-        <p class="info-address"><strong>주소:</strong> ${address}</p>
-        <p class="info-parking">주차 정보</p>
-        <p class="info-capacity">주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
+        <p class="info-address"><strong></strong> ${address}</p>
+        <div class="info-type-label"><p class="info-type-se">${item.prkplceSe || '정보 없음'}</p>
+        <p class="info-type-ty">${item.prkplceType || '정보 없음'}</p></div>
+        <button class="info-coordinates-btn" id="navigate-btn">길찾기</button>
         <p class="info-charge">운영 시간 </p>
-        <p class="info-time">평일: ${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperColseHhmm || '정보 없음'}</p>
-        <p class="info-time">토요일: ${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</p>
-        <p class="info-time">공휴일: ${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</p>
-        <p class="info-charge">요금 정보</p>
-        <p class="info-fee">기본 시간: ${item.basicTime || '정보 없음'}분</p>
-        <p class="info-fee">기본 요금: ${item.basicCharge || '정보 없음'}원</p>
-        <p class="info-fee">추가 단위 시간: ${item.addUnitTime || '정보 없음'}분</p>
-        <p class="info-fee">추가 단위 요금: ${item.addUnitCharge || '정보 없음'}원</p>
-        <p class="info-charge">추가 정보</p>
-        <p class="info-day-ticket">1일 주차권 요금 적용 시간: ${item.dayCmmtktAdjTime || '정보 없음'}</p>
-        <p class="info-day-ticket">1일 주차권 요금: ${item.dayCmmtkt || '정보 없음'}</p>
-        <p class="info-monthly-ticket">월 정기권 요금: ${item.monthCmmtkt || '정보 없음'}</p>
-        <p class="info-payment">결제 방법: ${item.metpay || '정보 없음'}</p>
-        <p class="info-notes">특기 사항: ${item.spcmnt || '정보 없음'}</p>
-        <p class="info-contact">전화번호: ${item.phone || '정보 없음'}</p>
-        <p class="info-accessibility">장애인 전용 주차 구역 보유 여부: ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
-        <p class="info-coordinates">위도: ${item.latitude}</p> 
-        <p class="info-coordinates">경도: ${item.longitude}</p> 
-        <p class="info-date">데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p>
+         <table class="info-table">
+        <tbody>
+            <tr>
+                <td>평일</td>
+                <td>${item.weekdayOperOpenHhmm || '정보 없음'} - ${item.weekdayOperColseHhmm || '정보 없음'}</td>
+            </tr>
+            <tr>
+                <td>토요일</td>
+                <td>${item.satOperOperOpenHhmm || '정보 없음'} - ${item.satOperCloseHhmm || '정보 없음'}</td>
+            </tr>
+            <tr>
+                <td>공휴일</td>
+                <td>${item.holidayOperOpenHhmm || '정보 없음'} - ${item.holidayCloseOpenHhmm || '정보 없음'}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="info-charge">요금 정보</p>
+    <table class="info-table">
+        <tbody>
+            <tr>
+                <td>기본 시간</td>
+                <td>${item.basicTime || '정보 없음'}분</td>
+            </tr>
+            <tr>
+                <td>기본 요금</td>
+                <td>${item.basicCharge || '정보 없음'}원</td>
+            </tr>
+            <tr>
+                <td>추가 시간</td>
+                <td>${item.addUnitTime || '정보 없음'}분</td>
+            </tr>
+            <tr>
+                <td>추가 요금</td>
+                <td>${item.addUnitCharge || '정보 없음'}원</td>
+            </tr>
+        </tbody>
+    </table>
+        <p class="info-charge info-divider">추가 정보</p>
+        <p class="info-capacity info-divider">주차 구획 수: ${item.prkcmprt || '정보 없음'}</p>
+        <p class="info-contact info-divider">전화번호: ${item.phone || '정보 없음'}</p>
+        <p class="info-accessibility info-divider">장애인 전용 주차 구역 보유 여부: ${item.pwdbsPpkZoneYn === 'Y' ? '보유' : item.pwdbsPpkZoneYn === 'N' ? '미보유' : '정보 없음'}</p>
+        
     `;
+    // <p class="info-date">데이터 기준 일자: ${item.referenceDate || '정보 없음'}</p> 위에 코드 삽입할지 말지 고민 중
     // 팝업을 보이도록 설정
     document.getElementById('parking-details-popup').style.display = 'block';
+    
+    const roadview = new kakao.maps.Roadview(roadviewContainer);
+    const roadviewClient = new kakao.maps.RoadviewClient();
+    
+    if (item.latitude && item.longitude) {
+        const position = new kakao.maps.LatLng(item.latitude, item.longitude);
+    
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            } else {
+                roadviewContainer.innerHTML = '<p>로드뷰를 사용할 수 없는 위치입니다.</p>';
+            }
+        });
+    } else {
+        roadviewContainer.innerHTML = '<p>위치 데이터가 올바르지 않습니다.</p>';
+    }
+    
+
+
+
+        // 길찾기 버튼 클릭 이벤트 추가
+        document.getElementById('navigate-btn').addEventListener('click', () => {
+        const latitude = item.latitude || '정보 없음';
+        const longitude = item.longitude || '정보 없음';
+
+        if (latitude !== '정보 없음' && longitude !== '정보 없음') {
+            const endLocationInput = document.getElementById('end-location');
+            endLocationInput.value = item.name; // 도착지 입력 필드에 장소명 설정
+            
+            // 도착지 좌표 설정
+            endCoords = `${longitude},${latitude}`;
+
+            // 길찾기 탭으로 전환
+             showTab('route'); // 기존 탭 전환 함수 호출
+        } else {
+            alert('위도와 경도 정보가 없습니다.');
+        }
+    });
+
 }
 
 // 팝업을 닫는 함수
 function closeParkingDetails() {
     document.getElementById('parking-details-popup').style.display = 'none';
 }
+
 
 
 // 길찾기 기능 구현 자바스크립트 함수들
@@ -549,10 +600,27 @@ function displayRouteAutocompleteResults(data, type, resultsContainer) {
     selectedIndex = -1; // 새로운 검색어가 입력될 때마다 선택 초기화
 
     data.forEach((place, index) => {
+        // 각 장소에 맞는 아이콘 URL 가져오기
+        const iconUrl = getIconUrl(place.category_group_code);
+
+        // 아이템 컨테이너 생성
         const item = document.createElement('div');
-        item.textContent = place.place_name;
         item.classList.add('autocomplete-item');
-        
+
+        // 아이콘 추가
+        const icon = document.createElement('img');
+        icon.src = iconUrl || 'https://img.icons8.com/?size=100&id=default-icon&format=png&color=4D4D4D'; // 기본 아이콘 설정
+        icon.alt = '아이콘';
+        icon.classList.add('autocomplete-icon'); // 아이콘에 스타일 적용
+
+        // 장소 이름 추가
+        const text = document.createElement('span');
+        text.textContent = place.place_name;
+
+        // 아이콘과 텍스트를 아이템에 추가
+        item.appendChild(icon);
+        item.appendChild(text);
+
         // 마우스 클릭 시 해당 항목 선택 가능
         item.onclick = () => {
             selectPlace(place, type);
@@ -560,7 +628,13 @@ function displayRouteAutocompleteResults(data, type, resultsContainer) {
         };
 
         resultsContainer.appendChild(item);
-    });
+    });   
+     // 외부 클릭 감지 및 검색창 닫기
+     document.addEventListener('click', (event) => {
+        if (!resultsContainer.contains(event.target)) {
+            resultsContainer.style.display = 'none';
+        }
+    }, { once: true }); // 한 번 실행 후 리스너 제거
 }
 
 // 특정 항목을 강조 표시하는 함수 (이름 변경)
@@ -625,10 +699,29 @@ document.addEventListener('DOMContentLoaded', setupSearchResultsContainer);
 //길찾기 기능
 //2. 카카오 모빌리티로 연결
 
-
 // 출발지와 도착지의 좌표를 저장할 변수
 let startCoords = null;
 let endCoords = null;
+
+async function convertAddressToCoords(address, type) {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                const coords = `${result[0].x},${result[0].y}`; // 경도, 위도 형식
+                if (type === 'start') {
+                    startCoords = coords; // 출발지 좌표 저장
+                } else if (type === 'end') {
+                    endCoords = coords; // 도착지 좌표 저장 (이 경우는 거의 사용하지 않음)
+                }
+                resolve(coords);
+            } else {
+                reject(`"${address}"를 좌표로 변환할 수 없습니다.`);
+            }
+        });
+    });
+}
+
 
 function selectPlace(place, type) {
     const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
@@ -639,7 +732,6 @@ function selectPlace(place, type) {
 
     if (type === 'start') {
         startCoords = location;
-        console.log("출발지 좌표 저장:", startCoords); // 출발지 좌표 확인용 로그
         if (startMarker) startMarker.setMap(null); // 기존 마커 제거
         startMarker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(place.y, place.x)
@@ -647,7 +739,6 @@ function selectPlace(place, type) {
         startMarker.setMap(map);
     } else {
         endCoords = location;
-        console.log("도착지 좌표 저장:", endCoords); // 도착지 좌표 확인용 로그
         if (endMarker) endMarker.setMap(null); // 기존 마커 제거
         endMarker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(place.y, place.x)
@@ -662,71 +753,132 @@ function selectPlace(place, type) {
     document.getElementById('search-results').style.display = 'none';
 }
 
+async function findRoute() {
+    const startLocationInput = document.getElementById('start-location').value;
 
-//길찾기 API 호출 및 결과 표시
-function findRoute() {
-    // 출발지와 도착지 좌표가 모두 설정되었는지 확인
-    if (!startCoords || !endCoords) {
-        alert("출발지와 도착지를 모두 선택해 주세요.");
-        return;
-    }
-
-    // 길찾기 API 요청 URL 생성
-    const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
-
-    // 길찾기 API 호출
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `KakaoAK ${REST_API_KEY}` // REST API 키 설정
+    try {
+        // 출발지 좌표가 설정되지 않은 경우, 입력값으로 변환
+        if (!startCoords) {
+            await convertAddressToCoords(startLocationInput, 'start');
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        displayRoute(data); // 경로 데이터를 화면에 표시하는 함수 호출
-    })
-    .catch(error => {
-        alert("길찾기 API 요청에 실패했습니다.");
-    });
+        const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `KakaoAK ${REST_API_KEY}`
+            }
+        });
+
+
+        if (!response.ok) {
+            throw new Error(`API 호출 실패: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.routes || data.routes.length === 0) {
+            alert("경로를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 응답 데이터를 지도에 표시
+        displayRoute(data); // 텍스트 안내
+    } catch (error) {
+        console.error("길찾기 실패:", error);
+        alert(`길찾기 실패: ${error}`);
+    }
 }
 
 
 
-//경로 데이터 표시
+//경로 데이터 표시(텍스트)
 function displayRoute(data) {
     const routeDirections = document.getElementById("route-directions");
     routeDirections.innerHTML = ''; // 기존 결과 초기화
 
-    // 경로 데이터에서 주요 정보 추출 및 표시
-    if (data.routes && data.routes[0]) {
+    if (data.routes && data.routes.length > 0) {
         const route = data.routes[0];
-        const summary = route.summary;
-        const sections = route.sections;
+        const summary = route.summary || null;
+        const sections = route.sections || [];
 
         // 요약 정보 표시
-        const distance = summary.distance; // 총 거리 (미터 단위)
-        const duration = summary.duration; // 예상 소요 시간 (초 단위)
-        
-        routeDirections.innerHTML += `
-            <h3>경로 요약</h3>
-            <p>총 거리: ${(distance / 1000).toFixed(2)} km</p>
-            <p>예상 소요 시간: ${(duration / 60).toFixed(0)} 분</p>
-        `;
+        if (summary) {
+            const distance = summary.distance; // 총 거리 (미터 단위)
+            const duration = summary.duration; // 예상 소요 시간 (초 단위)
+
+            routeDirections.innerHTML += `
+                <h4>경로 요약</h4>
+                <p>총 거리: ${(distance / 1000).toFixed(2)} km</p>
+                <p>예상 소요 시간: ${(duration / 60).toFixed(0)} 분</p>
+            `;
+        } else {
+            routeDirections.innerHTML += '<p>요약 정보를 가져올 수 없습니다.</p>';
+        }
+
+		       // 길 안내 정보 표시
+		if (sections.length > 0) {
+		    routeDirections.innerHTML += `<h3>길 안내</h3>`;
+		    sections.forEach(section => {
+		        if (section.guides) {
+		            section.guides.forEach(guide => {
+		                // type에 따라 아이콘 URL 가져오기
+		                const iconUrl = typeIconMap[guide.type] || "https://img.icons8.com/?size=100&id=100000&format=png"; // 기본 아이콘(직진)
+		                
+		                // 길 안내 정보를 HTML에 추가
+		                routeDirections.innerHTML += `
+		                    <div class="guide-info">
+		                        <img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">
+		                        <span>${guide.guidance} (${guide.distance} m)</span>
+		                    </div>
+		                `;
+		            });
+		        }
+		    });
+		} else {
+		    routeDirections.innerHTML += '<p>길 안내 정보를 가져올 수 없습니다.</p>';
+		}
 
 
-        // 길 안내 정보 표시
-        routeDirections.innerHTML += `<h3>길 안내</h3>`;
-        sections.forEach(section => {
-            section.guides.forEach(guide => {
-                routeDirections.innerHTML += `
-                    <p>${guide.guidance} (${guide.distance} m)</p>
-                `;
-            });
-        });
+        // 지도에 경로 표시
+        displayRouteOnMap(route);
     } else {
         routeDirections.innerHTML = '<p>경로를 찾을 수 없습니다.</p>';
     }
 }
+
+
+// 경로 데이터를 지도에 표시
+function displayRouteOnMap(route) {
+   // 이전 폴리라인 제거
+   if (polyline) {
+    polyline.setMap(null); // 기존 폴리라인을 지도에서 제거
+    polyline = null; // 변수 초기화
+}
+
+    // 경로 데이터를 처리하여 폴리라인에 사용할 좌표 배열 생성
+    const path = route.sections.flatMap(section => 
+        section.guides.map(guide => new kakao.maps.LatLng(guide.y, guide.x))
+    );
+
+    // 폴리라인 생성
+    polyline = new kakao.maps.Polyline({
+        path: path, // 경로 좌표 데이터
+        strokeWeight: 4, // 선 두께
+        strokeColor: '#FF0000', // 선 색상
+        strokeOpacity: 0.7, // 선 불투명도
+        strokeStyle: 'solid' // 선 스타일
+    });
+
+    // 지도에 폴리라인 추가
+    polyline.setMap(map);
+
+    // 경로에 맞게 지도 중심과 확대 수준 설정
+    const bounds = new kakao.maps.LatLngBounds();
+    path.forEach(coord => bounds.extend(coord));
+    map.setBounds(bounds);
+}
+
 
 
 //큰 서치바 검색 기능
@@ -791,24 +943,259 @@ function displayAutocompleteResults(data) {
         resultsContainer.style.display = 'none'; // 검색 결과가 없으면 자동완성 창 숨기기
         return;
     }
+ // 필터링된 주차장 데이터를 자동완성 목록에 표시
+ data.forEach(parking => {
+    // 각 주차장의 아이콘 URL 가져오기
+    const iconUrl = getIconUrl(parking.category_group_code);
 
-    // 필터링된 주차장 데이터를 자동완성 목록에 표시
-    data.forEach(parking => {
-        const item = document.createElement('div');
-        item.textContent = parking.name;
-        item.classList.add('autocomplete-item');
+    // 아이템 컨테이너 생성
+    const item = document.createElement('div');
+    item.classList.add('autocomplete-item');
+
+    // 아이콘 추가
+    const icon = document.createElement('img');
+    icon.src = iconUrl || 'https://img.icons8.com/?size=100&id=default-icon&format=png&color=4D4D4D'; // 기본 아이콘 설정
+    icon.alt = '아이콘';
+    icon.classList.add('autocomplete-icon'); // 아이콘에 스타일 적용
+
+    // 주차장 이름 추가
+    const text = document.createElement('span');
+    text.textContent = parking.name;
+
+    // 아이콘과 텍스트를 아이템에 추가
+    item.appendChild(icon);
+    item.appendChild(text);
+
+    // 주차장 이름을 클릭했을 때 검색창에 선택된 이름을 설정하고 자동완성 목록 숨김
+    item.onclick = () => {
+        document.getElementById("parking-search").value = parking.name;
+        resultsContainer.style.display = 'none';
+
+        // 선택한 주차장 정보를 parking-list에 표시
+        renderParkingList([parking]); // 배열 형식으로 전달하여 단일 항목 표시
+    };
+
+    resultsContainer.appendChild(item);
+});
+
+resultsContainer.style.display = 'block'; // 자동완성 결과 표시
+}
+//     // 필터링된 주차장 데이터를 자동완성 목록에 표시
+//     data.forEach(parking => {
+//         const item = document.createElement('div');
+//         item.textContent = parking.name;
+//         item.classList.add('autocomplete-item');
         
-        // 주차장 이름을 클릭했을 때 검색창에 선택된 이름을 설정하고 자동완성 목록 숨김
-        item.onclick = () => {
-            document.getElementById("parking-search").value = parking.name;
-            resultsContainer.style.display = 'none';
-             // 선택한 주차장 정보를 parking-list에 표시
-              renderParkingList([parking]); // 배열 형식으로 전달하여 단일 항목 표시
-        };
+//         // 주차장 이름을 클릭했을 때 검색창에 선택된 이름을 설정하고 자동완성 목록 숨김
+//         item.onclick = () => {
+//             document.getElementById("parking-search").value = parking.name;
+//             resultsContainer.style.display = 'none';
+//              // 선택한 주차장 정보를 parking-list에 표시
+//               renderParkingList([parking]); // 배열 형식으로 전달하여 단일 항목 표시
+//         };
 
-        resultsContainer.appendChild(item);
-    });
+//         resultsContainer.appendChild(item);
+//     });
 
-    resultsContainer.style.display = 'block'; // 자동완성 결과 표시
+//     resultsContainer.style.display = 'block'; // 자동완성 결과 표시
+
+//     // 외부 클릭 감지 및 자동완성 창 닫기
+//     document.addEventListener('click', (event) => {
+//         const searchInput = document.getElementById("parking-search"); // 검색 입력 필드
+//         if (
+//             !resultsContainer.contains(event.target) && // 클릭 대상이 자동완성 창 내부가 아니고
+//             event.target !== searchInput // 클릭 대상이 검색창이 아닐 때
+//         ) {
+//             resultsContainer.style.display = 'none'; // 자동완성 창 닫기
+//         }
+//     }, { once: true }); // 한 번 실행 후 리스너 제거
+// }
+
+//현재 위치를 지도에 표시
+function showCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude; // 위도
+                const longitude = position.coords.longitude; // 경도
+
+                // 현재 위치 마커 생성
+                const marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(latitude, longitude), // 마커 위치 설정
+                    map: map // 마커를 표시할 지도
+                });
+
+                // 지도 중심을 현재 위치로 이동
+                map.setCenter(new kakao.maps.LatLng(latitude, longitude));
+            },
+            (error) => {
+                // 위치 가져오기 실패 시 처리
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("위치 정보 사용 권한이 거부되었습니다.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("위치 정보를 사용할 수 없습니다.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+                        break;
+                    default:
+                        alert("알 수 없는 오류가 발생했습니다.");
+                }
+            }
+        );
+    } else {
+        alert("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
+    }
 }
 
+
+    
+// 지도타입 컨트롤의 지도 또는 스카이뷰 버튼을 클릭하면 호출되어 지도타입을 바꾸는 함수
+function setMapType(maptype) { 
+    var roadmapControl = document.getElementById('btnRoadmap');
+    var skyviewControl = document.getElementById('btnSkyview'); 
+    if (maptype === 'roadmap') {
+        map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);    
+        roadmapControl.className = 'selected_btn';
+        skyviewControl.className = 'btn';
+    } else {
+        map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);    
+        skyviewControl.className = 'selected_btn';
+        roadmapControl.className = 'btn';
+    }
+}
+
+// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수
+function zoomIn() {
+    map.setLevel(map.getLevel() - 1);
+}
+
+// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수
+function zoomOut() {
+    map.setLevel(map.getLevel() + 1);
+}
+
+
+
+
+const typeIconMap = {
+    0: "https://img.icons8.com/?size=100&id=100000&format=png&color=000000", //직진
+    1: "https://img.icons8.com/?size=100&id=3187&format=png&color=000000", //좌회전
+    2: "https://img.icons8.com/?size=100&id=3241&format=png&color=000000", //우회전
+    3: "https://img.icons8.com/?size=100&id=bmQbiY8FGmK2&format=png&color=000000", //U턴
+    5: "https://img.icons8.com/?size=100&id=39785&format=png&color=000000", //왼쪽 방향
+    6: "https://img.icons8.com/?size=100&id=39782&format=png&color=000000", //오른쪽 방향
+    7: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //고속 도로 출구
+    8: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //왼쪽에 고속 도로 출구
+    9: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //오른쪽에 고속 도로 출구
+    10: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000g", //고속 도로 입구
+    11: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //왼쪽에 고속 도로 입구
+    12: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //오른쪽에 고속 도로 입구
+    14: "https://img.icons8.com/?size=100&id=AFbGHolwIW9w&format=png&color=000000", //고가도로 진입
+    15: "https://img.icons8.com/?size=100&id=pSpQa6iHwEJ9&format=png&color=000000", //지하 차도 진입
+    16: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //고가 도로 옆길
+    17: "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //지하 차도 옆길
+    18 : "https://img.icons8.com/?size=100&id=43689&format=png&color=000000", //오른쪽 1시 방향
+    19 : "https://img.icons8.com/?size=100&id=43689&format=png&color=000000", //오른쪽 2시 방향
+    20 : "https://img.icons8.com/?size=100&id=39782&format=png&color=000000", //오른쪽 3시 방향
+    21 : "https://img.icons8.com/?size=100&id=43690&format=png&color=000000", //오른쪽 4시 방향
+    22 : "https://img.icons8.com/?size=100&id=43690&format=png&color=000000", //오른쪽 5시 방향
+    23 : "https://img.icons8.com/?size=100&id=7800&format=png&color=000000", //6시 방향
+    24 : "https://img.icons8.com/?size=100&id=43691&format=png&color=000000", //왼쪽 7시 방향
+    25 : "https://img.icons8.com/?size=100&id=43691&format=png&color=000000", //왼쪽 8시 방향
+    26 : "https://img.icons8.com/?size=100&id=39785&format=png&color=000000", //왼쪽 9시 방향
+    27 : "https://img.icons8.com/?size=100&id=43688&format=png&color=000000", //왼쪽 10시 방향
+    28 : "https://img.icons8.com/?size=100&id=43688&format=png&color=000000", //왼쪽 11시 방향
+    29 : "https://img.icons8.com/?size=100&id=39778&format=png&color=000000", //12시 방향
+    30 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 오른쪽 1시 방향
+    31 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 오른쪽 2시방향
+    32 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 오른쪽 2시방향
+    33 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 오른쪽 4시방향
+    34 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 오른쪽 5시방향
+    35 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 6시방향
+    36 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 7시방향
+    37 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 8시방향
+    38 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 9시방향
+    39 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 10시방향
+    40 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 11시방향
+    41 : "https://img.icons8.com/?size=100&id=A3wGuAmOGwpo&format=png&color=000000", //로터리에서 왼쪽 12시방향
+    42 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //도시 고속 도로 출구
+    43 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //왼쪽에 도시 고속 도로 출구 
+    44 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //오른쪽에 도시 고속 도로 출구
+    45 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //도시 고속 도로 입구
+    46 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //왼쪽에 도시 고속 도로 입구
+    47 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //오른쪽에 도시 고속 도로 입구
+    48 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //왼쪽 고속 도로 진입
+    49 : "https://img.icons8.com/?size=100&id=62912&format=png&color=000000", //오른쪽 고속 도로 진입
+    61 : "https://img.icons8.com/?size=100&id=9328&format=png&color=000000", //페리 항로 진입
+    62 : "https://img.icons8.com/?size=100&id=9328&format=png&color=000000", //페리 항로 진출
+    70 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 오른쪽 1시 방향
+    71 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 오른쪽 2시 방향
+    72 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 오른쪽 3시 방향
+    73 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 오른쪽 4시 방향
+    74 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 오른쪽 5시 방향
+    75 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 6시 방향
+    76 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 왼쪽 7시 방향
+    77 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 왼쪽 8시 방향
+    78 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 왼쪽 9시 방향
+    79 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 왼쪽 10시 방향
+    80 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 왼쪽 11시 방향
+    81 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //회전 교차로에서 12시 방향
+    82 : "https://img.icons8.com/?size=100&id=100000&format=png&color=000000", //왼쪽 직진
+    83 : "https://img.icons8.com/?size=100&id=100000&format=png&color=000000", //오른쪽 직진
+    84 : "https://img.icons8.com/?size=100&id=61510&format=png&color=000000", //톨게이트 진입
+    85 : "https://img.icons8.com/?size=100&id=36519&format=png&color=000000", //원톨링 진입
+    86 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //분기 후 합류 구간 진입
+    100 : "https://img.icons8.com/?size=100&id=15989&format=png&color=000000", //출발지
+    101 : "https://img.icons8.com/?size=100&id=15989&format=png&color=000000", //목적지
+    300 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //톨게이트
+    301 : "https://img.icons8.com/?size=100&id=avzgbKiLzCFk&format=png&color=000000" // 휴게소
+    
+};
+
+
+// category_group_code에 따른 아이콘 URL을 반환하는 함수
+function getIconUrl(categoryCode) {
+    switch (categoryCode) {
+        case 'MT1':
+            return 'https://img.icons8.com/?size=100&id=hx6mDkmtPgjw&format=png&color=4D4D4D'; //대형마트
+        case 'CS2':
+            return 'https://img.icons8.com/?size=100&id=3723&format=png&color=4D4D4D'; //편의점
+        case 'PS3':
+        	return 'https://img.icons8.com/?size=100&id=11064&format=png&color=4D4D4D'; //어린이집,유치원
+        case 'SC4':
+        	return 'https://img.icons8.com/?size=100&id=1954&format=png&color=4D4D4D'; //학교
+        case 'AC5':
+        	return 'https://img.icons8.com/?size=100&id=68665&format=png&color=4D4D4D'; //학원   	 
+        case 'PK6':
+        	return 'https://img.icons8.com/?size=100&id=10726&format=png&color=4D4D4D'; //주차장
+        case 'OL7':
+        	return 'https://img.icons8.com/?size=100&id=3679&format=png&color=4D4D4D'; //주유소,충전소
+        case 'SW8':
+            return 'https://img.icons8.com/?size=100&id=16556&format=png&color=4D4D4D'; //지하철역
+        case 'BK9':
+            return 'https://img.icons8.com/?size=100&id=59049&format=png&color=4D4D4D'; //은행
+        case 'CT1':
+        	return 'https://img.icons8.com/?size=100&id=3723&format=png&color=4D4D4D'; //문화시설
+        case 'AG2':
+        	return 'https://img.icons8.com/?size=100&id=25993&format=png&color=4D4D4D'; //부동산중개
+        case 'PO3':
+        	return 'https://img.icons8.com/?size=100&id=3723&format=png&color=4D4D4D'; //공공기관        	
+        case 'AT4':
+        	return 'https://img.icons8.com/?size=100&id=3723&format=png&color=4D4D4D'; //관광명소        	
+        case 'AD5':
+        	return 'https://img.icons8.com/?size=100&id=36196&format=png&color=4D4D4D'; //숙박       	
+        case 'FD6':
+        	return 'https://img.icons8.com/?size=100&id=12586&format=png&color=4D4D4D'; //음식점        	
+        case 'CE7':
+        	return 'https://img.icons8.com/?size=100&id=avzgbKiLzCFk&format=png&color=4D4D4D'; //카페        	
+        case 'HP8':
+        	return 'https://img.icons8.com/?size=100&id=kD7s-jinywzH&format=png&color=4D4D4D'; //병원        
+        case 'PM9':
+        	return 'https://img.icons8.com/?size=100&id=jqpP9i5gnLQN&format=png&color=4D4D4D'; //약국                	        	        	        	
+        default:
+            return 'https://img.icons8.com/?size=100&id=3723&format=png&color=4D4D4D'; // 기본
+    }
+}

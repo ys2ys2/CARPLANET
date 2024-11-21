@@ -1,6 +1,8 @@
 package com.human.V5.service;
 
 
+import java.util.List;
+
 import com.human.V5.entity.UserEntity;
 
 
@@ -21,7 +23,7 @@ public interface UserService {
 
 	UserEntity findByGoogleId(String googleId);
 
-	UserEntity findByNameAndEmail(String name, String email);
+	List<UserEntity> findByNameAndEmail(String name, String email);
 	
 	UserEntity findByIdAndEmail(String id, String email); // 아이디와 이메일로 사용자 검색
 
@@ -30,5 +32,11 @@ public interface UserService {
     void updatePassword(String id, String tempPassword); // 비밀번호 업데이트
 
     void sendTemporaryPasswordEmail(String email, String tempPassword); // 임시 비밀번호 이메일 전송
+
+	boolean existsByCarNickname(String carNickname);
+
+	UserEntity findByCarId(String carId);
+
+	void updateUser(UserEntity userEntity);
 	
 }

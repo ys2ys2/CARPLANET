@@ -1,14 +1,64 @@
 @charset "UTF-8"; /* 문자 인코딩 설정 */
 
+@charset "UTF-8"; /* 문자 인코딩 설정 */
+
+/* 한국기계연구원 */
+@font-face {
+    font-family: 'KIMM_Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* 수트체 */
+@font-face {
+    font-family: 'SUIT-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 페이퍼로지 */
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* 이사만루 */
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 프리텐다드 */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* 기본 스타일 초기화 */
 /* 기본 스타일 초기화 */
 body {
+	margin: 0 auto;
+    padding: 0;
+    font-family: 'SUIT-Regular', sans-serif;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 /* 차량 정보 섹션 스타일 */
+/* 차량 정보 섹션 스타일 */
 .profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,14 +79,36 @@ body {
 
 .profile-card {
     width: 600px;
+    background-color: #f9f9f9;
+}
+/* 스타일 변경 */
+.profile-card h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
+    font-weight: bold; /* 글씨를 굵게 */
+    color: #333333; /* 텍스트 색상 설정 */
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+    margin-top: 10px; /* 위쪽 여백 설정 */
+}
+
+
+.profile-card {
+    width: 600px;
     background-color: #ffffff;
     border-radius: 8px;
+    border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
     padding: 20px;
     margin-bottom: 30px;
 }
 
 .car-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -47,16 +119,84 @@ body {
     height: 180px;
     margin-right: 20px;
     border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
+    height: 180px;
+    margin-right: 20px;
+    border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
 }
 
 .car-details {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
     flex-direction: column;
     justify-content: space-around;
      margin-top: -20px; /* 전체 car-details를 위로 10px 이동 */
 }
 
 .car-detail {
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+    height: auto;
+}
+
+
+/* 공통 스타일 */
+.car-input, .car-select {
+    width: 100%;
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 14px; 
+    font-family: 'SUIT-Regular', sans-serif; 
+    margin-top: 5px; 
+    margin-bottom: 10px; 
+    box-sizing: border-box; 
+}
+
+.car-input::placeholder, 
+.car-select::placeholder {
+    color: #808080; 
+}
+
+/* 입력 필드에 포커스 시 효과 */
+.car-input:focus, .car-select:focus {
+    border-color: #2b7cd3; /* 포커스 시 파란색 테두리 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+
+
+/* 드롭다운 스타일 */
+.car-select {
+    appearance: none;
+    background-color: #fff; 
+    cursor: pointer; 
+}
+
+.label-box {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-weight: bold;
+    text-align: left;
+   	width: 100px;
+}
+
+.value-box {
+    font-family: 'Paperlogy-8ExtraBold';
+    text-align: left;
+    flex: 1;
+    white-space: nowrap;
+    color: black; 
+    border: none;
+}
+
+/* 기본 옵션 (placeholder 역할) 스타일 */
+option[disabled] {
+    color: #808080; /* 회색 텍스트 */
+}
+
+
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -80,6 +220,48 @@ body {
 
 /* 차량 정보 등록하기 버튼 스타일 */
 .register-car-info-btn {
+	width: 100px;
+    padding: 6px 10px;
+    font-size: 12px;
+    background-color: #2b7cd3;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+    font-family: 'SUIT-Regular', sans-serif;
+    align-self: flex-end;
+    
+}
+
+.register-car-info-btn:hover {
+    background-color: #1e5ba9; /* 호버 시 어두운 파란색 */
+}
+
+
+/* 나의 커뮤니티 관리 섹션 스타일 */
+.community-section {
+    width: 600px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+/* 스타일 변경 */
+.community-section h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
+    font-weight: bold; /* 글씨를 굵게 */
+    color: #333333; /* 텍스트 색상 설정 */
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+    margin-top: 10px; /* 위쪽 여백 설정 */
+    padding-left: 10px; /* 왼쪽에 10px 여백 추가 (필요시) */
+}
+
+/* 커뮤니티 링크 스타일 */
+.community-links {
     display: inline-block; /* 인라인 블록으로 설정하여 너비 자동 조정 */
     padding: 7px 10px; /* 세로 7px, 가로 10px 여백으로 설정 (전체 크기 20x15px에 맞춰서) */
     font-size: 12px; /* 폰트 크기 설정 */
@@ -124,12 +306,18 @@ body {
 .community-links ul {
     list-style-type: none;
     padding: 0;
+.community-links ul {
+    list-style-type: none;
+    padding: 0;
 }
 
 .community-links li {
     margin-bottom: 8px;
+.community-links li {
+    margin-bottom: 8px;
 }
 
+.community-links a {
 .community-links a {
     text-decoration: none;
     color: #333;

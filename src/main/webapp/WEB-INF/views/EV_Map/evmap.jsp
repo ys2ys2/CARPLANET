@@ -16,7 +16,9 @@
 <!-- 카카오 맵 API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66fe3ec238628b8043889a81592616b2&libraries=services"></script>
 
-<link href="${pageContext.request.contextPath}/resources/css/evmap.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/evmap.css?v=1.0" rel="stylesheet" type="text/css">
+
+
 <script src="${pageContext.request.contextPath}/resources/js/evdropdown.js" defer></script>
 <script src="${pageContext.request.contextPath}/resources/js/kakaoevmap.js" defer></script>
 <script src="${pageContext.request.contextPath}/resources/js/kakaoevroad.js" defer></script>
@@ -98,33 +100,57 @@
 	 		<!-- 검색결과 리스트 -->
 	    </ul>
 	</div>
-	
 	<!-- 페이지네이션 버튼 -->
-	<div id="pagination" class="pagination-container"></div>
+	<div class="pagination-wrapper">
+		<div id="pagination" class="pagination-container"></div>
+	</div>
 
 	
 	</div> <!-- end of tab-content active-->
+	
     <!-- 충전소 길 찾기 내용 -->
     <div id="routeContent" class="tab-content">
     		
         <div class="route-search">
         	<h3>길 찾기</h3>
-            <input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
-            	<div id="originSuggestions" class="suggestions-container"></div>
-            <input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
-            	<div id="destinationSuggestions" class="suggestions-container"></div>
+        	
+        	<!-- 출발지 입력과 스왑 버튼 -->
+        	<div class="input-container">
+            	<input type="text" id="originInput" placeholder="출발지를 입력하세요" class="route-input">
+             	<img src="https://img.icons8.com/?size=100&id=o93UMkegCS8X&format=png&color=000000" class="route-swapbutton" alt="스왑" id="swapButton"/>
+            </div>
+
+            
+            <div id="originSuggestions" class="suggestions-container"></div>
+            
+            
+            <!-- 도착지 입력 -->
+            <div class="input-container">
+            	<input type="text" id="destinationInput" placeholder="도착지를 입력하세요" class="route-input">
+           		<img src="https://img.icons8.com/?size=100&id=8112&format=png&color=000000" class="route-swapbutton" alt="취소" id="cancelButton"/>
+           	</div>	
+           	
+           	<div id="destinationSuggestions" class="suggestions-container"></div>
             <button id="searchButton" class="route-searchbutton">경로 검색</button>
+                
                 <input type="hidden" id="originCoords">
  				<input type="hidden" id="destinationCoords">
-        </div>
+        
+        </div><!-- end of route-search -->
 
         <div class="route-result" id="routeResult">
-        <div id="directionsList" class="directions-list"></div>
-            <!-- 경로 결과 예시 -->
+       		<div class="route-header"></div>
+	       	<div class="route-main">
+	       		<span class="route-icon"></span>
+	       		<span class="route-nav"></span>
+	       		<div class="route-footer"></div> <!-- 목적지를 표시할 공간 추가 -->
+	       	</div>
+        	
         </div>
-    </div>
-	
-	
+            <div id="directionsList" class="directions-list"></div>
+            <!-- 경로 결과 예시 -->
+            
+    </div> <!--  end of tab-content -->
 	</div> <!-- end of searchbar -->
 
 
@@ -197,7 +223,6 @@
 		    </div>
 		
 		</div>
-		
 		<div class="popupchargephoto">
 			<div class="chargephoto-header">
 				<div>위치사진</div>
@@ -218,6 +243,7 @@
 
 
 </div> <!-- end of maincontainer -->
+
 
 
 
