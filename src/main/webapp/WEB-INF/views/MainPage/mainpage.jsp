@@ -11,51 +11,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainpage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- <script src="${pageContext.request.contextPath}/resources/js/Opinetoil.js"?ver=1.0></script> -->
-  
-   <!--  <style>
-        .price-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .price-box {
-            text-align: center;
-        }
-        .label {
-            font-weight: bold;
-        }
-        .value {
-            font-size: 1.2em;
-            color: #333;
-        }
-    </style>--> 
-
 </head>
 <body>
 
 <!-- 헤더 -->
 <jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
-
-<!-- 메뉴 아이콘 및 유가 정보 박스 -->
-<div class="menu-container">
-    <a href="${pageContext.request.contextPath}/evmap" class="menu-item">
-        <img src="${pageContext.request.contextPath}/resources/images/ele.png" alt="전기차 충전소">
-        <span>전기차 충전소</span>
-    </a>
-    <a href="${pageContext.request.contextPath}/Gas/Gasmap.do" class="menu-item">
-        <img src="${pageContext.request.contextPath}/resources/images/gas.png" alt="주유소">
-        <span>주유소</span>
-    </a>
-    <a href="${pageContext.request.contextPath}/parkinglot" class="menu-item">
-        <img src="${pageContext.request.contextPath}/resources/images/par.png" alt="주차장">
-        <span>주차장</span>
-    </a>
-    <a href="${pageContext.request.contextPath}/community.jsp" class="menu-item">
-        <img src="${pageContext.request.contextPath}/resources/images/Community.png" alt="커뮤니티">
-        <span>커뮤니티</span>
-    </a>
-</div>
 
 <!-- 전국 평균 유가 정보 및 그래프 -->
 <div class="price-section">
@@ -117,42 +77,45 @@
 </div>
 
 <script>
-//데이터를 가져오는 함수
+//데이터 가져오는 함수
 async function fetchData() {
     try {
         const response = await fetch('./getRecentPrice');
         const data = await response.json();
 
-        // API 응답에서 필요한 데이터 추출
-        const premiumGasoline = data.RESULT.OIL.find(oil => oil.PRODCD === "B034").PRICE; // 고급휘발유
-        const regularGasoline = data.RESULT.OIL.find(oil => oil.PRODCD === "B027").PRICE; // 보통휘발유
-        const diesel = data.RESULT.OIL.find(oil => oil.PRODCD === "D047").PRICE;         // 자동차경유
+        // API 응답에서 지난 7일의 데이터를 추출
+        const premiumGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B034")
+            .map(oil => oil.PRICE); // 고급휘발유의 7일 가격
+        const regularGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B027")
+            .map(oil => oil.PRICE); // 보통휘발유의 7일 가격
+        const dieselPrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "D047")
+            .map(oil => oil.PRICE); // 자동차경유의 7일 가격
 
         // 가격 정보 업데이트
-        document.getElementById('premium-gasoline').textContent = premiumGasoline + " 원";
-        document.getElementById('regular-gasoline').textContent = regularGasoline + " 원";
-        document.getElementById('diesel').textContent = diesel + " 원";
+        document.getElementById('premium-gasoline').textContent = premiumGasolinePrices[0] + " 원";
+        document.getElementById('regular-gasoline').textContent = regularGasolinePrices[0] + " 원";
+        document.getElementById('diesel').textContent = dieselPrices[0] + " 원";
 
         // 그래프 생성
-        createChart('premiumGasolineChart', '고급휘발유', premiumGasoline);
-        createChart('regularGasolineChart', '보통휘발유', regularGasoline);
-        createChart('dieselChart', '자동차경유', diesel);
+        createChart('premiumGasolineChart', '고급휘발유', premiumGasolinePrices);
+        createChart('regularGasolineChart', '보통휘발유', regularGasolinePrices);
+        createChart('dieselChart', '자동차경유', dieselPrices);
 
     } catch (error) {
         console.error('데이터 가져오기 실패:', error);
     }
 }
 
-// 그래프 생성 함수
-function createChart(canvasId, label, price) {
+//그래프 생성 함수
+function createChart(canvasId, label, prices) {
     const ctx = document.getElementById(canvasId).getContext('2d');
     new Chart(ctx, {
         type: 'line', // 선 그래프
         data: {
-            labels: [label], // X축 라벨
+            labels: Array(prices.length).fill(''), // X축 라벨을 공백으로 채워서 표시되지 않게 함
             datasets: [{
                 label: '전국 평균 유가 (원)', // 데이터 설명
-                data: [price], // Y축 데이터
+                data: prices, // Y축 데이터 (7일 가격)
                 borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // 선 아래 채우기 색상
                 borderWidth: 2 // 선 굵기
@@ -168,14 +131,21 @@ function createChart(canvasId, label, price) {
             scales: {
                 y: {
                     beginAtZero: false // Y축 0부터 시작하지 않음
+                },
+                x: {
+                    ticks: {
+                        display: false // X축의 숫자/라벨을 숨김
+                    }
                 }
             }
         }
     });
 }
 
+
 // 데이터 가져오기 및 그래프 초기화
 fetchData();
+
 
 
     
@@ -209,21 +179,21 @@ fetchData();
             subtitle: "주차장과 주차장의<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink: "${pageContext.request.contextPath}/parkinglot",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/003.png"
         },
         {
             title: "주변 주유소를 찾고 있다고요?",
             subtitle: "주유소와 가격<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink:  "${pageContext.request.contextPath}/Gas/Gasmap.do",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/22.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/002.png"
         },
         {
             title: "주변 충전소를 찾고 있다고요?",
             subtitle: "전기차 충전소의 가격<br> 후기가 궁금하면",
             buttonText: "자세히 보기",
             buttonLink:  "${pageContext.request.contextPath}/evmap",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/11.png"
+            imgSrc: "${pageContext.request.contextPath}/resources/images/001.png"
         }
     ];
 
