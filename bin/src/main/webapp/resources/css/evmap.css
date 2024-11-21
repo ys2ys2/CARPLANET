@@ -1,3 +1,4 @@
+
 /* 한국기계연구원 */
 @font-face {
     font-family: 'KIMM_Bold';
@@ -446,6 +447,8 @@ html, body {
 
 
 
+
+
 /* 충전소 길 찾기 탭 스타일 */
 .route-search {
     display: flex;
@@ -618,7 +621,7 @@ html, body {
 	border-bottom: 1px solid #ddd; 
     background-color: #fff;
     padding: 6px;
-    width: 95%;
+    width: 100%;
     height: auto;
     align-items: center;
     white-space: pre-line;
@@ -665,15 +668,6 @@ html, body {
 .autocomplete-item:hover {
     background-color: #eee;
 }
-
-
-.pagination-wrapper {
-    width: 100%; /* 부모 요소의 크기를 따라감 */
-    display: flex;
-    justify-content: center; /* 가운데 정렬 */
-	
-}
-
 
 .pagination-container {
 	width: 100%;
@@ -912,7 +906,6 @@ html, body {
         width: 300px; /* 검색 바 너비 축소 */
     }
 
-
     .route-main, .route-result {
         max-height: 60vh; /* 경로 리스트 높이 제한 */
     }
@@ -921,145 +914,10 @@ html, body {
         font-size: 14px; /* 입력 필드 폰트 축소 */
     }
 
-	.route-icon {
-		height: 30px;
-	
-	}
-
     .route-icon img {
-        width: 22px;
-        height: 22px; /* 아이콘 크기 조정 */
+        width: 25px;
+        height: 25px; /* 아이콘 크기 조정 */
     }
-    
-    .page-button {
-    	width: 20px;
-    	height: 20px;
-    
-    }
-    
-    .route-searchbutton {
-    	width: 83%;
-    	margin-top: 1px;
-    	padding: 9px;
-    	font-size: 14px;
-    
-    }
-    
-    
-    .dropdown {
-    	font-size: 14px;
-    	padding: 7px;
-    	
-    }
-    
-    .chargetypetext {
-    	margin-top: 1vh;
-    	
-    
-    }
-    
-    .chargetype label {
-    	font-size: 13px;
-    	margin: 1px;
-    
-    }
-    
-    
-    .searchbutton {
-    	padding: 7px;
-    }
-    
-    
-    .status {
-    
-    	gap: 2px;
-    }
-    
-    .status span {
-    	padding: 1px 3px;
-    	
-    }
-    
-    .status-available {
-    	margin: 1px 0;
-    }
-    
-    .info p {
-    	font-size: 12px;
-    }
-    
-    
-    .station-info-popup {
-    	width: 280px;
-    	height: 650px;
-    	top: 95px;
-    	right: 40px;
-    
-    }
-    
-    .popupStationName {
-    	margin-bottom: 1vh;
-    	font-size: 20px;
-    
-    }
-    
-    .popupchargebusi {
-    	margin: 5px 0;
-    }
-    
-    .popupOperator {
-    	padding: 4px 14px;
-    	font-size: 12px;
-    
-    }
-    
-    .popupchargeinfo span {
-    	margin: 5px 0;
-    	padding-bottom: 3px;
-    	    	
-    }
-    
-    .info-header {
-    	font-size: 21px;
-    	
-    }
-    
-    .info-item {
-    	font-size: 14px;
-    }
-    
-    .chargephoto-header {
-    	font-size: 21px;
-    	margin: 8px 0;
-    
-    }
-    
-    .chargephoto-header img {
-    	width: 20px;
-    	height: 20px;
-    
-    }
-    
-    .roadviewnav {
-    	font-size: 13px;
-
-    }
-    
-    .roadview {
-    	height: 200px;
-    	max-height: 200px;
-    
-    }
-    
-    .direction-item {
-    	padding: 3px;
-    	gap: 8px;
-    	font-size: 14px;
-    	
-    }
-    
-    
-    
 }
 
 /* 모바일 화면 (768px 이하) */
@@ -1207,19 +1065,11 @@ html, body {
 	    height: 640px;
     }
     
-    .pagination-container {
-    	margin-right: 3px;
-    	
-    }
-    
-    
     .page-button {
-    	font-size: 12px;
-    	width: 16px;
-    	height: 16px;
+    	font-size: 10px;
+    	height: 30px;
     
     }
-    
     
     
     .popupStationName {
@@ -1254,7 +1104,7 @@ html, body {
     .chargephoto-header {
     	font-size: 20px;
     	margin: 7px 0;
-    	margin-top: 1.5vh;
+    	margin-top: 1vh;
     }
     
     .roadviewnav {
@@ -1282,235 +1132,18 @@ html, body {
     
 }
 
-/* 초소형 화면 (425px 이하) */
-@media (max-width: 425px) {
+/* 초소형 화면 (480px 이하) */
+@media (max-width: 480px) {
     body {
-    
+        font-size: 14px; /* 전체 폰트 크기 축소 */
     }
 
     .searchbar {
-    	width: 150px;
-    	height: 650px;
-        padding: 2px; /* 검색 바 여백 축소 */
-        margin: 8px;
-        
+        padding: 10px; /* 검색 바 여백 축소 */
     }
-    
-    
-    .tabbarev, .tabbarroad {
-    	font-size: 9px;
-    	margin-top: 1vh;
-    
-    }
-    
-    .tab-content {
-    	margin-top: 1vh;
-    
-    }
-    
-    .selectlocal h3 {
-    	font-size: 11px;
-    	padding: 0;
-    	margin: 4px;
-    	margin-left: 1vh;
-    }
-    
-    
-    .dropdown {
-    	font-size: 9px;
-    	padding: 3px;
-    	margin: 2px auto;
-    
-    }
-    
-    .searchbutton {
-    	margin: 0px 8px;
-    	font-size: 9px;
-    	padding: 3px;
-    	
-    }
-    
-    .searchbutton-container {
-    	margin: 7px;
-    	
-    }
-    
-    .search-item {
-    	padding: 2px 0;
-    }
-    
-    .info h3 {
-    	font-size: 10px;
-    }
-    
-    
-    .info p {
-    	font-size: 9px;
-    	margin-top: 2px;
-    }
-    
-    .status span {
-    	font-size: 5px;
-    	margin-top: 2px;
-    }
-    
-    
-    .tabbar .active {
-    
-    }
-
-	.tabbar .active::after {
-		bottom: -4px;
-		left: -10px;
-		width: calc(100% + 21px);
-	
-	}
-	
-	.searchlist {
-		margin-left: 1vh;
-		margin-top: 0.5vh;
-		
-	}
-	
-	.searchlist h2 {
-		font-size: 11px;
-		margin-top: 0.5vh;
-	}
-	
-	.chargetypetext {
-		font-size: 11px;
-		margin-top: 0.5vh;
-		margin-left: 1vh;
-	
-	}
-	
-	.chargetype {
-		margin-top: 1vh;
-	
-	}
-	
-	
-	.chargetype label {
-		font-size: 10px;
-		margin: 0px;
-	
-	}
-	
-	.chargetype input[type="checkbox"] {
-		margin-right: 0.5vh;
-    	width: 11px;
-    	height: 11px;
-	
-	}
-	
-	.pagination-container {
-		margin: 0 -3px;
-	
-	}
-	
-	.page-button {
-		height: 18px;
-		font-size: 8px;
-		margin: 0;
-		width: 10px;
-	}
-	
-	.pagination-wrapper {
-		display: table;
-	}
-	
-	
-	.station-info-popup {
-		width: 150px;
-		height: 580px;
-		top: 65px;
-		right: 8px;
-		padding: 15px;
-	
-	}
-	
-	#closePopupButton {
-		top: 2px;
-		right: 0px;
-		font-size: 13px;
-		
-	}
-	
-	.popupStationName {
-		font-size: 12px;
-		
-	}
-	
-	
-	.popupOperator {
-		padding: 2px 6px;
-		font-size: 9px;
-	
-	}
-	
-	.popupchargeType table {
-		margin: 8px auto;
-	
-	}
-	
-	.popupchargeType th, .popupchargeType td {
-		font-size: 9px;
-		padding: 0;
-	
-	}
-	
-	.popupchargeType span {
-		width: auto;
-		height: auto;
-		text-align: center;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		font-size: 9px;
-		padding: 2px 6px;
-	
-	}
-
-	.popupchargeinfo span {
-		font-size: 12px;
-	
-	}
-	
-	.info-item {
-		font-size: 9px;
-	}
-	
-	.label {
-		width: 40px;
-	}
-	
-	.chargephoto-header {
-		font-size: 12px;
-		display: flex;
-		justify-content: space-between;
-		
-	}
-	
-	.roadviewnav {
-		font-size: 10px;
-		padding: 1px 3px;
-	}
-	
-	.chargephoto-header img {
-		width: 15px;
-		height: 15px;
-		
-	}
-	
-	.roadview {
-		width: 100%;
-		height: 220px;
-		max-height: 220px;
-	
-	}
 
     .route-main {
-        max-height: 100vh;
+        max-height: 30vh; /* 경로 리스트 높이 더 축소 */
     }
 
     .route-icon img {
@@ -1520,68 +1153,8 @@ html, body {
 
     .direction-item {
         gap: 3px; /* 리스트 간격 축소 */
-        padding: 0;
-        font-size: 10px;
-        width: 95%;
-        
     }
-		
-	.route-icon {
-		height: 27px;
-		margin-right: 2px;
-	
-	}    
-
-    
-    .route-search {
-    	margin-left: 1vh;
-    
-    }
-    
-    .route-search h3 {
-    	font-size: 11px;
-    	margin: 3px 0;
-    
-    }
-    
-    .route-input {
-    	font-size: 9px;
-    	padding: 7px;
-    	margin: 3px 0;
-    
-    }
-    
-    .route-swapbutton {
-    	padding: 3px 3px;
-    	width: 12px;
-    	height: 12px;
-    
-    }
-    
-    .route-searchbutton {
-    	width: 91%;
-    	font-size: 10px;
-    	padding: 6px;
-    }
-    
-    .route-header {
-    	margin: 0;
-    	padding: 0;
-    	font-size: 10px;
-    
-    }
-    
-    .autocomplete-item {
-    	font-size: 9px;
-    	padding: 2px 0;
-    
-    }
-    
-    .autocomplete-icon {
-    	width: 15px;
-    	height: 15px;
-    
-    }
-    
-    
 }
+
+
+
