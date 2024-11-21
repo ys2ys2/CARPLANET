@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -177,7 +178,7 @@ public class CommunityController {
 
     String userId = getCurrentUserId(request);
     if (userId == null) {
-      return ResponseEntity.status(401).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
 
     communityService.deletePost(vo.getPostIndex(), userId);
@@ -193,12 +194,9 @@ public class CommunityController {
   public ResponseEntity<PostLikeDto> like(HttpServletRequest request, Integer postIndex) {
     String userId = getCurrentUserId(request);
     if (getCurrentUserId(request) != null) {
-      PostLikeDto dto = new PostLikeDto();
-      dto.setPostIndex(postIndex);
-      dto.setLikeCount(communityService.like(postIndex, userId));
-      return ResponseEntity.ok(dto);
+      return ResponseEntity.ok(communityService.like(postIndex, userId));
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -206,12 +204,9 @@ public class CommunityController {
   public ResponseEntity<PostLikeDto> unlike(HttpServletRequest request, Integer postIndex) {
     String userId = getCurrentUserId(request);
     if (getCurrentUserId(request) != null) {
-      PostLikeDto dto = new PostLikeDto();
-      dto.setPostIndex(postIndex);
-      dto.setUnlikeCount(communityService.unlike(postIndex, userId));
-      return ResponseEntity.ok(dto);
+      return ResponseEntity.ok(communityService.unlike(postIndex, userId));
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -240,7 +235,7 @@ public class CommunityController {
       dto.setModDate(newComment.getModDate());
       return ResponseEntity.ok(dto);
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -264,7 +259,7 @@ public class CommunityController {
       dto.setModDate(comment.getModDate());
       return ResponseEntity.ok(dto);
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -287,7 +282,7 @@ public class CommunityController {
       dto.setModDate(comment.getModDate());
       return ResponseEntity.ok(dto);
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -304,7 +299,7 @@ public class CommunityController {
       dto.setLikeCount(communityService.commentLike(postCommentIndex, userId));
       return ResponseEntity.ok(dto);
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 
@@ -318,7 +313,7 @@ public class CommunityController {
       dto.setUnlikeCount(communityService.commentUnlike(postCommentIndex, userId));
       return ResponseEntity.ok(dto);
     } else {
-      return ResponseEntity.status(400).body(null);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
   }
 

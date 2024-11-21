@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostLikeRepository extends JpaRepository<PostLikeEntity, Integer> {
   List<PostLikeEntity> findAllByPostIndexIn(List<Integer> postIndex);
+  List<PostLikeEntity> findAllByPostIndexAndCarId(Integer postIndex, String carId);
   PostLikeEntity findByPostIndexAndCarIdAndType(Integer postIndex, String carId, Boolean type);
 
   long countByPostIndexAndType(Integer postIndex, Boolean type);
