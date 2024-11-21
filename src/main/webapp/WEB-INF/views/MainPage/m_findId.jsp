@@ -76,7 +76,7 @@
 
 <body>
 <!-- header -->
-    <jsp:include page="/WEB-INF/views/Components/header.jsp" />
+    <jsp:include page="/WEB-INF/views/MainPage/header.jsp"/>
     <!-- 아이디 찾기와 비밀번호 찾기 선택 -->
    <div class="radio-group">
    <input type="radio" name="findType" value="id" id="findId" onclick="toggleForm()" checked>
@@ -158,6 +158,6 @@
 
     
       <!-- footer -->
-    <jsp:include page="/WEB-INF/views/Components/footer.jsp" />
+    <jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
 </body>
 </html>

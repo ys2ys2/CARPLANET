@@ -73,6 +73,10 @@ public class UserEntity {
 		
 	}
 	
+	public void updateNickname(String carNickname) {
+	    this.carNickname = carNickname;
+	}
+	
 	public void updatePassword(String newPassword) {
         this.carPw = newPassword;
     }
