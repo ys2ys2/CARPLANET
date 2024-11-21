@@ -456,17 +456,16 @@ function displayMarkers(parkingData) {
        
         // 마커 생성
         var marker = new kakao.maps.Marker({
-            position: markerPosition
+            position: markerPosition,
+            map: map//지도에 마커를 바로 표시
         });
-        // 지도에 마커 표시
-        marker.setMap(map);
+            kakao.maps.event.addListener(marker, 'click', ()=>{
+                showParkingDetails(item); //클릭된 주차장의 정보를 상세 팝업에 전달.
+            });
+        
+        });
+    };
 
-        // 마커 클릭 시 주차장명과 주소를 알림으로 표시
-        kakao.maps.event.addListener(marker, 'click', function() {
-            alert("주차장명: " + item.name + "\n주소: " + item.address);
-        });
-    });
-}
 
 // 주차장 리스트 클릭 시 해당 위치로 지도 이동 및 마커 표시
 function moveToLocationAndShowMarker(item) {
@@ -478,12 +477,10 @@ function moveToLocationAndShowMarker(item) {
 
     // 카카오맵 LatLng 객체 생성 (위도, 경도 순서)
     var moveLatLon = new kakao.maps.LatLng(latitude, longitude);
-    console.log("LatLng 객체:", moveLatLon);
 
     // 지도 중심을 이동하려는 위치로 설정
     map.setLevel(3); // 확대 레벨 설정
     map.panTo(moveLatLon); // 지도 중심 이동
-    console.log("현재 지도 중심 좌표:", map.getCenter());
     // 기존 마커 제거 후 새 마커 추가
     if (window.selectedMarker) {
         window.selectedMarker.setMap(null); // 기존 마커 제거
@@ -998,70 +995,7 @@ async function convertAddressToCoords(address, type) {
     }
 
 
-// function selectPlace(place, type) {
-//     const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
-//     inputField.value = place.place_name; // 선택한 장소 이름을 입력 창에 설정
 
-//     // 선택된 장소의 좌표 저장
-//     const location = `${place.x},${place.y}`; // 경도, 위도 형식
-
-//     if (type === 'start') {
-//         startCoords = location;
-//         if (startMarker) startMarker.setMap(null); // 기존 마커 제거
-//         startMarker = new kakao.maps.Marker({
-//             position: new kakao.maps.LatLng(place.y, place.x)
-//         });
-//         startMarker.setMap(map);
-//     } else {
-//         endCoords = location;
-//         if (endMarker) endMarker.setMap(null); // 기존 마커 제거
-//         endMarker = new kakao.maps.Marker({
-//             position: new kakao.maps.LatLng(place.y, place.x)
-//         });
-//         endMarker.setMap(map);
-//     }
-
-//     // 지도 중심 이동
-//     map.panTo(new kakao.maps.LatLng(place.y, place.x));
-
-//     // 검색 결과 창 닫기
-//     document.getElementById('search-results').style.display = 'none';
-// }
-
-// async function findRoute() {
-//     if (!startCoords || !endCoords) {
-//         alert("출발지와 도착지를 설정해주세요.");
-//         return;
-//     }
-//     const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
-
-//     try {
-//         const response = await fetch(url, {
-//             method: 'GET',
-//             headers: {
-//                 'Authorization': `KakaoAK ${REST_API_KEY}`
-//             }
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`API 호출 실패: ${response.status}`);
-//         }
-
-//         const data = await response.json();
-
-//         if (!data.routes || data.routes.length === 0) {
-//             alert("경로를 찾을 수 없습니다.");
-//             return;
-//         }
-
-//         // 경로를 지도에 표시
-//         displayRouteOnMap(data.routes[0]);
-//         displayRoute(data); // 텍스트 안내 표시
-//     } catch (error) {
-//         console.error("길찾기 실패:", error);
-//         alert(`길찾기 실패: ${error.message}`);
-//     }
-// }
 
 window.findRoute = async function findRoute() {
     const startLocationInput = document.getElementById('start-location').value;
@@ -1288,8 +1222,7 @@ function displayAutocompleteResults(data) {
 resultsContainer.style.display = 'block'; // 자동완성 결과 표시
 }
 
-
-//현재 위치를 지도에 표시
+// 현재 위치를 지도에 표시
 function showCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -1297,19 +1230,25 @@ function showCurrentLocation() {
                 const latitude = position.coords.latitude; // 위도
                 const longitude = position.coords.longitude; // 경도
 
-                const markerImage = new kakao.maps.MarkerImage(
-                    "https://ssl.pstatic.net/static/maps/m/pin_rd.png", //이미지 URL
-                    new kakao.maps.Size(20, 20), //마커 이미지 크기
-                {
-                    offset: new kakao.maps.Point(12,35), //이미지의 중심 좌표
-                }
-                );
+                // 현재 위치 마커를 감싸는 HTML 요소 생성
+                const markerContent = document.createElement('div');
+                markerContent.className = 'custom-marker';
 
-                // 현재 위치 마커 생성
-                const marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(latitude, longitude), // 마커 위치 설정
-                    map: map, // 마커를 표시할 지도
-                    image: markerImage, //zjtmxja akzj dlalwl tjfwjd
+                // HTML 구조
+                markerContent.innerHTML = `
+                    <div class="radar-effect"></div>
+                    <img 
+                        src="https://ssl.pstatic.net/static/maps/m/pin_rd.png" 
+                        class="location-icon" 
+                        alt="현재 위치">
+                `;
+
+                // 카카오맵 CustomOverlay를 이용해 마커 표시
+                const markerOverlay = new kakao.maps.CustomOverlay({
+                    position: new kakao.maps.LatLng(latitude, longitude),
+                    content: markerContent, // 위에서 생성한 HTML 구조 삽입
+                    map: map,
+                    zIndex: 1
                 });
 
                 // 지도 중심을 현재 위치로 이동
@@ -1336,7 +1275,6 @@ function showCurrentLocation() {
         alert("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
     }
 }
-
 
 
 const typeIconMap = {
