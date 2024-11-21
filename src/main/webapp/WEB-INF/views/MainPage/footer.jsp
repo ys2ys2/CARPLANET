@@ -59,15 +59,16 @@
   </div>
 </div>
 
-<!-- 카카오톡 팝업 모달 -->
-<div id="chatbotModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeChatBotModal()">&times;</span>
-<iframe 
-  src="http://pf.kakao.com/_CxgFxdn/chat" 
-  frameborder="0" 
-  style="width: 100%; height: 400px;"></iframe>
 
+<!-- 카카오톡 팝업 모달 -->
+<div id="kakaoModal" class="kakao-modal">
+  <div class="kakao-modal-content">
+    <!-- X 닫기 버튼 -->
+<span class="kakao-close" onclick="closeChatBotModal()">&#x2715;</span>
+    <iframe 
+      src="http://pf.kakao.com/_CxgFxdn/chat" 
+      frameborder="0" 
+      style="width: 100%; height: 300px;"></iframe>
   </div>
 </div>
 
@@ -97,7 +98,6 @@
                 <button onclick="showSubButtons('electric')">전기차 충전소</button>
                 <button onclick="showSubButtons('station')">주유소</button>
                 <button onclick="showSubButtons('parking')">주차장</button>
-                <button onclick="showSubButtons('repair')">정비소</button>
                 <button onclick="showSubButtons('community')">커뮤니티</button>
             </div>
 
@@ -130,17 +130,19 @@ window.addEventListener('scroll', function () {
   }
 });
 
+
+
 </script>
 
 <script>
 //카카오톡 모달 열기
 function openChatBotModal() {
-  document.getElementById("chatbotModal").style.display = "block";
+  document.getElementById("kakaoModal").style.display = "block"; // ID 수정
 }
 
 // 카카오톡 모달 닫기
 function closeChatBotModal() {
-  document.getElementById("chatbotModal").style.display = "none";
+  document.getElementById("kakaoModal").style.display = "none"; // ID 수정
 }
 
 // ESC 키로 모달 닫기

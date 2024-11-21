@@ -25,7 +25,7 @@
     </a>
   </div>
   <div class="menu-item">
-    <a href="${pageContext.request.contextPath}/community">
+    <a href="${pageContext.request.contextPath}/community/getPostList.do">
       <img src="${pageContext.request.contextPath}/resources/images/Community.png" alt="커뮤니티"><br>커뮤니티
     </a>
   </div>

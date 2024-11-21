@@ -11,29 +11,47 @@
 <!-- 헤더 -->
 <jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
 
-<!-- 왼쪽 프로필 영역 -->
+
 <div class="profile-section">
     <div class="profile-card">
         <!-- 차량 정보 섹션 -->
         <h4>나의 차량 정보</h4>
         <div class="car-info">
-            <img src="${pageContext.request.contextPath}/resources/images/car_image.png" alt="차량 이미지" class="car-image">
+            <img src="${pageContext.request.contextPath}/resources/images/01.jpg" alt="차량 이미지" class="car-image">
             <div class="car-details">
                 <div class="car-detail">
-                    <span>차량 종류</span><span>아우디 A6</span>
+                    <div class="label-box">차량 종류</div>
+                    <div class="value-box">아우디 A6</div>
                 </div>
                 <div class="car-detail">
-                    <span>차량 번호</span><span>123가1234</span>
+                    <div class="label-box">차량 번호</div>
+                    <div class="value-box">123가 1234</div>
                 </div>
                 <div class="car-detail">
-                    <span>차량 유종</span><span>디젤</span>
+                    <div class="label-box">차량 유종</div>
+                    <div class="value-box">디젤</div>
                 </div>
             </div>
             <!-- 차량 정보 등록하기 버튼 -->
             <a href="${pageContext.request.contextPath}/registerCarInfo.jsp" class="register-car-info-btn">차량정보 등록하기</a>
         </div>
-            </div>
+    </div>
+    
+    <!-- 나의 커뮤니티 관리 섹션 -->
+    <div class="community-section">
+        <h4>나의 커뮤니티 관리</h4>
+        <div class="community-links">
+            <ul>
+                <!-- 예시 커뮤니티 글 링크 -->
+                <li><a href="https://example.com/community-post-1" target="_blank"></a></li>
+                <li><a href="https://example.com/community-post-2" target="_blank"></a></li>
+                <li><a href="https://example.com/community-post-3" target="_blank"></a></li>
+            </ul>
         </div>
+        <!-- 커뮤니티 글 수정 버튼 -->
+        <a href="${pageContext.request.contextPath}/communityEditPage.jsp" class="edit-community-posts-btn">커뮤니티 글 수정하기</a>
+    </div>
+</div>
 
         
 <!-- 푸터 -->

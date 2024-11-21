@@ -51,7 +51,7 @@
         <img src="${pageContext.request.contextPath}/resources/images/par.png" alt="주차장">
         <span>주차장</span>
     </a>
-    <a href="${pageContext.request.contextPath}/community.jsp" class="menu-item">
+    <a href="${pageContext.request.contextPath}/community/getPostList.do" class="menu-item">
         <img src="${pageContext.request.contextPath}/resources/images/Community.png" alt="커뮤니티">
         <span>커뮤니티</span>
     </a>

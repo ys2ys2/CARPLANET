@@ -25,7 +25,7 @@
     <!-- 로그인 성공 시, 마이페이지와 로그아웃 표시 -->
  <div class="header-container">
       <div class="member">
-        <span class="userprofile">${user.carId}님 환영합니다!</span>
+        <span class="userprofile">${user.carNickname}님 환영합니다!</span>
         <button class="mypage-btn" onclick="location.href='./mypage'">
           <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
           <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
@@ -63,7 +63,7 @@
     if (confirmation) {
       // 사용자가 '확인'을 누르면 로그아웃 요청 전송
       $.ajax({
-        url: "./Auth/logout.do", // 서버 로그아웃 URL
+        url: "/CarPlanet/Auth/logout.do", // 서버 로그아웃 URL
         type: "GET", // 로그아웃 요청 방식
         success: function (response) {
           alert("로그아웃되었습니다.");

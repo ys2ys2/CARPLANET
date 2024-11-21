@@ -1,104 +1,154 @@
-@charset "UTF-8";
+@charset "UTF-8"; /* 문자 인코딩 설정 */
 
-/* 전체 페이지 스타일 */
+/* 기본 스타일 초기화 */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
 }
 
-/* 프로필 섹션 */
+/* 차량 정보 섹션 스타일 */
 .profile-section {
-    width: 80%;
-    max-width: 800px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+/* 스타일 변경 */
+.profile-card h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
+    font-weight: bold; /* 글씨를 굵게 */
+    color: #333333; /* 텍스트 색상 설정 */
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+    margin-top: 10px; /* 위쪽 여백 설정 */
 }
 
-/* 차량 정보 섹션 */
+
+.profile-card {
+    width: 600px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
 .car-info {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .car-image {
     width: 200px;
-    height: auto;
-    border: 3px solid #2b7cd3; /* 파란색 테두리 */
-    border-radius: 5px;
-    margin-bottom: 10px;
+    height: 180px;
+    margin-right: 20px;
+    border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
 }
 
 .car-details {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    flex-direction: column;
+    justify-content: space-around;
+     margin-top: -20px; /* 전체 car-details를 위로 10px 이동 */
 }
 
 .car-detail {
-    background-color: #2b2b2b;
-    color: #ffffff;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.register-car-info-btn {
-    display: inline-block;
-    margin-top: 10px;
-    color: #2b7cd3;
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.register-car-info-btn:hover {
-    text-decoration: underline;
-}
-
-/* 자주 가는 장소 */
-h4 {
-    font-size: 18px;
-    margin: 20px 0 10px;
-}
-
-.frequent-places, .review-management {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.label-box {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-weight: bold;
+    text-align: left;
+    flex: 1;
+}
+
+.value-box {
+    font-family: 'Paperlogy-8ExtraBold';
+    text-align: left;
+    flex: 1;
+    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+    margin-left: 10px; /* .label-box와의 여백 10px 추가 */
+    color: #808080; /* 회색으로 텍스트 색상 변경 */
+}
+
+/* 차량 정보 등록하기 버튼 스타일 */
+.register-car-info-btn {
+    display: inline-block; /* 인라인 블록으로 설정하여 너비 자동 조정 */
+    padding: 7px 10px; /* 세로 7px, 가로 10px 여백으로 설정 (전체 크기 20x15px에 맞춰서) */
+    font-size: 12px; /* 폰트 크기 설정 */
+    background-color: #2b7cd3; /* 버튼 배경색 파란색 */
+    color: #ffffff; /* 버튼 텍스트 색상 흰색 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    width: auto; /* 자동 너비 설정 */
+    height: auto; /* 자동 높이 설정 */
+    line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
+    float: right; /* 오른쪽으로 정렬 */
+    margin-top: 150px; /* 아래로 30px 이동 */
+}
+
+
+/* 나의 커뮤니티 관리 섹션 스타일 */
+.community-section {
+    width: 600px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+/* 스타일 변경 */
+.community-section h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
+    font-weight: bold; /* 글씨를 굵게 */
+    color: #333333; /* 텍스트 색상 설정 */
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+    margin-top: 10px; /* 위쪽 여백 설정 */
+    padding-left: 10px; /* 왼쪽에 10px 여백 추가 (필요시) */
+}
+
+/* 커뮤니티 링크 스타일 */
+.community-links {
     margin-bottom: 20px;
 }
 
-.place-card, .review-card {
-    flex: 1;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    font-size: 14px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+.community-links ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.place-card span, .review-card span {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
+.community-links li {
+    margin-bottom: 8px;
 }
 
-.more-btn, .edit-btn {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: #2b7cd3;
-    color: #ffffff;
-    border-radius: 5px;
-    font-size: 12px;
+.community-links a {
     text-decoration: none;
-    transition: background-color 0.3s;
+    color: #333;
+    font-weight: bold;
 }
 
-.more-btn:hover, .edit-btn:hover {
-    background-color: #1f5a9d;
+/* 커뮤니티 글 수정하기 버튼 스타일 */
+.edit-community-posts-btn {
+    display: inline-block; /* 버튼을 인라인 블록으로 설정 */
+    padding: 7px 10px; /* 세로 7px, 가로 10px 여백으로 설정 (전체 크기 20x15px에 맞춰서) */
+    font-size: 12px; /* 폰트 크기 설정 */
+    background-color: #2b7cd3; /* 버튼 배경색 파란색 */
+    color: #ffffff; /* 버튼 텍스트 색상 흰색 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    width: auto; /* 자동 너비 설정 */
+    height: auto; /* 자동 높이 설정 */
+    line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
+    float: right; /* 오른쪽으로 정렬 */
 }
+
