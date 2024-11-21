@@ -235,13 +235,13 @@ body, html {
     color: #007BFF; /* 강조 텍스트 색상 */
 }
 
-.additional-info {
+.additional-info,.brand-info{
 	display: flex;
 	flex-wrap: wrap; /* 요소들을 여러 줄에 걸쳐 표시 */
 	gap: 10px; /* 요소 간 간격 */
 }
 
-.additional-info label {
+.additional-info,.brand-info label {
 	display: flex;
 	align-items: center;
 	background-color: #f5f5f5;
@@ -474,7 +474,7 @@ body, html {
 					<hr>
 					<div>
 						<p class="sidetap">상표</p>
-						<div class="additional-info">
+						<div class="brand-info">
 							<label><input type="checkbox">SKE</label>
 							<label><input type="checkbox">GSC</label>
 							<label><input type="checkbox">HDO</label>
@@ -482,9 +482,6 @@ body, html {
 							<label><input type="checkbox">RTE</label>
 							<label><input type="checkbox">RTX</label>
 							<label><input type="checkbox">NHO</label>
-							<label><input type="checkbox">ETC</label>
-							<label><input type="checkbox">E1G</label>
-							<label><input type="checkbox">SKG</label>
 						</div>
 					</div>
 				<hr>
