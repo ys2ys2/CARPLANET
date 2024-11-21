@@ -39,7 +39,7 @@ public class CommunityController {
   /**
    * 게시글 목록 조회
    */
-  @GetMapping("/getPostList.do")
+  @GetMapping("")
   public ModelAndView getPostList(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
     // TODO, paging 처리 필요시 jsp 수정필요
