@@ -321,6 +321,28 @@ function addRegionMarker(coords, title) {
     var centerImage = createMarkerImage('../resources/images/centermarker.png', 32);
 	
 	
+	function getSelectedFilters() {
+    // 부가정보 필터 상태 확인
+    const additionalFilters = {};
+    $('.additional-info input[type="checkbox"]').each(function () {
+        const labelText = $(this).parent().text().trim(); // 체크박스 옆 텍스트 가져오기
+        const isChecked = $(this).is(':checked'); // 체크박스 상태
+        additionalFilters[labelText] = isChecked;
+    });
+
+    // 상표 필터 상태 확인 (체크박스 옆 텍스트로 가져오기)
+    const brandFilters = [];
+    $('.brand-info input[type="checkbox"]:checked').each(function () {
+        const labelText = $(this).parent().text().trim(); // 체크박스 옆 텍스트 가져오기
+        brandFilters.push(labelText); // 텍스트를 배열에 추가
+    });
+
+    console.log('최종 부가정보 필터:', additionalFilters);
+    console.log('최종 상표 필터:', brandFilters);
+
+    return { additionalFilters, brandFilters };
+}
+
 	
 	
 
@@ -328,7 +350,7 @@ function addRegionMarker(coords, title) {
     proj4.defs("EPSG:5178", "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=GRS80 +units=m +no_defs");
 	proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
 
-    async function getoilgas(coords) {
+async function getoilgas(coords) {
     clearGasStationMarkers(); // 기존 주유소 마커 초기화
 
     const regionY = coords.La; // 위도
@@ -351,7 +373,7 @@ function addRegionMarker(coords, title) {
             }
         });
 
-        const stationList = response.RESULT?.OIL || [];
+        let stationList = response.RESULT?.OIL || [];
         console.log("주유소 기본 데이터 수신:", stationList);
 
         if (!stationList.length) {
@@ -369,9 +391,55 @@ function addRegionMarker(coords, title) {
 
         console.log("병합된 주유소 상세 데이터:", detailedStationList);
 
-        // 지도와 UI 업데이트
-        updateGasList(detailedStationList);
-        detailedStationList.forEach(station => {
+        // **필터링 조건 적용**
+        const { additionalFilters, brandFilters } = getSelectedFilters(); // 수정된 getSelectedFilters 호출
+        console.log("적용된 부가정보 필터:", additionalFilters);
+        console.log("적용된 상표 필터:", brandFilters);
+
+        const filteredStations = detailedStationList.filter(station => {
+    let matchesBrand = true;
+    let matchesAdditional = true;
+
+    // 상표 필터 조건
+    if (brandFilters.length > 0) {
+    	console.log('brandFilters:', brandFilters);
+		console.log('station.POLL_DIV_CO:', station.POLL_DIV_CO);
+        matchesBrand = brandFilters.includes(station.POLL_DIV_CO);
+    }
+
+    // 부가정보 필터 조건
+    if (Object.keys(additionalFilters).some(filter => additionalFilters[filter])) {
+        matchesAdditional = Object.keys(additionalFilters).every(filter => {
+            if (additionalFilters[filter]) {
+                switch (filter) {
+                    case "세차장":
+                        return station.CAR_WASH_YN === "Y";
+                    case "경정비":
+                        return station.MAINT_YN === "Y";
+                    case "편의점":
+                        return station.CVS_YN === "Y";
+                    case "품질인증":
+                        return station.KPETRO_YN === "Y";
+                    default:
+                        return true;
+                }
+            }
+            return true;
+        });
+    }
+
+    // 상표 필터와 부가정보 필터를 모두 만족하는 경우 반환
+    return matchesBrand && matchesAdditional;
+});
+
+
+
+        // 필터링된 데이터로 UI 업데이트
+        updateGasList(filteredStations);
+        console.log("updateGasList 호출된 데이터:", filteredStations);
+
+        // 지도에 마커 표시
+        filteredStations.forEach(station => {
             let [lng, lat] = proj4("EPSG:5178", "EPSG:4326", [station.GIS_X_COOR, station.GIS_Y_COOR]);
 
             lng -= 0.00223; // 좌표 보정
@@ -385,13 +453,12 @@ function addRegionMarker(coords, title) {
                 map: map,
                 title: station.OS_NM
             });
-            
+
             kakao.maps.event.addListener(marker, 'click', function () {
-     	  	 displayStationInfo(station); // 주유소 정보 표시
-     	  	 map.setCenter(coords);
- 			   });
-            
-            
+                displayStationInfo(station); // 주유소 정보 표시
+                map.setCenter(coords);
+            });
+
             gasStationMarkers.push(marker); // 배열에 저장
         });
 
@@ -399,6 +466,21 @@ function addRegionMarker(coords, title) {
         console.error("오류 발생:", error);
     }
 }
+
+
+
+
+$('.additional-info input[type="checkbox"], .brand-info input[type="checkbox"]').on('change', function () {
+    const { additionalFilters, brandFilters } = getSelectedFilters();
+    console.log("적용된 부가정보 필터:", additionalFilters);
+    console.log("적용된 상표 필터:", brandFilters);
+
+    // 필터링 로직 재적용
+    logSelections(); // 또는 getoilgas() 호출
+});
+
+
+$('#sido, #city, #town').on('change', logSelections);
 
 async function getoilgasroute(coords) {
     const regionY = coords.La; // 위도
