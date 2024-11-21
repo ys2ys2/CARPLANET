@@ -14,42 +14,32 @@
 <body>
 <header>
 
-
-<div class="logo">
-  <!-- 메인 페이지 URL을 '/'로 설정 -->
-  <a href="${pageContext.request.contextPath}/" id="logo-link">CAR PLANET</a>
-</div>
-
+<div class="header">
+  <!-- 로고 영역 -->
+  <div class="logo">
+    <a href="${pageContext.request.contextPath}/">CAR PLANET</a>
+  </div>
+  
+  <!-- 사용자 메뉴 영역 -->
 <c:choose>
   <c:when test="${not empty user}">
-    <!-- 로그인 성공 시, 마이페이지와 로그아웃 표시 -->
- <div class="header-container">
-      <div class="member">
-        <span class="userprofile">${user.carId}님 환영합니다!</span>
-        <button class="mypage-btn" onclick="location.href='./mypage'">
-          <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
-          <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
-          <span>마이페이지</span>
-        </button>
-
-        <!-- 로그아웃을 링크로 변경 -->
-        <span><a href="#" id="logout">로그아웃</a></span>
-      </div>
+    <!-- 로그인 성공 -->
+    <div class="user-menu">
+      <span class="userprofile">${not empty user.carNickname ? user.carNickname : "유저"}님 환영합니다!</span>
+      <button class="mypage-btn" onclick="location.href='./mypage'">마이페이지</button>
+      <span><a href="#" id="logout">로그아웃</a></span>
     </div>
-
   </c:when>
   <c:otherwise>
-    <!-- 로그인 실패 시, 로그인과 회원가입 표시 -->
-    <div class="header-container">
-      <div class="menu">
-        <span><a href="${pageContext.request.contextPath}/company/about">회사소개</a></span>
-        <span><a href="${pageContext.request.contextPath}/Auth/Login.do">로그인</a></span>
-      </div>
+    <!-- 로그인 실패 -->
+    <div class="user-menu">
+      <span><a href="${pageContext.request.contextPath}/company/about">회사소개</a></span>
+      <span><a href="${pageContext.request.contextPath}/Auth/Login.do">로그인</a></span>
     </div>
   </c:otherwise>
 </c:choose>
 
-
+</div>
 
 </header>
    
@@ -63,7 +53,7 @@
     if (confirmation) {
       // 사용자가 '확인'을 누르면 로그아웃 요청 전송
       $.ajax({
-        url: "./Auth/logout.do", // 서버 로그아웃 URL
+        url: "/CarPlanet/Auth/logout.do", // 서버 로그아웃 URL
         type: "GET", // 로그아웃 요청 방식
         success: function (response) {
           alert("로그아웃되었습니다.");
