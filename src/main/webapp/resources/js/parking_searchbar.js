@@ -857,17 +857,30 @@ function setupSearchResultsContainer() {
 // 페이지 로드 시 검색 결과 표시용 컨테이너 생성
 document.addEventListener('DOMContentLoaded', setupSearchResultsContainer);
 
-
-//스왑버튼: 출발지와 도착지의 값을 교환
-function swapLocations(){
-    //출발지와 도착지 입력 필드 가져오기
+// 스왑 버튼: 출발지와 도착지의 값을 교환 및 마커 교환
+function swapLocations() {
+    // 출발지와 도착지 입력 필드 가져오기
     const startLocation = document.getElementById('start-location');
     const endLocation = document.getElementById('end-location');
 
-    //출발지와 도착지의 값을 교환
-    const temp = startLocation.value; //출발지 값을 임시 변수에 저장
-    startLocation.value =endLocation.value; //도착지 값을 출발지로 복사
-    endLocation.value = temp;//임시 변수에 저장된 출발지 값을 도착지로 복사
+    // 출발지와 도착지의 값을 교환
+    const tempValue = startLocation.value; // 출발지 값을 임시 변수에 저장
+    startLocation.value = endLocation.value; // 도착지 값을 출발지로 복사
+    endLocation.value = tempValue; // 임시 변수에 저장된 출발지 값을 도착지로 복사
+
+    // 출발지와 도착지 마커의 좌표 교환
+    if (originMarker && destinationMarker) {
+        // 출발지 마커와 도착지 마커의 위치 교환
+        const tempPosition = originMarker.getPosition(); // 출발지 마커 위치 저장
+        originMarker.setPosition(destinationMarker.getPosition()); // 도착지 마커 위치를 출발지 마커로 설정
+        destinationMarker.setPosition(tempPosition); // 임시 변수에 저장된 출발지 마커 위치를 도착지 마커로 설정
+    }
+
+    // 출발지와 도착지 좌표 교환
+    const tempCoords = startCoords; // 출발지 좌표를 임시 변수에 저장
+    startCoords = endCoords; // 도착지 좌표를 출발지로 복사
+    endCoords = tempCoords; // 임시 변수에 저장된 출발지 좌표를 도착지로 복사
+
 }
 
 
@@ -884,8 +897,12 @@ function clearAllInputs() {
     originMarker.setMap(null);
     destinationMarker.setMap(null);
 
-    //좌표 초기화
+    if(polyline){
+        polyline.setMap(null); 
+        polyline =null;
+    }
 
+    //좌표 초기화
     startCoords =null;
     endCoords = null;
 
