@@ -298,7 +298,7 @@
 		    transform: translateY(-50%);
 		    width: 20px; /* 돋보기 아이콘 크기 */
 		    height: 20px;
-		    background-image: url(/CarPlanet/resources/images/searchicon.png); /* 돋보기 아이콘 경로 */
+		    background-image: url(/V5/resources/images/searchicon.png); /* 돋보기 아이콘 경로 */
 		    background-position: center;
 		    background-repeat: no-repeat;
 		    background-size: contain;
@@ -463,7 +463,7 @@
 
             <div class="form-file-bimage">
                 <img id="preview" alt="미리보기 이미지"
-                     src="<c:if test='${post != null && post.filePath != null && post.fileName != null}'>/CarPlanet${post.filePath}${post.fileName}</c:if><c:if test='${post == null || post.filePath == null}'>${pageContext.request.contextPath}/resources/images/image90.png</c:if>">
+                     src="<c:if test='${post != null && post.filePath != null && post.fileName != null}'>/V5${post.filePath}${post.fileName}</c:if><c:if test='${post == null || post.filePath == null}'>${pageContext.request.contextPath}/resources/images/image90.png</c:if>">
             </div>
         </div>
 

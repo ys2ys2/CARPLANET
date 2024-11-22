@@ -35,6 +35,7 @@ public class CarInfoController {
             @RequestParam("carNumber") String carNumber,
             @RequestParam("fuelType") String fuelType,
             @RequestParam(value = "carImage", required = false) MultipartFile carImage,
+            @RequestParam(value = "existingCarImage", required = false) String existingCarImage, // 기존 이미지 추가
             HttpSession session) {
         // 세션에서 UserEntity 객체를 가져옴
         UserEntity user = (UserEntity) session.getAttribute("user");
@@ -43,15 +44,18 @@ public class CarInfoController {
         }
 
         try {
-            CarInfoEntity carInfo = new CarInfoEntity();
-            carInfo.setCarIdx((long) user.getCarIdx());
+        	CarInfoEntity carInfo = carInfoService.getCarInfo((long) user.getCarIdx()); // int를 long으로 변환
+
             carInfo.setCarType(carType);
             carInfo.setCarNumber(carNumber);
             carInfo.setFuelType(fuelType);
 
-            // 이미지 파일 처리 (이미지가 없으면 Null로 처리)
             if (carImage != null && !carImage.isEmpty()) {
+                // 새 이미지가 있을 경우
                 carInfo.setCarImage(carImage.getBytes());
+            } else if (existingCarImage != null && !existingCarImage.isEmpty()) {
+                // 새 이미지가 없을 경우 기존 이미지를 유지
+                carInfo.setCarImage(Base64.getDecoder().decode(existingCarImage));
             }
 
             carInfoService.saveCarInfo(carInfo); // Service를 통해 저장
@@ -62,6 +66,7 @@ public class CarInfoController {
             return ResponseEntity.status(500).body("이미지 저장 중 오류가 발생했습니다.");
         }
     }
+
 
     @GetMapping("/{carIdx}")
     public ResponseEntity<CarInfoEntity> getCarInfo(@PathVariable Long carIdx) {

@@ -635,3 +635,4 @@ document.getElementById('cancelButton').addEventListener('click', function () {
     document.getElementById("destinationCoords").value = '';
     destinationMarker.setMap(null); // 도착지 마커 제거
 });
+

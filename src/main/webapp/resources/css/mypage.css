@@ -54,8 +54,11 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: #f9f9f9;
+    font-family: 'Pretendard-Regular';
 }
+
+
+
 /* 스타일 변경 */
 .profile-card h4 {
     font-family: 'Paperlogy-8ExtraBold';
@@ -63,19 +66,38 @@ body {
     font-weight: bold; /* 글씨를 굵게 */
     color: #333333; /* 텍스트 색상 설정 */
     text-align: left; /* 왼쪽 정렬로 변경 */
-    margin-bottom: 20px; /* 아래쪽 여백 설정 */
-    margin-top: 10px; /* 위쪽 여백 설정 */
+    margin: 0;
 }
 
 
 .profile-card {
-    width: 600px;
-    background-color: #ffffff;
+    width: 550px;
+    height: 300px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-bottom: 30px;
 }
+
+.profile-header {
+	display: flex;
+	justify-content: space-between;
+	font-family: 'Pretendard-Regular';
+	
+}
+
+.profile-editbtn {
+	display: flex;
+	gap: 10px;
+	
+}
+
+.profile-editbtn span {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	
+}
+
 
 .car-info {
     display: flex;
@@ -89,12 +111,44 @@ body {
     height: 180px;
     border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
+
+/* 모달 배경 (overlay) */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+/* 모달 숨김 상태 */
+.hidden {
+    display: none !important;
+}
+
+/* 모달 내용 */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 
 .car-image img {
 	width:100%;
 	height: 100%;
-	object-fit: cover;
+	object-fit: contain;
 	display: flex;
 	flex-direction: column;
 }
@@ -111,7 +165,7 @@ body {
 }
 
 .upload-btn:hover {
-    background-color: #45a049; /* 호버 시 버튼 배경색 */
+    background-color: #1e5ba9; /* 호버 시 버튼 배경색 */
 }
 
 .car-details {
@@ -119,6 +173,7 @@ body {
     flex-direction: column;
     width: 100%;
     height: auto;
+    margin-left: 10px;
 }
 
 .car-detail {
@@ -210,7 +265,6 @@ option[disabled] {
     width: 600px;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 /* 스타일 변경 */
@@ -260,3 +314,5 @@ option[disabled] {
     line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
     float: right; /* 오른쪽으로 정렬 */
 }
+
+
