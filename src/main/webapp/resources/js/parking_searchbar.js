@@ -440,11 +440,7 @@ function renderParkingList(data) {
         parkingList.appendChild(parkingItem);
         // showParkingDetails(item);
     });
-    //  // 페이지 번호가 있는 경우 설정
-    //  const pageNumber = document.getElementById('page-number');
-    //  if (pageNumber) {
-    //      pageNumber.innerText = currentPage;
-    //  }
+  
  }
 
 
@@ -1051,9 +1047,11 @@ function displayRoute(data) {
             const duration = summary.duration; // 예상 소요 시간 (초 단위)
 
             routeDirections.innerHTML += `
+                <div class="route-fixed-info">
                 <h4>경로 요약</h4>
                 <p>총 거리: ${(distance / 1000).toFixed(2)} km</p>
                 <p>예상 소요 시간: ${(duration / 60).toFixed(0)} 분</p>
+				 </div>
             `;
         } else {
             routeDirections.innerHTML += '<p>요약 정보를 가져올 수 없습니다.</p>';
@@ -1070,10 +1068,12 @@ function displayRoute(data) {
 		                
 		                // 길 안내 정보를 HTML에 추가
 		                routeDirections.innerHTML += `
+		                
 		                    <div class="guide-info">
 		                        <img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">
 		                        <span>${guide.guidance} (${guide.distance} m)</span>
 		                    </div>
+		                   
 		                `;
 		            });
 		        }
@@ -1275,6 +1275,7 @@ function showCurrentLocation() {
         alert("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
     }
 }
+
 
 
 const typeIconMap = {
