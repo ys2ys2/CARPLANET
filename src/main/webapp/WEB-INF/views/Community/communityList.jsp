@@ -18,7 +18,7 @@
 }
 
 body {
-	width: 180dvb;
+	width: 100%;
 	height: 160vh;
 }
 
@@ -163,7 +163,7 @@ input::placeholder {
 }
 
 .content-footer {
-    width: 80%;
+    width: 100%;
     height: 5%;
     display: flex;
     gap: 20px;
@@ -376,8 +376,8 @@ input::placeholder {
 }
 
 .keyword-area {
-	width: 80%;
-	height: 30%;
+	width: 100%;
+	height: 20%;
 	display: flex;
 	flex-direction: column;
 	margin-top: 10px;
@@ -431,7 +431,7 @@ input::placeholder {
 .pop-right-title {
 	display: flex;
 	width: 100%;
-	height: 14%;
+	height: 10%;
 	border: 1px solid #161938;
 	background-color: #161938;
 	border-radius: 8px;
@@ -487,23 +487,23 @@ input::placeholder {
 }
 
 .pop-right-img p:nth-child(2) {
-	font-size: 25px;
+	font-size: 23px;
 }
 
 .pop-right-img p {
 	position: absolute;
 	text-align: center; /* 텍스트 중앙 정렬 */
-	top: 15%;
-	left: 40%;
+	top: 22%;
+	left: 45%;
 	transform: translate(-40%, -40%);
 	color: white;
-	font-size: 22px;
+	font-size: 15px;
 	margin: 0;
 	z-index: 2;
 }
 
 .pop-right-img p+p {
-	top: 35%;
+	top: 45%;
 }
 
 .post-title {
@@ -516,7 +516,7 @@ input::placeholder {
 
 .pop-title p {
 	font-weight: bold; /* 글씨를 두껍게 */
-	font-size: 18px; /* 글씨 크기 키우기 */
+	font-size: 16px; /* 글씨 크기 키우기 */
 	width: 100%;
 	height: 100%;
 }
@@ -817,7 +817,7 @@ input::placeholder {
 					<img
 						src="${pageContext.request.contextPath}/resources/images/image01.png"
 						alt="">
-					<p>운전자의 소통 공간</p>
+					<p>운전자의<br>소통 공간</p>
 					<p>
 						소중한 내 차를 위한<br>정보 교환의 광장
 					</p>
