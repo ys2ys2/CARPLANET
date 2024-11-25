@@ -272,54 +272,7 @@
             top: 40%;
         }
         
-        /* 태블릿 화면 (1024px 이하) */
-		@media (max-width: 1024px) {
-		    .srh-area-1 input {
-		    width: 120%; /* 너비를 20% 더 확장 */
-		    height: 50px; /* 높이는 그대로 유지 */
-		    padding: 10px 45px 10px 15px; /* 오른쪽에 돋보기 공간 확보 */
-		    border: 1px solid #D9D9D9;
-		    background-color: #D9D9D9;
-		    border-radius: 10px;
-		    font-size: 16px;
-		    box-sizing: border-box; /* 패딩 포함 크기 계산 */
-		}
-
-		
-		    #srh-icn1 {
-		        width: 18px; /* 돋보기 아이콘 크기 축소 */
-		        height: 18px;
-		        right: 10px; /* 아이콘 간격 축소 */
-		    }
-		}
-		
-		/* 모바일 화면 (768px 이하) */
-		@media (max-width: 768px) {
-		    .srh-area-1 input {
-		        width: 100%; /* 너비는 최대한 화면에 맞춤 */
-		        height: 40px; /* 높이 줄임 */
-		        font-size: 13px; /* 글자 크기 더 축소 */
-		    }
-		
-		    #srh-icn1 {
-		        width: 16px; /* 돋보기 아이콘 크기 더 축소 */
-		        height: 16px;
-		    }
-		}
-		
-		/* 초소형 화면 (480px 이하) */
-		@media (max-width: 480px) {
-		    .srh-area-1 input {
-		        width: 100%;
-		        height: 35px; /* 높이 더 줄임 */
-		        font-size: 12px; /* 글자 크기 소형화 */
-		    }
-		
-		    #srh-icn1 {
-		        width: 14px; /* 아이콘 크기 최소화 */
-		        height: 14px;
-		    }
-		}
+       
 		
 		.srh-area-1 {
 		    width: 100%; /* 검색 영역 전체 너비 */
@@ -352,57 +305,144 @@
 		    pointer-events: none; /* 클릭되지 않도록 설정 */
 		}
 		
-		/* 반응형 디자인 */
-		@media (max-width: 1024px) {
-		    .srh-area-1 input {
-		        width: 90%; /* 검색창 너비 줄임 */
-		        height: 45px; /* 높이 축소 */
-		        font-size: 14px;
-		    }
-		    #srh-icn1 {
-		        width: 18px; /* 돋보기 크기 축소 */
-		        height: 18px;
-		        right: 10px; /* 오른쪽 간격 축소 */
-		    }
-		}
 
-		@media (max-width: 768px) {
-		    .srh-area-1 input {
-		        width: 100%;
-		        height: 40px; /* 높이 축소 */
-		        font-size: 13px;
-		    }
-		    #srh-icn1 {
-		        width: 16px; /* 돋보기 크기 더 축소 */
-		        height: 16px;
-		    }
-		}
+
+
+
+/* 모바일 화면 (768px 이하) */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; /* 기본 글자 크기 축소 */
+    }
+    #form-title, #form-content {
+        font-size: 12px; /* 입력 필드 글자 크기 축소 */
+    }
+    #content-btn1, #content-btn2 {
+        width: 70px; /* 버튼 크기 축소 */
+        height: 30px;
+        font-size: 10px;
+    }
+    .pop-title {
+        font-size: 14px; /* 인기 키워드 제목 크기 축소 */
+    }
+    .pop-wrap a {
+        font-size: 10px; /* 인기 키워드 링크 크기 축소 */
+    }
+    .pop-right-content .title {
+        font-size: 12px; /* 추천글 제목 크기 축소 */
+    }
+}
+
+/* 초소형 화면 (480px 이하) */
+@media (max-width: 480px) {
+    body {
+        font-size: 12px; /* 기본 글자 크기 축소 */
+    }
+    #form-title, #form-content {
+        font-size: 10px; /* 입력 필드 글자 크기 축소 */
+    }
+    #content-btn1, #content-btn2 {
+        width: 60px; /* 버튼 크기 축소 */
+        height: 25px;
+        font-size: 8px;
+    }
+    .pop-title {
+        font-size: 12px; /* 인기 키워드 제목 크기 축소 */
+    }
+    .pop-wrap a {
+        font-size: 8px; /* 인기 키워드 링크 크기 축소 */
+    }
+    .pop-right-content .title {
+        font-size: 10px; /* 추천글 제목 크기 축소 */
+    }
+}
 		
-		@media (max-width: 480px) {
-		    .srh-area-1 input {
-		        width: 100%;
-		        height: 35px; /* 높이 최소화 */
-		        font-size: 12px; /* 글자 크기 소형화 */
-		    }
-		    #srh-icn1 {
-		        width: 14px;
-		        height: 14px;
-		    }
-		}
-	
-	/* 스마트폰 모드 (768px 이하일 때) */
-	@media (max-width: 768px) {
-	    .side-right-wrap { 
-	        display: none; /* 오른쪽 섹션 전체 숨기기 */
-	    }
-	}
 		
-        
-        
+		/* 태블릿 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+    body {
+        font-size: 16px; /* 기본 글자 크기 축소 */
+    }
+    #form-title, #form-content {
+        font-size: 14px; /* 입력 필드 글자 크기 축소 */
+    }
+    #content-btn1, #content-btn2 {
+        width: 80px; /* 버튼 크기 축소 */
+        height: 35px;
+        font-size: 12px;
+    }
+    .pop-title {
+        font-size: 16px; /* 인기 키워드 제목 크기 축소 */
+    }
+    .pop-wrap a {
+        font-size: 12px; /* 인기 키워드 링크 크기 축소 */
+    }
+    .pop-right-content .title {
+        font-size: 14px; /* 추천글 제목 크기 축소 */
+    }
+}
+
+/* 모바일 화면 (768px 이하) */
+@media (max-width: 768px) {
+    .side-right-wrap {
+        display: none; /* 오른쪽 섹션을 숨김 */
+    }
+    .wrap {
+        width: 100%; /* 중앙 콘텐츠가 화면 전체를 차지하도록 변경 */
+        justify-content: center; /* 중앙 정렬 */
+    }
+    body {
+        font-size: 14px; /* 기본 글자 크기 축소 */
+    }
+    #form-title, #form-content {
+        font-size: 12px; /* 입력 필드 글자 크기 축소 */
+    }
+    #content-btn1, #content-btn2 {
+        width: 70px; /* 버튼 크기 축소 */
+        height: 30px;
+        font-size: 10px;
+    }
+    .pop-title {
+        font-size: 14px; /* 인기 키워드 제목 크기 축소 */
+    }
+    .pop-wrap a {
+        font-size: 10px; /* 인기 키워드 링크 크기 축소 */
+    }
+    .pop-right-content .title {
+        font-size: 12px; /* 추천글 제목 크기 축소 */
+    }
+}
+
+/* 초소형 화면 (480px 이하) */
+@media (max-width: 480px) {
+    body {
+        font-size: 12px; /* 기본 글자 크기 축소 */
+    }
+    #form-title, #form-content {
+        font-size: 10px; /* 입력 필드 글자 크기 축소 */
+    }
+    #content-btn1, #content-btn2 {
+        width: 60px; /* 버튼 크기 축소 */
+        height: 25px;
+        font-size: 8px;
+    }
+    .pop-title {
+        font-size: 12px; /* 인기 키워드 제목 크기 축소 */
+    }
+    .pop-wrap a {
+        font-size: 8px; /* 인기 키워드 링크 크기 축소 */
+    }
+    .pop-right-content .title {
+        font-size: 10px; /* 추천글 제목 크기 축소 */
+    }
+}
+		
+
     </style>
 </head>
 <body>
-
+<%-- <!-- 헤더 -->
+	<jsp:include page="/WEB-INF/views/MainPage/header.jsp" /> --%>
 <div class="wrap">
     <!-- 폼 시작: 게시물 제목과 내용, 파일 첨부 등 입력받는 부분 -->
     <form id="registerPost"
@@ -411,9 +451,9 @@
         <c:if test="${post != null}">
             <input type="hidden" name="postIndex" value="${post.postIndex}">
         </c:if>
-        <input id="form-title" name="title" type="text" placeholder="제목을 입력해주세요"
+        <input id="form-title" name="title" type="text" placeholder="제목을 입력해주세요" required
                value="${post != null ? post.title : ''}">
-        <textarea id="form-content" name="content" placeholder="어떤 정보를 공유하고 싶으신가요?">${post != null ? post.content : ''}</textarea>
+        <textarea id="form-content" name="content"  placeholder="어떤 정보를 공유하고 싶으신가요?" required>${post != null ? post.content : ''}</textarea>
 
 
         <!-- 파일 첨부 영역 -->
@@ -494,4 +534,3 @@
 </script>
 </body>
 </html>
-                        
