@@ -25,7 +25,7 @@
   <c:when test="${not empty user}">
     <!-- 로그인 성공 -->
     <div class="user-menu">
-      <span class="userprofile">${not empty user.carNickname ? user.carNickname : "유저"}님 환영합니다!</span>
+      <span class="userprofile">${not empty user.carName ? user.carName : "유저"}님 환영합니다!</span>
       <button class="mypage-btn" onclick="location.href='./mypage'">마이페이지</button>
       <span><a href="#" id="logout">로그아웃</a></span>
     </div>

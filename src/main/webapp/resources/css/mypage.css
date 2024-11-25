@@ -91,10 +91,16 @@ body {
 	
 }
 
+.profile-editbtn a {
+	text-decoration: none;
+	color: black;
+}
+
 .profile-editbtn span {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	color: black;
 	
 }
 
@@ -266,6 +272,7 @@ option[disabled] {
     background-color: #ffffff;
     border-radius: 8px;
     padding: 20px;
+    margin: 30px;
 }
 /* 스타일 변경 */
 .community-section h4 {
@@ -314,5 +321,12 @@ option[disabled] {
     line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
     float: right; /* 오른쪽으로 정렬 */
 }
+
+
+
+
+
+
+
 
 
