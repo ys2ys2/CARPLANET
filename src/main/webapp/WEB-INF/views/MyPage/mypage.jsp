@@ -18,18 +18,11 @@
 	    		<h4>나의 차량 정보</h4>
 	    		<div class="profile-editbtn">
 		    		<span><img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">차량 정보 수정</span>
-		    		<span id="editMemberInfoBtn"><img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
+		    		<a href="${pageContext.request.contextPath}/updatelogic" onclick="window.open(this.href, '_blank', 'width=500, height=700'); return false;">
+		    			<span id="editMemberInfoBtn">
+		    				<img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
+		    		</a>
 	    		</div>
-	    		
-	    		<!-- 모달 -->
-				<div id="securityModal" class="modal hidden">
-				    <div class="modal-content">
-				        <h3>보안 인증</h3>
-				        <p>회원 정보를 수정하기 위해 인증이 필요합니다.</p>
-				        <button id="closeModalBtn">닫기</button>
-				    </div>
-				</div>
-	    		
 	    	</div>
 	    	
 	        <!-- 차량 정보 섹션 -->
@@ -91,27 +84,7 @@
 
 <script>
 
-//모달
-document.addEventListener('DOMContentLoaded', () => {
-    const editMemberInfoBtn = document.getElementById('editMemberInfoBtn');
-    const securityModal = document.getElementById('securityModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-
-    editMemberInfoBtn.addEventListener('click', () => {
-        console.log('회원정보 수정 버튼 클릭됨'); // 디버깅용 로그
-        console.log(securityModal.classList); // 모달의 클래스 상태 확인
-        console.log('before remove:', securityModal.classList); // 제거 전 클래스 리스트
-        securityModal.classList.remove('hidden');
-        console.log('after remove:', securityModal.classList); // 제거 후 클래스 리스트
-
-    });
-
-    closeModalBtn.addEventListener('click', () => {
-        console.log('모달 닫기 버튼 클릭됨'); // 디버깅용 로그
-        securityModal.classList.add('hidden');
-    });
-});
-
+const contextPath = "${pageContext.request.contextPath}";
 
 //차량 정보 수정 버튼 클릭 이벤트
 document.querySelector('.profile-editbtn span:first-child').addEventListener('click', () => {
@@ -235,6 +208,7 @@ document.querySelector('#carImage').addEventListener('change', (event) => {
         reader.readAsDataURL(file); // 파일을 Base64 데이터 URL로 변환
     }
 });
+
 
 
 </script>

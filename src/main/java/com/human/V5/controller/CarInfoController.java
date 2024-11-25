@@ -82,6 +82,5 @@ public class CarInfoController {
         return ResponseEntity.ok(carInfo);
     }
     
-    
 
 }
