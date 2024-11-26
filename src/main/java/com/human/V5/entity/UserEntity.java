@@ -99,4 +99,9 @@ public class UserEntity {
 	public void updateCarName(String carName) {
 	    this.carName = carName;
 	}
+	
+	public void setUserStatus(int status) {
+		this.carStatus = status;
+		
+	}
 }

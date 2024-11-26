@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.human.V5.entity.NoticeEntity;
 import com.human.V5.entity.UserEntity;
 import com.human.V5.entity.VisitorEntity;
 import com.human.V5.service.AdminService;
+import com.human.V5.vo.NoticeVO;
 import com.human.V5.vo.VisitorVO;
 
 import lombok.AllArgsConstructor;
@@ -112,6 +119,131 @@ public class AdminController {
 		
 		return ResponseEntity.ok(postCount);
 	}
+	
+	@GetMapping("/countNotice")
+	@ResponseBody
+	public ResponseEntity<Long> getcountNotice(){
+		long noticeCount = adminserviceimpl.getNoticeCount();
+		
+		return ResponseEntity.ok(noticeCount);
+	}
+	
+	@PostMapping("/noticeinput.do")
+	public ModelAndView saveNotice(NoticeVO vo,RedirectAttributes redirect) {
+		ModelAndView mav = new ModelAndView();
+		
+		NoticeEntity ent = NoticeEntity.builder()
+				.carnTitle(vo.getCarnTitle())
+				.noticeType(vo.getNoticeType())
+				.NoticeDetails(vo.getNoticeDetails())
+				.build();
+		
+		NoticeEntity saveVO= adminserviceimpl.save(ent);
+		
+		if (saveVO != null) {
+			redirect.addFlashAttribute("message","공지사항 입력이 완료 되었습니다.");
+	        mav.setViewName("redirect:/Admin/admin.do");  // 로그인으로 리다이렉트
+	    } else {
+	        mav.addObject("msg", "공지사항 등록이 정상적으로 이루어지지 않았습니다.");
+	    }
+		
+		return mav;
+	}
+	
+	@PostMapping("/userdelete.do")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> deleteUser(HttpSession session, int userIdx) {
+	    UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    // 로그인 여부와 관리자 권한 검증
+	    if (loggedInUser == null) {
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body(response);
+	    }
+
+	    if (loggedInUser.getCarStatus() != 3) { // 3: 관리자 권한
+	        response.put("success", false);
+	        response.put("message", "관리자 권한이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(response);
+	    }
+
+	    // 삭제 처리
+	    boolean success = adminserviceimpl.deleteUserByIdx(userIdx);
+	    response.put("success", success);
+	    response.put("message", success ? "회원이 성공적으로 삭제되었습니다." : "회원 삭제 실패");
+
+	    return ResponseEntity.ok(response);
+	}
+
+	
+	@PostMapping("/userPromote.do")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> promoteUser(HttpSession session, int userIdx) {
+	    // 세션에서 로그인 사용자 정보 가져오기
+	    UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    // 로그인 여부와 관리자 권한 검증
+	    if (loggedInUser == null) {
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body(response);
+	    }
+
+	    if (loggedInUser.getCarStatus() != 3) { // 3: 관리자 권한
+	        response.put("success", false);
+	        response.put("message", "관리자 권한이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(response);
+	    }
+
+	    // 관리자 권한 부여 로직
+	    boolean success = adminserviceimpl.updateUserStatus(userIdx, 3);
+	    response.put("success", success);
+	    response.put("message", success ? "관리자 권한을 부여하였습니다." : "권한부여 실패");
+
+	    return ResponseEntity.ok()
+	            .header("Content-Type", "application/json; charset=UTF-8")
+	            .body(response);
+	}
+
+	
+	@PostMapping("/userdemote.do")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> demoteUser(HttpSession session, int userIdx) {
+	    // 세션에서 로그인 사용자 가져오기
+	    UserEntity logUser = (UserEntity) session.getAttribute("user");
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    // 로그인 여부 확인
+	    if (logUser == null) {
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body(response);
+	    }
+
+	    // 관리자 권한 여부 확인
+	    if (logUser.getCarStatus() != 3) { // 3: 관리자
+	        response.put("success", false);
+	        response.put("message", "관리자 권한이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(response);
+	    }
+
+	    // 일반 등급으로 강등 처리
+	    boolean success = adminserviceimpl.updateUserStatus(userIdx, 1);
+	    response.put("success", success);
+	    response.put("message", success ? "일반회원 처리 되었습니다." : "처리 실패");
+
+	    return ResponseEntity.ok()
+	            .header("Content-Type", "application/json; charset=UTF-8")
+	            .body(response);
+	}
+
+
 
 
 
