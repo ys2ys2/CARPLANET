@@ -29,7 +29,7 @@ public class GasController {
             @RequestParam String prodcd) {
 
         String apiUrl = String.format(
-                "https://www.opinet.co.kr/api/aroundAll.do?code=F241121467&x=%f&y=%f&radius=%d&sort=%d&prodcd=%s&out=json",
+                "https://www.opinet.co.kr/api/aroundAll.do?code=F241121473&x=%f&y=%f&radius=%d&sort=%d&prodcd=%s&out=json",
                 x, y, radius, sort, prodcd
         );
 
@@ -49,7 +49,7 @@ public class GasController {
     @ResponseBody
     public ResponseEntity<String> getStationDetails(@RequestParam String id) {
         String apiUrl = String.format(
-            "https://www.opinet.co.kr/api/detailById.do?code=F241121467&id=%s&out=json", id
+            "https://www.opinet.co.kr/api/detailById.do?code=F241121473&id=%s&out=json", id
         );
 
         RestTemplate restTemplate = new RestTemplate();

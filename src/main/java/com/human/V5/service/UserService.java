@@ -38,5 +38,6 @@ public interface UserService {
 	UserEntity findByCarId(String carId);
 
 	void updateUser(UserEntity userEntity);
+
 	
 }
