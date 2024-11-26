@@ -649,7 +649,6 @@ function showParkingDetails(item) {
 
                  // 기존 도착지 마커 제거
             if (destinationMarker) {
-                console.log('기존 도착지 마커 제거'); // 디버깅용
                 destinationMarker.setMap(null);
             }
 
@@ -1029,6 +1028,94 @@ window.findRoute = async function findRoute() {
         alert(`길찾기 실패: ${error.message}`);
     }
 };
+
+
+
+// function displayRoute(data) {
+//     const routeDirections = document.getElementById("route-directions");
+//     routeDirections.innerHTML = ''; // 기존 결과 초기화
+
+//     if (data.routes && data.routes.length > 0) {
+//         const route = data.routes[0];
+//         const summary = route.summary || null;
+
+//         // 출발지와 도착지 입력값 가져오기
+//         const originName = getInputValue("start-location");
+//         const destinationName = getInputValue("end-location");
+
+//         // 출발지와 도착지 데이터 점검
+//         const origin = data.origin || { x: 0, y: 0, name: originName || "출발지 정보 없음" };
+//         const destination = data.destination || { x: 0, y: 0, name: destinationName || "도착지 정보 없음" };
+
+//         // 출발지 마커 표시
+//         setOriginMarker(origin);
+
+//         // 도착지 마커 표시
+//         setDestinationMarker(destination);
+
+//         // 상세 경로에 출발지와 도착지 표시
+//         routeDirections.innerHTML += `
+//             <div class="guide-info">
+//                 <img 
+//                     src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png" 
+//                     alt="출발지 마커" 
+//                     class="guide-icon" 
+//                 />
+//                 <span>${origin.name}</span>
+//             </div>
+//             <div class="guide-info">
+//                 <img 
+//                     src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png" 
+//                     alt="도착지 마커" 
+//                     class="guide-icon" 
+//                 />
+//                 <span>${destination.name}</span>
+//             </div>
+//         `;
+
+//         // 요약 정보 표시
+//         if (summary) {
+//             routeDirections.innerHTML += `
+//                 <div class="route-fixed-info">
+//                     <h4>경로 요약</h4>
+//                     <p>총 거리: ${(summary.distance / 1000).toFixed(2)} km</p>
+//                     <p>예상 소요 시간: ${(summary.duration / 60).toFixed(0)} 분</p>
+//                 </div>
+//             `;
+//         }
+//     } else {
+//         console.error("경로 데이터를 가져오지 못했습니다.");
+//         routeDirections.innerHTML = '<p>경로 데이터를 가져올 수 없습니다.</p>';
+//     }
+// // 지도에 경로 표시
+//          displayRouteOnMap(route);
+//     }
+    
+
+
+// function getInputValue(id) {
+//     // 입력 필드에서 요소 가져오기
+//     const input = document.getElementById(id);
+
+//     // 입력 필드가 존재하지 않을 경우
+//     if (!input) {
+//         console.error(`입력 필드가 존재하지 않습니다: ${id}`);
+//         return "정보 없음";
+//     }
+
+//     // 입력 필드의 값 가져오기 및 트림 처리
+//     const value = input.value.trim();
+
+//     // 입력 필드 값이 비어 있는 경우
+//     if (value === "") {
+//         console.warn(`입력 필드 값이 비어 있습니다: ${id}`);
+//         return "정보 없음";
+//     }
+
+//     // 정상적인 입력 값 반환
+//     return value;
+// }
+
 
 
 //경로 데이터 표시(텍스트)
