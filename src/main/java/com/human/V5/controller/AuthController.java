@@ -170,7 +170,7 @@ public class AuthController {
 			//MemberEntity vo = memberServiceImpl.login(memberId, memberPw);
 			//쿼리메소드를 이용해서 로그인 처리하기
 			//:findByMemberIdAndMemberPwAndMemStatus(memberId, memberPw, 1)
-			UserEntity vo = userService.findByCarIdAndCarPwAndCarStatus(carId, carPw, 1);
+			UserEntity vo = userService.findByCarIdAndCarPw(carId, carPw);
 			
 			//로그인 성공여부를 vo객체에 저장된 값으로 판단
 			if(vo != null) {//로그인 성공

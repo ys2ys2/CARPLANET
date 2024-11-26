@@ -294,7 +294,16 @@ a.dynamic-link:visited {
 
 
 			<div id="user-management" class="section">
-				<div><h1>회원 관리</h1></div>
+				<div
+					style="display: flex; align-items: center; justify-content: space-between;">
+					<h1>회원 관리</h1>
+					<div>
+						<input type="text" id="search-input" placeholder="회원 검색"
+							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
+						<button id="search-button"
+							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">검색</button>
+					</div>
+				</div>
 				<span>회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b>
 					(관리자)
 				</span>
@@ -306,7 +315,6 @@ a.dynamic-link:visited {
 								<tr>
 									<th>회원번호</th>
 									<th>회원Id</th>
-									<th>회원이름</th>
 									<th>닉네임</th>
 									<th>회원등급</th>
 									<th>요청</th>
@@ -525,7 +533,6 @@ a.dynamic-link:visited {
 			                <tr>
 			                    <td>`+user.carIdx+`</td>
 			                    <td>`+user.carId+`</td>
-			                    <td>`+user.carName+`</td>
 			                    <td>`+user.carNickname+`</td>
 			                    <td>`+user.carStatus+`</td>
 			                    <td>

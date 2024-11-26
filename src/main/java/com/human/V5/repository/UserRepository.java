@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 
 	int countByCarId(String carId);
 
-	UserEntity findByCarIdAndCarPwAndCarStatus(String carId, String carPw, int i);
+	UserEntity findByCarIdAndCarPw(String carId, String carPw);
 
 	UserEntity findByCarId(String carId); // 카카오 ID로 조회 시 사용
 
