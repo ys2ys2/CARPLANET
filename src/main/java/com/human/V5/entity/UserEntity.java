@@ -80,4 +80,23 @@ public class UserEntity {
 	public void updatePassword(String newPassword) {
         this.carPw = newPassword;
     }
+
+	public void setBirthday(String newBirthday) {
+		this.birthday = birthday;
+		
+	}
+
+	public void setPhone(String newPhone) {
+		this.phone = phone;
+		
+	}
+
+	public void setEmail(String newEmail) {
+		this.email = email;
+		
+	}
+	
+	public void updateCarName(String carName) {
+	    this.carName = carName;
+	}
 }

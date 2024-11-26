@@ -17,7 +17,7 @@
 	</div>
 	<div class="main-body">
 		<span class="name">${user.carName} 님</span>
-		<span class="welcome">방문을 환영합니다.</span>
+		<span class="welcome">방문을 환영합니다!</span>
 	</div>
 	
 	<!-- 개인 정보 관리 영역 -->
@@ -57,25 +57,42 @@
 	    	
 		    	<h3>필수 입력 정보</h3>
 		    	<div class="e_b-wrapper">
+		    		<form class="update-birthday">
+			            <label for="carid">아이디</label>
+			            <input type="text" id="carid" name="carid" value="${user.carId}" readonly>
+			        </form>
 			    	<form class="update-email">
 			            <label for="email">이메일</label>
 			            <input type="email" id="email" name="email" value="${user.email}" readonly>
+			            <span class="check" onclick="startEmailVerification()">인증하기</span>
 			        </form>
-		        
-			    	<form class="update-birthday">
-			            <label for="birthday">생년월일</label>
-			            <input type="date" id="birthday" name="birthday" value="${user.birthday}" readonly>
-			        </form>
+  			        <!-- 인증번호 입력란 (숨김 처리) -->
+				    <form class="checkAuthcode" id="email-verification">
+				        <label for="verification-code">인증번호 입력</label>
+				        <input type="text" id="verification-code" placeholder="인증번호 입력">
+				        <span class="check" onclick="verifyEmailCode()">확인</span>
+				    </form>
+				     
 		        </div>
+		        
 		        <h3>사용자 정보</h3>
 		        <div class="n_p-wrapper">
 			    	<form class="update-carName">
 			            <label for="carName">닉네임</label>
 			            <input type="text" id="carName" name="carName" value="${user.carName}" readonly>
 			        </form>
+      			    <form class="update-birthday">
+			            <label for="birthday">생년월일</label>
+			            <input type="date" id="birthday" name="birthday" value="${user.birthday}" readonly>
+			        </form>
 			    	<form class="update-phone">
 			            <label for="phone">휴대폰번호</label>
 			            <input type="tel" id="phone" name="phone" value="${user.phone}" readonly>
+			            <span class="check">인증하기</span>
+			        </form>
+			        <form class="reg-date">
+			        	<label for="date">가입일자</label>
+			        	<input type="text" id="reg-date" name="reg-date" value="${formattedRegDate}" readonly>
 			        </form>
 		        </div>
 		        <div class="pw-wrapper">
@@ -83,8 +100,11 @@
 			    		<span>비밀번호</span><span class="pwbtn">변경</span>
 			    	</div>
 		    	</div>
-		    	
 	       </div> <!-- end of updateWrapper -->
+	       
+	       <div class="update-footer">
+	       	<button type="button" class="update-save" onclick="saveUserInfo()">수정하기</button>
+	       </div>
 	    </div> <!-- end of update-info -->
 	
 
@@ -105,6 +125,126 @@
 
 const contextPath = "${pageContext.request.contextPath}"; // JSP에서 컨텍스트 경로 가져오기
 const fields = ['email', 'birthday', 'carName', 'phone', 'password'];
+
+//이메일 인증 로직
+function startEmailVerification() {
+    const emailInput = document.getElementById("email");
+    const emailVerificationDiv = document.getElementById("email-verification");
+
+    // 이메일 입력창 활성화
+    emailInput.removeAttribute("readonly");
+    emailInput.focus();
+
+    // 인증번호 입력창 표시
+    emailVerificationDiv.style.display = "block";
+
+    // 이메일 변경 시 "인증하기" 상태 초기화
+    emailInput.addEventListener("input", () => {
+        emailVerificationDiv.style.display = "none";
+    });
+
+    // 이메일 인증 요청
+    const email = emailInput.value;
+
+    if (validateEmail(email)) {
+        fetch("/CarPlanet/Auth/sendVerificationCode", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ email }),
+        })
+            .then((response) => response.text())
+            .then((result) => {
+                if (result === "SUCCESS") {
+                    alert("인증번호가 발송되었습니다.");
+                } else {
+                    alert("이메일 인증 요청에 실패했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("서버와 통신 중 문제가 발생했습니다.");
+            });
+    } else {
+        alert("유효한 이메일을 입력해주세요.");
+        emailVerificationDiv.style.display = "none";
+    }
+}
+
+function verifyEmailCode() {
+    const emailInput = document.getElementById("email");
+    const verificationCodeInput = document.getElementById("verification-code");
+    const email = emailInput.value;
+    const code = verificationCodeInput.value;
+
+    fetch("/CarPlanet/Auth/verifyCode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
+    })
+        .then((response) => response.text())
+        .then((result) => {
+            if (result === "SUCCESS") {
+                alert("이메일 인증이 완료되었습니다.");
+                emailInput.setAttribute("readonly", true); // 다시 읽기 전용
+            } else {
+                alert("인증번호가 올바르지 않습니다. 다시 시도해주세요.");
+                emailInput.value = "${user.email}"; // 원래 이메일로 복원
+                emailInput.setAttribute("readonly", true); // 읽기 전용으로 복원
+                document.getElementById("email-verification").style.display = "none"; // 인증창 숨김
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            alert("서버와 통신 중 문제가 발생했습니다.");
+        });
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+
+function saveUserInfo() {
+    const carName = document.getElementById("carName").value;
+    const birthday = document.getElementById("birthday").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+
+    fetch(contextPath + "/updateUserInfo", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            carName: carName,
+            birthday: birthday,
+            phone: phone,
+            email: email,
+        }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json(); // JSON 형식으로 응답 처리
+        })
+        .then((result) => {
+            if (result.status === "SUCCESS") {
+                alert("사용자 정보가 성공적으로 업데이트되었습니다.");
+                location.reload(); // 페이지 새로고침
+            } else {
+                alert(`업데이트 실패: ${result.message}`);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            alert("서버와 통신 중 문제가 발생했습니다.");
+        });
+}
+
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // "개인 정보 관리 >" 클릭 이벤트 처리
@@ -150,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	    .then((data) => {
 	        console.log("Response data:", data); // 서버에서 반환된 데이터 확인
 	        if (data.status === 'success') {
-	            alert(data.message); // 비밀번호 맞음 메시지
 	            document.getElementById('checkpw').style.display = 'none'; // 비밀번호 확인 영역 숨기기
                    document.getElementById('updateInfo').style.display = 'block'; // 회원정보 수정 영역 보이기
 	        } else {
@@ -176,8 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
        });
    });
 	    
-	
-    
+   
 });
 
 </script>

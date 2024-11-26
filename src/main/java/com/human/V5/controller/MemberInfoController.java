@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.V5.entity.UserEntity;
+import com.human.V5.service.UserService;
 
 @Controller
 public class MemberInfoController {
+	
+	@Autowired
+	private UserService userService;
+	
 	
 	@GetMapping("/updatelogic")
 	public String updatelogic() {
@@ -48,7 +56,6 @@ public class MemberInfoController {
             if (user.getCarPw().equals(password)) {
                 session.setAttribute("isPasswordVerified", true);
                 response.put("status", "success");
-                response.put("message", "비밀번호가 맞습니다.");
             } else {
                 response.put("status", "error");
                 response.put("message", "비밀번호를 확인해주세요.");
@@ -60,6 +67,36 @@ public class MemberInfoController {
         }
 
         return response;
+    }
+    
+    
+    //updateUser
+    @PostMapping(value = "/updateUserInfo", produces = "application/json")
+    public ResponseEntity<Map<String, String>> updateUserInfo(@RequestBody Map<String, String> userInfo, HttpSession session) {
+        try {
+            UserEntity user = (UserEntity) session.getAttribute("user");
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("status", "FAIL", "message", "로그인이 필요합니다."));
+            }
+
+            String newCarName = userInfo.get("carName");
+            String newBirthday = userInfo.get("birthday");
+            String newPhone = userInfo.get("phone");
+            String newEmail = userInfo.get("email");
+
+            user.updateCarName(newCarName);
+            user.setBirthday(newBirthday);
+            user.setPhone(newPhone);
+            user.setEmail(newEmail);
+
+            userService.updateUser(user);
+            session.setAttribute("user", user);
+
+            return ResponseEntity.ok(Map.of("status", "SUCCESS"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "FAIL", "message", "서버 오류가 발생했습니다."));
+        }
     }
 
 

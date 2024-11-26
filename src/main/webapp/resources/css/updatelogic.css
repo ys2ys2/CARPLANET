@@ -212,7 +212,7 @@ html, body {
 
 .updateWrapper {
 	border: 1px solid #d9d9d9;
-	margin: 30px;
+	margin: 20px;
 }
 
 .updateWrapper h3 {
@@ -224,12 +224,31 @@ html, body {
 .update-email,
 .update-birthday,
 .update-carName,
-.update-phone {
+.update-phone,
+.reg-date {
 	
 	display: flex;
 	justify-content: space-around;
 	margin: 10px;
 	font-family: 'SUIT-Regular';
+	height: 20px;
+}
+
+.checkAuthcode {
+	justify-content: space-around;
+	font-family: 'SUIT-Regular';
+	height: 25px;
+	margin: 10px;
+	width: 100%;
+	display: none;
+}
+
+input#verification-code {
+	margin-left: 10px;
+	border: none;
+	width: 255px;
+	font-family: 'SUIT-Regular';
+	font-size: 16px;
 }
 
 label {
@@ -267,8 +286,6 @@ input[readonly] {
 }
 
 input:focus {
-    background-color: #ffffff; /* 수정 가능할 때 배경색 */
-    border: 1px solid #007bff; /* 수정 중 테두리 강조 */
     flex:1;
     font-family: 'SUIT-Regular';
     font-size: 16px;
@@ -280,6 +297,10 @@ input:focus {
 	width: 90%;
 	margin: 10px auto;
 	
+}
+
+.e_b-wrapper {
+	height: 100px;
 }
 
 .pwbtn {
@@ -294,4 +315,51 @@ input:focus {
 }
 
 .pwbtn:hover {
+	font-weight: bold;
+	
 }
+
+
+/* 달력 아이콘 사용자 정의 스타일 추가 */
+input[type="date"] {
+    position: relative;
+    appearance: none;
+    background-color: #fff;
+    border-radius: 4px;
+    font-family: 'SUIT-Regular', sans-serif; 
+    font-size: 16px; 
+    flex: 1;
+}
+
+.check {
+	cursor: pointer;
+	font-family: 'SUIT-Regular', sans-serif;
+}
+
+.check:hover {
+	font-weight: bold;
+}
+
+.update-footer {
+	width: 91%;
+	display: flex;
+	justify-content: flex-end;
+	font-size: 16px;
+	font-family: 'SUIT-Regular', sans-serif;
+	cursor: pointer;
+}
+
+.update-save {
+	border: none;
+	font-family: 'SUIT-Regular', sans-serif;
+	cursor: pointer;
+	background-color: transparent;
+	font-size: 16px;
+	
+}
+
+
+.update-save:hover {
+	font-weight: bold;
+}
+

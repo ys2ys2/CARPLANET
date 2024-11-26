@@ -1,5 +1,6 @@
 package com.human.V5.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -159,14 +160,14 @@ public class AuthController {
 	        }
 	    }
 		
-	  //로그인 처리 요청
+	    //로그인 처리 요청
 		@PostMapping("/loginProcess.do")
 		public ModelAndView loginProcess(String carId, String carPw,
 				HttpServletRequest request, ModelAndView mav) {
 			
 			String viewName = "Auth/Login"; //로그인 실패시 뷰이름
 			
-//			MemberEntity vo = memberServiceImpl.login(memberId, memberPw);
+			//MemberEntity vo = memberServiceImpl.login(memberId, memberPw);
 			//쿼리메소드를 이용해서 로그인 처리하기
 			//:findByMemberIdAndMemberPwAndMemStatus(memberId, memberPw, 1)
 			UserEntity vo = userService.findByCarIdAndCarPwAndCarStatus(carId, carPw, 1);
@@ -175,6 +176,9 @@ public class AuthController {
 			if(vo != null) {//로그인 성공
 				//세션객체에 회원정보를 저장함(request객체의 getSession()메소드 이용)
 				HttpSession session = request.getSession();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	            String formattedRegDate = formatter.format(vo.getRegDate());
+	            session.setAttribute("formattedRegDate", formattedRegDate);
 				session.setAttribute("user", vo);
 				viewName = "redirect:/";//메인 페이지 재요청
 			}else {//로그인 실패
