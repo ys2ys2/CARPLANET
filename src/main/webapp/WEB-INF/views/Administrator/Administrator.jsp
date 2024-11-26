@@ -94,21 +94,154 @@ body {
 }
 
 .summary-content {
-    text-align: center;
+	text-align: center;
 }
 
 .summary-content h3 {
-    margin-bottom: 10px;
-    font-size: 20px;
-    color: #555;
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #555;
 }
 
 .summary-content .count {
-    font-size: 48px; /* 큰 숫자 */
-    font-weight: bold;
-    color: #333;
+	font-size: 48px; /* 큰 숫자 */
+	font-weight: bold;
+	color: #333;
 }
 
+/* 모달 배경 */
+.noticemodal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	display: none;
+}
+
+/* 모달 콘텐츠 */
+.notice-content {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	width: 80%;
+	max-width: 600px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 제목과 공지 종류 */
+.noticemodal-Title {
+	display: flex;
+	width: 100%;
+	margin: 10px 0 10px 0;
+}
+
+#carnTitle, #noticeType {
+	height: 40px;
+	padding: 5px 10px;
+	border-radius: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+}
+
+#carnTitle {
+	flex: 2; /* 제목을 더 넓게 */
+	margin-right: 15px;
+}
+
+#noticeType {
+	flex: 1; /* 공지 종류를 좁게 */
+}
+
+/* 공지사항 입력 텍스트 에어리어 */
+#noticeDetails {
+	width: 100%;
+	height: 150px;
+	margin: 5px 0;
+	padding: 10px;
+	font-size: 16px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	resize: none; /* 크기 조절 금지 */
+}
+
+/* 버튼 그룹 */
+.noticemodal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.noticemodal-actions button {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#submitNotice {
+	background: #007bff;
+	color: #fff;
+	font-weight: bold;
+}
+
+#submitNotice:hover {
+	background: #0056b3;
+}
+
+#cancelNotice {
+	background: #f8f9fa;
+	color: #000;
+}
+
+#cancelNotice:hover {
+	background: #e0e0e0;
+}
+
+a.dynamic-link:visited {
+	color: black !important;
+}
+
+#user-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#user-table th, #user-table td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+#user-table th {
+	background-color: #f4f4f4;
+	font-weight: bold;
+}
+
+#user-table td button {
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#user-table td button.delete {
+	background-color: #e74c3c;
+	color: white;
+}
+
+#user-table td button.promote {
+	background-color: #2ecc71;
+	color: white;
+}
 </style>
 </head>
 <body>
@@ -136,6 +269,12 @@ body {
 					<div class="summary-box">
 						<div class="summary-content">
 							<h3>공지사항 입력</h3>
+							<p>
+								현재 총 <span id="noticeCount">0</span>개의 공지사항이 등록되어 있습니다.
+							</p>
+							<button id="addNoticeBtn"
+								style="padding: 10px 20px; font-size: 16px; margin-top: 10px; cursor: pointer;">공지사항
+								추가</button>
 						</div>
 					</div>
 					<div class="summary-box">
@@ -152,12 +291,36 @@ body {
 					</div>
 				</div>
 			</div>
+
+
 			<div id="user-management" class="section">
-				<h1>회원 관리</h1>
+				<div><h1>회원 관리</h1></div>
+				<span>회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b>
+					(관리자)
+				</span>
+
 				<div id="user-table">
-					<!-- AJAX로 불러온 회원 목록 -->
+					<div id="user-table">
+						<table>
+							<thead>
+								<tr>
+									<th>회원번호</th>
+									<th>회원Id</th>
+									<th>회원이름</th>
+									<th>닉네임</th>
+									<th>회원등급</th>
+									<th>요청</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+
+
 			<div id="post-management" class="section">
 				<h1>게시글 관리</h1>
 				<div id="post-table">
@@ -167,12 +330,41 @@ body {
 		</div>
 	</div>
 
+	<div class="noticemodal">
+		<div class="notice-content">
+			<h2>공지사항 입력</h2>
+			<form action="noticeinput.do" method="post">
+				<div class="noticemodal-Title">
+					<input id="carnTitle" name="carnTitle" type="text"
+						placeholder="제목입력" required> <select id="noticeType"
+						name="noticeType">
+						<option disabled selected>공지 종류</option>
+						<option value="nomalnotice">공지 사항</option>
+						<option value="updatenotice">업데이트 사항</option>
+					</select>
+				</div>
+				<textarea id="noticeDetails" name="noticeDetails"
+					placeholder="공지사항 입력" required></textarea>
+				<div class="noticemodal-actions">
+					<button type="submit" id="submitNotice">저장</button>
+					<button type="button" id="cancelNotice">취소</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
 	<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
 	<jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
 
 
 	<script>
 		$(document).ready(function() {
+			const message="${message}";
+			if(message){
+				alert(message);
+			}
+			
 			const ctx = document.getElementById('visitorChart').getContext('2d');
 	        const visitorChart = new Chart(ctx, {
 	            type: 'bar',
@@ -194,6 +386,16 @@ body {
 	                }
 	            }
 	        });
+	        //모달 열기
+	        $('#addNoticeBtn').on('click',function(){
+	        	$('.noticemodal').css('display','flex');        	
+	        })
+	        
+	        // 모달 닫기
+   			$('#cancelNotice').on('click', function () {
+       			$('.noticemodal').css('display', 'none');
+    		});
+	        
             
 	        $.ajax({
 	            url: '/CarPlanet/Admin/visitor-stats',
@@ -247,18 +449,35 @@ body {
                 chart.update();
             }
             
-			$.ajax({
-				url:'/CarPlanet/Admin/userCount',
-				type:'GET',
-				dataType:'json',
-				success:function(response){
-					console.log("총 회원수 : "+response);
-					$('#userCountDisplay').text(response);
-				},
-				error:function(e){
-					console.error("회원수 조회중 오류",e)
-				}
-			});
+         // 이벤트 위임 설정
+            $(document).on('click', '.dynamic-link', function(e) {
+                e.preventDefault(); // 기본 앵커 동작 막기
+
+                // 모든 섹션 숨기기
+                $('.section').removeClass('active').hide();
+
+                // 클릭한 링크의 data-target에 맞는 섹션 표시
+                const target = $(this).data('target');
+                $('#' + target).addClass('active').fadeIn(); // 활성화 섹션 표시
+            });
+            
+            $.ajax({
+                url: '/CarPlanet/Admin/userCount',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log("총 회원수 : " + response);
+
+                    const userCountHtml = '<a href="#user-management" class="dynamic-link" data-target="user-management">'
+                        + response + '</a>';
+                    
+                    $('#userCountDisplay').html(userCountHtml);
+                },
+                error: function(e) {
+                    console.error("회원수 조회중 오류", e);
+                }
+            });
+
 			
 			$.ajax({
 				url:'/CarPlanet/Admin/countPost',
@@ -266,7 +485,23 @@ body {
 				dataType:'json',
 				success:function(response){
 					console.log("총 게시물 수 :"+response);
-					$('#postCountDisplay').text(response);
+					const postCountHtml = '<a href="#post-management" class="dynamic-link" data-target="post-management">'
+                        + response + '</a>';
+                    
+                    $('#postCountDisplay').html(postCountHtml);
+				},
+				error:function(e){
+					console.error("게시물 수 조회중 오류")
+				}
+			});
+			
+			$.ajax({
+				url:'/CarPlanet/Admin/countNotice',
+				type:'GET',
+				dataType:'json',
+				success:function(response){
+					console.log("총 공지사항 수 :"+response);
+					$('#noticeCount').text(response);
 				},
 				error:function(e){
 					console.error("게시물 수 조회중 오류")
@@ -275,18 +510,134 @@ body {
             
             
 			$.ajax({
-				url : '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
-				type : 'GET', // GET 요청
-				dataType : 'json', // 응답을 json 형식으로 받음
-				success : function(response) {
-					// 응답을 성공적으로 받았을 때 처리
-					console.log(response); // 결과를 화면에 출력 (json 내용)
-				},
-				error : function(e) {
-					console.error("오류발생", e);
+			    url: '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
+			    type: 'GET', // GET 요청
+			    dataType: 'json', // 응답을 JSON 형식으로 받음
+			    success: function (response) {
+			        console.log(response); // 전체 응답 출력
+			        const tbody = $('#user-table tbody');
+			        tbody.empty(); // 기존 내용을 초기화
 
-				}
+			        response.forEach(user => {
+			        	console.log(user.carIdx);
+			        	
+			            const row = `
+			                <tr>
+			                    <td>`+user.carIdx+`</td>
+			                    <td>`+user.carId+`</td>
+			                    <td>`+user.carName+`</td>
+			                    <td>`+user.carNickname+`</td>
+			                    <td>`+user.carStatus+`</td>
+			                    <td>
+			                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
+			                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
+			                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
+			                    </td>
+			                </tr>
+			            `;
+			            tbody.append(row); // 테이블에 행 추가
+			        });
+			    },
+			    error: function (e) {
+			        console.error('회원목록 가져오기 실패:', e);
+			    }
 			});
+			
+			$(document).on('click', '.promote', function () {
+			    const userIdx = $(this).data('idx');
+			    if (confirm('관리자 등급으로 지정하시겠습니까?')) {
+			        $.ajax({
+			            url: '/CarPlanet/Admin/userPromote.do',
+			            type: 'POST',
+			            data: { userIdx },
+			            dataType: 'json',
+			            success: function (response) {
+			                alert(response.message);
+			                if (response.success) {
+			                    location.reload();
+			                }
+			            },
+			            error: function (xhr) {
+			                if (xhr.status === 401) {
+			                    alert('로그인이 필요합니다.');
+			                } else if (xhr.status === 403) {
+			                    alert('관리자 권한이 필요합니다.');
+			                } else {
+			                    alert('오류가 발생했습니다.');
+			                }
+			            }
+			        });
+			    }
+			});
+
+			
+			$(document).on('click', '.demote', function () {
+			    const userIdx = $(this).data('idx');
+			    console.log(userIdx);
+
+			    if (confirm('일반등급으로 내리시겠습니까?')) {
+			        $.ajax({
+			            url: '/CarPlanet/Admin/userdemote.do',
+			            type: 'POST',
+			            data: { userIdx: userIdx },
+			            dataType: 'json', // 응답을 JSON으로 처리
+			            success: function (response) {
+			                if (response.success) {
+			                    alert(response.message);
+			                    location.reload();
+			                } else {
+			                    alert(response.message);
+			                }
+			            },
+			            error: function (xhr, status, error) {
+			                if (xhr.status === 401) {
+			                    alert('로그인이 필요합니다.');
+			                } else if (xhr.status === 403) {
+			                    alert('관리자 권한이 필요합니다.');
+			                } else {
+			                    console.error('회원 강등 중 오류 발생:', error);
+			                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+			                }
+			            }
+			        });
+			    }
+			});
+
+			
+			$(document).on('click', '.delete', function () {
+			    const userIdx = $(this).data('idx'); // 버튼에 설정된 데이터 가져오기
+			    console.log(userIdx);
+
+			    if (confirm('이 회원을 삭제하시겠습니까?')) {
+			        $.ajax({
+			            url: '/CarPlanet/Admin/userdelete.do',
+			            type: 'POST',
+			            data: { userIdx: userIdx }, // 서버로 데이터 전송
+			            dataType: 'json', // 응답 데이터 타입
+			            success: function (response) {
+			                if (response.success) {
+			                    alert(response.message);
+			                    location.reload();
+			                } else {
+			                    alert(response.message);
+			                }
+			            },
+			            error: function (xhr, status, error) {
+			                if (xhr.status === 401) {
+			                    alert('로그인이 필요합니다.');
+			                } else if (xhr.status === 403) {
+			                    alert('관리자 권한이 필요합니다.');
+			                } else {
+			                    console.error('회원 강등 중 오류 발생:', error);
+			                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+			                }
+			            }
+			        });
+			    }
+			});
+
+
+
 
 			$('.menu-link').on('click', function(e) {
 				e.preventDefault(); // 기본 앵커 동작 막기
