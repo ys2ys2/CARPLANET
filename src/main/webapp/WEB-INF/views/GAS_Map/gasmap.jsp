@@ -8,7 +8,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/evmap.css?v=1.0" rel="stylesheet" type="text/css">
 <title>Car Planet 주유소</title>
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9dc9962fd8d9c313d5ca5a57212228ab&libraries=services"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9dc9962fd8d9c313d5ca5a57212228ab&libraries=services,geometry"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gas.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gasroad.js"></script>
@@ -24,6 +24,30 @@
 		format('woff2');
 	font-weight: 700;
 	font-style: normal;
+}
+
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*눈누 기초고딕  */
+@font-face {
+    font-family: 'NoonnuBasicGothicRegular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noon-2410@1.0/NoonnuBasicGothicRegular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/*프리텐다드  */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
 
 * {
@@ -129,14 +153,11 @@ body, html {
 .gasinfo {
 	width: 90%;
 	height: max-content;
-	background-color: #0d8aff;
 	margin: 10px 0;
 	padding: 10px 0;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
-	color: white;
-	text-align: center;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	text-align: left;
 }
 
 .sidemiddle {
@@ -235,17 +256,17 @@ body, html {
     color: #007BFF; /* 강조 텍스트 색상 */
 }
 
-.additional-info {
+.additional-info,.brand-info{
 	display: flex;
 	flex-wrap: wrap; /* 요소들을 여러 줄에 걸쳐 표시 */
 	gap: 10px; /* 요소 간 간격 */
 }
 
-.additional-info label {
+.additional-info,.brand-info label {
 	display: flex;
-	align-items: center;
+	align-items: center ;
 	background-color: #f5f5f5;
-	padding: 5px 5px;
+	padding: 5px 5px !important;
 	border-radius: 5px;
 	font-size: 10px;
 }
@@ -281,13 +302,20 @@ body, html {
 	margin-bottom: 10px;
 }
 
-.resetbox p {
-	background-color: #0d8aff;
-	color: white !important;
+.resetbutton {
 	border-radius: 5px;
+	border:solid 2px black;
+	padding:1px 2px;
 	font-weight: 500 !important;
 	cursor: pointer;
 }
+
+.resetbutton:hover{
+background-color: #0d8aff;
+color:white;
+}
+
+
 
 #city, #town {
 	width: 40%;
@@ -474,7 +502,7 @@ body, html {
 					<hr>
 					<div>
 						<p class="sidetap">상표</p>
-						<div class="additional-info">
+						<div class="brand-info">
 							<label><input type="checkbox">SKE</label>
 							<label><input type="checkbox">GSC</label>
 							<label><input type="checkbox">HDO</label>
@@ -482,9 +510,6 @@ body, html {
 							<label><input type="checkbox">RTE</label>
 							<label><input type="checkbox">RTX</label>
 							<label><input type="checkbox">NHO</label>
-							<label><input type="checkbox">ETC</label>
-							<label><input type="checkbox">E1G</label>
-							<label><input type="checkbox">SKG</label>
 						</div>
 					</div>
 				<hr>
@@ -504,11 +529,11 @@ body, html {
 					<p class="routeban">경로별</p>
 				</div>
 				<div class="gasinfo">
-					<p>주유소 정보</p>
+					<p>길찾기</p>
 				</div>
 				<div class="sidemiddle">
 					<div class="resetbox">
-						<p>초기화</p>
+						<p class="resetbutton">초기화</p>
 					</div>
 					<input id="startPoint" class="Gasroute-input" type="text"
 						placeholder="출발지를 입력하세요" />

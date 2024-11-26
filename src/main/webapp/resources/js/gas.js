@@ -283,6 +283,10 @@ $(document).ready(function () {
     gasStationMarkers = []; // 배열 초기화
 }
 
+    var startMarkerImage = createMarkerImage('https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png', 32);
+    var endMarkerImage = createMarkerImage('https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png', 32);
+    var centerImage = createMarkerImage('../resources/images/centermarker.png', 32);
+
 
 function addRegionMarker(coords, title) {
     clearRegionMarkers(); // 기존 마커 초기화
@@ -316,11 +320,30 @@ function addRegionMarker(coords, title) {
         return new kakao.maps.MarkerImage(src, new kakao.maps.Size(size, size));
     }
 
-    var startMarkerImage = createMarkerImage('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', 32);
-    var endMarkerImage = createMarkerImage('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', 32);
-    var centerImage = createMarkerImage('../resources/images/centermarker.png', 32);
 	
 	
+	function getSelectedFilters() {
+    // 부가정보 필터 상태 확인
+    const additionalFilters = {};
+    $('.additional-info input[type="checkbox"]').each(function () {
+        const labelText = $(this).parent().text().trim(); // 체크박스 옆 텍스트 가져오기
+        const isChecked = $(this).is(':checked'); // 체크박스 상태
+        additionalFilters[labelText] = isChecked;
+    });
+
+    // 상표 필터 상태 확인 (체크박스 옆 텍스트로 가져오기)
+    const brandFilters = [];
+    $('.brand-info input[type="checkbox"]:checked').each(function () {
+        const labelText = $(this).parent().text().trim(); // 체크박스 옆 텍스트 가져오기
+        brandFilters.push(labelText); // 텍스트를 배열에 추가
+    });
+
+    console.log('최종 부가정보 필터:', additionalFilters);
+    console.log('최종 상표 필터:', brandFilters);
+
+    return { additionalFilters, brandFilters };
+}
+
 	
 	
 
@@ -328,7 +351,7 @@ function addRegionMarker(coords, title) {
     proj4.defs("EPSG:5178", "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=GRS80 +units=m +no_defs");
 	proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
 
-    async function getoilgas(coords) {
+async function getoilgas(coords) {
     clearGasStationMarkers(); // 기존 주유소 마커 초기화
 
     const regionY = coords.La; // 위도
@@ -351,7 +374,7 @@ function addRegionMarker(coords, title) {
             }
         });
 
-        const stationList = response.RESULT?.OIL || [];
+        let stationList = response.RESULT?.OIL || [];
         console.log("주유소 기본 데이터 수신:", stationList);
 
         if (!stationList.length) {
@@ -369,9 +392,55 @@ function addRegionMarker(coords, title) {
 
         console.log("병합된 주유소 상세 데이터:", detailedStationList);
 
-        // 지도와 UI 업데이트
-        updateGasList(detailedStationList);
-        detailedStationList.forEach(station => {
+        // **필터링 조건 적용**
+        const { additionalFilters, brandFilters } = getSelectedFilters(); // 수정된 getSelectedFilters 호출
+        console.log("적용된 부가정보 필터:", additionalFilters);
+        console.log("적용된 상표 필터:", brandFilters);
+
+        const filteredStations = detailedStationList.filter(station => {
+    let matchesBrand = true;
+    let matchesAdditional = true;
+
+    // 상표 필터 조건
+    if (brandFilters.length > 0) {
+    	console.log('brandFilters:', brandFilters);
+		console.log('station.POLL_DIV_CO:', station.POLL_DIV_CO);
+        matchesBrand = brandFilters.includes(station.POLL_DIV_CO);
+    }
+
+    // 부가정보 필터 조건
+    if (Object.keys(additionalFilters).some(filter => additionalFilters[filter])) {
+        matchesAdditional = Object.keys(additionalFilters).every(filter => {
+            if (additionalFilters[filter]) {
+                switch (filter) {
+                    case "세차장":
+                        return station.CAR_WASH_YN === "Y";
+                    case "경정비":
+                        return station.MAINT_YN === "Y";
+                    case "편의점":
+                        return station.CVS_YN === "Y";
+                    case "품질인증":
+                        return station.KPETRO_YN === "Y";
+                    default:
+                        return true;
+                }
+            }
+            return true;
+        });
+    }
+
+    // 상표 필터와 부가정보 필터를 모두 만족하는 경우 반환
+    return matchesBrand && matchesAdditional;
+});
+
+
+
+        // 필터링된 데이터로 UI 업데이트
+        updateGasList(filteredStations);
+        console.log("updateGasList 호출된 데이터:", filteredStations);
+
+        // 지도에 마커 표시
+        filteredStations.forEach(station => {
             let [lng, lat] = proj4("EPSG:5178", "EPSG:4326", [station.GIS_X_COOR, station.GIS_Y_COOR]);
 
             lng -= 0.00223; // 좌표 보정
@@ -385,13 +454,12 @@ function addRegionMarker(coords, title) {
                 map: map,
                 title: station.OS_NM
             });
-            
+
             kakao.maps.event.addListener(marker, 'click', function () {
-     	  	 displayStationInfo(station); // 주유소 정보 표시
-     	  	 map.setCenter(coords);
- 			   });
-            
-            
+                displayStationInfo(station); // 주유소 정보 표시
+                map.setCenter(coords);
+            });
+
             gasStationMarkers.push(marker); // 배열에 저장
         });
 
@@ -399,6 +467,21 @@ function addRegionMarker(coords, title) {
         console.error("오류 발생:", error);
     }
 }
+
+
+
+
+$('.additional-info input[type="checkbox"], .brand-info input[type="checkbox"]').on('change', function () {
+    const { additionalFilters, brandFilters } = getSelectedFilters();
+    console.log("적용된 부가정보 필터:", additionalFilters);
+    console.log("적용된 상표 필터:", brandFilters);
+
+    // 필터링 로직 재적용
+    logSelections(); // 또는 getoilgas() 호출
+});
+
+
+$('#sido, #city, #town').on('change', logSelections);
 
 async function getoilgasroute(coords) {
     const regionY = coords.La; // 위도
@@ -423,9 +506,17 @@ async function getoilgasroute(coords) {
 
         const stationList = response.RESULT?.OIL || [];
         console.log("주유소 데이터 수신:", stationList);
+        
+        // 상세 정보 병합
+        const detailedStationList = await Promise.all(
+            stationList.map(async (station) => {
+                const details = await fetchStationDetails(station.UNI_ID);
+                return { ...station, ...details }; // 병합된 데이터 반환
+            })
+        );
 
         // 중복 제거
-        const uniqueStations = stationList.filter(
+        const uniqueStations = detailedStationList.filter(
             (station, index, self) =>
                 index === self.findIndex((s) => s.UNI_ID === station.UNI_ID)
         );
@@ -711,11 +802,59 @@ function addMarker(coords, type) {
 
 
 
-    async function drawRoute(routeData) {
+    function computeDistanceBetween(coord1, coord2) {
+    const R = 6371000; // 지구의 반지름 (미터)
+    const toRad = (angle) => (angle * Math.PI) / 180;
+
+    const lat1 = coord1.getLat();
+    const lon1 = coord1.getLng();
+    const lat2 = coord2.getLat();
+    const lon2 = coord2.getLng();
+
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(lat1)) *
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // 거리 반환 (미터 단위)
+}
+
+function filterLinePath(linePath, distanceThreshold = 100) {
+    const filteredPath = [linePath[0]]; // 첫 좌표는 포함
+
+    for (let i = 1; i < linePath.length; i++) {
+        const last = filteredPath[filteredPath.length - 1];
+        const current = linePath[i];
+
+        const distance = computeDistanceBetween(last, current);
+
+        if (distance > distanceThreshold) {
+            filteredPath.push(current);
+        }
+    }
+
+    return filteredPath;
+}
+
+// 전역 변수로 Polyline 선언
+let currentPolyline = null;
+
+async function drawRoute(routeData) {
     try {
         const linePath = [];
         const bounds = new kakao.maps.LatLngBounds(); // 경로 전체를 포함할 LatLngBounds 생성
-        const searchInterval = 3; // 검색 간격 (N번째 좌표마다 주유소 검색)
+
+        // 기존 Polyline 초기화
+        if (currentPolyline) {
+            currentPolyline.setMap(null); // 이전 Polyline 제거
+            currentPolyline = null;
+        }
 
         // 각 도로(segment)에 대해 반복
         routeData.routes[0].sections[0].roads.forEach(road => {
@@ -729,8 +868,11 @@ function addMarker(coords, type) {
             });
         });
 
-        // Polyline 생성
-        var polyline = new kakao.maps.Polyline({
+        // 좌표 필터링
+        const filteredPath = filterLinePath(linePath, 100); // 100m 간격으로 필터링
+
+        // 새로운 Polyline 생성
+        currentPolyline = new kakao.maps.Polyline({
             path: linePath,
             strokeWeight: 5,
             strokeColor: '#FF0000',
@@ -738,21 +880,25 @@ function addMarker(coords, type) {
             strokeStyle: 'solid'
         });
 
-        polyline.setMap(map);
+        currentPolyline.setMap(map); // 지도에 Polyline 추가
         map.setBounds(bounds); // 경로를 지도에 맞게 조정
 
         console.log("Polyline 경로가 지도에 성공적으로 그려졌습니다.");
 
-        // 경로상의 주유소 표시
-        for (let i = 0; i < linePath.length; i += searchInterval) {
-            await getoilgasroute(linePath[i]); // N번째 좌표에서 주유소 검색
-        }
+        // 병렬로 주유소 검색
+        const searchPromises = [];
+        filteredPath.forEach(coords => searchPromises.push(getoilgasroute(coords)));
 
+        await Promise.all(searchPromises);
+
+        console.log("모든 주유소 검색이 완료되었습니다.");
     } catch (error) {
         console.error("Polyline 그리기 오류 발생:", error);
         alert("경로를 그리는 중 오류가 발생했습니다.");
     }
 }
+
+
 
 
 
@@ -808,6 +954,41 @@ if (type === 'end') {
         var keyword = $(this).val();
         searchAutocomplete(keyword, endList, 'end');
     });
+    
+    $('.resetbutton').on('click', function() {
+    // 출발지와 도착지 마커 제거
+    if (startMarker) {
+        startMarker.setMap(null); // 출발지 마커 제거
+        startMarker = null;
+    }
+    if (endMarker) {
+        endMarker.setMap(null); // 도착지 마커 제거
+        endMarker = null;
+    }
+
+    // 입력 필드 초기화
+    $('#startPoint').val(''); // 출발지 입력 필드 초기화
+    $('#endPoint').val(''); // 도착지 입력 필드 초기화
+
+    // 경로 폴리라인 제거
+    if (currentPolyline) {
+        currentPolyline.setMap(null); // 기존 경로 제거
+        currentPolyline = null;
+    }
+
+    // 지도 중심 초기화 (원하는 좌표로 설정, 여기서는 기본 지도 중심으로)
+    const defaultCenter = new kakao.maps.LatLng(36.8073, 127.1471);
+    map.setCenter(defaultCenter);
+    map.setLevel(6); // 초기 줌 레벨로 재설정
+
+    // 경로 가이드 초기화
+    $('.startnavi').empty();
+    $('.routenavi').empty();
+    $('.endnavi').empty();
+
+    console.log("출발지, 도착지, 경로가 초기화되었습니다.");
+});
+
 
 const typeIconMap = {
     0: "https://img.icons8.com/?size=100&id=100000&format=png&color=000000", //직진
@@ -877,8 +1058,8 @@ const typeIconMap = {
     84 : "https://img.icons8.com/?size=100&id=61510&format=png&color=000000", //톨게이트 진입
     85 : "https://img.icons8.com/?size=100&id=36519&format=png&color=000000", //원톨링 진입
     86 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //분기 후 합류 구간 진입
-    100 : "https://img.icons8.com/?size=100&id=15989&format=png&color=000000", //출발지
-    101 : "https://img.icons8.com/?size=100&id=15989&format=png&color=000000", //목적지
+    100 : "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png", //출발지
+    101 : "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png", //목적지
     300 : "https://img.icons8.com/?size=100&id=7758&format=png&color=000000", //톨게이트
     301 : "https://img.icons8.com/?size=100&id=avzgbKiLzCFk&format=png&color=000000" // 휴게소
     
@@ -904,6 +1085,7 @@ async function displayGuideSteps(routeData) {
         console.log(totalDistance);
 
         const distanceInKm = Math.floor(totalDistance / 1000); // 거리 (km)
+        const distanceInMeters = totalDistance % 1000;
         const durationInMinutes = Math.floor(totalDuration / 60); // 총 시간 (분)
         const hours = Math.floor(durationInMinutes / 60); // 시간 계산
         const minutes = durationInMinutes % 60; // 나머지 분 계산
@@ -912,28 +1094,45 @@ async function displayGuideSteps(routeData) {
         if (startNavi.innerHTML.trim() === '') {
             startNavi.innerHTML = `
                 <p>총 이동 예상 시간: ${hours > 0 ? `${hours}시간 ` : ''}${minutes}분</p>
-                <h3>출발지: ${originName || '알 수 없음'}</h3>
-                <p>총 거리: ${distanceInKm} m</p>
+                <p>총 거리: ${totalDistance >= 1000 ? `${distanceInKm} km` : `${totalDistance} m`}</p>
             `;
         }
 
         // 경로 단계 정보
         const guideSteps = routeData.routes[0].sections[0].guides;
-        guideSteps.forEach((step, index) => {
-            const iconUrl = typeIconMap[step.type] || ''; // 경로 안내 아이콘
-            const stepElement = document.createElement('div');
-            stepElement.classList.add('guide-step');
-            stepElement.innerHTML = `
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <img src="${iconUrl}" alt="아이콘" style="width:24px; height:24px; margin-right:10px;">
-                    <div>
-                        <span>${step.distance >= 1000 ? (step.distance / 1000).toFixed(2) + ' km' : step.distance + ' m'} 이동 후</span>
-                        <span> ${step.guidance}</span>
-                    </div>
+
+guideSteps.forEach((step, index) => {
+    const iconUrl = typeIconMap[step.type] || ''; // 경로 안내 아이콘
+    const stepElement = document.createElement('div');
+    stepElement.classList.add('guide-step');
+
+    // 첫 번째 단계는 "출발지"로 특별 처리
+    if (index === 0 && step.distance === 0) {
+        stepElement.innerHTML = `
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="${iconUrl}" alt="아이콘" style="width:24px; height:24px; margin-right:10px;">
+                <div>
+                    <span>${originName || '알 수 없음'}</span>
                 </div>
-            `;
-            routeNavi.appendChild(stepElement);
-        });
+            </div>
+            <hr>
+        `;
+    } else {
+        // 일반 단계 처리
+        stepElement.innerHTML = `
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="${iconUrl}" alt="아이콘" style="width:24px; height:24px; margin-right:10px;">
+                <div>
+                    <span>${step.distance >= 1000 ? (step.distance / 1000).toFixed(2) + ' km' : step.distance + ' m'} 이동 후</span>
+                    <span>${step.guidance}</span>
+                </div>
+            </div>
+            <hr>
+        `;
+    }
+
+    routeNavi.appendChild(stepElement);
+});
 
         // 도착지 정보
         endNavi.innerHTML = `
@@ -947,6 +1146,9 @@ async function displayGuideSteps(routeData) {
 }
 
 $('.Gasroute-btn').on('click', async function () {
+	clearRegionMarkers();
+    clearGasStationMarkers();
+
     if (startMarker && endMarker) {
         console.log("경로 검색 실행. 출발지:", startMarker.getPosition().getLat(), startMarker.getPosition().getLng());
         console.log("도착지:", endMarker.getPosition().getLat(), endMarker.getPosition().getLng());
@@ -1027,6 +1229,9 @@ $('.Gasroute-btn').on('click', async function () {
     });
 
     $('#city').on('change', function () {
+    clearRegionMarkers();
+    clearGasStationMarkers();
+    
         const selectedCity = $(this).val();
         const townSelect = $('#town');
         townSelect.empty().append('<option selected disabled>읍면동 선택</option>');

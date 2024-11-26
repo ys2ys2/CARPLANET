@@ -18,7 +18,7 @@
 }
 
 body {
-	width: 180dvb;
+	width: 100%;
 	height: 160vh;
 }
 
@@ -73,7 +73,7 @@ input::placeholder {
 .image-container {
 	width: 100%;
 	height: 150px;
-	background-image: url('/V5/resources/images/image01.png');
+	background-image: url('/CarPlanet/resources/images/image01.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover; /* 이미지가 div에 꽉 차게 설정 */
@@ -101,7 +101,7 @@ input::placeholder {
 .image-container {
 	width: 100%;
 	height: 150px;
-	background-image: url('/V5/resources/images/image01.png');
+	background-image: url('/CarPlanet/resources/images/image01.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -140,7 +140,7 @@ input::placeholder {
 .content-top .icon {
 	width: 30px;
 	height: 30px;
-	background-image: url('/V5/resources/images/image10.png');
+	background-image: url('/CarPlanet/resources/images/image10.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -163,7 +163,7 @@ input::placeholder {
 }
 
 .content-footer {
-    width: 80%;
+    width: 100%;
     height: 5%;
     display: flex;
     gap: 20px;
@@ -258,7 +258,7 @@ input::placeholder {
 	width: 30px;
 	height: 30px;
 	margin-top: 10px;
-	background-image: url('/V5/resources/images/image\ 49.png');
+	background-image: url('/CarPlanet/resources/images/image\ 49.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -275,7 +275,7 @@ input::placeholder {
 	width: 30px;
 	height: 30px;
 	margin-top: 10px;
-	background-image: url('/V5/resources/images/image\ 50.png');
+	background-image: url('/CarPlanet/resources/images/image\ 50.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -292,7 +292,7 @@ input::placeholder {
 	width: 30px;
 	height: 30px;
 	margin-top: 10px;
-	background-image: url('/V5/resources/images/image\ 51.png');
+	background-image: url('/CarPlanet/resources/images/image\ 51.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -303,7 +303,7 @@ input::placeholder {
 	width: 30px;
 	height: 30px;
 	margin-top: 10px;
-	background-image: url('/V5/resources/images/share.png');
+	background-image: url('/CarPlanet/resources/images/share.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -376,8 +376,8 @@ input::placeholder {
 }
 
 .keyword-area {
-	width: 80%;
-	height: 30%;
+	width: 100%;
+	height: 20%;
 	display: flex;
 	flex-direction: column;
 	margin-top: 10px;
@@ -431,7 +431,7 @@ input::placeholder {
 .pop-right-title {
 	display: flex;
 	width: 100%;
-	height: 14%;
+	height: 10%;
 	border: 1px solid #161938;
 	background-color: #161938;
 	border-radius: 8px;
@@ -487,23 +487,23 @@ input::placeholder {
 }
 
 .pop-right-img p:nth-child(2) {
-	font-size: 25px;
+	font-size: 23px;
 }
 
 .pop-right-img p {
 	position: absolute;
 	text-align: center; /* 텍스트 중앙 정렬 */
-	top: 15%;
-	left: 40%;
+	top: 22%;
+	left: 45%;
 	transform: translate(-40%, -40%);
 	color: white;
-	font-size: 22px;
+	font-size: 15px;
 	margin: 0;
 	z-index: 2;
 }
 
 .pop-right-img p+p {
-	top: 35%;
+	top: 45%;
 }
 
 .post-title {
@@ -516,7 +516,7 @@ input::placeholder {
 
 .pop-title p {
 	font-weight: bold; /* 글씨를 두껍게 */
-	font-size: 18px; /* 글씨 크기 키우기 */
+	font-size: 16px; /* 글씨 크기 키우기 */
 	width: 100%;
 	height: 100%;
 }
@@ -705,7 +705,7 @@ input::placeholder {
 					<h3>소중한 내 차를 위한</h3>
 					<h3>정보 교환의 광장</h3>
 				</div>
-				<button onclick="location.href='/V5/community/post.do'">공유하기</button>
+				<button onclick="location.href='post.do'">공유하기</button>
 			</div>
 
 			<c:forEach var="post" items="${posts}">
@@ -783,7 +783,7 @@ input::placeholder {
 					<form action="searchPostList.do" method="get">
 						<input type="search" name="keyword" placeholder="검색" required>
 						<button type="submit" id="srh-icn1"
-							style="background-image: url(/V5/resources/images/searchicon.png);"></button>
+							style="background-image: url(/CarPlanet/resources/images/searchicon.png);"></button>
 					</form>
 				</div>
 
@@ -817,7 +817,7 @@ input::placeholder {
 					<img
 						src="${pageContext.request.contextPath}/resources/images/image01.png"
 						alt="">
-					<p>운전자의 소통 공간</p>
+					<p>운전자의<br>소통 공간</p>
 					<p>
 						소중한 내 차를 위한<br>정보 교환의 광장
 					</p>
@@ -844,7 +844,7 @@ input::placeholder {
             },
             error: function (error) {
                 console.log("게시글 좋아요 중 에러 발생:", error);
-                $(location).attr('href', '/V5/Auth/Login.do');
+                $(location).attr('href', '/CarPlanet/Auth/Login.do');
             }
         });
     }
@@ -864,7 +864,7 @@ input::placeholder {
             },
             error: function (error) {
                 console.log("게시글 싫어요 중 에러 발생:", error);
-                $(location).attr('href', '/V5/Auth/Login.do');
+                $(location).attr('href', '/CarPlanet/Auth/Login.do');
             }
         });
     }
@@ -908,12 +908,12 @@ function submitComment(postCommentIndex, postIndex) {
         dataType: "json",
         success: function (resData) {
             alert("댓글이 등록되었습니다: " + commentText);
-            window.location.href = "/V5/community/getPostList.do";
+            window.location.href = "/CarPlanet/community/getPostList.do";
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {
                 alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-                window.location.href = "/V5/Auth/Login.do";
+                window.location.href = "/CarPlanet/Auth/Login.do";
             } else {
                 console.error("댓글 등록 중 에러 발생:", error);
             }
@@ -945,12 +945,12 @@ function submitComment(postCommentIndex, postIndex) {
                 data: requestData,
                 dataType: "json",
                 success: function (resData) {
-                    window.location.href = "/V5/community/getPostList.do";
+                    window.location.href = "/CarPlanet/community/getPostList.do";
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 401) {
                         alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-                        window.location.href = "/V5/Auth/Login.do";
+                        window.location.href = "/CarPlanet/Auth/Login.do";
                     } else {
                         console.error("게시글 삭제 중 에러 발생:", error);
                     }

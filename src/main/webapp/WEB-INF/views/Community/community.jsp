@@ -468,7 +468,7 @@
         </div>
 
         <div class="content-btn-area">
-            <button id="content-btn1" type="button" onclick="window.location.href='/V5/community/getPostList.do';">돌아가기</button>
+            <button id="content-btn1" type="button" onclick="window.location.href='getPostList.do';">돌아가기</button>
             <button id="content-btn2" type="submit">공유하기</button>
         </div>
     </form>

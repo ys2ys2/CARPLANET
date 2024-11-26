@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.human.V5.entity.UserEntity;
+import com.human.V5.entity.VisitorEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 

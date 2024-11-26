@@ -58,13 +58,20 @@ map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 var ps = new kakao.maps.services.Places();
 
 // 출발지와 도착지 마커를 전역 변수로 생성해둠
-var originMarker = new kakao.maps.Marker();
+var originMarker = new kakao.maps.Marker({
+	image: new kakao.maps.MarkerImage(
+		'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png', //출발지 마커 이미지
+		new kakao.maps.Size(35, 40) //마커 이미지 크기
+	)
+});
+	
 var destinationMarker = new kakao.maps.Marker({
     image: new kakao.maps.MarkerImage(
         'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png', // 빨간색 마커 이미지 URL
         new kakao.maps.Size(35, 40) // 마커 이미지의 크기
     )
 });
+
 var polyline; // 경로를 표시할 폴리라인 객체
 
 // 출발지 마커 설정 함수
@@ -628,3 +635,4 @@ document.getElementById('cancelButton').addEventListener('click', function () {
     document.getElementById("destinationCoords").value = '';
     destinationMarker.setMap(null); // 도착지 마커 제거
 });
+

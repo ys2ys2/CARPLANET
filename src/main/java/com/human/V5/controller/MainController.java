@@ -68,12 +68,11 @@ public class MainController {
     }
     
     
-
     // 커뮤니티 페이지
-    @GetMapping("/community")
-    public String community() {
-        return "Community/community";
-    }
+	/*
+	 * @GetMapping("/community") public String community() { return
+	 * "Community/community"; }
+	 */
 
     
 }

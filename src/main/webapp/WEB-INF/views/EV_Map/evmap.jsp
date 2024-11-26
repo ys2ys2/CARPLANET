@@ -18,11 +18,9 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/evmap.css?v=1.0" rel="stylesheet" type="text/css">
 
-
 <script src="${pageContext.request.contextPath}/resources/js/evdropdown.js" defer></script>
 <script src="${pageContext.request.contextPath}/resources/js/kakaoevmap.js" defer></script>
 <script src="${pageContext.request.contextPath}/resources/js/kakaoevroad.js" defer></script>
-
 
 <title>Car Planet 전기차 충전소</title>
 
@@ -239,11 +237,7 @@
 
 
 
-
-
-
 </div> <!-- end of maincontainer -->
-
 
 
 

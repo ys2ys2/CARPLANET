@@ -1,21 +1,12 @@
 package com.human.V5.controller;
 
-import com.human.V5.entity.UserEntity;
-import com.human.V5.entity.PostCommentEntity;
-import com.human.V5.entity.PostEntity;
-import com.human.V5.dto.PostCommentDto;
-import com.human.V5.dto.PostCommentLikeDto;
-import com.human.V5.dto.PostDto;
-import com.human.V5.dto.PostLikeDto;
-import com.human.V5.service.CommunityService;
-import com.human.V5.vo.PostCommentVO;
-import com.human.V5.vo.PostVO;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +14,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.human.V5.dto.PostCommentDto;
+import com.human.V5.dto.PostCommentLikeDto;
+import com.human.V5.dto.PostDto;
+import com.human.V5.dto.PostLikeDto;
+import com.human.V5.entity.PostCommentEntity;
+import com.human.V5.entity.PostEntity;
+import com.human.V5.entity.UserEntity;
+import com.human.V5.service.CommunityService;
+import com.human.V5.vo.PostCommentVO;
+import com.human.V5.vo.PostVO;
+
+import lombok.AllArgsConstructor;
 
 @Controller
 @RequestMapping("/community")
@@ -39,7 +42,7 @@ public class CommunityController {
   /**
    * 게시글 목록 조회
    */
-  @GetMapping("/getPostList.do")
+  @GetMapping("")
   public ModelAndView getPostList(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView();
     // TODO, paging 처리 필요시 jsp 수정필요
