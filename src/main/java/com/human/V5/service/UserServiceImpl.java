@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-	public UserEntity findByCarIdAndCarPwAndCarStatus(String carId, String carPw, int i) {
-		return repository.findByCarIdAndCarPwAndCarStatus(carId, carPw, 1);
+	public UserEntity findByCarIdAndCarPw(String carId, String carPw) {
+		return repository.findByCarIdAndCarPw(carId, carPw);
 	}
 
 	@Override
