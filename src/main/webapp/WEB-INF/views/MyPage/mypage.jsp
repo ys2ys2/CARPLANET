@@ -18,9 +18,9 @@
 	    		<h4>나의 차량 정보</h4>
 	    		<div class="profile-editbtn">
 		    		<span><img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">차량 정보 수정</span>
-		    		<a href="${pageContext.request.contextPath}/updatelogic" onclick="window.open(this.href, '_blank', 'width=500, height=700'); return false;">
+		    		<a href="${pageContext.request.contextPath}/updatelogic" onclick="openPopup(event, this.href);">
 		    			<span id="editMemberInfoBtn">
-		    				<img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
+		    			<img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
 		    		</a>
 	    		</div>
 	    	</div>
@@ -83,6 +83,11 @@
 
 
 <script>
+
+function openPopup(event, url) {
+    event.preventDefault(); 
+    window.open(url, '_blank', 'width=500, height=700');
+}
 
 const contextPath = "${pageContext.request.contextPath}";
 
