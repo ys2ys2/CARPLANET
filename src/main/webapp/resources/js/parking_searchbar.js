@@ -1031,93 +1031,6 @@ window.findRoute = async function findRoute() {
 
 
 
-// function displayRoute(data) {
-//     const routeDirections = document.getElementById("route-directions");
-//     routeDirections.innerHTML = ''; // 기존 결과 초기화
-
-//     if (data.routes && data.routes.length > 0) {
-//         const route = data.routes[0];
-//         const summary = route.summary || null;
-
-//         // 출발지와 도착지 입력값 가져오기
-//         const originName = getInputValue("start-location");
-//         const destinationName = getInputValue("end-location");
-
-//         // 출발지와 도착지 데이터 점검
-//         const origin = data.origin || { x: 0, y: 0, name: originName || "출발지 정보 없음" };
-//         const destination = data.destination || { x: 0, y: 0, name: destinationName || "도착지 정보 없음" };
-
-//         // 출발지 마커 표시
-//         setOriginMarker(origin);
-
-//         // 도착지 마커 표시
-//         setDestinationMarker(destination);
-
-//         // 상세 경로에 출발지와 도착지 표시
-//         routeDirections.innerHTML += `
-//             <div class="guide-info">
-//                 <img 
-//                     src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png" 
-//                     alt="출발지 마커" 
-//                     class="guide-icon" 
-//                 />
-//                 <span>${origin.name}</span>
-//             </div>
-//             <div class="guide-info">
-//                 <img 
-//                     src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png" 
-//                     alt="도착지 마커" 
-//                     class="guide-icon" 
-//                 />
-//                 <span>${destination.name}</span>
-//             </div>
-//         `;
-
-//         // 요약 정보 표시
-//         if (summary) {
-//             routeDirections.innerHTML += `
-//                 <div class="route-fixed-info">
-//                     <h4>경로 요약</h4>
-//                     <p>총 거리: ${(summary.distance / 1000).toFixed(2)} km</p>
-//                     <p>예상 소요 시간: ${(summary.duration / 60).toFixed(0)} 분</p>
-//                 </div>
-//             `;
-//         }
-//     } else {
-//         console.error("경로 데이터를 가져오지 못했습니다.");
-//         routeDirections.innerHTML = '<p>경로 데이터를 가져올 수 없습니다.</p>';
-//     }
-// // 지도에 경로 표시
-//          displayRouteOnMap(route);
-//     }
-    
-
-
-// function getInputValue(id) {
-//     // 입력 필드에서 요소 가져오기
-//     const input = document.getElementById(id);
-
-//     // 입력 필드가 존재하지 않을 경우
-//     if (!input) {
-//         console.error(`입력 필드가 존재하지 않습니다: ${id}`);
-//         return "정보 없음";
-//     }
-
-//     // 입력 필드의 값 가져오기 및 트림 처리
-//     const value = input.value.trim();
-
-//     // 입력 필드 값이 비어 있는 경우
-//     if (value === "") {
-//         console.warn(`입력 필드 값이 비어 있습니다: ${id}`);
-//         return "정보 없음";
-//     }
-
-//     // 정상적인 입력 값 반환
-//     return value;
-// }
-
-
-
 //경로 데이터 표시(텍스트)
 function displayRoute(data) {
     const routeDirections = document.getElementById("route-directions");
@@ -1213,8 +1126,12 @@ function displayRouteOnMap(route) {
 
 // 검색 함수
 function searchParking() {
-    const searchInput = document.getElementById("parking-search").value.toLowerCase();
+    const searchInputElement = document.getElementById("parking-search");
+    const searchInput = searchInputElement.value.toLowerCase();
     const resultsContainer = document.getElementById("autocomplete-results");
+    // const searchInputElement = document.getElementById("parking-search");
+    // const searchInput = document.getElementById("parking-search").value.toLowerCase();
+    // const resultsContainer = document.getElementById("autocomplete-results");
 
     if (!searchInput) {
         resultsContainer.style.display = 'none'; // 검색어가 없으면 자동완성 창 숨기기
@@ -1242,11 +1159,39 @@ function searchParking() {
     } else if (event.key === "Enter" && selectedIndex >= 0) {
         // 엔터 키로 선택 항목 검색
         const selectedParking = filteredData[selectedIndex];
-        document.getElementById("parking-search").value = selectedParking.name;
+        // document.getElementById("parking-search").value = selectedParking.name;
+        document.getElementById("parking-search").value = "";
+
         resultsContainer.style.display = 'none';
         renderParkingList([selectedParking]); // 선택한 항목을 리스트에 표시
         selectedIndex = -1; // 인덱스 초기화
     }
+       // 마우스 클릭 이벤트 처리
+       resultsContainer.addEventListener("click", function (event) {
+        const clickedItem = event.target.closest(".autocomplete-item"); // 클릭된 항목 확인
+        if (clickedItem) {
+            // `resultsContainer`와 `filteredData`가 항상 동기화되도록 인덱스 확인
+            const index = Array.from(resultsContainer.children).indexOf(clickedItem);
+
+            // 인덱스가 유효하지 않은 경우 바로 리턴 (에러 제거)
+            if (index < 0 || index >= filteredData.length) {
+                return; // 잘못된 인덱스 접근 방지
+            }
+
+            // 선택된 데이터 가져오기
+            const selectedParking = filteredData[index];
+
+            // 선택한 데이터가 유효한지 확인
+            if (selectedParking && selectedParking.name) {
+                searchInputElement.value = ""; // 검색창 초기화
+                resultsContainer.style.display = 'none'; // 자동완성 창 닫기
+                renderParkingList([selectedParking]); // 선택한 항목을 리스트에 표시
+            }
+        }
+    });
+    
+
+
 }
 // 자동완성 항목을 강조 표시하는 함수
 function highlightItem(index) {
