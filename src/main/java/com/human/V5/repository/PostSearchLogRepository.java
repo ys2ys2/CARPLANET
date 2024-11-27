@@ -14,4 +14,5 @@ public interface PostSearchLogRepository extends JpaRepository<PostSearchLogEnti
     "LIMIT :limit",
     nativeQuery = true)
   List<String> findPopularKeywords(@Param("limit") int limit);
+  
 }

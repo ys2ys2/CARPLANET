@@ -1,23 +1,18 @@
 package com.human.V5.service;
 
-import com.human.V5.dto.PostLikeDto;
-import com.human.V5.entity.*;
 import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostDto;
-import com.human.V5.repository.PostCommentLikeRepository;
-import com.human.V5.repository.PostCommentRepository;
-import com.human.V5.repository.PostLikeRepository;
-import com.human.V5.repository.PostRepository;
-import com.human.V5.repository.PostSearchLogRepository;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.human.V5.dto.PostLikeDto;
+import com.human.V5.entity.*;
+import com.human.V5.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,11 +23,13 @@ public class CommunityServiceImpl implements CommunityService {
   private PostCommentRepository postCommentRepository;
   private PostCommentLikeRepository postCommentLikeRepository;
   private PostSearchLogRepository postSearchLogRepository;
+  private UserRepository userRepository;
 
   @Override
   public PostEntity save(PostEntity entity) {
     return postRepository.save(entity);
   }
+  
 
   @Transactional
   @Override
@@ -41,10 +38,12 @@ public class CommunityServiceImpl implements CommunityService {
     if (post == null) return null;
     if (!post.getCarId().equals(userId)) return null;
 
+    String updatedFileName = fileName != null ? fileName : post.getFileName();
+    String updatedFilePath = filePath != null ? filePath : post.getFilePath();
     post.setTitle(title);
     post.setContent(content);
-    post.setFileName(fileName);
-    post.setFilePath(filePath);
+    post.setFileName(updatedFileName);
+    post.setFilePath(updatedFilePath);
     post.setModDate(new Date());
 
     return postRepository.save(post);
@@ -66,6 +65,13 @@ public class CommunityServiceImpl implements CommunityService {
     return postRepository.findById(postIndex).orElse(null);
   }
 
+  @Override
+  public List<PostDto> getPostDto(Integer postIndex) {
+    List<PostEntity> post = new ArrayList<>();
+    post.add(postRepository.findById(postIndex).orElse(null));
+    return convertPostDto(post);
+  }
+
   @Transactional
   @Override
   public List<PostDto> getPostList(Pageable pageable) {
@@ -79,7 +85,8 @@ public class CommunityServiceImpl implements CommunityService {
   @Transactional
   @Override
   public List<PostDto> searchPostList(Pageable pageable, String keyword) {
-    List<PostEntity> postList = postRepository.findAllByContentLikeOrderByRegDateDesc(keyword, pageable).getContent();
+    String searchKeyword = "%" + keyword + "%";
+    List<PostEntity> postList = postRepository.findAllByTitleLikeOrContentLikeOrderByRegDateDesc(searchKeyword, searchKeyword, pageable).getContent();
     postSearchLogRepository.save(PostSearchLogEntity.builder().keyword(keyword).build());
     return convertPostDto(postList);
   }
@@ -253,6 +260,24 @@ public class CommunityServiceImpl implements CommunityService {
       postIndexes).stream().collect(
       Collectors.groupingBy(PostCommentEntity::getPostIndex));
 
+    Set<String> carIdSet = new HashSet<>();
+    postList.forEach(post -> {
+      carIdSet.add(post.getCarId());
+    });
+
+    postComments.values().forEach(comments -> {
+      comments.forEach(comment -> {
+        carIdSet.add(comment.getCarId());
+      });
+    });
+
+	/*
+	 * List<UserEntity> users = userRepository.findAllByCarIdIn(new
+	 * ArrayList<>(carIdSet)); Map<String, String> userNickNameMap = new
+	 * HashMap<>(); users.forEach(userEntity -> {
+	 * userNickNameMap.put(userEntity.getCarId(), userEntity.getCarNickname()); });
+	 */
+
     Map<Integer, List<PostLikeEntity>> postLikes = postLikeRepository.findAllByPostIndexIn(
       postIndexes).stream().collect(
       Collectors.groupingBy(PostLikeEntity::getPostIndex));
@@ -292,7 +317,7 @@ public class CommunityServiceImpl implements CommunityService {
           commentDto.setPostCommentIndex(c.getPostCommentIndex());
           commentDto.setPostIndex(c.getPostIndex());
           commentDto.setContent(c.getContent());
-          commentDto.setCarId(c.getCarId());
+		/* commentDto.setCarId(userNickNameMap.get(c.getCarId())); */
           commentDto.setLikeCount(commentLikeCount);
           commentDto.setUnlikeCount(commentUnlikeCount);
           commentDto.setRegDate(c.getRegDate());
@@ -308,7 +333,7 @@ public class CommunityServiceImpl implements CommunityService {
       dto.setContent(p.getContent());
       dto.setFilePath(p.getFilePath());
       dto.setFileName(p.getFileName());
-      dto.setCarId(p.getCarId());
+	/* dto.setCarId(userNickNameMap.get(p.getCarId())); */
       dto.setLikeCount(likeCount);
       dto.setUnlikeCount(unlikeCount);
       dto.setComments(comments);

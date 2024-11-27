@@ -22,4 +22,5 @@ public class PostDto {
   private List<PostCommentDto> comments;
   private Date regDate; // 최초 게시글 등록일
   private Date modDate; // 최근 게시글 수정일
+  
 }

@@ -10,4 +10,5 @@ public interface PostLikeRepository extends JpaRepository<PostLikeEntity, Intege
   PostLikeEntity findByPostIndexAndCarIdAndType(Integer postIndex, String carId, Boolean type);
 
   long countByPostIndexAndType(Integer postIndex, Boolean type);
+  
 }

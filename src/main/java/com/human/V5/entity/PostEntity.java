@@ -18,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name="post")
 public class PostEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_index")

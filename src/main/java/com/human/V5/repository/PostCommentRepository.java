@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostCommentRepository extends JpaRepository<PostCommentEntity, Integer> {
   List<PostCommentEntity> findAllByPostIndexIn(List<Integer> postIndex);
+  
 }

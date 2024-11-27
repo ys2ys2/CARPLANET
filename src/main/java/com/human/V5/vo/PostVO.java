@@ -16,4 +16,5 @@ public class PostVO {
 	private String title;
 	private String content;
 	private MultipartFile file;
+	
 }
