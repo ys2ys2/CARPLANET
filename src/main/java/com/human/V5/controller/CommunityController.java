@@ -35,6 +35,8 @@ public class CommunityController {
   private CommunityService communityService;
   private final ServletContext servletContext;
   private final static String IMAGE_UPLOAD_DIR = "/resources/images/community/";
+ 
+  
 
   /**
    * 게시글 목록 조회

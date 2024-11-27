@@ -8,4 +8,5 @@ public interface PostCommentLikeRepository extends JpaRepository<PostCommentLike
   List<PostCommentLikeEntity> findAllByPostCommentIndexIn(List<Integer> postCommentIndex);
   PostCommentLikeEntity findFirstByPostCommentIndexAndCarIdAndType(Integer postCommentIndex, String carId, Boolean Type);
   long countByPostCommentIndexAndType(Integer postCommentIndex, Boolean type);
+  
 }

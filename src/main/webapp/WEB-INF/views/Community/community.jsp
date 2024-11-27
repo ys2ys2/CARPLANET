@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시판</title>
 <style>
+
 /* 폰트 임포트 */
 @import
 	url('https://fonts.googleapis.com/css2?family=GongGothic:ital,wght@0,400;0,500;1,400&display=swap')

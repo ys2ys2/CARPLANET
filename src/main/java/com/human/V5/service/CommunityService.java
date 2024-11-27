@@ -24,4 +24,5 @@ public interface CommunityService {
 	Integer commentLike(Integer postCommentIndex, String carId);
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
+	
 }

@@ -29,6 +29,7 @@ public class CommunityServiceImpl implements CommunityService {
   public PostEntity save(PostEntity entity) {
     return postRepository.save(entity);
   }
+  
 
   @Transactional
   @Override
