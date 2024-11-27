@@ -219,6 +219,11 @@ a.dynamic-link:visited {
 	border: 1px solid #ccc;
 	padding: 10px;
 	text-align: center;
+	height:28px;
+}
+
+#user-table td{
+	font-size: 13px;
 }
 
 #user-table th {
@@ -241,6 +246,9 @@ a.dynamic-link:visited {
 #user-table td button.promote {
 	background-color: #2ecc71;
 	color: white;
+}
+.userinfoline{
+	border-bottom:1px solid black;
 }
 </style>
 </head>
@@ -296,19 +304,21 @@ a.dynamic-link:visited {
 			<div id="user-management" class="section">
 				<div
 					style="display: flex; align-items: center; justify-content: space-between;">
-					<h1>회원 관리</h1>
+					<h1 style="margin-bottom:10px">회원 관리</h1>
 					<div>
-						<input type="text" id="search-input" placeholder="회원 검색"
+						<input type="text" id="search-input" placeholder="아이디 or 닉네임"
 							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
 						<button id="search-button"
 							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">검색</button>
+							<button id="reset-button"
+							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">초기화</button>
 					</div>
 				</div>
-				<span>회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b>
+				<p class="userinfoline">회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b>
 					(관리자)
-				</span>
+				</p>
 
-				<div id="user-table">
+				<div id="user-table" style="margin-top:15px">
 					<div id="user-table">
 						<table>
 							<thead>
@@ -530,17 +540,17 @@ a.dynamic-link:visited {
 			        	console.log(user.carIdx);
 			        	
 			            const row = `
-			                <tr>
-			                    <td>`+user.carIdx+`</td>
-			                    <td>`+user.carId+`</td>
-			                    <td>`+user.carNickname+`</td>
-			                    <td>`+user.carStatus+`</td>
-			                    <td>
-			                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
-			                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
-			                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
-			                    </td>
-			                </tr>
+			            	<tr>
+		                    <td style="width:12%">`+user.carIdx+`</td>
+		                    <td style="width:23%">`+user.carId+`</td>
+		                    <td style="width:18%">`+user.carNickname+`</td>
+		                    <td style="width:12%">`+user.carStatus+`</td>
+		                    <td style="width:35%">
+		                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
+		                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
+		                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
+		                    </td>
+		                </tr>
 			            `;
 			            tbody.append(row); // 테이블에 행 추가
 			        });
@@ -549,6 +559,90 @@ a.dynamic-link:visited {
 			        console.error('회원목록 가져오기 실패:', e);
 			    }
 			});
+			
+			
+			$(document).on('click', '#reset-button', function () {
+				$.ajax({
+				    url: '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
+				    type: 'GET', // GET 요청
+				    dataType: 'json', // 응답을 JSON 형식으로 받음
+				    success: function (response) {
+				        console.log(response); // 전체 응답 출력
+				        const tbody = $('#user-table tbody');
+				        tbody.empty(); // 기존 내용을 초기화
+
+				        response.forEach(user => {
+				        	console.log(user.carIdx);
+				        	
+				            const row = `
+				                <tr>
+				                    <td style="width:12%">`+user.carIdx+`</td>
+				                    <td style="width:23%">`+user.carId+`</td>
+				                    <td style="width:18%">`+user.carNickname+`</td>
+				                    <td style="width:12%">`+user.carStatus+`</td>
+				                    <td style="width:35%">
+				                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
+				                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
+				                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
+				                    </td>
+				                </tr>
+				            `;
+				            tbody.append(row); // 테이블에 행 추가
+				        });
+				    },
+				    error: function (e) {
+				        console.error('회원목록 가져오기 실패:', e);
+				    }
+				});
+			})
+			
+			$(document).on('click', '#search-button', function () {
+			    const keyword = $('#search-input').val().trim(); // 검색어 가져오기
+			    if (keyword === '') {
+			        alert('검색어를 입력해주세요.');
+			        return;
+			    }
+
+			    // 서버로 검색 요청
+			    $.ajax({
+			        url: '/CarPlanet/Admin/searchUser.do',
+			        type: 'GET', // 검색이므로 GET 사용
+			        data: { keyword }, // 서버로 검색어 전달
+			        dataType: 'json', // JSON 형식으로 응답받음
+			        success: function (response) {
+			            const tbody = $('#user-table tbody');
+			            tbody.empty(); // 기존 테이블 비우기
+
+			            if (response.length === 0) {
+			                tbody.append('<tr><td colspan="6">검색 결과가 없습니다.</td></tr>');
+			                return;
+			            }
+
+			            // 검색 결과 테이블에 추가
+			            response.forEach(user => {
+			            	const row = `
+			            		<tr>
+			                    <td style="width:12%">`+user.carIdx+`</td>
+			                    <td style="width:23%">`+user.carId+`</td>
+			                    <td style="width:18%">`+user.carNickname+`</td>
+			                    <td style="width:12%">`+user.carStatus+`</td>
+			                    <td style="width:35%">
+			                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
+			                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
+			                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
+			                    </td>
+			                </tr>
+				            `;
+			                tbody.append(row);
+			            });
+			        },
+			        error: function (xhr, status, error) {
+			            console.error('회원 검색 중 오류 발생:', error);
+			            alert('오류가 발생했습니다. 다시 시도해주세요.');
+			        }
+			    });
+			});
+
 			
 			$(document).on('click', '.promote', function () {
 			    const userIdx = $(this).data('idx');

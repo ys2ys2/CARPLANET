@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 	UserEntity findByCarIdAndEmail(String id, String email);
 
 	boolean existsByCarNickname(String carNickname);
+
+	List<UserEntity> findByCarIdContainingOrCarNicknameContaining(String keyword, String keyword2);
 }

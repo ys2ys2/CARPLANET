@@ -92,6 +92,12 @@ public class AdminServiceImpl implements AdminService {
 	    }
 	}
 
+	@Override
+	public List<UserEntity> searchByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		return userRepository.findByCarIdContainingOrCarNicknameContaining(keyword, keyword);
+	}
+
 
 
 }

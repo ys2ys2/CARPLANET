@@ -27,4 +27,6 @@ public interface AdminService {
 
 	boolean updateUserStatus(int userIdx, int i);
 
+	List<UserEntity> searchByKeyword(String keyword);
+
 }
