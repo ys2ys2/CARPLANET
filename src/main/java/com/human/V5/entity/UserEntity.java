@@ -39,7 +39,7 @@ public class UserEntity {
 	@Column(name="car_pw", length=200)
 	private String carPw;
 	
-	@Column(name="email", updatable=false, length=50)
+	@Column(name="email", length=50)
 	private String email;
 	
 	@Column(name="birthday", length=20)
@@ -82,17 +82,21 @@ public class UserEntity {
     }
 
 	public void setBirthday(String newBirthday) {
-		this.birthday = birthday;
+		this.birthday = newBirthday;
 		
+	}
+	
+	public void setcarNickname(String newcarNickname) {
+		this.carNickname = newcarNickname;
 	}
 
 	public void setPhone(String newPhone) {
-		this.phone = phone;
+		this.phone = newPhone;
 		
 	}
 
 	public void setEmail(String newEmail) {
-		this.email = email;
+		this.email = newEmail;
 		
 	}
 	

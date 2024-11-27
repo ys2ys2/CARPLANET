@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
     private final JavaMailSender mailSender;
+    private final PasswordEncoder passwordEncoder; // BCryptPasswordEncoder 주입
     
     // 인증 코드 저장을 위한 임시 저장소
     private Map<String, String> verificationCodes = new HashMap<>();
@@ -202,9 +204,17 @@ public class UserServiceImpl implements UserService {
 		return repository.findByCarId(carId);
 	}
 
+	//회원정보 수정 + 비밀번호 암호화 저장
 	@Override
 	public void updateUser(UserEntity userEntity) {
-		repository.save(userEntity);		
+	    // 비밀번호가 변경된 경우에만 암호화 처리
+	    if (userEntity.getCarPw() != null && !userEntity.getCarPw().isEmpty()) {
+	        // 비밀번호 암호화
+	        String encodedPassword = passwordEncoder.encode(userEntity.getCarPw());
+	        userEntity.updatePassword(encodedPassword); // 암호화된 비밀번호 설정
+	    }
+	    // 사용자 정보 저장
+	    repository.save(userEntity);
 	}
 
 	
