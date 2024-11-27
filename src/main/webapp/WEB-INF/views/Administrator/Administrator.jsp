@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
 <title>관리자</title>
 
 
@@ -219,10 +220,10 @@ a.dynamic-link:visited {
 	border: 1px solid #ccc;
 	padding: 10px;
 	text-align: center;
-	height:28px;
+	height: 28px;
 }
 
-#user-table td{
+#user-table td {
 	font-size: 13px;
 }
 
@@ -247,9 +248,130 @@ a.dynamic-link:visited {
 	background-color: #2ecc71;
 	color: white;
 }
-.userinfoline{
-	border-bottom:1px solid black;
+
+.userinfoline {
+	border-bottom: 1px solid black;
 }
+
+/* 게시물 박스 컨테이너 */
+#post-box-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 10px;
+}
+
+/* 게시물 박스 */
+.post-box {
+	width: calc(33.33% - 20px);
+	height: 300px; /* 고정 높이 */
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow: hidden;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+/* 게시물 이미지 */
+.imbox {
+	width: 100%; /* 상자 너비에 맞춤 */
+	height: 150px; /* 고정 높이 */
+	display: block;
+	border-bottom: 1px solid #ccc;
+}
+
+.imbox img {
+	width: 100%;
+	height: 100%;
+}
+
+/* 게시물 제목 */
+.post-box h3 {
+	margin: 10px 0;
+	font-size: 18px;
+	color: #333;
+	padding: 0 10px;
+}
+
+/* 게시물 내용 */
+.post-box p {
+	font-size: 14px;
+	color: #666;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 0 10px;
+}
+
+/* 게시물 하단 */
+.post-box-footer {
+	padding: 10px;
+	border-top: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* 작성자 정보 */
+.post-box-footer span {
+	font-size: 14px;
+	color: #666;
+}
+
+/* 삭제 버튼 */
+.delete-post {
+	width: 100%;
+	height: 100%;
+}
+
+.delete-post:hover {
+	background-color: #c0392b;
+}
+
+.deletebox {
+	width: 30px;
+	height: 30px;
+	border: 1px solid #c0392b;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.postheader {
+    display: flex;
+    justify-content: space-between; /* 양쪽으로 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    margin-bottom: 10px; /* 여백 추가 */
+}
+
+.post-search-box {
+    display: flex;
+    gap: 10px; /* 검색창과 버튼 사이 간격 */
+}
+
+.post-search-box input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.post-search-box button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.post-search-box button:hover {
+    background-color: #0056b3;
+}
+
 </style>
 </head>
 <body>
@@ -304,21 +426,31 @@ a.dynamic-link:visited {
 			<div id="user-management" class="section">
 				<div
 					style="display: flex; align-items: center; justify-content: space-between;">
-					<h1 style="margin-bottom:10px">회원 관리</h1>
+					<h1 style="margin-bottom: 10px">회원 관리</h1>
 					<div>
 						<input type="text" id="search-input" placeholder="아이디 or 닉네임"
 							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
+						<select id="search-carstatus"
+							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
+							<option value="">-- 상태 선택 --</option>
+							<option value="1">일반 회원</option>
+							<option value="3">관리자</option>
+							<option value="-1">탈퇴 요청 회원</option>
+						</select>
 						<button id="search-button"
-							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">검색</button>
-							<button id="reset-button"
+							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">
+							검색</button>
+						<button id="reset-button"
 							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">초기화</button>
+
 					</div>
 				</div>
-				<p class="userinfoline">회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b>
-					(관리자)
+				<p class="userinfoline">
+					회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b> (관리자)
 				</p>
 
-				<div id="user-table" style="margin-top:15px">
+
+				<div id="user-table" style="margin-top: 15px">
 					<div id="user-table">
 						<table>
 							<thead>
@@ -340,9 +472,17 @@ a.dynamic-link:visited {
 
 
 			<div id="post-management" class="section">
-				<h1>게시글 관리</h1>
-				<div id="post-table">
-					<!-- 게시글 정보 -->
+				<div class="postheader">
+					<h1>게시글 관리</h1>
+					<div class="post-search-box">
+						<input type="text" id="post-input" placeholder="제목 or 내용 입력">
+						<button id="psearch-button">검색</button>
+						<button id="preset-button">초기화</button>
+					</div>
+				</div>
+				<hr>
+				<div id="post-box-container">
+					<!-- 게시물 카드가 추가될 영역 -->
 				</div>
 			</div>
 		</div>
@@ -378,381 +518,10 @@ a.dynamic-link:visited {
 
 	<script>
 		$(document).ready(function() {
-			const message="${message}";
-			if(message){
+			const message = "${message}";
+			if (message) {
 				alert(message);
 			}
-			
-			const ctx = document.getElementById('visitorChart').getContext('2d');
-	        const visitorChart = new Chart(ctx, {
-	            type: 'bar',
-	            data: {
-	                labels: [], // 날짜
-	                datasets: [{
-	                    label: '방문자 수',
-	                    data: [], // 방문자 수
-	                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-	                    borderColor: 'rgba(54, 162, 235, 1)',
-	                    borderWidth: 1
-	                }]
-	            },
-	            options: {
-	                scales: {
-	                    y: {
-	                        beginAtZero: true
-	                    }
-	                }
-	            }
-	        });
-	        //모달 열기
-	        $('#addNoticeBtn').on('click',function(){
-	        	$('.noticemodal').css('display','flex');        	
-	        })
-	        
-	        // 모달 닫기
-   			$('#cancelNotice').on('click', function () {
-       			$('.noticemodal').css('display', 'none');
-    		});
-	        
-            
-	        $.ajax({
-	            url: '/CarPlanet/Admin/visitor-stats',
-	            type: 'GET',
-	            dataType: 'json',
-	            success: function(response) {
-	                // 응답 데이터에서 상위 5개만 추출
-	                const filteredData = response.slice(0, 5); // 최근 5일 데이터
-
-	                // 날짜에 +1일 추가
-	                const labels = filteredData.map(item => {
-	                    const date = new Date(item.date); // 날짜 문자열을 Date 객체로 변환
-	                    date.setDate(date.getDate() + 1); // 하루를 추가
-	                    return (date.getMonth() + 1) + "-" + date.getDate(); // MM-DD 형식으로 반환
-	                });
-
-	                const data = filteredData.map(item => item.count);
-	                updateChart(visitorChart, labels, data);
-	            },
-	            error: function(error) {
-	                console.error('날짜별 방문자 데이터 로드 실패:', error);
-	            }
-	        });
-
-	        function updateChart(chart, labels, data) {
-	            chart.data.labels = labels.reverse(); // 날짜 순서 뒤집기 (최근 날짜부터 표시)
-	            chart.data.datasets[0].data = data.reverse(); // 방문자 데이터도 뒤집기
-	            chart.update();
-	        }
-
-            
-            $.ajax({
-                url: '/CarPlanet/Admin/track-visitor', // 방문자 추적 API 엔드포인트
-                type: 'POST', // HTTP 메서드
-                contentType: 'application/json', // 데이터 형식
-                data: JSON.stringify({
-                    url: window.location.href, // 현재 페이지 URL
-                    userAgent: navigator.userAgent // 브라우저 정보
-                }),
-                success: function(response) {
-                    console.log('방문자 데이터 전송 성공:');
-                },
-                error: function(error) {
-                    console.error('방문자 데이터 전송 실패:', error);
-                }
-            });
-            
-            function updateChart(chart, labels, data) {
-                chart.data.labels = labels.reverse(); // 날짜 순서 뒤집기 (최근 날짜부터 표시)
-                chart.data.datasets[0].data = data.reverse(); // 방문자 데이터도 뒤집기
-                chart.update();
-            }
-            
-         // 이벤트 위임 설정
-            $(document).on('click', '.dynamic-link', function(e) {
-                e.preventDefault(); // 기본 앵커 동작 막기
-
-                // 모든 섹션 숨기기
-                $('.section').removeClass('active').hide();
-
-                // 클릭한 링크의 data-target에 맞는 섹션 표시
-                const target = $(this).data('target');
-                $('#' + target).addClass('active').fadeIn(); // 활성화 섹션 표시
-            });
-            
-            $.ajax({
-                url: '/CarPlanet/Admin/userCount',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    console.log("총 회원수 : " + response);
-
-                    const userCountHtml = '<a href="#user-management" class="dynamic-link" data-target="user-management">'
-                        + response + '</a>';
-                    
-                    $('#userCountDisplay').html(userCountHtml);
-                },
-                error: function(e) {
-                    console.error("회원수 조회중 오류", e);
-                }
-            });
-
-			
-			$.ajax({
-				url:'/CarPlanet/Admin/countPost',
-				type:'GET',
-				dataType:'json',
-				success:function(response){
-					console.log("총 게시물 수 :"+response);
-					const postCountHtml = '<a href="#post-management" class="dynamic-link" data-target="post-management">'
-                        + response + '</a>';
-                    
-                    $('#postCountDisplay').html(postCountHtml);
-				},
-				error:function(e){
-					console.error("게시물 수 조회중 오류")
-				}
-			});
-			
-			$.ajax({
-				url:'/CarPlanet/Admin/countNotice',
-				type:'GET',
-				dataType:'json',
-				success:function(response){
-					console.log("총 공지사항 수 :"+response);
-					$('#noticeCount').text(response);
-				},
-				error:function(e){
-					console.error("게시물 수 조회중 오류")
-				}
-			});
-            
-            
-			$.ajax({
-			    url: '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
-			    type: 'GET', // GET 요청
-			    dataType: 'json', // 응답을 JSON 형식으로 받음
-			    success: function (response) {
-			        console.log(response); // 전체 응답 출력
-			        const tbody = $('#user-table tbody');
-			        tbody.empty(); // 기존 내용을 초기화
-
-			        response.forEach(user => {
-			        	console.log(user.carIdx);
-			        	
-			            const row = `
-			            	<tr>
-		                    <td style="width:12%">`+user.carIdx+`</td>
-		                    <td style="width:23%">`+user.carId+`</td>
-		                    <td style="width:18%">`+user.carNickname+`</td>
-		                    <td style="width:12%">`+user.carStatus+`</td>
-		                    <td style="width:35%">
-		                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
-		                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
-		                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
-		                    </td>
-		                </tr>
-			            `;
-			            tbody.append(row); // 테이블에 행 추가
-			        });
-			    },
-			    error: function (e) {
-			        console.error('회원목록 가져오기 실패:', e);
-			    }
-			});
-			
-			
-			$(document).on('click', '#reset-button', function () {
-				$.ajax({
-				    url: '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
-				    type: 'GET', // GET 요청
-				    dataType: 'json', // 응답을 JSON 형식으로 받음
-				    success: function (response) {
-				        console.log(response); // 전체 응답 출력
-				        const tbody = $('#user-table tbody');
-				        tbody.empty(); // 기존 내용을 초기화
-
-				        response.forEach(user => {
-				        	console.log(user.carIdx);
-				        	
-				            const row = `
-				                <tr>
-				                    <td style="width:12%">`+user.carIdx+`</td>
-				                    <td style="width:23%">`+user.carId+`</td>
-				                    <td style="width:18%">`+user.carNickname+`</td>
-				                    <td style="width:12%">`+user.carStatus+`</td>
-				                    <td style="width:35%">
-				                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
-				                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
-				                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
-				                    </td>
-				                </tr>
-				            `;
-				            tbody.append(row); // 테이블에 행 추가
-				        });
-				    },
-				    error: function (e) {
-				        console.error('회원목록 가져오기 실패:', e);
-				    }
-				});
-			})
-			
-			$(document).on('click', '#search-button', function () {
-			    const keyword = $('#search-input').val().trim(); // 검색어 가져오기
-			    if (keyword === '') {
-			        alert('검색어를 입력해주세요.');
-			        return;
-			    }
-
-			    // 서버로 검색 요청
-			    $.ajax({
-			        url: '/CarPlanet/Admin/searchUser.do',
-			        type: 'GET', // 검색이므로 GET 사용
-			        data: { keyword }, // 서버로 검색어 전달
-			        dataType: 'json', // JSON 형식으로 응답받음
-			        success: function (response) {
-			            const tbody = $('#user-table tbody');
-			            tbody.empty(); // 기존 테이블 비우기
-
-			            if (response.length === 0) {
-			                tbody.append('<tr><td colspan="6">검색 결과가 없습니다.</td></tr>');
-			                return;
-			            }
-
-			            // 검색 결과 테이블에 추가
-			            response.forEach(user => {
-			            	const row = `
-			            		<tr>
-			                    <td style="width:12%">`+user.carIdx+`</td>
-			                    <td style="width:23%">`+user.carId+`</td>
-			                    <td style="width:18%">`+user.carNickname+`</td>
-			                    <td style="width:12%">`+user.carStatus+`</td>
-			                    <td style="width:35%">
-			                        <button class="promote" data-idx=`+user.carIdx+`>관리자위임</button>
-			                        <button class="demote" data-idx=`+user.carIdx+`>권한해임</button>
-			                        <button class="delete" data-idx=`+user.carIdx+`>삭제</button>
-			                    </td>
-			                </tr>
-				            `;
-			                tbody.append(row);
-			            });
-			        },
-			        error: function (xhr, status, error) {
-			            console.error('회원 검색 중 오류 발생:', error);
-			            alert('오류가 발생했습니다. 다시 시도해주세요.');
-			        }
-			    });
-			});
-
-			
-			$(document).on('click', '.promote', function () {
-			    const userIdx = $(this).data('idx');
-			    if (confirm('관리자 등급으로 지정하시겠습니까?')) {
-			        $.ajax({
-			            url: '/CarPlanet/Admin/userPromote.do',
-			            type: 'POST',
-			            data: { userIdx },
-			            dataType: 'json',
-			            success: function (response) {
-			                alert(response.message);
-			                if (response.success) {
-			                    location.reload();
-			                }
-			            },
-			            error: function (xhr) {
-			                if (xhr.status === 401) {
-			                    alert('로그인이 필요합니다.');
-			                } else if (xhr.status === 403) {
-			                    alert('관리자 권한이 필요합니다.');
-			                } else {
-			                    alert('오류가 발생했습니다.');
-			                }
-			            }
-			        });
-			    }
-			});
-
-			
-			$(document).on('click', '.demote', function () {
-			    const userIdx = $(this).data('idx');
-			    console.log(userIdx);
-
-			    if (confirm('일반등급으로 내리시겠습니까?')) {
-			        $.ajax({
-			            url: '/CarPlanet/Admin/userdemote.do',
-			            type: 'POST',
-			            data: { userIdx: userIdx },
-			            dataType: 'json', // 응답을 JSON으로 처리
-			            success: function (response) {
-			                if (response.success) {
-			                    alert(response.message);
-			                    location.reload();
-			                } else {
-			                    alert(response.message);
-			                }
-			            },
-			            error: function (xhr, status, error) {
-			                if (xhr.status === 401) {
-			                    alert('로그인이 필요합니다.');
-			                } else if (xhr.status === 403) {
-			                    alert('관리자 권한이 필요합니다.');
-			                } else {
-			                    console.error('회원 강등 중 오류 발생:', error);
-			                    alert('오류가 발생했습니다. 다시 시도해주세요.');
-			                }
-			            }
-			        });
-			    }
-			});
-
-			
-			$(document).on('click', '.delete', function () {
-			    const userIdx = $(this).data('idx'); // 버튼에 설정된 데이터 가져오기
-			    console.log(userIdx);
-
-			    if (confirm('이 회원을 삭제하시겠습니까?')) {
-			        $.ajax({
-			            url: '/CarPlanet/Admin/userdelete.do',
-			            type: 'POST',
-			            data: { userIdx: userIdx }, // 서버로 데이터 전송
-			            dataType: 'json', // 응답 데이터 타입
-			            success: function (response) {
-			                if (response.success) {
-			                    alert(response.message);
-			                    location.reload();
-			                } else {
-			                    alert(response.message);
-			                }
-			            },
-			            error: function (xhr, status, error) {
-			                if (xhr.status === 401) {
-			                    alert('로그인이 필요합니다.');
-			                } else if (xhr.status === 403) {
-			                    alert('관리자 권한이 필요합니다.');
-			                } else {
-			                    console.error('회원 강등 중 오류 발생:', error);
-			                    alert('오류가 발생했습니다. 다시 시도해주세요.');
-			                }
-			            }
-			        });
-			    }
-			});
-
-
-
-
-			$('.menu-link').on('click', function(e) {
-				e.preventDefault(); // 기본 앵커 동작 막기
-
-				// 모든 섹션 숨기기
-				$('.section').removeClass('active').hide();
-
-				// 클릭한 메뉴의 data-target에 맞는 섹션 표시
-				const target = $(this).data('target');
-				$('#' + target).addClass('active').fadeIn(); // 활성화 섹션 표시
-			});
-
-			// 첫 화면 로딩 시 기본 섹션 표시
-			$('.section').not('.active').hide(); // 'active'가 아닌 섹션 숨기기
 		});
 	</script>
 </body>

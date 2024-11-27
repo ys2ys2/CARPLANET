@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.human.V5.entity.NoticeEntity;
+import com.human.V5.entity.PostEntity;
 import com.human.V5.entity.UserEntity;
 import com.human.V5.entity.VisitorEntity;
 import com.human.V5.repository.NoticeRepository;
@@ -79,6 +80,19 @@ public class AdminServiceImpl implements AdminService {
 		} 
 		return result;
 	}
+	
+	@Override
+	public boolean deletePostByIndex(int postIndex) {
+		boolean result =false;
+		
+		try {
+			postrepository.deleteById(postIndex);
+			result = true;
+		} catch (Exception e) {
+			System.out.println("삭제중 에러발생"+e);
+		}
+		return result;
+	}
 
 	public boolean updateUserStatus(int userIdx, int status) {
 	    try {
@@ -93,9 +107,30 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<UserEntity> searchByKeyword(String keyword) {
+    public List<UserEntity> searchByKeyword(String keyword) {
+        return userRepository.findByCarIdContainingOrCarNicknameContaining(keyword, keyword);
+    }
+
+    @Override
+    public List<UserEntity> searchByCarStatus(Integer carStatus) {
+        return userRepository.findByCarStatus(carStatus);
+    }
+
+    @Override
+    public List<UserEntity> searchByKeywordAndCarStatus(String keyword, Integer carStatus) {
+        return userRepository.findByCarIdContainingOrCarNicknameContainingAndCarStatus(keyword, keyword, carStatus);
+    }
+
+	@Override
+	public List<PostEntity> getAllpost() {
 		// TODO Auto-generated method stub
-		return userRepository.findByCarIdContainingOrCarNicknameContaining(keyword, keyword);
+		return postrepository.findAll();
+	}
+
+	@Override
+	public List<PostEntity> psearchByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		return postrepository.findByTitleContainingOrContentContaining(keyword,keyword);
 	}
 
 
