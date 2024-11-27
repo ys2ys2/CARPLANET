@@ -3,6 +3,7 @@ package com.human.V5.controller;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.human.V5.entity.NoticeEntity;
+import com.human.V5.entity.PostEntity;
 import com.human.V5.entity.UserEntity;
 import com.human.V5.entity.VisitorEntity;
 import com.human.V5.service.AdminService;
@@ -247,11 +249,72 @@ public class AdminController {
 
 	@GetMapping("/searchUser.do")
 	@ResponseBody
-	public List<UserEntity> searchUser(@RequestParam String keyword) {
-	    // 회원 이름 또는 닉네임에서 검색
-	    return adminserviceimpl.searchByKeyword(keyword);
+	public List<UserEntity> searchUser(@RequestParam(required = false) String keyword,
+	                                   @RequestParam(required = false) Integer carStatus) {
+		
+		System.out.println(keyword+ ","+ carStatus);
+	    // 세 가지 경우를 처리
+	    if (keyword != "" && carStatus != null) {
+	        // keyword와 carStatus 둘 다 설정된 경우
+	        return adminserviceimpl.searchByKeywordAndCarStatus(keyword, carStatus);
+	    } else if (keyword != "") {
+	        // keyword만 설정된 경우
+	        return adminserviceimpl.searchByKeyword(keyword);
+	    } else if (carStatus != null) {
+	        // carStatus만 설정된 경우
+	        return adminserviceimpl.searchByCarStatus(carStatus);
+	    } else {
+	        // 검색 조건이 없는 경우 (전체 데이터 반환 or 빈 리스트 반환)
+	        return new ArrayList<>();
+	    }
+	}
+	
+	@GetMapping("/searchPost.do")
+	@ResponseBody
+	public List<PostEntity> searchUser(@RequestParam(required = false) String keyword){
+		
+		return adminserviceimpl.psearchByKeyword(keyword);
+	}
+	
+	@GetMapping("/allpost.do")
+	@ResponseBody
+	public List<PostEntity> allpost(){
+		
+		return adminserviceimpl.getAllpost();
 	}
 
+
+	@PostMapping("/deletepost")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> deletePost(HttpSession session, @RequestParam int postIndex) {
+	    // 현재 로그인한 사용자 정보 가져오기
+	    UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    // 로그인 여부 확인
+	    if (loggedInUser == null) {
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body(response); // 401 Unauthorized
+	    }
+
+	    // 관리자 권한 확인
+	    if (loggedInUser.getCarStatus() != 3) { // 3: 관리자 권한
+	        response.put("success", false);
+	        response.put("message", "관리자 권한이 필요합니다.");
+	        return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(response); // 403 Forbidden
+	    }
+
+	    // 게시글 삭제 처리
+	    boolean success = adminserviceimpl.deletePostByIndex(postIndex); // 게시글 삭제 서비스 호출
+
+	    // 응답 데이터 구성
+	    response.put("success", success);
+	    response.put("message", success ? "게시글이 성공적으로 삭제되었습니다." : "게시글 삭제 실패");
+
+	    return ResponseEntity.ok(response); // 200 OK
+	}
 
 
 }
