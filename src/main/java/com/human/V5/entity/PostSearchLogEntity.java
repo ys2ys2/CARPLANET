@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="car_post_search_log")
+@Table(name="post_search_log")
 public class PostSearchLogEntity {
 	
 	@Id
