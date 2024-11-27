@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="post_comment")
+@Table(name="car_post_comment")
 public class PostCommentEntity {
 	
 	@Id
