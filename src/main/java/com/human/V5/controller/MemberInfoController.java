@@ -3,6 +3,7 @@ package com.human.V5.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,12 +80,12 @@ public class MemberInfoController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("status", "FAIL", "message", "로그인이 필요합니다."));
             }
 
-            String newCarName = userInfo.get("carName");
+            String newcarNickname = userInfo.get("carNickname");
             String newBirthday = userInfo.get("birthday");
             String newPhone = userInfo.get("phone");
             String newEmail = userInfo.get("email");
 
-            user.updateCarName(newCarName);
+            user.setcarNickname(newcarNickname);
             user.setBirthday(newBirthday);
             user.setPhone(newPhone);
             user.setEmail(newEmail);
@@ -98,7 +99,40 @@ public class MemberInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "FAIL", "message", "서버 오류가 발생했습니다."));
         }
     }
+    
+    //updatePw
+    @PostMapping(value = "/update_password", produces = "application/json")
+    public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> requestBody, HttpSession session) {
+        // 클라이언트에서 전달된 newPassword를 가져옵니다.
+        String newPassword = requestBody.get("newPassword");
 
+        // 비밀번호 값 유효성 검사
+        if (newPassword == null || newPassword.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("status", "fail", "message", "비밀번호가 제공되지 않았습니다."));
+        }
 
+        try {
+            // 세션에서 사용자 정보 가져오기
+            UserEntity user = (UserEntity) session.getAttribute("user");
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("status", "fail", "message", "로그인이 필요합니다."));
+            }
 
+            // 비밀번호 업데이트 로직
+            user.updatePassword(newPassword); // 엔티티의 비밀번호 수정 메서드 호출
+            userService.updateUser(user); // 수정된 사용자 정보 저장
+            session.setAttribute("user", user); // 세션 업데이트
+
+            return ResponseEntity.ok(Map.of("status", "SUCCESS", "message", "비밀번호가 성공적으로 변경되었습니다."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("status", "fail", "message", "비밀번호 변경 중 오류가 발생했습니다."));
+        }
+    }
+    
+    
+    
 }

@@ -39,5 +39,6 @@ public interface UserService {
 
 	void updateUser(UserEntity userEntity);
 
+
 	
 }
