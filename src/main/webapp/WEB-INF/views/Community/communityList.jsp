@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
 <link rel="stylesheet" type="text/css"
 	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
@@ -114,8 +113,7 @@ p, span, .post-text {
 }
 
 .search-input {
-	border: none;
-	background: transparent;
+	border: none; background : transparent;
 	width: 100%; /* 입력 필드가 박스를 채우도록 설정 */
 	font-size: 14px; /* 글씨 크기 */
 	outline: none;
@@ -174,6 +172,7 @@ p, span, .post-text {
 }
 
 .popular-posts {
+    overflow: hidden;
 	background: white;
 	padding: 24px;
 	border-radius: 8px;
@@ -213,10 +212,13 @@ p, span, .post-text {
 	color: #666;
 }
 
+.post-slider--wrapper {
+	overflow: hidden;
+}
+
 .post-slider {
 	display: flex;
 	gap: 16px;
-	overflow-x: hidden;
 	transition: transform 0.3s ease-in-out;
 }
 
@@ -319,7 +321,6 @@ p, span, .post-text {
 .post-slider {
 	display: flex;
 	gap: 1rem;
-	overflow-x: hidden;
 }
 
 .post-slide {
@@ -383,6 +384,10 @@ p, span, .post-text {
 	white-space: normal; /* 줄바꿈 허용 */
 }
 
+.post-items .post-image {
+	width: 200px;
+	flex-shrink: 0;
+}
 .post-image {
 	width: 200px; /* 기존 150px에서 크기 증가 */
 	flex-shrink: 0;
@@ -785,6 +790,9 @@ button {
 
 /* 초소형 화면 (425px 이하) */
 @media ( max-width : 425px) {
+.popular-posts .post-slide {
+width: 100%;
+}
 	.post-content {
 		flex-direction: column; /* 사진과 내용을 세로로 정렬 */
 	}
@@ -859,6 +867,7 @@ button {
 							<button class="nav-button">&gt;</button>
 						</div>
 					</div>
+				<div class="post-slider--wrapper">
 					<div class="post-slider">
 						<c:forEach var="post" items="${recommendedPosts}">
 							<a href="searchPostList.do?keyword=${post.title}"
@@ -876,13 +885,12 @@ button {
 											</div>
 										</c:otherwise>
 									</c:choose>
-									<div class="like-badge"
-										onclick="likePost(${post.postIndex}, event)">
-										<a href="#" style="text-decoration: none; color: inherit;">
-											<div class="like-icn">👍</div>
-										</a>
-										<p id="likeCount-${post.postIndex}">${post.likeCount}</p>
-									</div>
+									<div class="like-badge" onclick="likePost(${post.postIndex}, event)">
+    <a href="#" style="text-decoration: none; color: inherit;">
+        <div class="like-icn">👍</div>
+										 </a>
+    <p id="likeCount-${post.postIndex}">${post.likeCount}</p>
+</div>
 
 									<div class="post-info">
 										<div class="user-info">
@@ -903,7 +911,7 @@ button {
 						</c:forEach>
 					</div>
 				</div>
-
+			</div>
 				<!-- 일반 게시물 -->
 				<div class="post-items">
 					<c:forEach var="post" items="${posts}">
@@ -918,8 +926,8 @@ button {
 									</span>
 								</div>
 							</div>
-
-							<h3 style="font-size: 1.25rem; margin: 1rem 0">${post.title}</h3>
+							
+							<h3 style="font-size: 1.25rem; margin: 1rem 0">${post.title}</h3>							
 							<div class="post-content">
 								<div class="post-text">
 									<p>${post.content}</p>
@@ -945,7 +953,6 @@ button {
 									</a>
 									<p id="likeCount-${post.postIndex}">${post.likeCount}</p>
 								</div>
-
 
 								<div class="footer-2"
 									onclick="unlikePost(${post.postIndex}, event)">
@@ -1002,7 +1009,7 @@ button {
 										</div>
 									</c:forEach>
 								</div>
-
+								
 								<h3>댓글 작성</h3>
 								<textarea placeholder="댓글을 입력하세요" id="textarea${post.postIndex}"></textarea>
 								<div>
@@ -1011,7 +1018,7 @@ button {
 									<button type="button" onclick="closeComment(this)">닫기</button>
 								</div>
 							</div>
-
+							
 							<div class="border-bottom-area"></div>
 						</div>
 					</c:forEach>
@@ -1073,7 +1080,6 @@ button {
 		        data: requestData,
 		        dataType: "json",
 		        success: function (resData) {
-		            console.log("서버 응답 데이터:", resData); // 서버 응답 데이터 확인
 		            const likeCountId = 'likeCount-' + resData.postIndex;
 		            const unlikeCountId = 'unlikeCount-' + resData.postIndex;
 		            document.getElementById(likeCountId).innerText = resData.likeCount;
@@ -1303,7 +1309,9 @@ button {
             });
         }
     }
-    	  
+    
+    
+	  
     /* 인기 게시글 */
 	document.addEventListener("DOMContentLoaded", function () {
 		
@@ -1356,7 +1364,28 @@ button {
 	        
 	        
 	        
- 
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
 	        
 	        
 	        

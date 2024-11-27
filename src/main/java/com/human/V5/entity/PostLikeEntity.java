@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="post_like")
+@Table(name="Car_Post_like")
 public class PostLikeEntity {
 	
 	@Id
