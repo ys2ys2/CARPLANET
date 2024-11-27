@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -244,7 +245,12 @@ public class AdminController {
 	}
 
 
-
+	@GetMapping("/searchUser.do")
+	@ResponseBody
+	public List<UserEntity> searchUser(@RequestParam String keyword) {
+	    // 회원 이름 또는 닉네임에서 검색
+	    return adminserviceimpl.searchByKeyword(keyword);
+	}
 
 
 
