@@ -8,8 +8,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 public class PostVO {
 	private Integer postIndex;

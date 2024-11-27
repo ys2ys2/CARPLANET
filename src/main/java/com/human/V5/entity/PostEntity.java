@@ -14,9 +14,8 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@Table(name="post")
+@Table(name="Car_Post")
 public class PostEntity {
 	
 	@Id

@@ -107,16 +107,12 @@ public class CommunityController {
       return "redirect:/Auth/Login.do";
     }
 
-    PostEntity entity = PostEntity.builder()
-      .title(vo.getTitle())
-      .content(vo.getContent())
-      .carId(userId)
-      .build();
-
     /**
      * 업로드된 파일 저장
      */
     MultipartFile file = vo.getFile();
+    String originalFilename = file.getOriginalFilename();
+    
     if (file != null && file.getSize() > 0) {
       try {
         String realPath = servletContext.getRealPath(IMAGE_UPLOAD_DIR);
@@ -126,15 +122,22 @@ public class CommunityController {
           directory.mkdirs();
         }
 
-        String filePath = realPath + file.getOriginalFilename();
+        String filePath = realPath + originalFilename;
         file.transferTo(new File(filePath));
       } catch (IOException e) {
         e.printStackTrace();
         throw e;
       }
-      entity.setFilePath(IMAGE_UPLOAD_DIR);
-      entity.setFileName(file.getOriginalFilename());
     }
+    
+    //JSP에서 입력된 값을 Entity에 세팅
+    PostEntity entity = PostEntity.builder()
+  	      .title(vo.getTitle())
+  	      .content(vo.getContent())
+  	      .carId(userId)
+  	      .fileName(originalFilename)
+  	      .filePath(IMAGE_UPLOAD_DIR)
+  	      .build();
 
     communityService.save(entity);
 
@@ -147,7 +150,7 @@ public class CommunityController {
     if (userId == null) {
       return "redirect:/Auth/Login.do";
     }
-
+    
     /**
      * 업로드된 파일 저장
      */
@@ -172,8 +175,17 @@ public class CommunityController {
       filePath = IMAGE_UPLOAD_DIR;
       fileName = file.getOriginalFilename();
     }
-    communityService.updatePost(vo.getPostIndex(), vo.getTitle(), vo.getContent(), userId,
-      fileName, filePath);
+    
+    //JSP에서 입력된 값을 Entity에 세팅
+    PostEntity entity = PostEntity.builder()
+  	      .title(vo.getTitle())
+  	      .content(vo.getContent())
+  	      .carId(userId)
+  	      .fileName(fileName)
+  	      .filePath(filePath)
+  	      .build();
+
+    communityService.updatePost(entity);
 
     return "redirect:/community/getPostList.do";
   }

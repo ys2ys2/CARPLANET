@@ -33,20 +33,8 @@ public class CommunityServiceImpl implements CommunityService {
 
   @Transactional
   @Override
-  public PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath) {
-    PostEntity post = postRepository.findById(postIndex).orElse(null);
-    if (post == null) return null;
-    if (!post.getCarId().equals(userId)) return null;
-
-    String updatedFileName = fileName != null ? fileName : post.getFileName();
-    String updatedFilePath = filePath != null ? filePath : post.getFilePath();
-    post.setTitle(title);
-    post.setContent(content);
-    post.setFileName(updatedFileName);
-    post.setFilePath(updatedFilePath);
-    post.setModDate(new Date());
-
-    return postRepository.save(post);
+  public PostEntity updatePost(PostEntity entity) {
+    return postRepository.save(entity);
   }
 
   @Transactional

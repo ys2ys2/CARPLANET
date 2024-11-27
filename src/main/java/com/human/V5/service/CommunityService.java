@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommunityService {
 	PostEntity save(PostEntity entity);
-	PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath);
+	PostEntity updatePost(PostEntity entity);
 	PostEntity deletePost(Integer postIndex, String userId);
 	PostEntity getPost(Integer postIndex);
 	List<PostDto> getPostDto(Integer postIndex);
