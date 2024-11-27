@@ -12,6 +12,7 @@ public interface CommunityService {
 	PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath);
 	PostEntity deletePost(Integer postIndex, String userId);
 	PostEntity getPost(Integer postIndex);
+	List<PostDto> getPostDto(Integer postIndex);
 	List<PostDto> getPostList(Pageable pageable);
 	List<PostDto> searchPostList(Pageable pageable, String keyword);
 	List<PostDto> getRecommendedPostList();
