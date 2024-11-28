@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-	public UserEntity findByCarIdAndCarPwAndCarStatus(String carId, String carPw, int i) {
-		return repository.findByCarIdAndCarPwAndCarStatus(carId, carPw, 1);
+	public UserEntity findByCarIdAndCarPw(String carId, String carPw) {
+		return repository.findByCarIdAndCarPw(carId, carPw);
 	}
 
 	@Override
@@ -205,6 +205,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(UserEntity userEntity) {
 		repository.save(userEntity);		
+	}
+
+	@Override
+	public UserEntity findByCarIdAndCarPwAndCarStatusIn(String carId, String carPw, List<Integer> carStatusList) {
+		// TODO Auto-generated method stub
+		return repository.findByCarIdAndCarPwAndCarStatusIn(carId, carPw, carStatusList);
 	}
 
 	

@@ -21,4 +21,5 @@ public class PostCommentDto {
   private Integer unlikeCount; // 싫어요 수
   private Date regDate; // 최초 댓글 등록일
   private Date modDate; // 최근 댓글 수정일
+  
 }

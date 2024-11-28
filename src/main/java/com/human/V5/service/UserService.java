@@ -17,7 +17,7 @@ public interface UserService {
 
 	boolean verifyCode(String email, String code);
 
-	UserEntity findByCarIdAndCarPwAndCarStatus(String carId, String carPw, int i);
+	UserEntity findByCarIdAndCarPw(String carId, String carPw);
 
 	UserEntity findByKakaoId(String kakaoId);
 
@@ -38,6 +38,8 @@ public interface UserService {
 	UserEntity findByCarId(String carId);
 
 	void updateUser(UserEntity userEntity);
+
+	UserEntity findByCarIdAndCarPwAndCarStatusIn(String carId, String carPw, List<Integer> carStatusList);
 
 	
 }

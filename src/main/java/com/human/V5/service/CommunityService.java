@@ -9,9 +9,10 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommunityService {
 	PostEntity save(PostEntity entity);
-	PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath);
+	PostEntity updatePost(PostEntity entity);
 	PostEntity deletePost(Integer postIndex, String userId);
 	PostEntity getPost(Integer postIndex);
+	List<PostDto> getPostDto(Integer postIndex);
 	List<PostDto> getPostList(Pageable pageable);
 	List<PostDto> searchPostList(Pageable pageable, String keyword);
 	List<PostDto> getRecommendedPostList();
@@ -23,4 +24,5 @@ public interface CommunityService {
 	Integer commentLike(Integer postCommentIndex, String carId);
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
+	
 }

@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
 <title>관리자</title>
 
 
@@ -94,19 +95,281 @@ body {
 }
 
 .summary-content {
-    text-align: center;
+	text-align: center;
 }
 
 .summary-content h3 {
-    margin-bottom: 10px;
-    font-size: 20px;
-    color: #555;
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #555;
 }
 
 .summary-content .count {
-    font-size: 48px; /* 큰 숫자 */
-    font-weight: bold;
-    color: #333;
+	font-size: 48px; /* 큰 숫자 */
+	font-weight: bold;
+	color: #333;
+}
+
+/* 모달 배경 */
+.noticemodal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	display: none;
+}
+
+/* 모달 콘텐츠 */
+.notice-content {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	width: 80%;
+	max-width: 600px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 제목과 공지 종류 */
+.noticemodal-Title {
+	display: flex;
+	width: 100%;
+	margin: 10px 0 10px 0;
+}
+
+#carnTitle, #noticeType {
+	height: 40px;
+	padding: 5px 10px;
+	border-radius: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+}
+
+#carnTitle {
+	flex: 2; /* 제목을 더 넓게 */
+	margin-right: 15px;
+}
+
+#noticeType {
+	flex: 1; /* 공지 종류를 좁게 */
+}
+
+/* 공지사항 입력 텍스트 에어리어 */
+#noticeDetails {
+	width: 100%;
+	height: 150px;
+	margin: 5px 0;
+	padding: 10px;
+	font-size: 16px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	resize: none; /* 크기 조절 금지 */
+}
+
+/* 버튼 그룹 */
+.noticemodal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.noticemodal-actions button {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#submitNotice {
+	background: #007bff;
+	color: #fff;
+	font-weight: bold;
+}
+
+#submitNotice:hover {
+	background: #0056b3;
+}
+
+#cancelNotice {
+	background: #f8f9fa;
+	color: #000;
+}
+
+#cancelNotice:hover {
+	background: #e0e0e0;
+}
+
+a.dynamic-link:visited {
+	color: black !important;
+}
+
+#user-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#user-table th, #user-table td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+	height: 28px;
+}
+
+#user-table td {
+	font-size: 13px;
+}
+
+#user-table th {
+	background-color: #f4f4f4;
+	font-weight: bold;
+}
+
+#user-table td button {
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#user-table td button.delete {
+	background-color: #e74c3c;
+	color: white;
+}
+
+#user-table td button.promote {
+	background-color: #2ecc71;
+	color: white;
+}
+
+.userinfoline {
+	border-bottom: 1px solid black;
+}
+
+/* 게시물 박스 컨테이너 */
+#post-box-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 10px;
+}
+
+/* 게시물 박스 */
+.post-box {
+	width: calc(33.33% - 20px);
+	height: 300px; /* 고정 높이 */
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow: hidden;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+/* 게시물 이미지 */
+.imbox {
+	width: 100%; /* 상자 너비에 맞춤 */
+	height: 150px; /* 고정 높이 */
+	display: block;
+	border-bottom: 1px solid #ccc;
+}
+
+.imbox img {
+	width: 100%;
+	height: 100%;
+}
+
+/* 게시물 제목 */
+.post-box h3 {
+	margin: 10px 0;
+	font-size: 18px;
+	color: #333;
+	padding: 0 10px;
+}
+
+/* 게시물 내용 */
+.post-box p {
+	font-size: 14px;
+	color: #666;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 0 10px;
+}
+
+/* 게시물 하단 */
+.post-box-footer {
+	padding: 10px;
+	border-top: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* 작성자 정보 */
+.post-box-footer span {
+	font-size: 14px;
+	color: #666;
+}
+
+/* 삭제 버튼 */
+.delete-post {
+	width: 100%;
+	height: 100%;
+}
+
+.delete-post:hover {
+	background-color: #c0392b;
+}
+
+.deletebox {
+	width: 30px;
+	height: 30px;
+	border: 1px solid #c0392b;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.postheader {
+    display: flex;
+    justify-content: space-between; /* 양쪽으로 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    margin-bottom: 10px; /* 여백 추가 */
+}
+
+.post-search-box {
+    display: flex;
+    gap: 10px; /* 검색창과 버튼 사이 간격 */
+}
+
+.post-search-box input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.post-search-box button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.post-search-box button:hover {
+    background-color: #0056b3;
 }
 
 </style>
@@ -136,6 +399,12 @@ body {
 					<div class="summary-box">
 						<div class="summary-content">
 							<h3>공지사항 입력</h3>
+							<p>
+								현재 총 <span id="noticeCount">0</span>개의 공지사항이 등록되어 있습니다.
+							</p>
+							<button id="addNoticeBtn"
+								style="padding: 10px 20px; font-size: 16px; margin-top: 10px; cursor: pointer;">공지사항
+								추가</button>
 						</div>
 					</div>
 					<div class="summary-box">
@@ -152,20 +421,96 @@ body {
 					</div>
 				</div>
 			</div>
+
+
 			<div id="user-management" class="section">
-				<h1>회원 관리</h1>
-				<div id="user-table">
-					<!-- AJAX로 불러온 회원 목록 -->
+				<div
+					style="display: flex; align-items: center; justify-content: space-between;">
+					<h1 style="margin-bottom: 10px">회원 관리</h1>
+					<div>
+						<input type="text" id="search-input" placeholder="아이디 or 닉네임"
+							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
+						<select id="search-carstatus"
+							style="padding: 5px; border: 1px solid #ccc; border-radius: 5px;">
+							<option value="">-- 상태 선택 --</option>
+							<option value="1">일반 회원</option>
+							<option value="3">관리자</option>
+							<option value="-1">탈퇴 요청 회원</option>
+						</select>
+						<button id="search-button"
+							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">
+							검색</button>
+						<button id="reset-button"
+							style="padding: 5px 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">초기화</button>
+
+					</div>
+				</div>
+				<p class="userinfoline">
+					회원 등급 안내: <b>1</b> (일반 회원) | <b>-1</b> (탈퇴 요청 회원) | <b>3</b> (관리자)
+				</p>
+
+
+				<div id="user-table" style="margin-top: 15px">
+					<div id="user-table">
+						<table>
+							<thead>
+								<tr>
+									<th>회원번호</th>
+									<th>회원Id</th>
+									<th>닉네임</th>
+									<th>회원등급</th>
+									<th>요청</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+
+
 			<div id="post-management" class="section">
-				<h1>게시글 관리</h1>
-				<div id="post-table">
-					<!-- 게시글 정보 -->
+				<div class="postheader">
+					<h1>게시글 관리</h1>
+					<div class="post-search-box">
+						<input type="text" id="post-input" placeholder="제목 or 내용 입력">
+						<button id="psearch-button">검색</button>
+						<button id="preset-button">초기화</button>
+					</div>
+				</div>
+				<hr>
+				<div id="post-box-container">
+					<!-- 게시물 카드가 추가될 영역 -->
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="noticemodal">
+		<div class="notice-content">
+			<h2>공지사항 입력</h2>
+			<form action="noticeinput.do" method="post">
+				<div class="noticemodal-Title">
+					<input id="carnTitle" name="carnTitle" type="text"
+						placeholder="제목입력" required> <select id="noticeType"
+						name="noticeType">
+						<option disabled selected>공지 종류</option>
+						<option value="nomalnotice">공지 사항</option>
+						<option value="updatenotice">업데이트 사항</option>
+					</select>
+				</div>
+				<textarea id="noticeDetails" name="noticeDetails"
+					placeholder="공지사항 입력" required></textarea>
+				<div class="noticemodal-actions">
+					<button type="submit" id="submitNotice">저장</button>
+					<button type="button" id="cancelNotice">취소</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
 
 	<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
 	<jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
@@ -173,134 +518,10 @@ body {
 
 	<script>
 		$(document).ready(function() {
-			const ctx = document.getElementById('visitorChart').getContext('2d');
-	        const visitorChart = new Chart(ctx, {
-	            type: 'bar',
-	            data: {
-	                labels: [], // 날짜
-	                datasets: [{
-	                    label: '방문자 수',
-	                    data: [], // 방문자 수
-	                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-	                    borderColor: 'rgba(54, 162, 235, 1)',
-	                    borderWidth: 1
-	                }]
-	            },
-	            options: {
-	                scales: {
-	                    y: {
-	                        beginAtZero: true
-	                    }
-	                }
-	            }
-	        });
-            
-	        $.ajax({
-	            url: '/CarPlanet/Admin/visitor-stats',
-	            type: 'GET',
-	            dataType: 'json',
-	            success: function(response) {
-	                // 응답 데이터에서 상위 5개만 추출
-	                const filteredData = response.slice(0, 5); // 최근 5일 데이터
-
-	                // 날짜에 +1일 추가
-	                const labels = filteredData.map(item => {
-	                    const date = new Date(item.date); // 날짜 문자열을 Date 객체로 변환
-	                    date.setDate(date.getDate() + 1); // 하루를 추가
-	                    return (date.getMonth() + 1) + "-" + date.getDate(); // MM-DD 형식으로 반환
-	                });
-
-	                const data = filteredData.map(item => item.count);
-	                updateChart(visitorChart, labels, data);
-	            },
-	            error: function(error) {
-	                console.error('날짜별 방문자 데이터 로드 실패:', error);
-	            }
-	        });
-
-	        function updateChart(chart, labels, data) {
-	            chart.data.labels = labels.reverse(); // 날짜 순서 뒤집기 (최근 날짜부터 표시)
-	            chart.data.datasets[0].data = data.reverse(); // 방문자 데이터도 뒤집기
-	            chart.update();
-	        }
-
-            
-            $.ajax({
-                url: '/CarPlanet/Admin/track-visitor', // 방문자 추적 API 엔드포인트
-                type: 'POST', // HTTP 메서드
-                contentType: 'application/json', // 데이터 형식
-                data: JSON.stringify({
-                    url: window.location.href, // 현재 페이지 URL
-                    userAgent: navigator.userAgent // 브라우저 정보
-                }),
-                success: function(response) {
-                    console.log('방문자 데이터 전송 성공:');
-                },
-                error: function(error) {
-                    console.error('방문자 데이터 전송 실패:', error);
-                }
-            });
-            
-            function updateChart(chart, labels, data) {
-                chart.data.labels = labels.reverse(); // 날짜 순서 뒤집기 (최근 날짜부터 표시)
-                chart.data.datasets[0].data = data.reverse(); // 방문자 데이터도 뒤집기
-                chart.update();
-            }
-            
-			$.ajax({
-				url:'/CarPlanet/Admin/userCount',
-				type:'GET',
-				dataType:'json',
-				success:function(response){
-					console.log("총 회원수 : "+response);
-					$('#userCountDisplay').text(response);
-				},
-				error:function(e){
-					console.error("회원수 조회중 오류",e)
-				}
-			});
-			
-			$.ajax({
-				url:'/CarPlanet/Admin/countPost',
-				type:'GET',
-				dataType:'json',
-				success:function(response){
-					console.log("총 게시물 수 :"+response);
-					$('#postCountDisplay').text(response);
-				},
-				error:function(e){
-					console.error("게시물 수 조회중 오류")
-				}
-			});
-            
-            
-			$.ajax({
-				url : '/CarPlanet/Admin/alluser.do', // 서버에서 제공하는 엔드포인트
-				type : 'GET', // GET 요청
-				dataType : 'json', // 응답을 json 형식으로 받음
-				success : function(response) {
-					// 응답을 성공적으로 받았을 때 처리
-					console.log(response); // 결과를 화면에 출력 (json 내용)
-				},
-				error : function(e) {
-					console.error("오류발생", e);
-
-				}
-			});
-
-			$('.menu-link').on('click', function(e) {
-				e.preventDefault(); // 기본 앵커 동작 막기
-
-				// 모든 섹션 숨기기
-				$('.section').removeClass('active').hide();
-
-				// 클릭한 메뉴의 data-target에 맞는 섹션 표시
-				const target = $(this).data('target');
-				$('#' + target).addClass('active').fadeIn(); // 활성화 섹션 표시
-			});
-
-			// 첫 화면 로딩 시 기본 섹션 표시
-			$('.section').not('.active').hide(); // 'active'가 아닌 섹션 숨기기
+			const message = "${message}";
+			if (message) {
+				alert(message);
+			}
 		});
 	</script>
 </body>

@@ -17,8 +17,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "post_comment_like")
+@Table(name = "Car_Post_comment_like")
 public class PostCommentLikeEntity {
+	
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

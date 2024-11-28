@@ -15,4 +15,5 @@ public class PostCommentVO {
 	private Integer postCommentIndex;
 	private Integer postIndex;
 	private String content;
+	
 }
