@@ -990,50 +990,74 @@ async function convertAddressToCoords(address, type) {
 
     }
 
-
-
-
-window.findRoute = async function findRoute() {
-    const startLocationInput = document.getElementById('start-location').value;
-
-    try {
-        // 출발지 좌표가 설정되지 않은 경우, 입력값으로 변환
-        if (!startCoords) {
-            await convertAddressToCoords(startLocationInput, 'start');
-        }
-        const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
-
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `KakaoAK ${REST_API_KEY}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`API 호출 실패: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (!data.routes || data.routes.length === 0) {
-            alert("경로를 찾을 수 없습니다.");
+    window.findRoute = async function findRoute() {
+        // 출발지와 도착지 입력값 가져오기
+        const startLocationInput = document.getElementById('start-location').value.trim();
+        const endLocationInput = document.getElementById('end-location').value.trim();
+    
+        // 입력값 유효성 검사
+        if (!startLocationInput || !endLocationInput) {
+            alert("출발지와 도착지를 모두 입력해주세요.");
             return;
         }
+    
+        try {
+            // 출발지 좌표가 설정되지 않은 경우, 주소를 좌표로 변환
+            if (!startCoords) {
+                await convertAddressToCoords(startLocationInput, 'start');
+            }
+            if (!endCoords) {
+                await convertAddressToCoords(endLocationInput, 'end');
+            }
+    
+            const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
+    
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `KakaoAK ${REST_API_KEY}`
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`API 호출 실패: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (!data.routes || data.routes.length === 0) {
+                alert("경로를 찾을 수 없습니다.");
+                return;
+            }
+    
+            // 응답 데이터를 지도에 표시
+            displayRouteOnMap(data.routes[0]);
+            
+            // 출발지, 도착지와 함께 텍스트 안내 표시
+            displayRoute(data, startLocationInput, endLocationInput);
+    
+        } catch (error) {
+            console.error("길찾기 실패:", error);
+            alert(`길찾기 실패: ${error.message}`);
+        }
+    };
+    
 
-        // 응답 데이터를 지도에 표시
-        displayRouteOnMap(data.routes[0]);
-        displayRoute(data); // 텍스트 안내 표시
-    } catch (error) {
-        console.error("길찾기 실패:", error);
-        alert(`길찾기 실패: ${error.message}`);
-    }
-};
+function getInputValuesAndDisplayRoute(data) {
+    // 출발지와 도착지 입력 필드에서 값을 가져옴
+    const startLocation = document.getElementById("start-location").value.trim();
+    const endLocation = document.getElementById("end-location").value.trim();
+
+    // displayRoute 함수 호출
+    displayRoute(data, startLocation, endLocation);
+}
 
 
 
-//경로 데이터 표시(텍스트)
-function displayRoute(data) {
+
+
+
+function displayRoute(data, startLocation, endLocation) {
     const routeDirections = document.getElementById("route-directions");
     routeDirections.innerHTML = ''; // 기존 결과 초기화
 
@@ -1042,7 +1066,7 @@ function displayRoute(data) {
         const summary = route.summary || null;
         const sections = route.sections || [];
 
-        // 요약 정보 표시
+
         if (summary) {
             const distance = summary.distance; // 총 거리 (미터 단위)
             const duration = summary.duration; // 예상 소요 시간 (초 단위)
@@ -1058,31 +1082,46 @@ function displayRoute(data) {
             routeDirections.innerHTML += '<p>요약 정보를 가져올 수 없습니다.</p>';
         }
 
-		       // 길 안내 정보 표시
-		if (sections.length > 0) {
-		    routeDirections.innerHTML += `<h3>길 안내</h3>`;
-		    sections.forEach(section => {
-		        if (section.guides) {
-		            section.guides.forEach(guide => {
-		                // type에 따라 아이콘 URL 가져오기
-		                const iconUrl = typeIconMap[guide.type] || "https://img.icons8.com/?size=100&id=100000&format=png"; // 기본 아이콘(직진)
-		                
-		                // 길 안내 정보를 HTML에 추가
-		                routeDirections.innerHTML += `
-		                
-		                    <div class="guide-info">
-		                        <img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">
-		                        <span>${guide.guidance} (${guide.distance} m)</span>
-		                    </div>
-		                   
-		                `;
-		            });
-		        }
-		    });
-		} else {
-		    routeDirections.innerHTML += '<p>길 안내 정보를 가져올 수 없습니다.</p>';
-		}
 
+        // 길 안내 정보 표시
+        if (sections.length > 0) {
+            routeDirections.innerHTML += `<h3>길 안내</h3>`;
+            sections.forEach((section, sectionIndex) => {
+                if (section.guides) {
+                    section.guides.forEach((guide, guideIndex) => {
+                        let guidanceText = guide.guidance;
+                        let iconUrl = typeIconMap[guide.type] || "https://img.icons8.com/?size=100&id=100000&format=png"; // 기본 아이콘
+
+                        // 첫 번째 가이드는 출발지로 수정
+                        if (sectionIndex === 0 && guideIndex === 0) {
+                            guidanceText = ` <img src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png" 
+                                     alt="출발지 마커" class="marker-icon"> ${startLocation}`;
+                                     iconUrl = null; // 기본 아이콘 제거
+                        }
+
+                        // 마지막 가이드는 도착지로 수정
+                        const isLastGuide =
+                            sectionIndex === sections.length - 1 &&
+                            guideIndex === section.guides.length - 1;
+                        if (isLastGuide) {
+                            guidanceText = ` <img src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png" 
+                                     alt="도착지 마커" class="marker-icon">${endLocation}`;
+                                     iconUrl = null; // 기본 아이콘 제거
+                                    }
+
+                        // 길 안내 정보를 HTML에 추가
+                        routeDirections.innerHTML += `
+                            <div class="guide-info">
+                            ${iconUrl !== null && iconUrl !== undefined ? `<img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">` : ''}
+                                <span>${guidanceText}</span>
+                            </div>
+                        `;
+                    });
+                }
+            });
+        } else {
+            routeDirections.innerHTML += '<p>길 안내 정보를 가져올 수 없습니다.</p>';
+        }
 
         // 지도에 경로 표시
         displayRouteOnMap(route);

@@ -61,23 +61,6 @@ $(document).ready(function () {
     chart.update();
   }
 
-
-  $.ajax({
-    url: '/CarPlanet/Admin/track-visitor', // 방문자 추적 API 엔드포인트
-    type: 'POST', // HTTP 메서드
-    contentType: 'application/json', // 데이터 형식
-    data: JSON.stringify({
-      url: window.location.href, // 현재 페이지 URL
-      userAgent: navigator.userAgent // 브라우저 정보
-    }),
-    success: function (response) {
-      console.log('방문자 데이터 전송 성공:');
-    },
-    error: function (error) {
-      console.error('방문자 데이터 전송 실패:', error);
-    }
-  });
-
   function updateChart(chart, labels, data) {
     chart.data.labels = labels.reverse(); // 날짜 순서 뒤집기 (최근 날짜부터 표시)
     chart.data.datasets[0].data = data.reverse(); // 방문자 데이터도 뒤집기
