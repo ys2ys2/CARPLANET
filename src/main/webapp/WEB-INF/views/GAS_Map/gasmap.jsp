@@ -262,7 +262,7 @@ body, html {
 	gap: 10px; /* 요소 간 간격 */
 }
 
-.additional-info,.brand-info label {
+.additional-info label,.brand-info label {
 	display: flex;
 	align-items: center ;
 	background-color: #f5f5f5;
@@ -300,6 +300,7 @@ body, html {
 	justify-content: flex-end !important;
 	padding: 0 !important;
 	margin-bottom: 10px;
+	flex-direction: row;
 }
 
 .resetbutton {
@@ -396,56 +397,319 @@ color:white;
 }
 
 .gasnavigate{
-	width:100%;
+	width:80%;
 	height:auto;
 	display:flex;
 	flex-direction:column;
 }
-/* 테블릿pc */
+/* 테블릿PC (1024px 이하) */
 @media (max-width: 1024px) {
-	.gas-sidebar{
-		width: 200px; /* 사이드바 너비 */
-		height: 90vh;
+	.sidemiddle div:nth-child(1) {
+    display:flex;
+    flex-direction:column;
 	}
 	
-	.sidetap {
-	width: 15%;
-	text-align: center;
-	font-size:11px;
-	color: black;
-	font-weight: bold;
+	.sidemiddle div:nth-child(1) div{
+    display:flex;
+    flex-direction:column;
 	}
 	
-	#sido, #city, #town {
-    height: 15px;
-    font-size: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin-right: 5px;
+	#sido, #city, #town{
+		width:100%;
 	}
 	
-	.additional-info label {
-	display: flex;
-	align-items: center;
-	background-color: #f5f5f5;
-	padding: 2px 1px;
-	border-radius: 5px;
-	font-size: 5px;
+	.resetbox {
+        flex-direction: row !important; /* 강제로 가로 정렬 */
+        justify-content: flex-end !important; /* 오른쪽 정렬 유지 */
+    }
+    
+	.Gasroute-input{
+		font-size:13px;
+		height:30px;
+	}
+	
+	.Gasroute-btn{
+		height:30px;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+    .gas-sidebar {
+        width: 260px; /* 사이드바 너비 축소 */
+        height: 85vh;
+        font-size: 14px;
+        margin: 10px;
+    }
+
+    .sidetap {
+        font-size: 12px; /* 텍스트 크기 축소 */
+    }
+
+    #sido, #city, #town {
+        height: 35px;
+        font-size: 13px;
+    }
+
+    .additional-info label, .brand-info label {
+        font-size: 11px; /* 체크박스 라벨 크기 축소 */
+    }
+
+    #stationInfoBox {
+        width: 240px; /* 정보 박스 크기 축소 */
+        top: 15px;
+        right: 15px;
+    }
+
+    .gaslist {
+        height: 220px; /* 리스트 높이 축소 */
+    }
 }
 
-#stationInfoBox{
-	width:180px;
-}
-
- }
-/* 모바일 */
+/* 중형 모바일 (768px 이하) */
 @media (max-width: 768px) {
 
- }
-/* 중형 모바일 */
-@media (max-width: 425px) {
+	.sidemiddle div:nth-child(1) {
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.sidemiddle div:nth-child(1) div{
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.Gasroute-input{
+		font-size:13px;
+		height:25px;
+	}
+	
+	.Gasroute-btn{
+		height:25px;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.resetbox {
+        flex-direction: row !important; /* 강제로 가로 정렬 */
+        justify-content: flex-end !important; /* 오른쪽 정렬 유지 */
+    }
+	
+	.side2{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side2 p{
+		width:max-content;
+	}
+	
+	.side3{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side3 p{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	
+    .gas-sidebar {
+        width: 220px;
+        height: 80vh;
+        font-size: 12px; /* 전체 폰트 크기 축소 */
+    }
 
+    .sidemiddle div {
+        padding: 0 5px;
+    }
+
+    #sido, #city, #town {
+        width: 100%;
+        height: 30px;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .additional-info, .brand-info {
+        gap: 8px; /* 요소 간격 축소 */
+    }
+
+    #stationInfoBox {
+        width: 200px;
+        font-size: 12px; /* 박스 안 텍스트 크기 축소 */
+    }
+
+    .gaslist {
+        height: 180px;
+        font-size: 11px; /* 리스트 폰트 크기 축소 */
+    }
 }
+
+/* 소형 모바일 (425px 이하) */
+@media (max-width: 425px) {
+	.sidemiddle div:nth-child(1) {
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.sidemiddle div:nth-child(1) div{
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.Gasroute-input{
+		font-size:13px;
+		height:20px;
+	}
+	
+	.Gasroute-btn{
+		height:20px;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.resetbox {
+        flex-direction: row !important; /* 강제로 가로 정렬 */
+        justify-content: flex-end !important; /* 오른쪽 정렬 유지 */
+    }
+	
+	.side2{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side2 p{
+		width:max-content;
+	}
+	
+	.side3{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side3 p{
+		display:flex;
+    flex-direction:column;
+	}
+	
+    .gas-sidebar {
+        width: 200px;
+        height: 75vh;
+        font-size: 10px;
+    }
+
+    .regionban, .routeban {
+        font-size: 12px;
+    }
+
+    .sidetap {
+        font-size: 10px;
+    }
+
+    #sido, #city, #town {
+        height: 25px;
+        font-size: 10px;
+    }
+
+    .additional-info label, .brand-info label {
+        font-size: 10px;
+        padding: 3px 5px;
+    }
+
+    #stationInfoBox {
+        width: 180px;
+        font-size: 10px;
+    }
+
+    .gaslist {
+        height: 150px;
+        font-size: 10px;
+    }
+}
+
+/* 초소형 모바일 (320px 이하) */
+@media (max-width: 320px) {
+	.sidemiddle div:nth-child(1) {
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.sidemiddle div:nth-child(1) div{
+    display:flex;
+    flex-direction:column;
+	}
+	
+	.Gasroute-input{
+		font-size:13px;
+		height:15px;
+	}
+	
+	.Gasroute-btn{
+		height:15px;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.resetbox {
+        flex-direction: row !important; /* 강제로 가로 정렬 */
+        justify-content: flex-end !important; /* 오른쪽 정렬 유지 */
+    }
+	
+	.side2{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side2 p{
+		width:max-content;
+	}
+	
+	.side3{
+		display:flex;
+    flex-direction:column;
+	}
+	
+	.side3 p{
+		display:flex;
+    flex-direction:column;
+	}
+
+    .gas-sidebar {
+        width: 180px;
+        height: 70vh;
+        font-size: 9px;
+    }
+
+    .sidetap {
+        font-size: 9px;
+    }
+
+    #sido, #city, #town {
+        font-size: 9px;
+        height: 20px;
+    }
+
+    .additional-info label, .brand-info label {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+
+    #stationInfoBox {
+        width: 160px;
+        font-size: 9px;
+    }
+
+    .gaslist {
+        height: 120px;
+        font-size: 9px;
+    }
+}
+
 </style>
 </head>
 
@@ -490,7 +754,7 @@ color:white;
 						</div>
 					</div>
 					<hr>
-					<div>
+					<div class="side2">
 						<p class="sidetap">부가정보</p>
 						<div class="additional-info">
 							<label><input type="checkbox">세차장</label>
@@ -500,7 +764,7 @@ color:white;
 						</div>
 					</div>
 					<hr>
-					<div>
+					<div class="side3">
 						<p class="sidetap">상표</p>
 						<div class="brand-info">
 							<label><input type="checkbox">SKE</label>
