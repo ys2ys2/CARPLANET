@@ -412,7 +412,6 @@ input[type="date"] {
 }
 
 
-
 /* 모든 입력 필드에 공통 스타일 적용 */
 form input[type="password"] {
     width: 100%; /* 입력 필드의 너비를 부모 요소 기준으로 100% 설정 */
