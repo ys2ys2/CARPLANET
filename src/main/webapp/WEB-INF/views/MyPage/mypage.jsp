@@ -30,7 +30,7 @@
 	        	<div class="car-image">
 	    			<input type="file" id="carImage" name="carImage" style="display: none;" accept="image/*"> <!-- 기본 파일 선택 버튼 숨김 -->
 	      			<img src=""> <!-- 기본 src는 비워둠 -->
-	      			<button type="button" id="uploadButton" class="upload-btn" disabled>사진 등록</button> <!-- 커스텀 버튼 -->
+      				<button type="button" id="uploadButton" class="upload-btn" disabled>사진 등록</button> <!-- 커스텀 버튼 -->
 	        	</div>
 	            <div class="car-details">
 	                <div class="car-detail">

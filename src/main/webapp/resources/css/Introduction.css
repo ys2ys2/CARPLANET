@@ -31,7 +31,14 @@ body, html {
     color: white;
     background-color: #000; /* 배경색 검정 */
     width: 100%;
-    overflow-x: hidden; /* 가로 스크롤을 숨김 */
+    overflow: hidden; /* 가로 스크롤을 숨김 */
+}
+/* 전체 컨테이너 스타일 */
+.main-container {
+    width: 100%;
+    max-width: 1440px; /* 최대 너비를 설정하여 넓은 화면에서도 중앙에 고정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    overflow-x: hidden; /* 가로 스크롤 제거 */
 }
 
 .section {
@@ -45,21 +52,20 @@ body, html {
     width: 100%;
 }
 
-/* CHAEVI ZONE 이미지 */
-/* 섹션을 100% 화면 크기에 맞게 설정 */
+/* CHAEVI ZONE 섹션 */
 #chaevi-zone {
-    background-image: url('${pageContext.request.contextPath}/resources/images/50.png'); /* 배경 이미지 */
-    background-size: cover; /* 화면에 맞게 배경 이미지 확대 */
-    background-position: center; /* 배경 이미지 중앙 정렬 */
-    background-attachment: fixed; /* 스크롤 시 배경 고정 */
-    width: 100%; 
-    height: 100vh; /* 전체 화면 높이 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/50.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
+
 
 
 .section {
@@ -78,6 +84,7 @@ body, html {
     font-weight: bold;
     color: #00E9FF; /* 청록색 */
     margin-bottom: 1rem;
+    font-family: 'GongGothicMedium';
 }
 
 .zone-description {
@@ -87,6 +94,7 @@ body, html {
     text-align: center;
     max-width: 700px;
     margin: 0 auto 2rem auto;
+    font-family: 'GongGothicMedium';
 }
 
 /* 버튼 스타일 */
@@ -95,7 +103,6 @@ body, html {
     color: #000;
     padding: 0.8rem 2rem;
     font-size: 1rem;
-    font-weight: bold;
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -103,6 +110,7 @@ body, html {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    font-family: 'GongGothicMedium';
 }
 
 .cta-button:hover {
@@ -112,6 +120,7 @@ body, html {
 .cta-button .arrow {
     margin-left: 0.5rem;
     font-size: 1.2rem;
+    font-family: 'GongGothicMedium';
 }
 
 /* 컨텐츠 왼쪽 정렬 */
@@ -127,6 +136,7 @@ body, html {
     gap: 2rem;
     margin-top: 3rem;
     flex-wrap: wrap;
+    font-family: 'GongGothicMedium';
 }
 .box {
     background-color: rgba(255, 255, 255, 0.1);
@@ -156,85 +166,109 @@ body, html {
     color: #ffffff;
 }
 
-
-
-/* APP 섹션 스타일 */
-/* 컨테이너 전체 */
-.container {
+/* APP 섹션 */
+#app-section {
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
+    background: #f4f4f4;
+    padding: 50px 0;
+}
+
+/* 내부 컨테이너: 텍스트와 슬라이더 배치 */
+.app-container {
+    display: flex;
+    justify-content: flex-end; /* 텍스트와 슬라이더를 오른쪽으로 배치 */
+    align-items: center;
+    max-width: 1200px;
     width: 100%;
-    height: 100vh; /* 화면 전체 높이 */
-    background-color: #fff;
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+
+/* 검정 네모 박스 */
+.black-box {
+    width: 60%;
+    height: 500px;
+    background-color: #000;
+    margin-bottom: 20px;
+    margin-left: auto; /* 오른쪽 정렬 */
+    margin-right: 0;
 }
 
 /* 슬라이더 컨테이너 */
 .slider-container {
-    width: 60%; /* 슬라이더는 왼쪽 60% */
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    background-color: #f5f5f5;
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative; /* 상대 위치 */
+    overflow: hidden; /* 슬라이더가 검정 박스를 벗어나지 않도록 */
 }
 
+/* 슬라이더 */
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    height: 100%;
+    position: absolute;
+    left: 0;
 }
 
+/* 슬라이드 이미지 */
 .slide {
-    flex-shrink: 0;
-    width: 100%;
-    height: 100%;
+    min-width: 100%;
 }
 
 .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 이미지 비율 유지 */
+    width: 280px;
+    height: 380px;
 }
 
-/* 오른쪽 텍스트 컨테이너 */
+/* 슬라이더 애니메이션 */
+@keyframes slideAnimation {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-100%); }
+    50% { transform: translateX(-200%); }
+    75% { transform: translateX(-300%); }
+    100% { transform: translateX(0); }
+}
+
+.slider {
+    animation: slideAnimation 12s infinite;
+}
+
+/* 텍스트 영역: 오른쪽 정렬 */
 .text-container {
-    width: 40%; /* 텍스트 영역은 오른쪽 40% */
-    padding: 20px;
-    text-align: left;
+    flex: 1;
+    max-width: 45%;
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    padding-right: 20px; /* 오른쪽 여백 추가 */
+    margin-left: 80px; /* 오른쪽으로 50px 이동 */
 }
 
 .text-container h3 {
-    font-size: 1.2em;
-    color: #00c4cc;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+    font-size: 25px;
+       color: #00c4cc;
+    font-family: 'GongGothicMedium';
 }
 
 .text-container h1 {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 36px;
+    font-weight: bold;
     line-height: 1.4;
+     color: #333;
+     font-family: 'GongGothicMedium';
 }
 
 .text-container p {
-    font-size: 1.1em;
+    font-size: 16px;
     color: #555;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    font-family: 'GongGothicMedium';
 }
 
-.text-container .more-link {
-    font-size: 1em;
-    color: #00c4cc;
-    text-decoration: none;
-    font-weight: bold;
-}
 
-.text-container .more-link span {
-    margin-left: 10px;
-    font-size: 1.2em;
-}
+
 
 /* PRICE 섹션 스타일 */
 #price-section {
@@ -264,7 +298,7 @@ body, html {
 }
 
 .pricing-card h3 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 20px;
 }

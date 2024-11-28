@@ -103,24 +103,29 @@
             // 좌측과 우측 컨테이너 가져오기
             const oilLeft = document.querySelector('.oil-left');
             const oilRight = document.querySelector('.oil-right');
+            	const x =1;
 
             // 주유소 데이터 렌더링
-            oilStations.forEach((station, index) => {
-            	//PRICE: 가격, OS_NM: 주유소이름, VAN_ADR: 주소
-                const oilItem = document.createElement('div');
-                oilItem.classList.add('oil-item');
-                oilItem.innerHTML = `
-                    <h3 class="station-name">`+station.OS_NM+`</h3>
-                    <p class="station-price">가격: `+station.PRICE+`</p>
-                    <p class="station-address">주소: `+station.VAN_ADR+`</p>`;
+            	oilStations.forEach((station, index) => {
+            	    console.log("Current index:", index); // index 값 확인
 
-                // 좌측 또는 우측 컨테이너에 추가
-                if (index < 5) {
-                    oilLeft.appendChild(oilItem);
-                } else {
-                    oilRight.appendChild(oilItem);
-                }
-            });
+            	    const oilItem = document.createElement('div');
+            	    oilItem.classList.add('oil-item');
+            	    
+            	    // 문자열 연결로 innerHTML 작성
+            	    oilItem.innerHTML = 
+            	        '<h3 class="station-name">'+ (index + 1)+'.'+station.OS_NM + '</h3>' +
+            	        '<p class="station-price">가격: ' + station.PRICE + '</p>' +
+            	        '<p class="station-address">주소: ' + station.VAN_ADR + '</p>';
+
+            	    // 좌측 또는 우측 컨테이너에 추가
+            	    if (index < 5) {
+            	        oilLeft.appendChild(oilItem);
+            	    } else {
+            	        oilRight.appendChild(oilItem);
+            	    }
+            	});
+
         } catch (error) {
             console.error('주유소 데이터를 가져오는 중 오류 발생:', error);
         }
