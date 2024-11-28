@@ -473,6 +473,7 @@ function moveToLocationAndShowMarker(item) {
 
     // 카카오맵 LatLng 객체 생성 (위도, 경도 순서)
     var moveLatLon = new kakao.maps.LatLng(latitude, longitude);
+    console.log("LatLng 객체:", moveLatLon);
 
     // 지도 중심을 이동하려는 위치로 설정
     map.setLevel(3); // 확대 레벨 설정
@@ -1261,6 +1262,14 @@ function showCurrentLocation() {
             (position) => {
                 const latitude = position.coords.latitude; // 위도
                 const longitude = position.coords.longitude; // 경도
+
+                const markerImage = new kakao.maps.MarkerImage(
+                    "https://ssl.pstatic.net/static/maps/m/pin_rd.png", //이미지 URL
+                    new kakao.maps.Size(20, 20), //마커 이미지 크기
+                {
+                    offset: new kakao.maps.Point(12,35), //이미지의 중심 좌표
+                }
+                );
 
                 // 현재 위치 마커를 감싸는 HTML 요소 생성
                 const markerContent = document.createElement('div');

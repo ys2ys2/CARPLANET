@@ -1195,10 +1195,12 @@ width: 100%;
                 dataType: "json",
                 success: function (resData) {
                     window.location.href = "/CarPlanet/community/getPostList.do";
+                    window.location.href = "/CarPlanet/community/getPostList.do";
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 401) {
                         alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+                        window.location.href = "/CarPlanet/Auth/Login.do";
                         window.location.href = "/CarPlanet/Auth/Login.do";
                     } else {
                         console.error("게시글 삭제 중 에러 발생:", error);

@@ -555,6 +555,108 @@ html, body{
 
 
 
+
+.info-table-open td {
+    padding: 8px; /* 셀 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    font-family: 'Pretendard-Regular';
+}
+
+.info-table-open tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경 */
+}
+
+.info-table-open tr:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 행 배경 */
+    font-family: 'Pretendard-Regular';
+}
+
+/* 테이블 행의 기본 높이 통일 */
+.info-table tr,
+.info-table-open tr {
+    height: 40px; /* 행 높이 설정 */
+}
+
+/* 테이블 폭 고정 */
+.info-table td:first-child,
+.info-table-open td:first-child {
+    width: 30%; /* 첫 번째 열의 폭 고정 */
+}
+
+.info-table{
+	width: 100%; /* 테이블 너비 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: -40px; /* 위쪽 여백 */
+    font-size: 14px; /* 글자 크기 */
+    position: relative;
+    top: 21px;
+}
+.info-extra{
+	font-family: 'Pretendard-Regular';
+	font-weight:700;
+	font-size: 17px;
+    position: relative;
+    top: 15px;}
+
+
+.info-capacity{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	margin-top: -6px;	
+}
+
+
+.info-contact{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+} 
+
+.info-accessibility{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+	
+}
+
+
+
+
+.info-table-open td {
+    padding: 8px; /* 셀 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    font-family: 'Pretendard-Regular';
+}
+
+.info-table-open tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경 */
+}
+
+.info-table-open tr:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 행 배경 */
+    font-family: 'Pretendard-Regular';
+}
+
+
+
+.info-table{
+	width: 100%; /* 테이블 너비 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: -40px; /* 위쪽 여백 */
+    font-size: 14px; /* 글자 크기 */
+    position: relative;
+    top: 21px;
+}
+.info-extra{
+	font-family: 'Pretendard-Regular';
+	font-weight:700;
+	font-size: 17px;
+    position: relative;
+    top: 15px;}
+
 .info-table td {
     padding: 8px; /* 셀 여백 */
     border: 1px solid #ddd; /* 테두리 */

@@ -24,11 +24,11 @@
       <img src="${pageContext.request.contextPath}/resources/images/par.png" alt="주차장"><br>주차장
     </a>
   </div>
-	<div class="menu-item">
-	    <a href="${pageContext.request.contextPath}/community/getPostList.do">
-	      <img src="${pageContext.request.contextPath}/resources/images/Community.png" alt="커뮤니티"><br>커뮤니티
-	    </a>
-	  </div>
+  <div class="menu-item">
+    <a href="${pageContext.request.contextPath}/community/getPostList.do">
+      <img src="${pageContext.request.contextPath}/resources/images/Community.png" alt="커뮤니티"><br>커뮤니티
+    </a>
+  </div>
 </div>
 
 

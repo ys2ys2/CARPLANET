@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css?ver=1.0">  -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header2.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <title>header</title>
