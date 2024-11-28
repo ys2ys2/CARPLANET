@@ -1003,7 +1003,7 @@ width: 100%;
 												<div style="display: flex; gap: 10px; margin-top: 5px;">
 													<%-- <button type="button"
 														onclick="editComment(${comment.postCommentIndex})"
-														style="border: none; background: none; cursor: pointer; color:  rgb(0, 0, 0); font-size: 14px;">수정</button> --%>
+		  												style="border: none; background: none; cursor: pointer; color:  rgb(0, 0, 0); font-size: 14px;">수정</button> --%>
 												</div>
 											</div>
 										</div>
