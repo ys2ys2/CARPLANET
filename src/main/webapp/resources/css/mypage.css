@@ -63,8 +63,11 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: #f9f9f9;
+    font-family: 'Pretendard-Regular';
 }
+
+
+
 /* 스타일 변경 */
 .profile-card h4 {
     font-family: 'Paperlogy-8ExtraBold';
@@ -72,24 +75,7 @@ body {
     font-weight: bold; /* 글씨를 굵게 */
     color: #333333; /* 텍스트 색상 설정 */
     text-align: left; /* 왼쪽 정렬로 변경 */
-    margin-bottom: 20px; /* 아래쪽 여백 설정 */
-    margin-top: 10px; /* 위쪽 여백 설정 */
-}
-
-
-.profile-card {
-    width: 600px;
-    background-color: #f9f9f9;
-}
-/* 스타일 변경 */
-.profile-card h4 {
-    font-family: 'Paperlogy-8ExtraBold';
-    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
-    font-weight: bold; /* 글씨를 굵게 */
-    color: #333333; /* 텍스트 색상 설정 */
-    text-align: left; /* 왼쪽 정렬로 변경 */
-    margin-bottom: 20px; /* 아래쪽 여백 설정 */
-    margin-top: 10px; /* 위쪽 여백 설정 */
+    margin: 0;
 }
 
 
@@ -97,6 +83,8 @@ body {
     width: 600px;
     background-color: #ffffff;
     border-radius: 8px;
+    width: 550px;
+    height: 300px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -104,6 +92,34 @@ body {
     padding: 20px;
     margin-bottom: 30px;
 }
+}
+
+.profile-header {
+	display: flex;
+	justify-content: space-between;
+	font-family: 'Pretendard-Regular';
+	
+}
+
+.profile-editbtn {
+	display: flex;
+	gap: 10px;
+	
+}
+
+.profile-editbtn a {
+	text-decoration: none;
+	color: black;
+}
+
+.profile-editbtn span {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	color: black;
+	
+}
+
 
 .car-info {
     display: flex;
@@ -115,13 +131,69 @@ body {
 }
 
 .car-image {
-    width: 200px;
+	position: relative; /* 내부 요소를 절대 위치로 설정하기 위한 기준 */
+    width: 310px;
     height: 180px;
-    margin-right: 20px;
     border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
     height: 180px;
     margin-right: 20px;
     border-radius: 10px; /* 모든 모서리를 10px 둥글게 설정 */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 모달 배경 (overlay) */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+/* 모달 숨김 상태 */
+.hidden {
+    display: none !important;
+}
+
+/* 모달 내용 */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.car-image img {
+	width:100%;
+	height: 100%;
+	object-fit: contain;
+	display: flex;
+	flex-direction: column;
+}
+
+.upload-btn {
+    background-color: #2b7cd3; /* 버튼 배경색 */
+    color: white; /* 버튼 글자 색 */
+    border: none; /* 버튼 테두리 제거 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    padding: 7px 14px; /* 버튼 여백 */
+    font-size: 12px; /* 글자 크기 */
+    cursor: pointer; /* 클릭 커서 */
+    transition: background-color 0.3s; /* 호버 효과 */
+}
+
+.upload-btn:hover {
+    background-color: #1e5ba9; /* 호버 시 버튼 배경색 */
 }
 
 .car-details {
@@ -132,6 +204,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
      margin-top: -20px; /* 전체 car-details를 위로 10px 이동 */
+    margin-left: 10px;
 }
 
 .car-detail {
@@ -283,8 +356,46 @@ option[disabled] {
     width: 600px;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    margin: 30px;
+}
+/* 스타일 변경 */
+.community-section h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px; /* 글씨 크기를 조정 (예: 20px) */
+    font-weight: bold; /* 글씨를 굵게 */
+    color: #333333; /* 텍스트 색상 설정 */
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+    margin-top: 10px; /* 위쪽 여백 설정 */
+    padding-left: 10px; /* 왼쪽에 10px 여백 추가 (필요시) */
+}
+
+/* 커뮤니티 링크 스타일 */
+.community-links {
+    display: inline-block; /* 인라인 블록으로 설정하여 너비 자동 조정 */
+    padding: 7px 10px; /* 세로 7px, 가로 10px 여백으로 설정 (전체 크기 20x15px에 맞춰서) */
+    font-size: 12px; /* 폰트 크기 설정 */
+    background-color: #2b7cd3; /* 버튼 배경색 파란색 */
+    color: #ffffff; /* 버튼 텍스트 색상 흰색 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    width: auto; /* 자동 너비 설정 */
+    height: auto; /* 자동 높이 설정 */
+    line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
+    float: right; /* 오른쪽으로 정렬 */
+    margin-top: 150px; /* 아래로 30px 이동 */
+}
+
+
+/* 나의 커뮤니티 관리 섹션 스타일 */
+.community-section {
+    width: 600px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px;
 }
 /* 스타일 변경 */
 .community-section h4 {
@@ -339,4 +450,12 @@ option[disabled] {
     line-height: 1.4; /* 텍스트 높이를 맞추기 위해 line-height 설정 */
     float: right; /* 오른쪽으로 정렬 */
 }
+
+
+
+
+
+
+
+
 

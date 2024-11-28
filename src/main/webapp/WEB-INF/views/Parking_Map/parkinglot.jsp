@@ -43,19 +43,10 @@
 
 
 <div class="maincontainer-parking">
-<div class="parking-map" id="map"></div>
 
-<div class="map_wrap">
-   <div class="custom_typecontrol radius_border">
-        <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
-        <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
-    </div>
-    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
-    <div class="custom_zoomcontrol radius_border"> 
-        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>  
-        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
-    </div>
-    
+ <div class="map_wrap">
+<div class="parking-map" id="map"></div>
+  
  <img 
         src="${pageContext.request.contextPath}/resources/images/mylocation.png" 
         alt="현재 위치 표시" 
@@ -65,14 +56,10 @@
             height: 30px; 
             cursor: pointer; 
             position: absolute; 
-            bottom: 20px; 
+            bottom: 67px; 
             right: 500px; 
             z-index: 1000;">
-
 </div>
-
-
-    
 <!--전체 콘텐츠 묶는 컨테이너  -->
 <div class="content-container">
 
@@ -128,21 +115,32 @@
         
         <!-- 출발지와 도착지 입력 -->
     	<div class="route-search">
-        
+    <div class="location-row">
         <input type="text" id="start-location" placeholder="출발지를 입력하세요" onkeydown="searchAutocomplete(event, 'start')">
-        <div id="start-search-results" class="start_search-results" style="display: none;">
-            <!-- 출발지 검색 결과 목록이 여기에 표시됩니다 -->
-        </div>
-
-       
-        <input type="text" id="end-location" placeholder="도착지를 입력하세요" onkeydown="searchAutocomplete(event, 'end')">
-        <div id="end-search-results" class="end_search-results" style="display: none;">
-            <!-- 도착지 검색 결과 목록이 여기에 표시됩니다 -->
-        </div>
-        
-        
-        <button onclick="findRoute()">길찾기</button>
+        <button class="swap-btn" onclick="swapLocations()">
+            <img src="${pageContext.request.contextPath}/resources/images/swap.png" alt="스왑" width="20" height="20">
+        </button>
     </div>
+
+    <div id="start-search-results" class="start_search-results" style="display: none;">
+        <!-- 출발지 검색 결과 목록이 여기에 표시됩니다 -->
+    </div>
+
+    <div class="location-row">
+        <input type="text" id="end-location" placeholder="도착지를 입력하세요" onkeydown="searchAutocomplete(event, 'end')">
+        <button class="clear-btn" onclick="clearAllInputs()">
+            <img src="${pageContext.request.contextPath}/resources/images/closed.png" alt="초기화" width="20" height="20">
+        </button>
+    </div>
+
+    <div id="end-search-results" class="end_search-results" style="display: none;">
+        <!-- 도착지 검색 결과 목록이 여기에 표시됩니다 -->
+    </div>
+
+    <button class="route-search-button" onclick="findRoute()">
+        길찾기</button>
+</div>
+
 
         <!-- 자동완성 검색 결과 표시 영역 -->
         <div id="search-results" class="search-results" style="display: none;">
@@ -164,7 +162,7 @@
 	
 <!-- HTML 내에 팝업 컨테이너 추가 -->
 <div id="parking-details-popup" class="parking-details-popup" style="display: none;">
-    <button class="close-button" onclick="closeParkingDetails()">✖</button>
+    <button class="close-button" onclick="closeParkingDetails()"><img src="${pageContext.request.contextPath}/resources/images/closed.png"alt="닫기" width="20" height="20"></button>
     <div id="parking-details"></div>
 
     <div class="roadview-container" id="roadview-container">

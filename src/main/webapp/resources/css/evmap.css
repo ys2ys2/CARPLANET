@@ -38,6 +38,14 @@
     font-style: normal;
 }
 
+/* 메이플스토리체 */
+@font-face {
+    font-family: 'MaplestoryOTFBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 
 
 
@@ -724,6 +732,7 @@ html, body {
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     z-index: 1000;
     display: none; /* 처음에는 숨김 상태 */
+    border-radius: 20px;
     
 }
 
@@ -1585,6 +1594,3 @@ html, body {
     
     
 }
-
-
-

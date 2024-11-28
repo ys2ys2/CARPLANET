@@ -3,179 +3,137 @@
 <html lang="ko">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CAR PLANET</title>
-<!-- Swiper CSS 추가 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/Introduction.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>CAR PLANET</title>
+    <!-- Swiper CSS 추가 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/Introduction.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-
-<!-- 헤더 -->
-<jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
-
-
-
-
-<!-- 그래프를 표시할 캔버스 
-<canvas id="myChart" width="300" height="100"></canvas>-->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-
-  
-
-<!-- 콘텐츠 전환 영역 (주차장 슬라이더) -->
-<div class="container parking-slider" style="position: relative;">
-    <div class="text-content">
-        <p id="title" class="title-text">주변 주차할 공간이 없다고요?</p>
-        <h2 id="subtitle" class="subtitle-text">주차장과 주차장의<br> 후기가 궁금하면</h2>
-        <a id="button" href="#" class="btn">자세히 보기</a>
+    <jsp:include page="/WEB-INF/views/MainPage/header2.jsp" />
+    
+    
+<!-- 전체 컨테이너 추가 -->
+<div class="container">
+    <!-- CHAEVI ZONE 섹션 -->
+<section id="chaevi-zone" class="section" style="background-image: url('${pageContext.request.contextPath}/resources/images/50.png');">
+    <div class="content-left text-left">
+        <h1 class="zone-title">CAR PLANET</h1>
+        <p class="zone-description">
+            신뢰할 수 있는 데이터로 전기차 충전,주유소,주차장의 정보를 제공 합니다.
+        </p>
+        <button class="cta-button" onclick="scrollToNextSection()">
+             정확한 목적지 정보 제공 <span class="arrow"></span>
+        </button>
     </div>
-    <div class="image-content">
-        <div id="searchText" class="search-text">
+
+        <!-- 박스 레이아웃 -->
+        <div class="box-container">
+            <div class="box">
+                <h3 class="box-title">운전자 편의성 향상</h3>
+                <p class="box-description">주차장 위치, 실시간 주유소 및 전기차 충전소 정보 제공으로 목적지 선택 및 이동이 더욱 편리</p>
+            </div>
+            <div class="box">
+                <h3 class="box-title">환경 운전 문화 조성</h3>
+                <p class="box-description">전기차 충전소 정보 제공을 통해, 에코 드라이빙과 같은 친환경적인 운전 문화를 형성</p>
+            </div>
+            <div class="box">
+                <h3 class="box-title">위치 기반 정보 제공</h3>
+                <p class="box-description">현재 위치를 중점으로 가까운 주유소, 충전소, 주차장 정보 제공</p>
+            </div>
         </div>
-        <img id="image" alt="주차장 이미지">
+    </section>
+
+    <!-- APP 섹션 -->
+<div class="container">
+    <!-- 왼쪽 슬라이더 -->
+    <div class="slider-container">
+        <div class="slider">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <img src="${pageContext.request.contextPath}/resources/images/0101.png" alt="Slide 1">
+            </div>
+            <div class="slide">
+                <img src="${pageContext.request.contextPath}/resources/images/0202.png" alt="Slide 2">
+            </div>
+            <div class="slide">
+                <img src="${pageContext.request.contextPath}/resources/images/0303.png" alt="Slide 3">
+            </div>
+            <div class="slide">
+                <img src="${pageContext.request.contextPath}/resources/images/0404.png" alt="Slide 4">
+            </div>
+        </div>
     </div>
-    <!-- 화살표 컨트롤 -->
-    <div class="arrows">
-        <span onclick="prevContent()">&#9664;</span>
-        <span onclick="nextContent()">&#9654;</span>
+
+    <!-- 오른쪽 텍스트 -->
+    <div class="text-container">
+        <h3>CHAEVI APP</h3>
+        <h1>앱 하나로 빠르고<br>편리한 전기차 충전!</h1>
+        <p>
+            충전소 찾기와 충전 내역 확인은 기본,<br>
+            QR 회원 인증부터 충전소 선택(예약)까지<br>
+            채비 앱 하나로 편리하게 이용하세요.
+        </p>
+        <a href="#" class="more-link">
+            CHAEVI APP MORE <span>→</span>
+        </a>
     </div>
 </div>
 
-<script>
 
-//주차장 부분 슬라이드
-    let currentIndex = 0;
-    const contentData = [
-        {
-            title: "주변 주차할 공간이 없다고요?",
-            subtitle: "주차장과 주차장의<br> 후기가 궁금하면",
-            buttonText: "자세히 보기",
-            buttonLink: "${pageContext.request.contextPath}/parkinglot",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/003.png"
-        },
-        {
-            title: "주변 주유소를 찾고 있다고요?",
-            subtitle: "주유소와 가격<br> 후기가 궁금하면",
-            buttonText: "자세히 보기",
-            buttonLink:  "${pageContext.request.contextPath}/Gas/Gasmap.do",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/002.png"
-        },
-        {
-            title: "주변 충전소를 찾고 있다고요?",
-            subtitle: "전기차 충전소의 가격<br> 후기가 궁금하면",
-            buttonText: "자세히 보기",
-            buttonLink:  "${pageContext.request.contextPath}/evmap",
-            imgSrc: "${pageContext.request.contextPath}/resources/images/001.png"
+
+
+    <!-- PRICE 섹션 -->
+    <section id="price-section" class="section full-screen bg-white">
+        <div class="text-center">
+            <h2 class="text-4xl font-bold">요금제</h2>
+            <div class="pricing-grid mt-8 grid grid-cols-3 gap-8">
+                <div class="pricing-card border rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-semibold">기본 요금제</h3>
+                    <p class="mt-4 text-lg">월 10,000원</p>
+                    <ul class="mt-4 list-disc list-inside">
+                        <li>기본 충전</li>
+                        <li>24/7 고객 지원</li>
+                    </ul>
+                    <button class="mt-8 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded">
+                        선택하기
+                    </button>
+                </div>
+                <!-- 추가 요금제 카드는 필요 시 추가 -->
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- 메인 스크립트 -->
+    <script>
+    //슬라이더 왼쪽영역에서 자동으로 슬라이드 설정
+    document.addEventListener("DOMContentLoaded", function () {
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+
+        // 슬라이드 전환 함수
+        function moveToNextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
-    ];
 
-    function updateContent() {
-        const data = contentData[currentIndex];
-        document.getElementById("title").innerText = data.title;
-        document.getElementById("subtitle").innerHTML = data.subtitle;
-        document.getElementById("button").innerText = data.buttonText;
-        document.getElementById("button").href = data.buttonLink;
-        document.getElementById("searchText").innerText = data.searchText; // 검색 텍스트 업데이트
-        document.getElementById("image").src = data.imgSrc;
-    }
+        // 일정 시간마다 슬라이드 이동
+        setInterval(moveToNextSlide, 5000); // 5초마다 이동
+    });
+    
+    
 
-    function nextContent() {
-        currentIndex = (currentIndex + 1) % contentData.length;
-        updateContent();
-    }
-
-    function prevContent() {
-        currentIndex = (currentIndex - 1 + contentData.length) % contentData.length;
-        updateContent();
-    }
-
-    window.onload = updateContent;
-</script>
-
-
-<!-- 슬라이더 컨테이너 -->
-<div class="slider-container" style="display: flex; align-items: center; max-width: 900px;">
-    <!-- 고정된 텍스트 영역 -->
-    <div class="text-content1" style="flex: 1; padding: 20px;">
-        <h1>계속 변동이 되는</h1>
-        <p>휘발유 경유<br> LPG의 가격을</p>
-        <p>실시간으로 확인을 해보세요.</p>
-    </div>
-
-    <!-- 카드 슬라이드 영역 -->
-    <div class="swiper-container mySwiper card-slider" style="flex: 2; overflow: hidden; padding-left: 20px;">
-        <div class="swiper-wrapper" style="display: flex;">
-            <!-- 첫 번째 슬라이드 -->
-            <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card usage-history-card">
-                    <h3>용도 이력</h3>
-                    <p>사용기간: 2019년 10월 1일 ~ 2022년 12월 3일</p>
-                    <p>이력구분: 대여용(렌터카) 이력</p>
-                </div>
-            </div>
-
-            <!-- 두 번째 슬라이드 -->
-            <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card low-emission-card">
-                    <h3>저공해차 인증</h3>
-                    <p>제작사: BMW코리아㈜</p>
-                    <p>차명: BMW 430i Convertible</p>
-                </div>
-                <div class="card insurance-status-card">
-                    <h3>자동차 보험 미가입</h3>
-                    <p>보험 미가입 기간: 2019년 10월 ~ 2022년 12월</p>
-                </div>
-            </div>
-
-            <!-- 세 번째 슬라이드 -->
-            <div class="swiper-slide card-container" style="flex-shrink: 0; display: flex; gap: 20px;">
-                <div class="card inspection-card">
-                    <h3>자동차 검사</h3>
-                    <p>검사일자: 2022년 8월 16일</p>
-                    <p>주행거리: 24,500km</p>
-                </div>
-                <div class="card mileage-change-card">
-                    <h3>주행거리 변경</h3>
-                    <p>변경일자: 2020년 8월 2일</p>
-                    <p>주행거리: 46,120km</p>
-                </div>
-            </div>
-        </div> <!-- swiper-wrapper 끝 -->
-    </div> <!-- swiper-container 끝 -->
-</div> <!-- slider-container 끝 -->
-
-
-<!-- Swiper JavaScript 추가 -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-
-<!-- Swiper 초기화 스크립트 -->
-<script>
-const swiper = new Swiper('.mySwiper', {
-	  slidesPerView: 3, // 한 화면에 3개의 카드 보여줌
-	  spaceBetween: 200, // 카드 간 간격
-	  loop: true, // 무한 루프
-	  autoplay: {
-	    delay: 3000, // 3초마다 반복
-	    disableOnInteraction: false,
-	  },
-	  centeredSlides: false, // 카드가 왼쪽에서 오른쪽으로 슬라이드 되도록 설정
-	});
-
-</script>
-
-
-
-<!-- 메인 스크립트 -->
-
-<!-- 푸터 -->
-<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
-<jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
+    </script>
 
 </body>
+
 </html>
+
 

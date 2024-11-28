@@ -21,75 +21,198 @@
 
     <!-- 헤더 -->
     <jsp:include page="/WEB-INF/views/MainPage/header.jsp" />
+    
+    
+<div class="oil-prices-container">
+    <!-- 제목 추가 -->
+   <h2 class="oil-prices-title">
+    <span class="black-text">우리동네 주유소</span> 
+    <span class="blue-text">TOP10</span>
+</h2>
+
+
+    <div class="oil-prices">
+        <div class="oil-left">
+            <!-- 좌측 5개의 주유소 정보 -->
+        </div>
+        <div class="oil-right">
+            <!-- 우측 5개의 주유소 정보 -->
+        </div>
+    </div>
+</div>
 
 <!-- 왼쪽 화살표 아이콘 -->
 <div class="arrow-icon" id="arrow-icon">
     <i class="fas fa-arrow-left"></i> <!-- 'fa-arrow-right'에서 'fa-arrow-left'로 변경 -->
 </div>
 
-    <!-- 전국 평균 유가 정보 및 그래프 -->
-    <div class="price-section">
-        <h1 class="section-title">일주일 전국 평균 유가</h1>
-        <div class="price-container">
-            <!-- 고급휘발유 -->
-            <div class="price-box">
-                <div class="label">전국평균</div>
-                <div class="fuel-type">고급휘발유</div>
-                <div class="value" id="premium-gasoline">-</div>
-                <canvas id="premiumGasolineChart" width="300" height="150"></canvas>
-            </div>
+<!-- 전국 평균 유가 정보 및 그래프 -->
+<div class="price-section">
+  <h1 class="section-title">
+    <span class="black-text">오늘의</span> 
+    <span class="blue-text">평균 유가</span>
+</h1>
+    
+    <div class="price-container">
+        <!-- 고급휘발유 -->
+        <div class="price-box">
+            <div class="fuel-type">고급휘발유</div>
+            <div class="value" id="premium-gasoline">-</div>
+            <canvas id="premiumGasolineChart" width="300" height="200"></canvas>
+            <!-- 날짜 표시 영역 추가 -->
+            <div id="premium-dates" class="chart-dates"></div>
+        </div>
 
-            <!-- 보통휘발유 -->
-            <div class="price-box">
-                <div class="label">전국평균</div>
-                <div class="fuel-type">보통휘발유</div>
-                <div class="value" id="regular-gasoline">-</div>
-                <canvas id="regularGasolineChart" width="300" height="150"></canvas>
-            </div>
+        <!-- 보통휘발유 -->
+        <div class="price-box">
+            <div class="fuel-type">보통휘발유</div>
+            <div class="value" id="regular-gasoline">-</div>
+            <canvas id="regularGasolineChart" width="300" height="200"></canvas>
+            <!-- 날짜 표시 영역 추가 -->
+            <div id="regular-dates" class="chart-dates"></div>
+        </div>
 
-            <!-- 자동차경유 -->
-            <div class="price-box">
-                <div class="label">전국평균</div>
-                <div class="fuel-type">자동차경유</div>
-                <div class="value" id="diesel">-</div>
-                <canvas id="dieselChart" width="300" height="150"></canvas>
-            </div>
+        <!-- 자동차경유 -->
+        <div class="price-box">
+            <div class="fuel-type">자동차경유</div>
+            <div class="value" id="diesel">-</div>
+            <canvas id="dieselChart" width="300" height="200"></canvas>
+            <!-- 날짜 표시 영역 추가 -->
+            <div id="diesel-dates" class="chart-dates"></div>
         </div>
     </div>
+</div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
     <script>
-        // 데이터를 가져오는 함수
-        async function fetchData() {
-            try {
-                const response = await fetch('./getRecentPrice');
-                const data = await response.json();
+    
+    async function loadOilStations(areaCode) {
+    	alert("loadOilStations 실행");
+        try {
+            // JSON 데이터를 가져오기
+            const response = await fetch('./getOilStations/'+areaCode); // 서버에서 데이터를 제공하는 엔드포인트
+            const data = await response.json();
 
-                // API 응답에서 지난 7일의 데이터를 추출
-                const premiumGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B034")
-                    .map(oil => oil.PRICE); // 고급휘발유의 7일 가격
-                const regularGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B027")
-                    .map(oil => oil.PRICE); // 보통휘발유의 7일 가격
-                const dieselPrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "D047")
-                    .map(oil => oil.PRICE); // 자동차경유의 7일 가격
+            console.log("data:", data);
+            
+            // 주유소 데이터 가져오기
+            const oilStations = data.RESULT.OIL;
 
-                // 가격 정보 업데이트
-                document.getElementById('premium-gasoline').textContent = premiumGasolinePrices[0] + " 원";
-                document.getElementById('regular-gasoline').textContent = regularGasolinePrices[0] + " 원";
-                document.getElementById('diesel').textContent = dieselPrices[0] + " 원";
+            // 좌측과 우측 컨테이너 가져오기
+            const oilLeft = document.querySelector('.oil-left');
+            const oilRight = document.querySelector('.oil-right');
 
-                // 그래프 생성
-                createChart('premiumGasolineChart', '고급휘발유', premiumGasolinePrices);
-                createChart('regularGasolineChart', '보통휘발유', regularGasolinePrices);
-                createChart('dieselChart', '자동차경유', dieselPrices);
+            // 주유소 데이터 렌더링
+            oilStations.forEach((station, index) => {
+            	//PRICE: 가격, OS_NM: 주유소이름, VAN_ADR: 주소
+                const oilItem = document.createElement('div');
+                oilItem.classList.add('oil-item');
+                oilItem.innerHTML = `
+                    <h3 class="station-name">`+station.OS_NM+`</h3>
+                    <p class="station-price">가격: `+station.PRICE+`</p>
+                    <p class="station-address">주소: `+station.VAN_ADR+`</p>`;
 
-            } catch (error) {
-                console.error('데이터 가져오기 실패:', error);
-            }
+                // 좌측 또는 우측 컨테이너에 추가
+                if (index < 5) {
+                    oilLeft.appendChild(oilItem);
+                } else {
+                    oilRight.appendChild(oilItem);
+                }
+            });
+        } catch (error) {
+            console.error('주유소 데이터를 가져오는 중 오류 발생:', error);
         }
+    }
+    
+    
+    
+    //유가 부분
+    async function fetchData() {
+        try {
+            const response = await fetch('./getRecentPrice');
+            const data = await response.json();
+
+            // API 응답에서 지난 7일의 데이터를 추출
+            const premiumGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B034")
+                .map(oil => oil.PRICE); // 고급휘발유의 7일 가격
+            const regularGasolinePrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "B027")
+                .map(oil => oil.PRICE); // 보통휘발유의 7일 가격
+            const dieselPrices = data.RESULT.OIL.filter(oil => oil.PRODCD === "D047")
+                .map(oil => oil.PRICE); // 자동차경유의 7일 가격
+
+            // 날짜 형식 (MM.DD) - 오늘을 기준으로 전날 6일 전까지 날짜 계산
+            const dates = [];
+            const now = new Date();
+
+            // 한국 시간 적용 (UTC+9)
+            const timeOffset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+            now.setTime(now.getTime() + timeOffset); // 한국 시간으로 맞춤
+
+            console.log('오늘 날짜', Date(now));
+
+            // 7일간의 날짜 배열 생성
+            for (let i = 0; i <= 6; i++) {
+                const targetDate = new Date(now); // 새로 복사한 날짜 객체
+                targetDate.setDate(now.getDate() - (6 - i)); // 오늘 날짜에서 6-i일을 빼서 계산
+
+                const month = targetDate.getMonth() + 1; // 월 (0부터 시작하므로 +1)
+                const day = targetDate.getDate();      // 일
+
+                console.log('월/일: ' + month + "/" + day);
+
+                // 숫자 형식으로 (MM.DD) 반환
+                const formattedDate = month.toString().padStart(2, '0') + "." + day.toString().padStart(2, '0');
+                dates.push(formattedDate);
+
+                // 날짜 확인용 로그
+                console.log(`날짜 ${i} (${6 - i}일 전):`, formattedDate);
+            }
+
+            // 날짜 배열을 과거에서 오늘까지 순서로 정렬
+            dates.reverse(); // 날짜를 11.21부터 11.27까지 순서대로 뒤집기
+            premiumGasolinePrices.reverse(); 
+            regularGasolinePrices.reverse();
+            dieselPrices.reverse();
+
+            // 날짜 배열 출력 (디버깅용)
+            console.log("최종 날짜 배열:", dates);
+
+            // 유가 정보 업데이트
+            document.getElementById('premium-gasoline').textContent = premiumGasolinePrices[0] ? premiumGasolinePrices[0] + " 원" : "-";
+            document.getElementById('regular-gasoline').textContent = regularGasolinePrices[0] ? regularGasolinePrices[0] + " 원" : "-";
+            document.getElementById('diesel').textContent = dieselPrices[0] ? dieselPrices[0] + " 원" : "-";
+
+            // 그래프 생성
+            createChart('premiumGasolineChart', '고급휘발유', premiumGasolinePrices, dates);
+            createChart('regularGasolineChart', '보통휘발유', regularGasolinePrices, dates);
+            createChart('dieselChart', '자동차경유', dieselPrices, dates);
+
+            // 날짜 업데이트 (그래프 아래에 날짜 표시)
+            if (dates.length > 0) {
+                document.getElementById('premium-dates').innerHTML = dates.join(' / ');
+                document.getElementById('regular-dates').innerHTML = dates.join(' / ');
+                document.getElementById('diesel-dates').innerHTML = dates.join(' / ');
+            } else {
+                console.error('날짜 배열이 비어있습니다.');
+            }
+
+        } catch (error) {
+            console.error('데이터 가져오기 실패:', error);
+        }
+    }
+
+    // 페이지 로드 후 데이터 가져오기 호출
+    window.onload = fetchData;
+
+
+
         
-        $(document).ready(function() {
+    
+        $(document).ready(function() {//window.onload 이벤트 처리에 대한 jQuery구문
+        	
+        	//지역명과 지역코드 매핑
     		const areaMapping = {
     	            "서울": "01",
     	            "경기": "02",
@@ -108,8 +231,8 @@
     	            "대전": "17",
     	            "울산": "18",
     	            "세종": "19"
-    	        };
-    		
+    	 	};
+   		
         $.ajax({
             url: './getRecentPrice',  // 서버에서 제공하는 엔드포인트
             type: 'GET',             // GET 요청
@@ -145,6 +268,9 @@
     	                    const regionName = result[0].address.region_1depth_name; // 지역 이름
     	                    const areaCode = areaMapping[regionName]; // 지역 이름을 코드로 변환
     	                    console.log("지역 코드:", areaCode);
+    	                    
+    	                  	//지역별 최저가격 주유소 10개 가져오기
+    	                    loadOilStations(areaCode);
 
     	                    if (areaCode) {
     	                        // Ajax 요청
@@ -215,8 +341,9 @@
             });
         }
 
+        
      // 데이터 가져오기 및 그래프 초기화
-        fetchData();
+     fetchData();
 
         // 왼쪽 화살표 클릭 시 애니메이션 효과와 페이지 이동
         document.querySelector('.arrow-icon').addEventListener('click', function() {
@@ -228,7 +355,9 @@
             setTimeout(function() {
                 window.location.href = '${pageContext.request.contextPath}/'; // 이동할 URL
             }, 500); // 0.5초 지연
-        });
+            
+   });//end of jQuery 구문
+        
     </script>
 
     <!-- Swiper JavaScript -->

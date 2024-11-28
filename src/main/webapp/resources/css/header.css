@@ -1,88 +1,62 @@
 @charset "UTF-8";
 
-/* 폰트 설정 */
-
-@font-face { /*페이퍼로지*/
-    font-family: 'Paperlogy-8ExtraBold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
-    font-weight: 800;
-    font-style: normal;
-}
-
-@font-face { /* 어그로체 */
-    font-family: 'SBAggroB';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+/*이사만루  */
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
-@font-face { /* 리아체 */
-    font-family: 'RiaSans-ExtraBold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/RiaSans-ExtraBold.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face { /* 프리젠테이션 */
-    font-family: 'Freesentation-9Black';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2') format('woff2');
-    font-weight: 900;
-    font-style: normal;
-}
-
-@font-face { /* 자이언츠체 */
-    font-family: 'Giants-Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face { /* 한국기계연구원 */
-    font-family: 'KIMM_Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-@font-face { /*프리텐다드*/
+/*프리텐다드  */
+@font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
 }
-/* 헤더 스타일 */
-.header-container {
-  display: flex;
-  justify-content: space-between; /* flex-grow를 space-between으로 변경 */
-  align-items: center;
-  width: 100%;
-  font-size: 14px;
-  position: relative;
-  max-width: 1920px;
-  margin: 0 auto;
-  z-index: 120;
-  font-family: 'Pretendard-Regular';
-  font-weight: 700;
+@font-face {/*문경감 홍사과*/
+    font-family: 'Mungyeong-Gamhong-Apple';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-2@1.0/Mungyeong-Gamhong-Apple.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* 전체 헤더 스타일 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #fffff;
+
+}
+
 
 /* 로고 스타일 */
 .logo {
   margin-left: 20px; /* 왼쪽 공백을 없앰 */
-  margin-top: 20px; /* 위쪽 공백 추가 */
+  margin-top: 25px; /* 위쪽 공백 추가 */
   display: flex; /* Flexbox 사용 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: flex-start; /* 로고를 왼쪽으로 정렬 */
   position: relative; /* z-index 적용을 위해 relative 설정 */
   z-index: 10; /* 다른 요소 위로 표시 */
+  cursor: pointer;
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  /* overflow: hidden; 제거 */
 }
 
 
 .logo a {
-  font-family: 'Paperlogy-8ExtraBold'; /* 폰트 스타일 유지 */
-  font-size: 24px; /* 글자 크기 */
+  font-family: 'Mungyeong-Gamhong-Apple';
+  font-size: 20px; /* 글자 크기 */
   font-weight: bold; /* 굵기 설정 */
   color: #000; /* 글자 색 */
   text-decoration: none; /* 밑줄 제거 */
   cursor: pointer; /* 마우스 포인터를 클릭 모양으로 변경 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
 }
 
 
@@ -93,8 +67,28 @@
   align-items: center; /* 세로 중앙 정렬 */
   width: 100%; /* 부모 요소의 전체 너비를 차지 */
   padding: 10px; /* 헤더 패딩 */
-  margin-top: -35px; /* 위쪽 여백 20px */
+  margin-top: 5px; /* 위쪽 여백 20px */
    margin-left: -20px;
+}
+
+
+/* 로그아웃 링크 스타일 */
+/* 로그아웃 링크 스타일 (배경 제거) */
+#logout {
+    color: #333; /* 텍스트 기본 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 16px; /* 글자 크기 */
+    font-weight: bold; /* 글자 두께 */
+    transition: color 0.3s ease, text-decoration 0.3s ease; /* 호버 애니메이션 */
+    cursor: pointer; /* 클릭 가능한 상태 표시 */
+     margin-left: -10px; /* 왼쪽으로 10px 이동 */
+         font-family: 'GongGothicMedium';
+}
+
+/* 마우스 올렸을 때 스타일 */
+#logout:hover {
+    color: #555; /* 호버 시 약간 더 진한 색상 */
+    text-decoration: underline; /* 밑줄 추가 */
 }
 
 
@@ -102,21 +96,23 @@
 .mypage-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 10px; /* 버튼의 여백 */
-  border: none; /* 버튼의 기본 테두리 제거 */
-  background-color: #0D8AFF; /* 버튼 배경색 */
-  color: white; /* 텍스트 색상 */
-  border-radius: 5px; /* 둥근 모서리 */
+  gap: 8px; /* 아이콘과 텍스트 사이 간격 */
+  padding: 10px 10px; /* 여백 */
+  border: none; /* 테두리 제거 */
+  background: none; /* 배경색 제거 */
+  color: #333; /* 텍스트 색상 */
   cursor: pointer; /* 마우스 커서를 손 모양으로 변경 */
   font-size: 16px; /* 텍스트 크기 */
-  transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
- font-family: 'Freesentation-9Black';
+  font-weight: bold; /* 텍스트 두께 */
+  text-decoration: none; /* 밑줄 제거 */
+  transition: color 0.3s ease; /* 텍스트 색상 변경 애니메이션 */
+     font-family: 'GongGothicMedium';
 }
 
-/* 마이페이지 버튼에 호버 효과 추가 */
+/* 마우스 올렸을 때 효과 */
 .mypage-btn:hover {
-  background-color: #0056b3; /* 버튼 배경색을 어두운 색으로 변경 */
+  color: #555; /* 호버 시 텍스트 색상만 약간 변경 */
+  text-decoration: underline; /* 밑줄 추가 */
 }
 
 /* 아이콘 스타일 (아이콘을 사용할 경우) */
@@ -134,64 +130,13 @@
 }
 
 .userprofile {
-  font-family: 'Freesentation-9Black';
+     font-family: 'GongGothicMedium';
   font-size: 16px;
   color: #000;
 }
 
 .member a {
-  font-family: 'Freesentation-9Black'; /* 글꼴 설정 */
-  font-size: 16px; /* 글씨 크기 */
-  color: #000; /* 텍스트 색상 */
-  text-decoration: none; /* 링크의 밑줄 제거 */
-  padding: 5px 10px; /* 메뉴 항목에 패딩 추가 */
-  transition: background-color 0.3s, color 0.3s; /* 호버 시 배경색과 텍스트 색상 부드럽게 변경 */
-}
-
-.member a:hover {
-  text-decoration: none; /* 호버 시 밑줄 제거 */
-  color: #000; /* 기본 색상으로 유지 */
-  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
-}
-
-.menu a {
-  font-family: 'Freesentation-9Black'; /* 폰트 설정 */
-  font-size: 16px; /* 글씨 크기 */
-  color: #000; /* 기본 텍스트 색상 */
-  text-decoration: none; /* 기본 링크 밑줄 제거 */
-  padding: 5px 10px; /* 메뉴 항목에 패딩 추가 */
-  transition: background-color 0.3s, color 0.3s; /* 부드러운 호버 효과 */
-}
-
-.menu a:hover {
-  text-decoration: none; /* 호버 시 밑줄 제거 */
-  color: #007BFF; /* 호버 시 텍스트 색상 변경 */
-  background-color: transparent; /* 호버 시 배경색 변경 (없음) */
-}
-
-@media (max-width: 425px){
-	
-.logo {
-  margin-left: 20px; /* 왼쪽 공백을 없앰 */
-  margin-top: 15px; /* 위쪽 공백 추가 */
-  display: flex; /* Flexbox 사용 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: flex-start; /* 로고를 왼쪽으로 정렬 */
-  position: relative; /* z-index 적용을 위해 relative 설정 */
-  z-index: 10; /* 다른 요소 위로 표시 */
-}	
-	
-.logo a {
-  font-family: 'Paperlogy-8ExtraBold'; /* 폰트 스타일 유지 */
-  font-size: 12px; /* 글자 크기 */
-  font-weight: bold; /* 굵기 설정 */
-  color: #000; /* 글자 색 */
-  text-decoration: none; /* 밑줄 제거 */
-  cursor: pointer; /* 마우스 포인터를 클릭 모양으로 변경 */
-}	
-
-.member a {
-  font-family: 'Freesentation-9Black'; /* 글꼴 설정 */
+  font-family: 'GongGothicMedium';
   font-size: 3px; /* 글씨 크기 */
   color: #000; /* 텍스트 색상 */
   text-decoration: none; /* 링크의 밑줄 제거 */
@@ -217,6 +162,25 @@
   margin-top: 10px; /* 위쪽 간격 추가 (아래로 이동) */
 }
 
+/* 사용자 메뉴 스타일 */
+.user-menu {
+  display: flex; /* 가로로 배치 */
+  gap: 20px; /* 항목 간 간격 */
+  align-items: center; /* 세로 중앙 정렬 */
+ font-family: 'GongGothicMedium';
+  margin-left: 50px; /* 왼쪽으로 10px 이동 */
+}
 
+.user-menu a {
+  color: #333; /* 텍스트 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-size: 16px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* 호버 애니메이션 */
+}
+
+.user-menu a:hover {
+  color: #555; /* 호버 시 텍스트 색상 */
+  text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
