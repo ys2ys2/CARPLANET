@@ -35,8 +35,9 @@ public class CarInfoController {
             @RequestParam("carNumber") String carNumber,
             @RequestParam("fuelType") String fuelType,
             @RequestParam(value = "carImage", required = false) MultipartFile carImage,
-            @RequestParam(value = "existingCarImage", required = false) String existingCarImage, // 기존 이미지 추가
+            @RequestParam(value = "existingCarImage", required = false) String existingCarImage,
             HttpSession session) {
+        
         // 세션에서 UserEntity 객체를 가져옴
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
@@ -44,21 +45,28 @@ public class CarInfoController {
         }
 
         try {
-        	CarInfoEntity carInfo = carInfoService.getCarInfo((long) user.getCarIdx()); // int를 long으로 변환
+            // 세션에서 car_idx 값 가져오기
+            Long carIdxFromSession = (long) user.getCarIdx();  // car_idx 값은 세션에서 가져오기
+            
+            // 새로 carInfo 객체 생성하여 car_idx 설정
+            CarInfoEntity carInfo = new CarInfoEntity();
+            carInfo.setCarIdx(carIdxFromSession);  // car_info에 car_idx 값을 설정
 
+            // 차량 정보 설정
             carInfo.setCarType(carType);
             carInfo.setCarNumber(carNumber);
             carInfo.setFuelType(fuelType);
 
+            // 이미지 처리
             if (carImage != null && !carImage.isEmpty()) {
-                // 새 이미지가 있을 경우
                 carInfo.setCarImage(carImage.getBytes());
             } else if (existingCarImage != null && !existingCarImage.isEmpty()) {
-                // 새 이미지가 없을 경우 기존 이미지를 유지
                 carInfo.setCarImage(Base64.getDecoder().decode(existingCarImage));
             }
 
-            carInfoService.saveCarInfo(carInfo); // Service를 통해 저장
+            // 차량 정보 저장
+            carInfoService.saveCarInfo(carInfo); // car_idx를 세션에서 가져온 값으로 저장
+
             return ResponseEntity.ok()
                     .header("Content-Type", "text/plain; charset=UTF-8")
                     .body("차량 정보가 성공적으로 저장되었습니다.");
@@ -66,6 +74,7 @@ public class CarInfoController {
             return ResponseEntity.status(500).body("이미지 저장 중 오류가 발생했습니다.");
         }
     }
+
 
 
     @GetMapping("/{carIdx}")
