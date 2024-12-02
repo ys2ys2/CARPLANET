@@ -1,6 +1,5 @@
 package com.human.V5.repository;
 
-import com.human.V5.dto.PostCommentDto;
 import com.human.V5.entity.PostEntity;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
   List<PostEntity> findRecommendedPosts();
   
   List<PostEntity> findByTitleContainingOrContentContaining(String keyword, String keyword2);
-
-  Page<PostEntity> findByCarId(String carId, Pageable pageable);
   
 }
