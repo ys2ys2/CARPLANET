@@ -49,37 +49,38 @@
     </section>
 
     <!-- PRICE 섹션 -->
-    <section id="price-section" class="section bg-white">
-        <div class="container">
-            <!-- Left Section -->
-            <div class="left-section">
-                <h5>우리지역 주유소 TOP10 </h5>
-                <h1>신뢰할 수 있는<br>데이터를 위한 공공데이터 사용!</h1>
-                <p>합리적인 비용 부담 없는 선택</p>
-                <div class="link-button">
-                    <span>CAR PLANET</span>
-                    <div class="circle"></div>
-                    <div class="arrow"></div>
+<section id="price-section" class="section bg-white">
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <h5>우리지역 주유소 TOP10 </h5>
+            <h1>신뢰할 수 있는<br>데이터를 위한 공공데이터 사용!</h1>
+            <p>합리적인 비용 부담 없는 선택</p>
+            <div class="link-button">
+                <span>CAR PLANET</span>
+                <div class="circle"></div>
+                <div class="arrow"></div>
+            </div>
+        </div>
+        
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="card member">
+                <h4>정확한 위치 기반의 정보를 제공</h4>
+                <div class="price-group">
+                    <div><span>공공데이터를 이용하여, 현제 위치를 중점으로 가까운주차장,충전소,주유소 정보를 제공</span></div>
                 </div>
             </div>
-
-            <!-- Right Section (Cards) -->
-            <div class="right-section">
-                <div class="card member">
-                    <h4>정확한 위치 기반의 정보를 제공</h4>
-                    <div class="price-group">
-                        <div><span>현제 위치를 중점으로 가까운주차장,충전소,주유소 정보 제공</span></div>
-                    </div>
-                </div>
-                <div class="card non-member">
-                    <h4>커뮤니티 활성화로</h4>
-                    <div class="price-group">
-                        <span>사용자 간 추천과 신뢰도 높은 정보 교환</span>
-                    </div>
+            <div class="card non-member">
+                <h4>커뮤니티 활성화로 사용자간 정보 교환</h4>
+                <div class="price-group">
+                    <span>커뮤니티를 통해 사용자들의 추천과 신뢰도 높은 정보 교환 가능</span>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     
     <!-- APP 섹션 -->
 <section id="app-section" class="section">
@@ -131,7 +132,7 @@
         }
 
         // 일정 시간마다 슬라이드 이동
-        setInterval(moveToNextSlide, 5000); // 5초마다 이동
+        setInterval(moveToNextSlide, 2000); // 5초마다 이동
     });
     
     

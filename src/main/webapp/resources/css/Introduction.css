@@ -186,26 +186,31 @@ body, html {
 
 /* Left Section */
 .left-section {
-    width: 50%;
-    padding: 40px;
+    width: 50%; /* 너비를 50%로 유지 */
+    padding: 40px; /* 내부 여백 설정 */
+    margin-top: 30px; /* 위쪽 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
 }
 
 .left-section h5 {
     font-size: 16px;
     font-weight: 400;
     color: #333;
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .left-section h1 {
-    font-size: 36px;
+    font-size: 35px;
     font-weight: 700;
     margin: 20px 0;
+     font-family: 'Paperlogy-8ExtraBold';
 }
 
 .left-section p {
-    font-size: 18px;
+    font-size: 19px;
     color: #666;
     margin-bottom: 30px;
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .link-button {
@@ -213,8 +218,9 @@ body, html {
     align-items: center;
     cursor: pointer;
     font-weight: bold;
-    color: #000;
+    color: #fff;
     font-size: 18px;
+     font-family: 'Paperlogy-8ExtraBold';
 }
 
 .link-button .circle {
@@ -234,33 +240,44 @@ body, html {
     margin-left: 5px;
 }
 
-/* Right Section */
+
 .right-section {
-    width: 40%;
-    display: flex;
-    gap: 20px;
+    width: 50%; /* 너비를 50%로 유지 */
+    display: flex; /* 플렉스 박스 설정 */
+    gap: 20px; /* 카드 간격 설정 */
+    margin-top: 50px; /* 위쪽 여백 */
+    margin-bottom: 10px; /* 아래쪽 여백 */
+    margin-left: -20px; /* 왼쪽으로 20px 이동 */
 }
 
 .card {
     flex: 1;
-    background-color: #1E3A56;
+    background-color: #161938;
     border-radius: 20px;
     color: white;
-    padding: 40px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 350px; /* 기본 카드 너비 설정 */
+    height: 350px; /* 기본 카드 높이 설정 */
 }
 
 .card.member {
     background-color: #1FC0A0;
+      width: 350px; /* 멤버 전용 카드의 너비를 더 크게 설정 */
+     height: 350px; /* 멤버 전용 카드의 높이를 더 크게 설정 */
+    padding: 50px; /* 내부 여백을 멤버 카드에서 더 크게 설정 */
 }
 
 .card h4 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: -30px; /* 위쪽 여백 */
+    margin-bottom: 50px; /* 아래쪽 여백 */
+     line-height: 1.5;
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .price-group {
@@ -270,13 +287,15 @@ body, html {
 }
 
 .price-group span {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Paperlogy-8ExtraBold';
+     line-height: 1.8; /* 위아래 간격을 1.5배로 설정 */
+     
 }
 
 /* Bottom Text */
 .footer-note {
-    font-size: 12px;
+    font-size: 18px;
     color: #666;
     text-align: right;
     margin-top: 20px;
@@ -323,7 +342,6 @@ body, html {
     justify-content: center;
     align-items: center;
 }
-
 /* 검정 네모 박스 */
 .black-box {
     width: 700px;
@@ -340,54 +358,54 @@ body, html {
     display: flex;
     width: 100%;
     animation: slideAnimation 12s infinite;
-    width: calc(100% * 6); /* 슬라이드 전체 길이 (슬라이드 개수) */
-    
-    
 }
 
 /* 슬라이드 */
 .slide {
     height: 350px;
-    flex: 0 0 50%; /* 각 슬라이드가 black-box의 50%만 차지 */
-    
+    flex: 0 0 calc(33.33% - 20px); /* 각 슬라이드가 검정 박스의 33.33%에서 20px 여백을 뺀 크기 */
+    margin-right: 20px; /* 슬라이드들 사이에 20px의 여백 추가 */
+}
+
+.slide:last-child {
+    margin-right: 0; /* 마지막 슬라이드에 여백 없애기 */
 }
 
 .slide img {
-    width: 100%;
+    width: 90%; /* 이미지 너비를 검정 박스에 맞추기 */
     height: 100%;
     object-fit: cover; /* 이미지가 박스를 꽉 채우도록 */
+    border-radius: 10px; /* 이미지 모서리를 10px로 둥글게 만들기 */
 }
 
+/* 모바일 이미지 */
 .phoneimg {
-	height: 555px;
-	position: absolute;
-	bottom: -77px;
-	left:-40px;
-	z-index: 2;
-	
+    height: 555px;
+    position: absolute;
+    bottom: -77px;
+    left: -40px;
+    z-index: 2;
 }
 
-.phoneimg img{
-	height: 100%;
-	object-fit: contain;
+.phoneimg img {
+    height: 100%;
+    object-fit: contain;
 }
-
 
 /* 슬라이더 애니메이션 */
 @keyframes slideAnimation {
     0% { transform: translateX(0); }
-    33% { transform: translateX(-50%); } /* 두 번째 슬라이드로 이동 */
-    66% { transform: translateX(-100%); } /* 세 번째 슬라이드로 이동 */
-    100% { transform: translateX(-150%); } /* 네 번째 슬라이드로 이동 */
+    33.33% { transform: translateX(-33.33%); } /* 첫 번째 슬라이드에서 두 번째로 이동 */
+    66.66% { transform: translateX(-66.66%); } /* 두 번째 슬라이드에서 세 번째로 이동 */
+    100% { transform: translateX(-100%); } /* 세 번째 슬라이드로 이동 */
 }
-
-
 /* 텍스트 영역 */
 .text-container {
     flex: 1;
     max-width: 45%;
     text-align: left;
-    margin-left: 0; /* 왼쪽 끝으로 이동 */
+    margin-left: 35px; /* 왼쪽 끝으로 이동 */
+   
 }
 
 .text-container h3 {

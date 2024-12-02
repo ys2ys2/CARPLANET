@@ -10,7 +10,8 @@ function closeModal() {
 
 // 사용자가 모달 외부를 클릭하면 닫기
 window.onclick = function(event) {
-    if (event.target == document.getElementById("myModal")) {
+    const modal = document.getElementById("myModal");
+    if (event.target === modal) {
         closeModal();
     }
 }
@@ -31,7 +32,6 @@ function showSubButtons(category) {
         messageText = "계정/로그인 관련 질문을 선택해 주세요.";
         addMessage(messageText, "question");
 
-        // 하위 질문 버튼들
         const buttons = [
             { text: "회원가입", action: "회원가입 하는 방법" },
             { text: "탈퇴", action: "탈퇴하는 방법" },
@@ -91,7 +91,6 @@ function addButtons(buttons) {
 function goBackToMain() {
     addMessage("이전으로 돌아갑니다.", "question");
 
-    // 기존의 mainButtons 배열을 제거하고, 각 버튼에 직접 함수를 설정합니다.
     const chatContent = document.getElementById("chatContent");
 
     // 버튼 컨테이너 생성

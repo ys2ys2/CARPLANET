@@ -89,7 +89,7 @@
                 <div class="message question">
                     안녕하세요.😊 <br>
                     CAR PLANET 입니다.<br> 어떤 내용이 궁금하신가요?<br>
-                    궁금하신 내용을 메시지 입력란에<br> 직접 입력해 주시거나 <br>문의자 유형을 선택해 주세요.🐾🐾
+                    궁금하신 내용을 메시지 입력란에<br> 직접 입력해 주시거나 <br>문의자 유형을 선택해 주세요.
                 </div>
             </div>
 
@@ -99,13 +99,14 @@
                 <button onclick="showSubButtons('station')">주유소</button>
                 <button onclick="showSubButtons('parking')">주차장</button>
                 <button onclick="showSubButtons('community')">커뮤니티</button>
+                <button onclick="showSubButtons('commu')">우리동네 주유소</button>
             </div>
 
             <!-- 사용자 입력 영역 -->
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="메세지 입력" onkeydown="handleKeyPress(event)"/>
-                <button onclick="sendMessage()">➤</button>
-            </div>
+               <div class="chat-input">
+            <input type="text" id="userInput" placeholder="메세지 입력" onkeydown="handleKeyPress(event)"/>
+            <button onclick="sendMessage()">➤</button>
+        </div>
         </div>
     </div>
   </div> <!-- 모달 닫기 -->

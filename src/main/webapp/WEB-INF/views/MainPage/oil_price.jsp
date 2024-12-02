@@ -49,7 +49,7 @@
 <!-- 전국 평균 유가 정보 및 그래프 -->
 <div class="price-section">
   <h1 class="section-title">
-    <span class="black-text">오늘의</span> 
+    <span class="black-text">일주일</span> 
     <span class="blue-text">평균 유가</span>
 </h1>
     
@@ -89,7 +89,7 @@
     <script>
     
     async function loadOilStations(areaCode) {
-    	alert("loadOilStations 실행");
+    	
         try {
             // JSON 데이터를 가져오기
             const response = await fetch('./getOilStations/'+areaCode); // 서버에서 데이터를 제공하는 엔드포인트

@@ -104,7 +104,7 @@
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
+
 <jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
 
 <script>
@@ -119,6 +119,22 @@
             window.location.href = '${pageContext.request.contextPath}/oil_price'; // 이동할 URL
         }, 500); // 0.6초 지연
     });
+    
+    $.ajax({
+        url: '/CarPlanet/Admin/track-visitor', // 방문자 추적 API 엔드포인트
+        type: 'POST', // HTTP 메서드
+        contentType: 'application/json', // 데이터 형식
+        data: JSON.stringify({
+          url: window.location.href, // 현재 페이지 URL
+          userAgent: navigator.userAgent // 브라우저 정보
+        }),
+        success: function (response) {
+          console.log('방문자 데이터 전송 성공:');
+        },
+        error: function (error) {
+          console.error('방문자 데이터 전송 실패:', error);
+        }
+      });
 </script>
     
 </body>
