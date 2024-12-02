@@ -1,9 +1,18 @@
 package com.human.V5.controller;
 
+import com.human.V5.entity.UserEntity;
+import com.human.V5.entity.PostCommentEntity;
+import com.human.V5.entity.PostEntity;
+import com.human.V5.dto.PostCommentDto;
+import com.human.V5.dto.PostCommentLikeDto;
+import com.human.V5.dto.PostDto;
+import com.human.V5.dto.PostLikeDto;
+import com.human.V5.service.CommunityService;
+import com.human.V5.vo.PostCommentVO;
+import com.human.V5.vo.PostVO;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,10 +77,10 @@ public class CommunityController {
    * 게시글 검색
    */
   @GetMapping("/searchPostList.do")
-  public ModelAndView searchPostList(HttpServletRequest request, String keyword) {
+  public ModelAndView searchPostList(HttpServletRequest request, String keyword, Integer postIndex) {
     ModelAndView mav = new ModelAndView();
     // TODO, paging 처리 필요시 jsp 수정필요
-    mav.addObject("posts", communityService.searchPostList(PageRequest.of(0, 10), keyword));
+    mav.addObject("posts", communityService.searchPostList(PageRequest.of(0, 10), keyword, postIndex));
     mav.addObject("recommendedPosts", communityService.getRecommendedPostList());
     mav.addObject("popularKeywords", communityService.getPopularKeywordList());
     mav.setViewName("Community/communityList");
@@ -158,13 +167,19 @@ public class CommunityController {
     if (userId == null) {
       return "redirect:/Auth/Login.do";
     }
+
+    PostEntity entity = communityService.getPost(vo.getPostIndex());
+    if (entity == null) {
+      // 존재하지 않는 게시물은 삭제 불가
+      return "redirect:/community/getPostList.do";
+    }
     
     /**
      * 업로드된 파일 저장
      */
     MultipartFile file = vo.getFile();
-    String fileName = null;
-    String filePath = null;
+    String fileName = vo.getOriginalFileName();
+    String filePath = vo.getOriginalFilePath();
     if (file != null && file.getSize() > 0) {
       try {
         String realPath = servletContext.getRealPath(IMAGE_UPLOAD_DIR);
@@ -183,15 +198,13 @@ public class CommunityController {
       filePath = IMAGE_UPLOAD_DIR;
       fileName = file.getOriginalFilename();
     }
-    
+
+
     //JSP에서 입력된 값을 Entity에 세팅
-    PostEntity entity = PostEntity.builder()
-  	      .title(vo.getTitle())
-  	      .content(vo.getContent())
-  	      .carId(userId)
-  	      .fileName(fileName)
-  	      .filePath(filePath)
-  	      .build();
+    entity.setTitle(vo.getTitle());
+    entity.setContent(vo.getContent());
+    entity.setFileName(fileName);
+    entity.setFilePath(filePath);
 
     communityService.updatePost(entity);
 
@@ -218,6 +231,9 @@ public class CommunityController {
    */
   @PostMapping("/post/like.do")
   public ResponseEntity<PostLikeDto> like(HttpServletRequest request, Integer postIndex) {
+	  
+	  System.out.println("like 실행");  
+	  
     String userId = getCurrentUserId(request);
     if (getCurrentUserId(request) != null) {
       return ResponseEntity.ok(communityService.like(postIndex, userId));
@@ -228,6 +244,9 @@ public class CommunityController {
 
   @PostMapping("/post/unlike.do")
   public ResponseEntity<PostLikeDto> unlike(HttpServletRequest request, Integer postIndex) {
+	  
+	 System.out.println("unlike 실행"); 
+	  
     String userId = getCurrentUserId(request);
     if (getCurrentUserId(request) != null) {
       return ResponseEntity.ok(communityService.unlike(postIndex, userId));
@@ -341,6 +360,13 @@ public class CommunityController {
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(null);
     }
+  }
+
+  // 게시글 댓글 조회
+  @GetMapping("/post/comment/list.do")
+  public ResponseEntity<List<PostCommentDto>> commentList(HttpServletRequest request, Integer postIndex) {
+    List<PostCommentDto> dtoList = communityService.getPostCommentList(postIndex);
+    return ResponseEntity.ok(dtoList);
   }
 
 

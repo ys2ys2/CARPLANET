@@ -14,5 +14,6 @@ public class PostVO {
 	private String title;
 	private String content;
 	private MultipartFile file;
-	
+	private String originalFilePath;
+	private String originalFileName;
 }

@@ -50,59 +50,73 @@
 
     <!-- PRICE 섹션 -->
     <section id="price-section" class="section bg-white">
-        <div class="text-center">
-            <h2 class="zone-title">요금제</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="pricing-title">기본 요금제</h3>
-                    <p class="pricing-price">월 10,000원</p>
-                    <ul class="pricing-details">
-                        <li>기본 충전</li>
-                        <li>24/7 고객 지원</li>
-                    </ul>
-                    <button class="pricing-button">
-                        선택하기
-                    </button>
+        <div class="container">
+            <!-- Left Section -->
+            <div class="left-section">
+                <h5>우리지역 주유소 TOP10 </h5>
+                <h1>신뢰할 수 있는<br>데이터를 위한 공공데이터 사용!</h1>
+                <p>합리적인 비용 부담 없는 선택</p>
+                <div class="link-button">
+                    <span>CAR PLANET</span>
+                    <div class="circle"></div>
+                    <div class="arrow"></div>
+                </div>
+            </div>
+
+            <!-- Right Section (Cards) -->
+            <div class="right-section">
+                <div class="card member">
+                    <h4>정확한 위치 기반의 정보를 제공</h4>
+                    <div class="price-group">
+                        <div><span>현제 위치를 중점으로 가까운주차장,충전소,주유소 정보 제공</span></div>
+                    </div>
+                </div>
+                <div class="card non-member">
+                    <h4>커뮤니티 활성화로</h4>
+                    <div class="price-group">
+                        <span>사용자 간 추천과 신뢰도 높은 정보 교환</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
-    
     <!-- APP 섹션 -->
- <section id="app-section" class="section" style="background: #f4f4f4;">
-
+<section id="app-section" class="section">
     <div class="app-container">
         <!-- 텍스트 영역 -->
-        <div class="slider-container">
-             <!-- 검정 네모 박스와 슬라이더 -->
-        <div class="black-box"></div>
-            <div class="slider">
-                <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0101.png" alt="Slide 1"></div>
-                <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0202.png" alt="Slide 2"></div>
-                <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0303.png" alt="Slide 3"></div>
-                <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0404.png" alt="Slide 4"></div>
-            </div>
-        </div>
-    
         <div class="text-container">
-         
-            <h1>빠르고 편리한 주차장<br>충전소,주유소 찾기</h1>
+            <h1>빠르고 편리한 주차장<br>충전소, 주유소 찾기</h1>
             <p>
-                빠르고 간편하게 주차장,전기차 충전소,<br>
+                빠르고 간편하게 주차장, 전기차 충전소,<br>
                 지역별로 확인 가능한 저렴한 주유소 찾기,<br>
                 CAR PLANET 하나로 편리하게 이용하세요.
             </p>
-               <h3>CAR PLANET</h3>
-           
+            <h3>CAR PLANET</h3>
+        </div>
+
+        <!-- 슬라이더와 검정 박스 -->
+        <div class="slider-container">
+            <div class="black-box">
+            	<div class="phoneimg">
+               		<img src="${pageContext.request.contextPath}/resources/images/mobile_app_cover.png" alt="app">
+               	</div>
+                <div class="slider">
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0101.png" alt="Slide 1"></div>
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0202.png" alt="Slide 2"></div>
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0303.png" alt="Slide 3"></div>
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0404.png" alt="Slide 4"></div>
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0505.png" alt="Slide 5"></div>
+                    <div class="slide"><img src="${pageContext.request.contextPath}/resources/images/0606.png" alt="Slide 6"></div>
+                </div>
+            </div>
         </div>
     </div>
-
 </section>
 </div>
 
-<!-- 메인 스크립트 -->
-<script>
+    <!-- 메인 스크립트 -->
+    <script>
     //슬라이더 왼쪽영역에서 자동으로 슬라이드 설정
     document.addEventListener("DOMContentLoaded", function () {
         const slider = document.querySelector('.slider');
@@ -130,7 +144,7 @@
     }
 }
 
-//섹션 스크롤 슬라이드
+  //섹션 스크롤 슬라이드
     document.addEventListener("DOMContentLoaded", function () {
         const sections = document.querySelectorAll(".section"); // 모든 섹션 선택
         let currentIndex = 0; // 현재 활성화된 섹션 인덱스
@@ -180,12 +194,12 @@
                 }
             }
         });
-        
+
     });
 
     
 
-</script>
+    </script>
 
 </body>
 

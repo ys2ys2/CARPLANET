@@ -24,6 +24,8 @@
 			method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 			<c:if test="${post != null}">
 				<input type="hidden" name="postIndex" value="${post.postIndex}">
+                <input type="hidden" name="originalFilePath" value="${post.filePath}">
+                <input type="hidden" name="originalFileName" value="${post.fileName}">
 			</c:if>
 			<input id="form-title" name="title" type="text"
 				placeholder="제목을 입력해주세요" required
