@@ -38,6 +38,7 @@ body {
 .price-section.show {
     transform: translateX(0);
 }
+
 /* 중앙 텍스트 공통 스타일 */
 .container_icon {
     display: flex;
@@ -155,6 +156,8 @@ body {
     justify-content: space-between;
     width: 100%;
 }
+
+
 /* 전기차 충전소 */
 .ev-charging-container {
     width: 320px; /* 크기 줄임 */

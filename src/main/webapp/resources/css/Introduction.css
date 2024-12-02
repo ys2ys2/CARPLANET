@@ -21,6 +21,13 @@
     font-style: normal;
 }
 
+/*페이퍼로지  */
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
 
 /* 기본 설정 */
 /* 공통 스타일 */
@@ -31,7 +38,7 @@ body, html {
     color: white;
     background-color: #000; /* 배경색 검정 */
     width: 100%;
-    overflow-x: hidden; /* 가로 스크롤을 숨김 */
+    overflow: hidden; /* 가로 스크롤을 숨김 */
 }
 /* 전체 컨테이너 스타일 */
 .main-container {
@@ -94,7 +101,7 @@ body, html {
     text-align: center;
     max-width: 700px;
     margin: 0 auto 2rem auto;
-    font-family: 'GongGothicMedium';
+   font-family: 'Paperlogy-8ExtraBold';
 }
 
 /* 버튼 스타일 */
@@ -166,85 +173,239 @@ body, html {
     color: #ffffff;
 }
 
-/* APP 섹션 */
-#app-section {
+
+/* PRICE 섹션 스타일 */
+.container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background: #f4f4f4;
-    padding: 50px 0;
+    height: 100vh;
+    padding: 0 10vw;
+    background: linear-gradient(to left top, #f7f7f7 50%, transparent 50%);
 }
 
-/* 내부 컨테이너: 텍스트와 슬라이더 배치 */
+/* Left Section */
+.left-section {
+    width: 50%; /* 너비를 50%로 유지 */
+    padding: 40px; /* 내부 여백 설정 */
+    margin-top: 30px; /* 위쪽 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.left-section h5 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section h1 {
+    font-size: 35px;
+    font-weight: 700;
+    margin: 20px 0;
+     font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section p {
+    font-size: 19px;
+    color: #666;
+    margin-bottom: 30px;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    font-size: 18px;
+     font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button .circle {
+    width: 16px;
+    height: 16px;
+    background-color: #1FC0A0;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.link-button .arrow {
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    margin-left: 5px;
+}
+
+
+.right-section {
+    width: 50%; /* 너비를 50%로 유지 */
+    display: flex; /* 플렉스 박스 설정 */
+    gap: 20px; /* 카드 간격 설정 */
+    margin-top: 50px; /* 위쪽 여백 */
+    margin-bottom: 10px; /* 아래쪽 여백 */
+    margin-left: -20px; /* 왼쪽으로 20px 이동 */
+}
+
+.card {
+    flex: 1;
+    background-color: #161938;
+    border-radius: 20px;
+    color: white;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 350px; /* 기본 카드 너비 설정 */
+    height: 350px; /* 기본 카드 높이 설정 */
+}
+
+.card.member {
+    background-color: #1FC0A0;
+      width: 350px; /* 멤버 전용 카드의 너비를 더 크게 설정 */
+     height: 350px; /* 멤버 전용 카드의 높이를 더 크게 설정 */
+    padding: 50px; /* 내부 여백을 멤버 카드에서 더 크게 설정 */
+}
+
+.card h4 {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -30px; /* 위쪽 여백 */
+    margin-bottom: 50px; /* 아래쪽 여백 */
+     line-height: 1.5;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.price-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.price-group span {
+    font-size: 20px;
+    font-family: 'Paperlogy-8ExtraBold';
+     line-height: 1.8; /* 위아래 간격을 1.5배로 설정 */
+     
+}
+
+/* Bottom Text */
+.footer-note {
+    font-size: 18px;
+    color: #666;
+    text-align: right;
+    margin-top: 20px;
+}
+
+
+/* APP 섹션 */
+/* APP 섹션 전체 */
+#app-section {
+    background: #f4f4f4;
+    padding: 50px 0;
+    position: relative; /* 배경 사선 라인을 위한 상대 위치 */
+    overflow: hidden;
+}
+
+/* 사선 배경 라인 */
+#app-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+    z-index: 1; /* 컨텐츠 위로 올라오지 않게 설정 */
+}
+
+/* 내부 컨테이너 */
 .app-container {
     display: flex;
-    justify-content: flex-end; /* 텍스트와 슬라이더를 오른쪽으로 배치 */
+    justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto; /* 가운데 정렬 */
-}
-
-
-/* 검정 네모 박스 */
-.black-box {
-    width: 60%;
-    height: 500px;
-    background-color: #000;
-    margin-bottom: 20px;
-    margin-left: auto; /* 오른쪽 정렬 */
-    margin-right: 0;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2; /* 배경보다 위에 위치 */
 }
 
 /* 슬라이더 컨테이너 */
 .slider-container {
     flex: 1;
-    max-width: 50%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    position: relative; /* 상대 위치 */
-    overflow: hidden; /* 슬라이더가 검정 박스를 벗어나지 않도록 */
+}
+/* 검정 네모 박스 */
+.black-box {
+    width: 700px;
+    height: 400px;
+    background-color: transparent;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 /* 슬라이더 */
 .slider {
     display: flex;
-    transition: transform 0.5s ease-in-out;
-    position: absolute;
-    left: 0;
+    width: 100%;
+    animation: slideAnimation 12s infinite;
 }
 
-/* 슬라이드 이미지 */
+/* 슬라이드 */
 .slide {
-    min-width: 100%;
+    height: 350px;
+    flex: 0 0 calc(33.33% - 20px); /* 각 슬라이드가 검정 박스의 33.33%에서 20px 여백을 뺀 크기 */
+    margin-right: 20px; /* 슬라이드들 사이에 20px의 여백 추가 */
+}
+
+.slide:last-child {
+    margin-right: 0; /* 마지막 슬라이드에 여백 없애기 */
 }
 
 .slide img {
-    width: 280px;
-    height: 380px;
+    width: 90%; /* 이미지 너비를 검정 박스에 맞추기 */
+    height: 100%;
+    object-fit: cover; /* 이미지가 박스를 꽉 채우도록 */
+    border-radius: 10px; /* 이미지 모서리를 10px로 둥글게 만들기 */
+}
+
+/* 모바일 이미지 */
+.phoneimg {
+    height: 555px;
+    position: absolute;
+    bottom: -77px;
+    left: -40px;
+    z-index: 2;
+}
+
+.phoneimg img {
+    height: 100%;
+    object-fit: contain;
 }
 
 /* 슬라이더 애니메이션 */
 @keyframes slideAnimation {
     0% { transform: translateX(0); }
-    25% { transform: translateX(-100%); }
-    50% { transform: translateX(-200%); }
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(0); }
+    33.33% { transform: translateX(-33.33%); } /* 첫 번째 슬라이드에서 두 번째로 이동 */
+    66.66% { transform: translateX(-66.66%); } /* 두 번째 슬라이드에서 세 번째로 이동 */
+    100% { transform: translateX(-100%); } /* 세 번째 슬라이드로 이동 */
 }
-
-.slider {
-    animation: slideAnimation 12s infinite;
-}
-
-/* 텍스트 영역: 오른쪽 정렬 */
+/* 텍스트 영역 */
 .text-container {
     flex: 1;
     max-width: 45%;
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-    padding-right: 20px; /* 오른쪽 여백 추가 */
-    margin-left: 80px; /* 오른쪽으로 50px 이동 */
+    text-align: left;
+    margin-left: 35px; /* 왼쪽 끝으로 이동 */
+   
 }
 
 .text-container h3 {
@@ -267,69 +428,6 @@ body, html {
     font-family: 'GongGothicMedium';
 }
 
-
-
-
-/* PRICE 섹션 스타일 */
-#price-section {
-    background-color: white;
-    text-align: center;
-}
-
-#price-section h2 {
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-}
-
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
-    gap: 20px;
-}
-
-.pricing-card {
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-}
-
-.pricing-card h3 {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.pricing-card p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.pricing-card ul {
-    font-size: 1.2rem;
-    list-style-type: disc;
-    padding-left: 20px;
-    text-align: left;
-}
-
-.pricing-card button {
-    margin-top: 30px;
-    padding: 15px 30px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.pricing-card button:hover {
-    background-color: #0056b3;
-}
-
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     #app-section {
@@ -341,3 +439,6 @@ body, html {
         text-align: center;
     }
 }
+
+
+

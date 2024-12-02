@@ -1,8 +1,10 @@
+@charset "UTF-8";
+
 /* 모달 스타일 */
 .modal {
     display: none; /* 기본적으로 모달 숨김 */
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
@@ -21,6 +23,7 @@
     position: relative;
     border-radius: 15px; /* 전체 모서리를 둥글게 설정 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+     margin-left: 120px; /* 모달 콘텐츠 왼쪽으로 이동 */
 }
 
 /* 챗봇 헤더 */
@@ -142,6 +145,7 @@
     background-color: #f1f1f1;
     margin-right: 10px;
     font-size: 14px;
+    pointer-events: auto; /* 클릭이 가능하도록 설정 */
 }
 
 .chat-input button {

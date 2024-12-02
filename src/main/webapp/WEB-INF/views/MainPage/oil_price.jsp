@@ -49,7 +49,7 @@
 <!-- 전국 평균 유가 정보 및 그래프 -->
 <div class="price-section">
   <h1 class="section-title">
-    <span class="black-text">오늘의</span> 
+    <span class="black-text">일주일</span> 
     <span class="blue-text">평균 유가</span>
 </h1>
     
@@ -89,7 +89,7 @@
     <script>
     
     async function loadOilStations(areaCode) {
-    	alert("loadOilStations 실행");
+    	
         try {
             // JSON 데이터를 가져오기
             const response = await fetch('./getOilStations/'+areaCode); // 서버에서 데이터를 제공하는 엔드포인트
@@ -160,7 +160,7 @@
             // 7일간의 날짜 배열 생성
             for (let i = 0; i <= 6; i++) {
                 const targetDate = new Date(now); // 새로 복사한 날짜 객체
-                targetDate.setDate(now.getDate() - (6 - i)); // 오늘 날짜에서 6-i일을 빼서 계산
+                targetDate.setDate(now.getDate() - (8 - i)); // 오늘 날짜에서 6-i일을 빼서 계산
 
                 const month = targetDate.getMonth() + 1; // 월 (0부터 시작하므로 +1)
                 const day = targetDate.getDate();      // 일
