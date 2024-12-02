@@ -88,7 +88,8 @@
 		    <option value="부산광역시">부산광역시</option> -->
 		    <!-- 다른 지역 옵션 추가 -->
 			</select>
-              <select id="city-select">
+			
+              <select id="city-select" class="city-select">
             <option value="">시/구/군 선택</option>
             <!-- <option value="강남구">강남구</option>
             <option value="해운대구">해운대구</option> -->
@@ -104,7 +105,7 @@
         </div>
 
 
-        <div id="route" class="tab-content" style="display:none;">
+        <div id="route" class="tab-content-route" style="display:none;">
         
         <!-- 출발지와 도착지 입력 -->
     	<div class="route-search">
