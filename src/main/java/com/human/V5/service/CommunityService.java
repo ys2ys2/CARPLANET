@@ -27,5 +27,6 @@ public interface CommunityService {
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
 	List<PostEntity> getMyPostEntities(String carId, Pageable pageable);
+	List<PostCommentDto> getPostCommentList(Integer postIndex);
 	
 }
