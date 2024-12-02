@@ -292,6 +292,7 @@ option[disabled] {
 /* 커뮤니티 링크 스타일 */
 .community-links {
     margin-bottom: 20px;
+    padding-left: 10px;
 }
 
 .community-links ul {
@@ -300,13 +301,27 @@ option[disabled] {
 }
 
 .community-links li {
-    margin-bottom: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .community-links a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+}
+
+.community-title {
+	
+}
+.community-title:hover {
+	color: #2b7cd3;
+}
+
+.community-date {
+	font-size: 13px;
+	font-family: 'Pretendard-Regular';
 }
 
 /* 커뮤니티 글 수정하기 버튼 스타일 */

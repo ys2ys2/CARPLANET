@@ -1,25 +1,32 @@
 package com.human.V5.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.human.V5.entity.PostEntity;
 import com.human.V5.entity.UserEntity;
+import com.human.V5.service.CommunityService;
 import com.human.V5.service.myPageService;
 
-import lombok.AllArgsConstructor;
-
 @Controller
-@AllArgsConstructor
 public class MainController {
 	
 	private myPageService mps;
-
+	@Autowired
+	private CommunityService communityService;
+	
     // 메인 페이지
     @GetMapping("/") 
     public String home() {
@@ -42,14 +49,50 @@ public class MainController {
     
 
     // 마이페이지
+	/*
+	 * @GetMapping("/mypage") public String myPage(HttpServletRequest request) {
+	 * UserEntity userId = getCurrentUser(request); if (userId == null) { return
+	 * "redirect:/Auth/Login.do"; // 로그인되지 않은 경우 로그인 페이지로 리다이렉트 } return
+	 * "MyPage/mypage"; // 로그인된 경우 마이페이지로 이동 }
+	 */
+    
+    // 마이페이지
     @GetMapping("/mypage")
-    public String myPage(HttpServletRequest request) {
-    	UserEntity userId = getCurrentUser(request);
-        if (userId == null) {
-            return "redirect:/Auth/Login.do"; // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+    public ModelAndView myPage(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+
+        // 세션에서 사용자 정보 가져오기
+        UserEntity user = getCurrentUser(request);
+        if (user == null) {
+            mav.setViewName("redirect:/Auth/Login.do"); // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+            return mav;
         }
-        return "MyPage/mypage"; // 로그인된 경우 마이페이지로 이동
+
+        String carId = user.getCarId();
+
+        Pageable pageable = PageRequest.of(0, 10); // 한 페이지당 10개
+        List<PostEntity> myPosts;
+
+        try {
+            // communityService 인스턴스를 통해 호출
+            myPosts = communityService.getMyPostEntities(carId, pageable);
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+            mav.addObject("error", "게시글을 불러오는 중 문제가 발생했습니다.");
+            mav.setViewName("error/errorPage"); // 에러 페이지로 이동
+            return mav;
+        }
+
+        // 마이페이지와 커뮤니티 게시글 데이터를 모델에 추가
+        mav.addObject("myPosts", myPosts);
+        mav.addObject("user", user);
+
+        mav.setViewName("MyPage/mypage"); // 마이페이지로 이동
+        return mav;
     }
+
+
 
     private UserEntity getCurrentUser(HttpServletRequest request) {
         // 세션에서 UserEntity 가져오기

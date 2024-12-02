@@ -6,14 +6,17 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +30,7 @@ import com.human.V5.entity.UserEntity;
 import com.human.V5.service.CommunityService;
 import com.human.V5.vo.PostCommentVO;
 import com.human.V5.vo.PostVO;
+import com.human.V5.vo.UserVO;
 
 import lombok.AllArgsConstructor;
 
@@ -38,6 +42,7 @@ public class CommunityController {
   private CommunityService communityService;
   private final ServletContext servletContext;
   private final static String IMAGE_UPLOAD_DIR = "/resources/images/community/";
+  
  
   
 
@@ -347,4 +352,14 @@ public class CommunityController {
       return null;
     }
   }
+  
+
+
+
+  
+  
+  
+  
+  
+  
 }

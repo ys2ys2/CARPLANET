@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,15 +70,27 @@
     <div class="community-section">
         <h4>나의 커뮤니티 관리</h4>
         <div class="community-links">
-            <ul>
-                <!-- 예시 커뮤니티 글 링크 -->
-                <li><a href="https://example.com/community-post-1" target="_blank"></a></li>
-                <li><a href="https://example.com/community-post-2" target="_blank"></a></li>
-                <li><a href="https://example.com/community-post-3" target="_blank"></a></li>
+	        <ul>
+                <!-- myPosts 리스트를 반복하며 게시글 출력 -->
+                <c:forEach var="post" items="${myPosts}">
+                    <li>
+                    <a href="${pageContext.request.contextPath}/community/getPostList.do">
+		                <span class="community-title">제목 : ${post.title}</span>
+		            </a>
+		                <span class="community-date">
+		                	<fmt:formatDate value="${post.regDate}" pattern="yy-MM-dd HH:mm" />
+		                </span>
+		                <%-- <span>내용: ${post.content}</span> --%>
+                    
+                    </li>
+                </c:forEach>
             </ul>
+            <c:if test="${empty myPosts}">
+		        <p>작성한 게시글이 없습니다.</p>
+		    </c:if>
         </div>
         <!-- 커뮤니티 글 수정 버튼 -->
-        <a href="${pageContext.request.contextPath}/communityEditPage.jsp" class="edit-community-posts-btn">커뮤니티 글 수정하기</a>
+        <a href="${pageContext.request.contextPath}/community/post.do" class="edit-community-posts-btn">커뮤니티 글 작성하기</a>
     </div>
 </div>
 
