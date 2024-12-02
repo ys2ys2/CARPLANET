@@ -1,5 +1,6 @@
 package com.human.V5.service;
 
+import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostLikeDto;
 import com.human.V5.entity.PostCommentEntity;
 import com.human.V5.entity.PostEntity;
@@ -14,7 +15,7 @@ public interface CommunityService {
 	PostEntity getPost(Integer postIndex);
 	List<PostDto> getPostDto(Integer postIndex);
 	List<PostDto> getPostList(Pageable pageable);
-	List<PostDto> searchPostList(Pageable pageable, String keyword);
+	List<PostDto> searchPostList(Pageable pageable, String keyword, Integer postIndex);
 	List<PostDto> getRecommendedPostList();
 	PostLikeDto like(Integer postIndex, String carId);
 	PostLikeDto unlike(Integer postIndex, String carId);
@@ -24,5 +25,5 @@ public interface CommunityService {
 	Integer commentLike(Integer postCommentIndex, String carId);
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
-	
+	List<PostCommentDto> getPostCommentList(Integer postIndex);
 }

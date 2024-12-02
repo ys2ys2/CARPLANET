@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,10 +73,17 @@ public class CommunityServiceImpl implements CommunityService {
    */
   @Transactional
   @Override
-  public List<PostDto> searchPostList(Pageable pageable, String keyword) {
-    String searchKeyword = "%" + keyword + "%";
-    List<PostEntity> postList = postRepository.findAllByTitleLikeOrContentLikeOrderByRegDateDesc(searchKeyword, searchKeyword, pageable).getContent();
-    postSearchLogRepository.save(PostSearchLogEntity.builder().keyword(keyword).build());
+  public List<PostDto> searchPostList(Pageable pageable, String keyword, Integer postIndex) {
+    List<PostEntity> postList = new ArrayList<>();
+
+    if(postIndex != null){
+      postList = postRepository.findAllById(Arrays.asList(new Integer[]{postIndex}));
+    } else {
+      String searchKeyword = "%" + keyword + "%";
+      postList = postRepository.findAllByTitleLikeOrContentLikeOrderByRegDateDesc(searchKeyword, searchKeyword, pageable).getContent();
+      postSearchLogRepository.save(PostSearchLogEntity.builder().keyword(keyword).build());
+    }
+
     return convertPostDto(postList);
   }
 
@@ -88,21 +96,14 @@ public class CommunityServiceImpl implements CommunityService {
     List<PostEntity> postList = postRepository.findRecommendedPosts();
     return convertPostDto(postList);
   }
-
+  
+  
   @Transactional
   @Override
   public PostLikeDto like(Integer postIndex, String carId) {
-    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
-    PostLikeEntity like = likeAndUnlike.stream()
-            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
-    PostLikeEntity unlike = likeAndUnlike.stream()
-            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
+    PostLikeEntity likeAndUnlike = postLikeRepository.findByPostIndexAndCarId(postIndex, carId);
 
-    if (like == null) {
+    if (likeAndUnlike == null) { //회원의 게시글에 대한 데이터가 없는 경우에는 데이터 추가
       PostLikeEntity newLike = PostLikeEntity.builder()
         .postIndex(postIndex)
         .type(true)
@@ -110,11 +111,13 @@ public class CommunityServiceImpl implements CommunityService {
         .build();
 
       postLikeRepository.save(newLike);
-      if (unlike != null) {
-        postLikeRepository.deleteById(unlike.getPostLikeIndex());
+
+    } else {//회원의 게시글에 대한 데이터가 있는 경우
+      if (!likeAndUnlike.getType()) {//데이터가 싫어요인 경우
+        postLikeRepository.udpateType(likeAndUnlike.getPostIndex(), true);//기존의 데이터의 싫어요를 좋아요로 변경
+      } else { // 좋아요 취소
+        postLikeRepository.deleteById(likeAndUnlike.getPostLikeIndex());
       }
-    } else {
-      postLikeRepository.deleteById(like.getPostLikeIndex());
     }
 
     PostLikeDto postLikeDto = new PostLikeDto();
@@ -123,21 +126,13 @@ public class CommunityServiceImpl implements CommunityService {
     postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
     return postLikeDto;
   }
-
+  
   @Transactional
   @Override
   public PostLikeDto unlike(Integer postIndex, String carId) {
-    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
-    PostLikeEntity like = likeAndUnlike.stream()
-            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
-    PostLikeEntity unlike = likeAndUnlike.stream()
-            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
+    PostLikeEntity likeAndUnlike = postLikeRepository.findByPostIndexAndCarId(postIndex, carId);
 
-    if (unlike == null) {
+    if (likeAndUnlike == null) {//회원의 게시글에 대한 데이터가 없는 경우에는 데이터 추가
       PostLikeEntity newUnlike = PostLikeEntity.builder()
         .postIndex(postIndex)
         .type(false)
@@ -146,11 +141,12 @@ public class CommunityServiceImpl implements CommunityService {
 
       postLikeRepository.save(newUnlike);
 
-      if (like != null) {
-        postLikeRepository.deleteById(like.getPostLikeIndex());
+    } else {//회원의 게시글에 대한 데이터가 있는 경우
+      if (likeAndUnlike.getType()) {//데이터가 좋아요인 경우
+        postLikeRepository.udpateType(likeAndUnlike.getPostIndex(), false);//기존의 데이터의 좋아요를 싫어요로 변경
+      } else { // 싫어요 취소
+        postLikeRepository.deleteById(likeAndUnlike.getPostLikeIndex());
       }
-    } else {
-      postLikeRepository.deleteById(unlike.getPostLikeIndex());
     }
 
     PostLikeDto postLikeDto = new PostLikeDto();
@@ -159,6 +155,78 @@ public class CommunityServiceImpl implements CommunityService {
     postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
     return postLikeDto;
   }
+  
+
+//  @Transactional
+//  @Override
+//  public PostLikeDto like(Integer postIndex, String carId) {
+//    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
+//    PostLikeEntity like = likeAndUnlike.stream()
+//            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//    PostLikeEntity unlike = likeAndUnlike.stream()
+//            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//
+//    if (like == null) {
+//      PostLikeEntity newLike = PostLikeEntity.builder()
+//        .postIndex(postIndex)
+//        .type(true)
+//        .carId(carId)
+//        .build();
+//
+//      postLikeRepository.save(newLike);
+//      if (unlike != null) {
+//        postLikeRepository.deleteById(unlike.getPostLikeIndex());
+//      }
+//    } else {
+//      postLikeRepository.deleteById(like.getPostLikeIndex());
+//    }
+//
+//    PostLikeDto postLikeDto = new PostLikeDto();
+//    postLikeDto.setPostIndex(postIndex);
+//    postLikeDto.setLikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, true));
+//    postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
+//    return postLikeDto;
+//  }
+
+//  @Transactional
+//  @Override
+//  public PostLikeDto unlike(Integer postIndex, String carId) {
+//    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
+//    PostLikeEntity like = likeAndUnlike.stream()
+//            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//    PostLikeEntity unlike = likeAndUnlike.stream()
+//            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//
+//    if (unlike == null) {
+//      PostLikeEntity newUnlike = PostLikeEntity.builder()
+//        .postIndex(postIndex)
+//        .type(false)
+//        .carId(carId)
+//        .build();
+//
+//      postLikeRepository.save(newUnlike);
+//
+//      if (like != null) {
+//        postLikeRepository.deleteById(like.getPostLikeIndex());
+//      }
+//    } else {
+//      postLikeRepository.deleteById(unlike.getPostLikeIndex());
+//    }
+//
+//    PostLikeDto postLikeDto = new PostLikeDto();
+//    postLikeDto.setPostIndex(postIndex);
+//    postLikeDto.setLikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, true));
+//    postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
+//    return postLikeDto;
+//  }
 
   @Transactional
   @Override
@@ -259,12 +327,13 @@ public class CommunityServiceImpl implements CommunityService {
       });
     });
 
-	/*
-	 * List<UserEntity> users = userRepository.findAllByCarIdIn(new
-	 * ArrayList<>(carIdSet)); Map<String, String> userNickNameMap = new
-	 * HashMap<>(); users.forEach(userEntity -> {
-	 * userNickNameMap.put(userEntity.getCarId(), userEntity.getCarNickname()); });
-	 */
+
+    Map<String, String> userNickNameMap = new HashMap<>();
+    carIdSet.forEach(carId -> {
+      UserEntity user = userRepository.findByCarId(carId);
+      userNickNameMap.put(user.getCarId(), user.getCarNickname());
+    });
+
 
     Map<Integer, List<PostLikeEntity>> postLikes = postLikeRepository.findAllByPostIndexIn(
       postIndexes).stream().collect(
@@ -300,12 +369,11 @@ public class CommunityServiceImpl implements CommunityService {
             commentUnlikeCount = (int) postCommentLikeList.stream().filter(obj -> obj.getType() == false).count();
           }
 
-
           PostCommentDto commentDto = new PostCommentDto();
           commentDto.setPostCommentIndex(c.getPostCommentIndex());
           commentDto.setPostIndex(c.getPostIndex());
           commentDto.setContent(c.getContent());
-		/* commentDto.setCarId(userNickNameMap.get(c.getCarId())); */
+		  commentDto.setCarId(userNickNameMap.get(c.getCarId()));
           commentDto.setLikeCount(commentLikeCount);
           commentDto.setUnlikeCount(commentUnlikeCount);
           commentDto.setRegDate(c.getRegDate());
@@ -321,7 +389,7 @@ public class CommunityServiceImpl implements CommunityService {
       dto.setContent(p.getContent());
       dto.setFilePath(p.getFilePath());
       dto.setFileName(p.getFileName());
-	/* dto.setCarId(userNickNameMap.get(p.getCarId())); */
+	  dto.setCarId(userNickNameMap.get(p.getCarId()));
       dto.setLikeCount(likeCount);
       dto.setUnlikeCount(unlikeCount);
       dto.setComments(comments);
@@ -329,5 +397,23 @@ public class CommunityServiceImpl implements CommunityService {
       dto.setModDate(p.getModDate());
       return dto;
     }).collect(Collectors.toList());
+  }
+
+  public List<PostCommentDto> getPostCommentList(Integer postIndex) {
+    List<Object[]> list = postCommentRepository.findAllByPostIndex(postIndex);
+    List<PostCommentDto> comments = list.stream().map(e -> {
+      PostCommentDto postCommentDto = new PostCommentDto();
+      postCommentDto.setPostCommentIndex(Integer.parseInt(String.valueOf(e[0])));
+      postCommentDto.setCarId(String.valueOf(e[1]));
+      postCommentDto.setContent(String.valueOf(e[2]));
+      postCommentDto.setModDate((Date) e[3]);
+      postCommentDto.setPostIndex(Integer.parseInt(String.valueOf(e[4])));
+      postCommentDto.setRegDate((Date) e[5]);
+      postCommentDto.setLikeCount(Integer.parseInt(String.valueOf(e[6])));
+      postCommentDto.setUnlikeCount(Integer.parseInt(String.valueOf(e[7])));
+      return postCommentDto;
+    }).collect(Collectors.toList());
+
+    return comments;
   }
 }
