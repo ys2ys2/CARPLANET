@@ -44,7 +44,7 @@ html, body {
 	display:flex;
 	justify-content:center;
 	align-items:center;
-	background-color: #161938;
+	background-color: #007bff;
 	font-size:20px;
 	color:white;
 	padding: 20px 0;
@@ -79,7 +79,7 @@ html, body {
 }
 
 button {
-    background-color: #161938; 
+    background-color: #007bff; 
     color: white; 
     border: none; 
     padding: 10px 20px; 
