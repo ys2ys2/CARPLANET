@@ -429,16 +429,621 @@ body, html {
 }
 
 /* 반응형 디자인 */
-@media (max-width: 768px) {
-    #app-section {
-        grid-template-columns: 1fr; /* 모바일에서는 세로 정렬 */
-        text-align: center;
-    }
 
-    .app-description {
-        text-align: center;
-    }
+/* 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+
+/* Left Section */
+.left-section {
+    width: 50%; /* 너비를 50%로 유지 */
+    padding: 40px; /* 내부 여백 설정 */
+    margin-top: 30px; /* 위쪽 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.left-section h5 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section h1 {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 20px 0;
+     font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section p {
+    font-size: 19px;
+    color: #666;
+    margin-bottom: 30px;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    font-size: 18px;
+     font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section h5,
+.left-section h1,
+.left-section p,
+.link-button {
+    margin-left: -80px; /* 왼쪽으로 20px 이동 */
+}
+
+.link-button .circle {
+    width: 16px;
+    height: 16px;
+    background-color: #1FC0A0;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.link-button .arrow {
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    margin-left: 5px;
 }
 
 
+.right-section {
+    width: 55%; /* 너비를 50%로 유지 */
+    display: flex; /* 플렉스 박스 설정 */
+    gap: 20px; /* 카드 간격 설정 */
+    margin-top: 50px; /* 위쪽 여백 */
+    margin-bottom: 10px; /* 아래쪽 여백 */
+    margin-left: -150px; /* 왼쪽으로 20px 이동 */
+}
+
+.card {
+    flex: 1;
+    background-color: #161938;
+    border-radius: 20px;
+    color: white;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 350px; /* 기본 카드 너비 설정 */
+    height: 350px; /* 기본 카드 높이 설정 */
+}
+
+.card.member {
+    background-color: #1FC0A0;
+      width: 350px; /* 멤버 전용 카드의 너비를 더 크게 설정 */
+     height: 350px; /* 멤버 전용 카드의 높이를 더 크게 설정 */
+    padding: 50px; /* 내부 여백을 멤버 카드에서 더 크게 설정 */
+}
+
+.card h4 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -30px; /* 위쪽 여백 */
+    margin-bottom: 50px; /* 아래쪽 여백 */
+     line-height: 1.5;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.price-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.price-group span {
+    font-size: 20px;
+    font-family: 'Paperlogy-8ExtraBold';
+     line-height: 1.8; /* 위아래 간격을 1.5배로 설정 */
+     
+}
+
+/* Bottom Text */
+.footer-note {
+    font-size: 18px;
+    color: #666;
+    text-align: right;
+    margin-top: 20px;
+}
+	
+	
+	.text-container h1 {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.4;
+     color: #333;
+     font-family: 'GongGothicMedium';
+}
+}
+
+
+
+/* 768px 이하 화면 크기에서 적용될 스타일 */
+@media (max-width: 768px) {
+.zone-title {
+        font-size: 2rem; /* 제목 크기 축소 */
+        text-align: left; /* 왼쪽 정렬 */
+        margin-left: -100px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .zone-description {
+        font-size: 1rem; /* 설명 크기 축소 */
+        max-width: 90%; /* 최대 너비 조정 */
+        margin: 0 auto 1rem auto;
+        text-align: left; /* 왼쪽 정렬 */
+        margin-left: -100px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .cta-button {
+        padding: 0.6rem 1.5rem; /* 버튼 크기 축소 */
+        font-size: 0.9rem;
+        text-align: left; /* 왼쪽 정렬 */
+         margin-left: -400px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .box {
+        width: 20%; /* 박스 너비 100%로 조정 */
+        margin-top: 10px; /* 위쪽 여백 조정 */
+    }
+
+    .content-left {
+        text-align: center; /* 왼쪽 정렬에서 가운데 정렬로 변경 */
+        margin-left: 0; /* 왼쪽 여백 초기화 */
+    }
+
+    .box-container {
+        gap: 1rem; /* 박스 간격 좁히기 */
+    }
+    
+.box-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #00E9FF;
+}
+
+/* PRICE 섹션 스타일 */
+/* Left Section */
+
+.left-section {
+    width: 100%; /* 너비를 100%로 설정 */
+    padding: 20px; /* 내부 여백 설정 */
+    margin-top: 20px; /* 위쪽 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.left-section h5 {
+    font-size: 14px; /* 제목 크기 축소 */
+    font-weight: 400;
+    color: #333;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.left-section h1 {
+    font-size: 24px; /* 제목 크기 축소 */
+    font-weight: 700;
+
+    font-family: 'Paperlogy-8ExtraBold';
+     margin-left: -80px; /* 왼쪽으로 20px 이동 */
+}
+
+.left-section p {
+    font-size: 16px; /* 본문 크기 축소 */
+    color: #666;
+    margin-bottom: 20px;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px; /* 버튼 크기 축소 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button .circle {
+    width: 14px;
+    height: 14px;
+    background-color: #1FC0A0;
+    border-radius: 50%;
+    margin-left: 8px; /* 여백을 줄임 */
+}
+
+.link-button .arrow {
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    width: 8px; /* 크기 축소 */
+    height: 8px; /* 크기 축소 */
+    transform: rotate(45deg);
+    margin-left: 4px; /* 여백을 줄임 */
+}
+
+/* Right Section */
+.right-section {
+    width: 100%; /* 너비를 100%로 설정 */
+    display: flex; /* 플렉스 박스 설정 */
+    gap: 10px; /* 카드 간격 줄이기 */
+    margin-top: 30px; /* 위쪽 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+    margin-left: 0; /* 왼쪽 이동을 없앰 */
+    justify-content: center; /* 카드들이 중앙 정렬되도록 설정 */
+}
+
+.card {
+    flex: 1;
+    background-color: #161938;
+    border-radius: 20px;
+    color: white;
+    padding: 20px; /* 내부 여백 축소 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%; /* 카드 너비를 100%로 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
+    height: 300px; /* 카드 높이 자동 조정 */
+}
+
+.card.member {
+    background-color: #1FC0A0;
+    max-width: 300px; /* 최대 너비 설정 */
+    height: auto; /* 카드 높이 자동 조정 */
+    padding: 20px; /* 내부 여백 축소 */
+}
+
+.card h4 {
+    font-size: 18px; /* 제목 크기 축소 */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0; /* 위쪽 여백 제거 */
+    margin-bottom: 30px; /* 아래쪽 여백 축소 */
+    line-height: 1.5;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.price-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px; /* 간격 축소 */
+}
+
+.price-group span {
+    font-size: 18px; /* 가격 폰트 크기 축소 */
+    font-family: 'Paperlogy-8ExtraBold';
+    line-height: 1.8;
+}
+
+/* Bottom Text */
+.footer-note {
+    font-size: 16px; /* 글씨 크기 축소 */
+    color: #666;
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* 내부 컨테이너 */
+.app-container {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2; /* 배경보다 위에 위치 */
+}
+
+/* 슬라이더 컨테이너 */
+.slider-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2; /* 슬라이더를 아래로 배치 */
+}
+
+/* 텍스트 영역 */
+.text-container {
+    flex: none; /* 텍스트가 자리를 차지하도록 */
+    max-width: 45%;
+    text-align: left;
+    margin-left: 40px; /* 왼쪽 끝으로 완전히 이동 */
+    margin-right: auto; /* 오른쪽 여백 자동으로 설정 */
+    order: 1; /* 텍스트를 첫 번째로 배치 */
+}
+
+.text-container h3 {
+    font-size: 25px;
+    color: #00c4cc;
+    font-family: 'GongGothicMedium';
+}
+
+.text-container h1 {
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: #333;
+    font-family: 'GongGothicMedium';
+}
+
+.text-container p {
+    font-size: 16px;
+    color: #555;
+    font-family: 'GongGothicMedium';
+}
+
+}
+
+/* 초소형 화면 (425px 이하) */
+@media (max-width: 425px) {
+	.zone-title {
+        font-size: 1.5rem; /* 제목 크기 축소 */
+        text-align: left; /* 왼쪽 정렬 */
+        margin-left: 10px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .zone-description {
+        font-size: 0.7rem; /* 설명 크기 축소 */
+        max-width: 90%; /* 최대 너비 조정 */
+        margin: 0 auto 1rem auto;
+        text-align: left; /* 왼쪽 정렬 */
+        margin-left: 10px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .cta-button {
+        padding: 0.5rem 1.5rem; /* 버튼 크기 축소 */
+        font-size: 0.7rem;
+        text-align: left; /* 왼쪽 정렬 */
+         margin-left: -150px; /* 왼쪽으로 10px 이동 */
+    }
+
+    .box {
+        width: 15%; /* 박스 너비 100%로 조정 */
+        margin-top: 10px; /* 위쪽 여백 조정 */
+    }
+
+    .content-left {
+        text-align: center; /* 왼쪽 정렬에서 가운데 정렬로 변경 */
+        margin-left: 0; /* 왼쪽 여백 초기화 */
+    }
+
+    .box-container {
+        gap: 0.5rem; /* 박스 간격 좁히기 */
+    }
+    
+.box-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #00E9FF;
+}
+	.box-description {
+    font-size: 0.5rem;
+    line-height: 1.5;
+    color: #ffffff;
+}
+
+/* PRICE 섹션 스타일 */
+/* Left Section */
+.left-section {
+    position: relative; /* 부모 컨테이너 기준으로 위치 지정 */
+    top: -500px; /* 텍스트를 위로 이동 */
+    left: 180px; /* 왼쪽으로 정렬 */
+    width: 100%; /* 전체 너비 */
+    max-width: none; /* 너비 제한 해제 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    padding: 10px; /* 내부 여백 축소 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    text-overflow: ellipsis; /* 넘친 텍스트를 말줄임표로 표시 */
+}
+
+
+.left-section h5 {
+    font-size: 14px; /* 제목 크기 축소 */
+    font-weight: 400;
+    color: #333;
+    font-family: 'Paperlogy-8ExtraBold';
+    margin-bottom: 5px; /* 아래쪽 여백 축소 */
+}
+
+.left-section h1 {
+    font-size: 20px; /* 제목 크기 축소 */
+    font-weight: 700;
+    font-family: 'Paperlogy-8ExtraBold';
+    margin-bottom: 10px; /* 아래쪽 여백 */
+}
+
+.left-section p {
+    font-size: 14px; /* 본문 크기 축소 */
+    color: #666;
+    margin-bottom: 15px;
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+/* 버튼 스타일 */
+.link-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px; /* 버튼 크기 축소 */
+    font-family: 'Paperlogy-8ExtraBold';
+}
+
+.link-button .circle {
+    width: 12px;
+    height: 12px;
+    background-color: #1FC0A0;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.link-button .arrow {
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    margin-left: 4px;
+}
+
+  #price-section {
+        position: relative;
+    }
+
+    .left-section {
+        top: -250px; /* 더 위로 이동 */
+        padding: 5px;
+    }
+
+    .left-section h1 {
+        font-size: 18px; /* 더 작은 화면용 크기 */
+    }
+
+    .right-section {
+        margin-top: 50px; /* 아래로 여백 추가 */
+    }
+
+/* 기본 카드 스타일 */
+.card {
+    flex: 1;
+    background-color: #161938;
+    border-radius: 20px;
+    color: white;
+    padding: 20px; /* 내부 여백 축소 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 150px; /* 카드 너비 동일하게 설정 */
+    height: 300px; /* 카드 높이 동일하게 설정 */
+    transform: translateX(-70px) translateY(50px); /* 왼쪽으로 70px, 아래로 50px 이동 */
+}
+
+/* 멤버 전용 카드 스타일 */
+.card.member {
+    background-color: #1FC0A0;
+    width: 150px; /* 멤버 전용 카드의 너비 동일하게 설정 */
+    height: 300px; /* 멤버 전용 카드의 높이 동일하게 설정 */
+    padding: 20px; /* 내부 여백을 기본 카드와 동일하게 설정 */
+}
+
+
+/* 텍스트 영역 */
+.text-container {
+    flex: none; /* 텍스트가 자리를 차지하도록 */
+    max-width: 45%;
+    text-align: left;
+    margin-left: 40px; /* 왼쪽 끝으로 완전히 이동 */
+    margin-right: auto; /* 오른쪽 여백 자동으로 설정 */
+    order: 1; /* 텍스트를 첫 번째로 배치 */
+      transform: translateY(-50px); /* 위로 100px 올리기 */
+}
+
+.text-container h3 {
+    font-size: 15px;
+    color: #00c4cc;
+    font-family: 'GongGothicMedium';
+}
+
+.text-container h1 {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: #333;
+    font-family: 'GongGothicMedium';
+}
+
+.text-container p {
+    font-size: 13px;
+    color: #555;
+    font-family: 'GongGothicMedium';
+}
+
+
+
+
+
+/* 슬라이더 컨테이너 */
+.slider-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 검정 네모 박스 */
+.black-box {
+    width: 700px;
+    height: 400px;
+    background-color: transparent;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transform: translateX(150px); /* 검정 박스를 오른쪽으로 100px 이동 */
+}
+
+/* 슬라이더 */
+.slider {
+    display: flex;
+    width: 100%;
+    animation: slideAnimation 12s infinite;
+}
+
+/* 슬라이드 */
+.slide {
+    height: 350px;
+    flex: 0 0 calc(33.33% - 20px); /* 각 슬라이드가 검정 박스의 33.33%에서 20px 여백을 뺀 크기 */
+    margin-right: 20px; /* 슬라이드들 사이에 20px의 여백 추가 */
+}
+
+.slide:last-child {
+    margin-right: 0; /* 마지막 슬라이드에 여백 없애기 */
+}
+
+.slide img {
+    width: 90%; /* 이미지 너비를 검정 박스에 맞추기 */
+    height: 100%;
+    object-fit: cover; /* 이미지가 박스를 꽉 채우도록 */
+    border-radius: 10px; /* 이미지 모서리를 10px로 둥글게 만들기 */
+}
+
+/* 모바일 이미지 */
+.phoneimg {
+    height: 555px;
+    position: absolute;
+    bottom: -77px;
+    left: -40px;
+    z-index: 2;
+}
+
+.phoneimg img {
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 슬라이더 애니메이션 */
+@keyframes slideAnimation {
+    0% { transform: translateX(0); }
+    33.33% { transform: translateX(-33.33%); } /* 첫 번째 슬라이드에서 두 번째로 이동 */
+    66.66% { transform: translateX(-66.66%); } /* 두 번째 슬라이드에서 세 번째로 이동 */
+    100% { transform: translateX(-100%); } /* 세 번째 슬라이드로 이동 */
+}
+
+}
 

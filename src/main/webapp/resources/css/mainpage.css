@@ -459,3 +459,469 @@ body {
 .arrow-icon:hover i {
     color: #fff; /* 호버 시 아이콘 색상 변경 */
 }
+/* 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+/* 전기차 충전소 */
+.ev-charging-container {
+    width: 280px; /* 크기 줄임 */
+    height: 280px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 180px; /* 왼쪽으로 100px 이동 */
+    top: 50px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}	
+	/* 주유소 */
+.gas-station-container {
+    width: 280px; /* 크기 줄임 */
+    height: 280px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -150px; /* 왼쪽으로 100px 이동 */
+    top: 40px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+
+/* 주차장 */
+.parking-lot-container {
+    width: 200px; /* 크기 줄임 */
+    height: 200px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 260px; /* 왼쪽으로 100px 이동 */
+    top: -100px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+/* 커뮤니티 */
+.community-container {
+    width: 200px; /* 크기 줄임 */
+    height: 200px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -260px; /* 왼쪽으로 100px 이동 */
+    top: -100px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}	
+}
+
+
+/*  화면 (768px 이하) */
+@media (max-width: 768px) {
+	/* 전기차 충전소 */
+.ev-charging-container {
+    width: 250px; /* 크기 줄임 */
+    height: 250px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 100px; /* 왼쪽으로 100px 이동 */
+    top: 50px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}	
+	/* 주유소 */
+.gas-station-container {
+    width: 250px; /* 크기 줄임 */
+    height: 250px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -100px; /* 왼쪽으로 100px 이동 */
+    top: 40px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+
+/* 주차장 */
+.parking-lot-container {
+    width: 180px; /* 크기 줄임 */
+    height: 180px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 150px; /* 왼쪽으로 100px 이동 */
+    top: -80px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+/* 커뮤니티 */
+.community-container {
+    width: 180px; /* 크기 줄임 */
+    height: 180px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -150px; /* 왼쪽으로 100px 이동 */
+    top: -80px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}	
+
+/* body와 price-section 스타일 */
+body {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* 스크롤 비활성화 */
+}
+
+.price-section {
+    transform: translateX(100%);
+    transition: transform 1s ease-in-out;
+}
+
+.price-section.show {
+    transform: translateX(0);
+}
+
+/* 중앙 텍스트 공통 스타일 */
+.container_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    height: 230px; /* 고정 높이 설정 */
+    overflow: hidden; /* 텍스트가 넘어가는 부분 숨김 */
+    transform: translateY(-20px) translateX(10px); /* 텍스트를 20px 더 아래로 이동 */
+}
+
+
+.central-text {
+    font-size: 25px; /* 폰트 크기 25px로 변경 */
+    font-weight: bold;
+    color: #000;
+    position: absolute; /* 동일 위치 유지 */
+    font-family: 'GongGothicMedium';
+    opacity: 0;
+    animation: textFadeInOut 15s infinite; /* 반복 */
+}
+
+/* 순차적 애니메이션 딜레이 */
+.central-text-1 {
+    animation-delay: 0s;
+}
+
+.central-text-2 {
+    animation-delay: 3s;
+}
+
+.central-text-3 {
+    animation-delay: 6s;
+}
+
+.central-text-4 {
+    animation-delay: 9s;
+}
+
+.central-text-5 {
+    animation-delay: 12s;
+}
+
+/* 텍스트 페이드 인/아웃 애니메이션 */
+@keyframes textFadeInOut {
+    0%, 20% {
+        opacity: 1;
+    }
+    25%, 100% {
+        opacity: 0;
+    }
+}
+
+/* 글자 하나씩 떨어지는 애니메이션 */
+.falling-text {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: fallingEffect 0.6s ease forwards;
+}
+
+/* 각 글자에 딜레이 추가 */
+.falling-text:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.falling-text:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.falling-text:nth-child(3) {
+    animation-delay: 0.9s;
+}
+
+.falling-text:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.falling-text:nth-child(5) {
+    animation-delay: 1.5s;
+}
+
+.falling-text:nth-child(6) {
+    animation-delay: 1.8s;
+}
+
+/* 글자 낙하 효과 */
+@keyframes fallingEffect {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px; /* 각 줄 간격 줄임 */
+}
+
+/* 두 번째 줄 배치 */
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+}
+
+/* 초소형 화면 (425px 이하) */
+@media (max-width: 425px) {
+	
+	.ev-charging-container {
+    width: 160px; /* 크기 줄임 */
+    height: 160px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 35px; /* 왼쪽으로 100px 이동 */
+    top: 70px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+
+/* 주유소 */
+.gas-station-container {
+    width: 160px; /* 크기 줄임 */
+    height: 160px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -25px; /* 왼쪽으로 100px 이동 */
+    top: 70px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+/*주차장*/
+.parking-lot-container {
+    width: 145px; /* 크기 줄임 */
+    height: 145px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: 50px; /* 왼쪽으로 100px 이동 */
+    top: -50px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+/* 커뮤니티 */
+.community-container {
+    width: 145px; /* 크기 줄임 */
+    height: 145px; /* 크기 줄임 */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%; /* 원형 유지 */
+    left: -40px; /* 왼쪽으로 100px 이동 */
+    top: -50px; /* 위쪽으로 50px 이동 */
+    transition: transform 0.3s ease; /* 전체 컨테이너 확대 효과 */
+}
+
+/* body와 price-section 스타일 */
+body {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* 스크롤 비활성화 */
+}
+
+/* price-section 크기 및 위치 조정 */
+.price-section {
+    width: 425px; /* 너비 425px로 설정 */
+    height: 100%; /* 높이는 100%로 설정 */
+    transform: translateY(425px); /* 425px 아래로 이동 */
+    transition: transform 1s ease-in-out;
+}
+
+.price-section.show {
+    transform: translateY(0); /* 기본 위치로 돌아오기 */
+}
+
+/* 중앙 텍스트 공통 스타일 */
+.container_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+    margin: 10px 0; /* 컨테이너를 아래로 10px 이동 */
+    position: relative;
+    z-index: 1;
+    height: 300px; /* 고정 높이 설정 */
+    overflow: hidden; /* 텍스트가 넘어가는 부분 숨김 */
+    transform: translateY(0); /* 추가 이동값 제거 */
+}
+
+.central-text {
+    font-size: 20px; /* 글씨 크기를 20px로 수정 */
+    font-weight: bold;
+    color: #000;
+    position: absolute; /* 동일 위치 유지 */
+    font-family: 'GongGothicMedium';
+    opacity: 0;
+    animation: textFadeInOut 15s infinite; /* 반복 */
+}
+
+/* 순차적 애니메이션 딜레이 */
+.central-text-1 {
+    animation-delay: 0s;
+}
+
+.central-text-2 {
+    animation-delay: 3s;
+}
+
+.central-text-3 {
+    animation-delay: 6s;
+}
+
+.central-text-4 {
+    animation-delay: 9s;
+}
+
+.central-text-5 {
+    animation-delay: 12s;
+}
+
+/* 텍스트 페이드 인/아웃 애니메이션 */
+@keyframes textFadeInOut {
+    0%, 20% {
+        opacity: 1;
+    }
+    25%, 100% {
+        opacity: 0;
+    }
+}
+
+/* 글자 하나씩 떨어지는 애니메이션 */
+.falling-text {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: fallingEffect 0.6s ease forwards;
+}
+
+/* 각 글자에 딜레이 추가 */
+.falling-text:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.falling-text:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.falling-text:nth-child(3) {
+    animation-delay: 0.9s;
+}
+
+.falling-text:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.falling-text:nth-child(5) {
+    animation-delay: 1.5s;
+}
+
+.falling-text:nth-child(6) {
+    animation-delay: 1.8s;
+}
+
+/* 글자 낙하 효과 */
+@keyframes fallingEffect {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px; /* 각 줄 간격 줄임 */
+}
+
+/* 두 번째 줄 배치 */
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+/*화살표 스타일*/
+
+  /* 텍스트와 화살표 스타일 */
+    .arrow-container {
+        position: fixed; /* 화면에 고정 */
+        bottom: 10px; /* 아래쪽 여백 */
+        right: 10px; /* 오른쪽 여백 */
+        display: flex;
+        align-items: center;
+       font-family: 'Pretendard-Regular';
+        font-size: 10px;
+        font-weight: bold;
+        background-color: white; /* 배경색 (필요 시 제거 가능) */
+        padding: 10px; /* 패딩 추가 */
+        border-radius: 8px; /* 둥근 모서리 */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    }
+
+    .arrow-text {
+        margin-right: 10px;
+    }
+
+    .arrow-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+}
