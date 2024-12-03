@@ -113,7 +113,7 @@ function removeControls() {
 // 탭 전환 함수
 function showTab(tabName) {
     // 모든 탭 콘텐츠 숨기기
-    document.querySelectorAll('.tab-content, .tab-content-route').forEach(tab => {
+    document.querySelectorAll('.tab-content').forEach(tab => {
         tab.style.display = 'none';
     });
 
@@ -409,7 +409,6 @@ function applyRegionFilter() {
     loadPageData(filteredParkingData);
     
 }
-
 
 
 

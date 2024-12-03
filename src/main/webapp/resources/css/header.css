@@ -15,10 +15,19 @@
     font-weight: 400;
     font-style: normal;
 }
-@font-face {/*문경감 홍사과*/
+/*문경감 홍사과*/
+@font-face {
     font-family: 'Mungyeong-Gamhong-Apple';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-2@1.0/Mungyeong-Gamhong-Apple.woff2') format('woff2');
     font-weight: normal;
+    font-style: normal;
+}
+
+/* 프리젠테이션 */
+@font-face {
+    font-family: 'Freesentation-9Black';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2') format('woff2');
+    font-weight: 900;
     font-style: normal;
 }
 
@@ -29,7 +38,7 @@
   justify-content: space-between;
   height: 60px;
   padding: 0 20px;
-  background-color: #fffff;
+  background-color: transparent;
 
 }
 
@@ -37,7 +46,6 @@
 /* 로고 스타일 */
 .logo {
   margin-left: 20px; /* 왼쪽 공백을 없앰 */
-  margin-top: 25px; /* 위쪽 공백 추가 */
   display: flex; /* Flexbox 사용 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: flex-start; /* 로고를 왼쪽으로 정렬 */
@@ -92,7 +100,8 @@
 
 
 /* 마이페이지 버튼 스타일 */
-.mypage-btn {
+.mypage-btn,
+.admin-btn {
   display: flex;
   align-items: center;
   gap: 8px; /* 아이콘과 텍스트 사이 간격 */
@@ -109,7 +118,8 @@
 }
 
 /* 마우스 올렸을 때 효과 */
-.mypage-btn:hover {
+.mypage-btn:hover,
+.admin-btn:hover {
   color: #555; /* 호버 시 텍스트 색상만 약간 변경 */
   text-decoration: underline; /* 밑줄 추가 */
 }
@@ -132,6 +142,12 @@
   font-size: 16px;
   font-family: 'Freesentation-9Black';
   color: #000;
+}
+
+.user-menu span {
+	font-family: 'Freesentation-9Black';
+	color: black;
+	
 }
 
 /* 사용자 메뉴 링크 스타일 */

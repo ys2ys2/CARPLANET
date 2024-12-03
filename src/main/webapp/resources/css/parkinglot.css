@@ -169,8 +169,8 @@ html, body{
     height: 70vh;
     background-color: white;
     overflow: hidden;
-    position: relative;
-    z-index: auto;
+    position: absolute;
+    z-index: 100;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 	border-radius: 25px;
 	width: 100%; 
@@ -189,9 +189,7 @@ html, body{
 .tab-content{
 	overflow-y:auto;
 	position: relative;
-    height: 90vh;
-    top:68px;
-    display: none;
+    height: 95vh;
 
 }
 .tab-button {
@@ -236,7 +234,7 @@ html, body{
     max-width: 300px; /* 전체 컨테이너의 최대 너비 설정 */
      position: relative; /* 부모 요소를 기준으로 드롭다운 위치 조정 */
     overflow: visible; /* 드롭다운이 잘리지 않도록 설정 */
-    max-height: 100px; /* 전체 컨테이너의 최대 너비 설정 */
+    max-height: 300px; /* 전체 컨테이너의 최대 너비 설정 */
 }
 
 
@@ -261,7 +259,7 @@ html, body{
     margin-top: 5px;
     margin-left:10px;
     margin-bottom:7px;
-     max-height: 200px; /* 드롭다운 최대 높이 제한 */
+     max-height: 300px; /* 드롭다운 최대 높이 제한 */
     overflow-y: auto; /* 드롭다운 스크롤 활성화 */
     position: relative; /* 선택창의 위치를 부모 기준으로 설정 */
     z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
@@ -277,7 +275,7 @@ html, body{
 }
 
 .region-selection button{
-	width: 114%;
+	width: 120%;
 	padding: 12px;
 	font-size: 16px;
 	 background-color: #007bff;
@@ -288,25 +286,11 @@ html, body{
     transition: background-color 0.3s;
      margin-left:10px;
      font-family: 'GongGothicMedium';
-     z-index: 9999; /* 다른 요소 위로 올림 */
-      position: absolute; /* 버튼을 부모 요소 기준으로 이동 */
-    top: 153px; /* 원하는 위치 설정 */
-    left: 8px;
 }
 
 .region-selection button:hover {
     background-color: #0056b3; /* 호버 시 더 진한 파란색 */
 }
-
-#city-select {
-    display: block !important; /* 강제로 표시 */
-    max-height: none !important; /* 높이 제한 해제 */
-    overflow: visible !important; /* 스크롤 숨김 해제 */
-    position: relative; /* 위치 명확히 설정 */
-    pointer-events: auto; /* 클릭 허용 */
-    visibility: visible; /* 숨김 방지 */
-}
-
 
 
 /* 주차장 리스트 스타일 */
@@ -341,11 +325,9 @@ html, body{
     padding: 10px 0;
     position: relative; /* 부모 요소 내에서 고정 */
     bottom: 0; /* .parking-contents 하단에 붙음 */
-    background-color: white; /* 배경색 설정 */
     z-index: 10; /* 다른 요소 위에 표시 */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 상단 그림자 추가 */
     width: 100%; /* 부모 요소의 너비에 맞게 설정 */
-    left: 1%;
+    left: 34%;
 }
 .pagination button {
     background: none; /* 배경색 제거 */
@@ -816,15 +798,6 @@ html, body{
 /* 길찾기 CSS */
 
 /* 경로 검색 영역 */
-
-/* route 탭 전용 스타일 */
-.tab-content-route {
-    overflow-y:auto;
-	position: relative;
-    display: none;
-}
-
-
 .route-search {
     display: flex;
     flex-direction: column; /* 요소들을 수직으로 정렬 */
@@ -834,10 +807,6 @@ html, body{
     border-radius: 8px;
     gap: 10px; /* 요소 간 간격 */
     max-width: 300px; /* 전체 컨테이너의 최대 너비 설정 */
-     position: relative; /* 상대적 위치 설정 */
-    top: -7px; /* 상단에서 여백 설정 */
-    z-index: 10; /* 다른 요소 위로 표시 */
-    overflow:hidden;
 }
 
 /* 출발지와 도착지 입력 필드 스타일 */
@@ -900,7 +869,7 @@ html, body{
 }
 
 .route-fixed-info {
-    position: static; /* 부모 요소 내에서 고정 */
+    position: sticky; /* 부모 요소 내에서 고정 */
     top: 0; /* 부모 요소의 위쪽에 고정 */
     z-index: 10; /* 다른 요소 위에 표시 */
     padding: 10px; /* 내부 여백 */
@@ -935,7 +904,7 @@ html, body{
     overflow-y: auto;
     background-color: #fff;
     position: absolute;
-    width:103%;
+    width:82%;
     z-index: 1000;
     font-family: 'Pretendard-Regular';
     top:57px;
@@ -959,8 +928,8 @@ html, body{
     overflow-y: auto;
     background-color: #fff;
     position: absolute;
-    width:103%;
-    z-index: 9999; /* z-index를 충분히 높게 설정 */
+    width:82%;
+    z-index: 1000;
     font-family: 'Pretendard-Regular';
     top:119px;
     left:20px;
@@ -1723,9 +1692,6 @@ html, body{
     width: 86%;
     padding: 11px;
     font-size: 11px;
-   position: relative;
-        top: 5%;
-        left: 1%;
   
 }
 
@@ -1771,8 +1737,8 @@ html, body{
 
 .pagination {
     width: 100%;
-    left: 1%;
-    top: 0px;
+    left: 20%;
+    top: -6px;
     padding: 2px 0;
     }
     
@@ -1849,10 +1815,4 @@ html, body{
     .location-row {
         gap: 4px;
 }
-
-.route-result {
-    margin-top: -26px;
-    padding: 20px;
-    background-color: #f9f9f9;
-	}
 }
