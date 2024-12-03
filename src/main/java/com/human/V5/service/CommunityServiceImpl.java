@@ -398,6 +398,16 @@ public class CommunityServiceImpl implements CommunityService {
       return dto;
     }).collect(Collectors.toList());
   }
+  
+  
+  @Transactional
+  @Override
+  public List<PostEntity> getMyPostEntities(String carId, Pageable pageable) {
+      // Repository에서 데이터를 가져옵니다.
+      Page<PostEntity> postPage = postRepository.findByCarId(carId, pageable);
+      return postPage.getContent(); // 엔티티 리스트 반환
+  } //강제 충돌
+
 
   public List<PostCommentDto> getPostCommentList(Integer postIndex) {
     List<Object[]> list = postCommentRepository.findAllByPostIndex(postIndex);
