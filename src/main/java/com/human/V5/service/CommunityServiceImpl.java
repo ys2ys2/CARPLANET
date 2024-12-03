@@ -1,37 +1,19 @@
 package com.human.V5.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostDto;
 import com.human.V5.dto.PostLikeDto;
-import com.human.V5.entity.PostCommentEntity;
-import com.human.V5.entity.PostCommentLikeEntity;
-import com.human.V5.entity.PostEntity;
-import com.human.V5.entity.PostLikeEntity;
-import com.human.V5.entity.PostSearchLogEntity;
-import com.human.V5.entity.UserEntity;
-import com.human.V5.repository.PostCommentLikeRepository;
-import com.human.V5.repository.PostCommentRepository;
-import com.human.V5.repository.PostLikeRepository;
-import com.human.V5.repository.PostRepository;
-import com.human.V5.repository.PostSearchLogRepository;
-import com.human.V5.repository.UserRepository;
-
+import com.human.V5.entity.*;
+import com.human.V5.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.Tuple;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -416,35 +398,22 @@ public class CommunityServiceImpl implements CommunityService {
       return dto;
     }).collect(Collectors.toList());
   }
-  
-  
-  @Transactional
-  @Override
-  public List<PostEntity> getMyPostEntities(String carId, Pageable pageable) {
-      // Repository에서 데이터를 가져옵니다.
-      Page<PostEntity> postPage = postRepository.findByCarId(carId, pageable);
-      return postPage.getContent(); // 엔티티 리스트 반환
+
+  public List<PostCommentDto> getPostCommentList(Integer postIndex) {
+    List<Object[]> list = postCommentRepository.findAllByPostIndex(postIndex);
+    List<PostCommentDto> comments = list.stream().map(e -> {
+      PostCommentDto postCommentDto = new PostCommentDto();
+      postCommentDto.setPostCommentIndex(Integer.parseInt(String.valueOf(e[0])));
+      postCommentDto.setContent(String.valueOf(e[2]));
+      postCommentDto.setModDate((Date) e[3]);
+      postCommentDto.setPostIndex(Integer.parseInt(String.valueOf(e[4])));
+      postCommentDto.setRegDate((Date) e[5]);
+      postCommentDto.setCarId(String.valueOf(e[6]));
+      postCommentDto.setLikeCount(Integer.parseInt(String.valueOf(e[7])));
+      postCommentDto.setUnlikeCount(Integer.parseInt(String.valueOf(e[8])));
+      return postCommentDto;
+    }).collect(Collectors.toList());
+
+    return comments;
   }
-
-
-	public List<PostCommentDto> getPostCommentList(Integer postIndex) {
-	    List<Object[]> list = postCommentRepository.findAllByPostIndex(postIndex);
-	    List<PostCommentDto> comments = list.stream().map(e -> {
-	      PostCommentDto postCommentDto = new PostCommentDto();
-	      postCommentDto.setPostCommentIndex(Integer.parseInt(String.valueOf(e[0])));
-	      postCommentDto.setCarId(String.valueOf(e[1]));
-	      postCommentDto.setContent(String.valueOf(e[2]));
-	      postCommentDto.setModDate((Date) e[3]);
-	      postCommentDto.setPostIndex(Integer.parseInt(String.valueOf(e[4])));
-	      postCommentDto.setRegDate((Date) e[5]);
-	      postCommentDto.setLikeCount(Integer.parseInt(String.valueOf(e[6])));
-	      postCommentDto.setUnlikeCount(Integer.parseInt(String.valueOf(e[7])));
-	      return postCommentDto;
-	    }).collect(Collectors.toList());
-	
-	    return comments;
-	  }
-  
-  
-  
 }

@@ -4,7 +4,6 @@ import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostLikeDto;
 import com.human.V5.entity.PostCommentEntity;
 import com.human.V5.entity.PostEntity;
-import com.human.V5.vo.PostVO;
 import com.human.V5.dto.PostDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +25,5 @@ public interface CommunityService {
 	Integer commentLike(Integer postCommentIndex, String carId);
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
-	List<PostEntity> getMyPostEntities(String carId, Pageable pageable);
 	List<PostCommentDto> getPostCommentList(Integer postIndex);
-	
 }

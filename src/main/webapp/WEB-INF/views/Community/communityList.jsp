@@ -1097,9 +1097,9 @@
 <script>
 	let sliderInterval = null;
 	let popularIndex = 0;
-	let currentIdx = 0; // 슬라이드 index 코드
-	let currentPosition = 0; // 슬라이드 포지션
-	
+	let isSlide = true;
+	let currentIdx = 0;
+	let currentPosition = 0;
 	//jQuery구문: window.onload 이벤트 처리
 	$(function(){
 
@@ -1136,27 +1136,31 @@
 	})//end of jQuery구문
 
 	function popularPostSlider(){
-		const slider = document.querySelector(".post-slider");
-		const sliderList = document.querySelectorAll(".post-slide-link");
-		const slideWidth = sliderList[0].offsetWidth;
 		if(sliderInterval !== null){
 			clearInterval(sliderInterval);
+			$(".post-slider").css({transform:"none"});
 		}
 
 		if(window.innerWidth <= 768){
+			$(".post-slide-link").css({position: "absolute", left: "-100%"});
+			$(".post-slide-link").eq(popularIndex).css({position:"absolute", left: "0px"});
 			sliderInterval = setInterval(()=> {
-				if (currentIdx >= sliderList.length) {
-					currentIdx = 0;
-				} else if (currentIdx < sliderList.length) {
-					currentIdx++;
-				}
-				
-				currentPosition = -(slideWidth * currentIdx);
-				slider.style.transform = "translateX(" + currentPosition + "px)";
+				if(!isSlide) return false;
+				isSlide = false;
+				// 현재 보이는 슬라이드를 숨김
+				$(".post-slide-link").eq(popularIndex).animate({position: "absolute", left: "-100%"}, 'slow', function(){$(".post-slide-link").eq(popularIndex).css({position: "absolute", left: "-100%"})});
+
+				// 다음 슬라이드 Index를 계산 후 슬라이드를 나타나게함
+				let next = popularIndex >= $(".post-slide-link").length - 1 ? 0 : popularIndex + 1;
+				$(".post-slide-link").eq(next).css({position:"absolute", left: "100%"}).animate({position:"absolute", left: "0px"}, 'slow', function(){isSlide = true});
+
+				// 다음 슬라이드 번호가 현재 슬라이드 번호로 치환
+				popularIndex = next;
 			}, 3000);
+		} else {
+			$(".post-slide-link").css({position:"relative", left: "0px"});
 		}
 	}
-
 
 	function handleLikeOrUnlikePost(postIndex, reqURL, event) {
 		event.preventDefault(); // 기본 동작 방지: a 태그
@@ -1380,7 +1384,6 @@
 				dataType: "json",
 				success: function (resData) {
 					console.log(resData);
-					getCommentList(commentId);
 				},
 				error: function (xhr, status, error) {
 					if (xhr.status === 401) {
@@ -1462,7 +1465,7 @@
 				});
 
 				// 댓글 갯수 수정
-				$(".post-item:nth-child("+ (postIndex + 1) +") .footer-3 p").text(resData.length);
+				$(".post-item:nth-last-child("+ (postIndex) +") .footer-3 p").text(resData.length);
 			},
 			error: function (xhr, status, error) {
 				console.error("게시글 댓글 조회 시 에러:", error);
@@ -1480,10 +1483,10 @@
 	/* 인기 게시글 */
 	document.addEventListener("DOMContentLoaded", function () {
 
-		const slider = document.querySelector(".post-slider");
 		const sliderList = document.querySelectorAll(".post-slide-link");
 		const slideWidth = sliderList[0].offsetWidth;
-		
+
+		const slider = document.querySelector(".post-slider");
 		const prevBtn = document.querySelector(".nav-button:first-child");
 		const nextBtn = document.querySelector(".nav-button:last-child");
 
@@ -1491,23 +1494,53 @@
 			console.error( "슬라이더 또는 버튼 요소를 찾을 수 없습니다." );
 			return; // 필요한 요소가 없으면 이벤트 리스너를 등록하지 않음
 		}
-		
+		let currentPosition = 0;
+
 		prevBtn.addEventListener( "click", () => {
-			if ( currentIdx !== 0 ) {
-				currentIdx--;
-				currentPosition += slideWidth;
-				slider.style.transform = "translateX(" + currentPosition + "px)";
+			if(window.innerWidth <= 768){
+				if(!isSlide) return false;
+				isSlide = false;
+
+				// 현재 보이는 슬라이드를 숨김
+				$(".post-slide-link").eq(popularIndex).animate({position: "absolute", left: "100%"}, 'slow', function(){$(".post-slide-link").eq(popularIndex).css({position: "absolute", left: "100%"})});
+
+				// 다음 슬라이드 Index를 계산 후 슬라이드를 나타나게함
+				let prev = popularIndex <= 0 ? $(".post-slide-link").length - 1 : popularIndex - 1;
+				$(".post-slide-link").eq(prev).css({position:"absolute", left: "-100%"}).animate({position:"absolute", left: "0px"}, 'slow', function(){isSlide = true});
+
+				// 다음 슬라이드 번호가 현재 슬라이드 번호로 치환
+				popularIndex = prev;
+			} else {
+				if ( currentIdx !== 0 ) {
+					currentIdx--;
+					currentPosition += slideWidth;
+					slider.style.transform = "translateX(" + currentPosition + "px)";
+				}
 			}
-			console.log( "이전 버튼 클릭", currentIdx);
 		});
 
 		nextBtn.addEventListener( "click", () => {
-			if ( currentIdx < sliderList.length - 2) {
-				currentIdx++;
-				currentPosition -= slideWidth;
-				slider.style.transform = "translateX(" + currentPosition + "px)";
+			if(window.innerWidth <= 768){
+				if(!isSlide) return false;
+
+				isSlide = false;
+
+				// 현재 보이는 슬라이드를 숨김
+				$(".post-slide-link").eq(popularIndex).animate({position: "absolute", left: "-100%"}, 'slow', function(){$(".post-slide-link").eq(popularIndex).css({position: "absolute", left: "-100%"})});
+
+				// 다음 슬라이드 Index를 계산 후 슬라이드를 나타나게함
+				let next = popularIndex >= $(".post-slide-link").length - 1 ? 0 : popularIndex + 1;
+				$(".post-slide-link").eq(next).css({position:"absolute", left: "100%"}).animate({position:"absolute", left: "0px"}, 'slow', function(){isSlide = true});
+
+				// 다음 슬라이드 번호가 현재 슬라이드 번호로 치환
+				popularIndex = next;
+			} else {
+				if ( currentIdx < sliderList.length - 2) {
+					currentIdx++;
+					currentPosition -= slideWidth;
+					slider.style.transform = "translateX(" + currentPosition + "px)";
+				}
 			}
-			console.log("다음 버튼 클릭",  currentIdx);
 		});
 	});
 </script>
