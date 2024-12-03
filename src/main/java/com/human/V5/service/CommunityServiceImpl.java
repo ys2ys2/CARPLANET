@@ -1,19 +1,37 @@
 package com.human.V5.service;
 
-import com.human.V5.dto.PostCommentDto;
-import com.human.V5.dto.PostDto;
-import com.human.V5.dto.PostLikeDto;
-import com.human.V5.entity.*;
-import com.human.V5.repository.*;
-import lombok.AllArgsConstructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Tuple;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.human.V5.dto.PostCommentDto;
+import com.human.V5.dto.PostDto;
+import com.human.V5.dto.PostLikeDto;
+import com.human.V5.entity.PostCommentEntity;
+import com.human.V5.entity.PostCommentLikeEntity;
+import com.human.V5.entity.PostEntity;
+import com.human.V5.entity.PostLikeEntity;
+import com.human.V5.entity.PostSearchLogEntity;
+import com.human.V5.entity.UserEntity;
+import com.human.V5.repository.PostCommentLikeRepository;
+import com.human.V5.repository.PostCommentRepository;
+import com.human.V5.repository.PostLikeRepository;
+import com.human.V5.repository.PostRepository;
+import com.human.V5.repository.PostSearchLogRepository;
+import com.human.V5.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
