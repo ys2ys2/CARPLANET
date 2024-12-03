@@ -44,7 +44,7 @@ html, body {
 	display:flex;
 	justify-content:center;
 	align-items:center;
-	background-color: #161938;
+	background-color: #007bff;
 	font-size:20px;
 	color:white;
 	padding: 20px 0;
@@ -79,7 +79,7 @@ html, body {
 }
 
 button {
-    background-color: #161938; 
+    background-color: #007bff; 
     color: white; 
     border: none; 
     padding: 10px 20px; 
@@ -122,7 +122,7 @@ button:active {
 		<div class="mainboxheader">초기 닉네임 설정</div>
 		<div class="mainsection">
 			<form action="setnickname.do" method="POST">
-				<input type="text" name="carId" value="${not empty param ? param.carId : carId}">
+				<input type="hidden" name="carId" value="${not empty param ? param.carId : carId}">
 				<p class="nickname-description">닉네임은 게시물작성 및 사용자 이름으로<br> 설정되니 신중히 설정해주세요 !</p>
 				<input class="nicknameinputbox" name="carNickname" type="text" placeholder="사용하실 닉네임을 입력해주세요"/><br>
 				<button type="submit">확인</button>

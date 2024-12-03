@@ -440,11 +440,7 @@ function renderParkingList(data) {
         parkingList.appendChild(parkingItem);
         // showParkingDetails(item);
     });
-    //  // 페이지 번호가 있는 경우 설정
-    //  const pageNumber = document.getElementById('page-number');
-    //  if (pageNumber) {
-    //      pageNumber.innerText = currentPage;
-    //  }
+  
  }
 
 
@@ -456,17 +452,16 @@ function displayMarkers(parkingData) {
        
         // 마커 생성
         var marker = new kakao.maps.Marker({
-            position: markerPosition
+            position: markerPosition,
+            map: map//지도에 마커를 바로 표시
         });
-        // 지도에 마커 표시
-        marker.setMap(map);
+            kakao.maps.event.addListener(marker, 'click', ()=>{
+                showParkingDetails(item); //클릭된 주차장의 정보를 상세 팝업에 전달.
+            });
+        
+        });
+    };
 
-        // 마커 클릭 시 주차장명과 주소를 알림으로 표시
-        kakao.maps.event.addListener(marker, 'click', function() {
-            alert("주차장명: " + item.name + "\n주소: " + item.address);
-        });
-    });
-}
 
 // 주차장 리스트 클릭 시 해당 위치로 지도 이동 및 마커 표시
 function moveToLocationAndShowMarker(item) {
@@ -483,7 +478,6 @@ function moveToLocationAndShowMarker(item) {
     // 지도 중심을 이동하려는 위치로 설정
     map.setLevel(3); // 확대 레벨 설정
     map.panTo(moveLatLon); // 지도 중심 이동
-    console.log("현재 지도 중심 좌표:", map.getCenter());
     // 기존 마커 제거 후 새 마커 추가
     if (window.selectedMarker) {
         window.selectedMarker.setMap(null); // 기존 마커 제거
@@ -656,7 +650,6 @@ function showParkingDetails(item) {
 
                  // 기존 도착지 마커 제거
             if (destinationMarker) {
-                console.log('기존 도착지 마커 제거'); // 디버깅용
                 destinationMarker.setMap(null);
             }
 
@@ -997,112 +990,74 @@ async function convertAddressToCoords(address, type) {
 
     }
 
-
-// function selectPlace(place, type) {
-//     const inputField = document.getElementById(type === 'start' ? 'start-location' : 'end-location');
-//     inputField.value = place.place_name; // 선택한 장소 이름을 입력 창에 설정
-
-//     // 선택된 장소의 좌표 저장
-//     const location = `${place.x},${place.y}`; // 경도, 위도 형식
-
-//     if (type === 'start') {
-//         startCoords = location;
-//         if (startMarker) startMarker.setMap(null); // 기존 마커 제거
-//         startMarker = new kakao.maps.Marker({
-//             position: new kakao.maps.LatLng(place.y, place.x)
-//         });
-//         startMarker.setMap(map);
-//     } else {
-//         endCoords = location;
-//         if (endMarker) endMarker.setMap(null); // 기존 마커 제거
-//         endMarker = new kakao.maps.Marker({
-//             position: new kakao.maps.LatLng(place.y, place.x)
-//         });
-//         endMarker.setMap(map);
-//     }
-
-//     // 지도 중심 이동
-//     map.panTo(new kakao.maps.LatLng(place.y, place.x));
-
-//     // 검색 결과 창 닫기
-//     document.getElementById('search-results').style.display = 'none';
-// }
-
-// async function findRoute() {
-//     if (!startCoords || !endCoords) {
-//         alert("출발지와 도착지를 설정해주세요.");
-//         return;
-//     }
-//     const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
-
-//     try {
-//         const response = await fetch(url, {
-//             method: 'GET',
-//             headers: {
-//                 'Authorization': `KakaoAK ${REST_API_KEY}`
-//             }
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`API 호출 실패: ${response.status}`);
-//         }
-
-//         const data = await response.json();
-
-//         if (!data.routes || data.routes.length === 0) {
-//             alert("경로를 찾을 수 없습니다.");
-//             return;
-//         }
-
-//         // 경로를 지도에 표시
-//         displayRouteOnMap(data.routes[0]);
-//         displayRoute(data); // 텍스트 안내 표시
-//     } catch (error) {
-//         console.error("길찾기 실패:", error);
-//         alert(`길찾기 실패: ${error.message}`);
-//     }
-// }
-
-window.findRoute = async function findRoute() {
-    const startLocationInput = document.getElementById('start-location').value;
-
-    try {
-        // 출발지 좌표가 설정되지 않은 경우, 입력값으로 변환
-        if (!startCoords) {
-            await convertAddressToCoords(startLocationInput, 'start');
-        }
-        const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
-
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `KakaoAK ${REST_API_KEY}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`API 호출 실패: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (!data.routes || data.routes.length === 0) {
-            alert("경로를 찾을 수 없습니다.");
+    window.findRoute = async function findRoute() {
+        // 출발지와 도착지 입력값 가져오기
+        const startLocationInput = document.getElementById('start-location').value.trim();
+        const endLocationInput = document.getElementById('end-location').value.trim();
+    
+        // 입력값 유효성 검사
+        if (!startLocationInput || !endLocationInput) {
+            alert("출발지와 도착지를 모두 입력해주세요.");
             return;
         }
+    
+        try {
+            // 출발지 좌표가 설정되지 않은 경우, 주소를 좌표로 변환
+            if (!startCoords) {
+                await convertAddressToCoords(startLocationInput, 'start');
+            }
+            if (!endCoords) {
+                await convertAddressToCoords(endLocationInput, 'end');
+            }
+    
+            const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${startCoords}&destination=${endCoords}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
+    
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `KakaoAK ${REST_API_KEY}`
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`API 호출 실패: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (!data.routes || data.routes.length === 0) {
+                alert("경로를 찾을 수 없습니다.");
+                return;
+            }
+    
+            // 응답 데이터를 지도에 표시
+            displayRouteOnMap(data.routes[0]);
+            
+            // 출발지, 도착지와 함께 텍스트 안내 표시
+            displayRoute(data, startLocationInput, endLocationInput);
+    
+        } catch (error) {
+            console.error("길찾기 실패:", error);
+            alert(`길찾기 실패: ${error.message}`);
+        }
+    };
+    
 
-        // 응답 데이터를 지도에 표시
-        displayRouteOnMap(data.routes[0]);
-        displayRoute(data); // 텍스트 안내 표시
-    } catch (error) {
-        console.error("길찾기 실패:", error);
-        alert(`길찾기 실패: ${error.message}`);
-    }
-};
+function getInputValuesAndDisplayRoute(data) {
+    // 출발지와 도착지 입력 필드에서 값을 가져옴
+    const startLocation = document.getElementById("start-location").value.trim();
+    const endLocation = document.getElementById("end-location").value.trim();
+
+    // displayRoute 함수 호출
+    displayRoute(data, startLocation, endLocation);
+}
 
 
-//경로 데이터 표시(텍스트)
-function displayRoute(data) {
+
+
+
+
+function displayRoute(data, startLocation, endLocation) {
     const routeDirections = document.getElementById("route-directions");
     routeDirections.innerHTML = ''; // 기존 결과 초기화
 
@@ -1111,43 +1066,62 @@ function displayRoute(data) {
         const summary = route.summary || null;
         const sections = route.sections || [];
 
-        // 요약 정보 표시
+
         if (summary) {
             const distance = summary.distance; // 총 거리 (미터 단위)
             const duration = summary.duration; // 예상 소요 시간 (초 단위)
 
             routeDirections.innerHTML += `
+                <div class="route-fixed-info">
                 <h4>경로 요약</h4>
                 <p>총 거리: ${(distance / 1000).toFixed(2)} km</p>
                 <p>예상 소요 시간: ${(duration / 60).toFixed(0)} 분</p>
+				 </div>
             `;
         } else {
             routeDirections.innerHTML += '<p>요약 정보를 가져올 수 없습니다.</p>';
         }
 
-		       // 길 안내 정보 표시
-		if (sections.length > 0) {
-		    routeDirections.innerHTML += `<h3>길 안내</h3>`;
-		    sections.forEach(section => {
-		        if (section.guides) {
-		            section.guides.forEach(guide => {
-		                // type에 따라 아이콘 URL 가져오기
-		                const iconUrl = typeIconMap[guide.type] || "https://img.icons8.com/?size=100&id=100000&format=png"; // 기본 아이콘(직진)
-		                
-		                // 길 안내 정보를 HTML에 추가
-		                routeDirections.innerHTML += `
-		                    <div class="guide-info">
-		                        <img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">
-		                        <span>${guide.guidance} (${guide.distance} m)</span>
-		                    </div>
-		                `;
-		            });
-		        }
-		    });
-		} else {
-		    routeDirections.innerHTML += '<p>길 안내 정보를 가져올 수 없습니다.</p>';
-		}
 
+        // 길 안내 정보 표시
+        if (sections.length > 0) {
+            routeDirections.innerHTML += `<h3>길 안내</h3>`;
+            sections.forEach((section, sectionIndex) => {
+                if (section.guides) {
+                    section.guides.forEach((guide, guideIndex) => {
+                        let guidanceText = guide.guidance;
+                        let iconUrl = typeIconMap[guide.type] || "https://img.icons8.com/?size=100&id=100000&format=png"; // 기본 아이콘
+
+                        // 첫 번째 가이드는 출발지로 수정
+                        if (sectionIndex === 0 && guideIndex === 0) {
+                            guidanceText = ` <img src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png" 
+                                     alt="출발지 마커" class="marker-icon"> ${startLocation}`;
+                                     iconUrl = null; // 기본 아이콘 제거
+                        }
+
+                        // 마지막 가이드는 도착지로 수정
+                        const isLastGuide =
+                            sectionIndex === sections.length - 1 &&
+                            guideIndex === section.guides.length - 1;
+                        if (isLastGuide) {
+                            guidanceText = ` <img src="https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png" 
+                                     alt="도착지 마커" class="marker-icon">${endLocation}`;
+                                     iconUrl = null; // 기본 아이콘 제거
+                                    }
+
+                        // 길 안내 정보를 HTML에 추가
+                        routeDirections.innerHTML += `
+                            <div class="guide-info">
+                            ${iconUrl !== null && iconUrl !== undefined ? `<img src="${iconUrl}" alt="길안내 아이콘" class="guide-icon">` : ''}
+                                <span>${guidanceText}</span>
+                            </div>
+                        `;
+                    });
+                }
+            });
+        } else {
+            routeDirections.innerHTML += '<p>길 안내 정보를 가져올 수 없습니다.</p>';
+        }
 
         // 지도에 경로 표시
         displayRouteOnMap(route);
@@ -1192,8 +1166,12 @@ function displayRouteOnMap(route) {
 
 // 검색 함수
 function searchParking() {
-    const searchInput = document.getElementById("parking-search").value.toLowerCase();
+    const searchInputElement = document.getElementById("parking-search");
+    const searchInput = searchInputElement.value.toLowerCase();
     const resultsContainer = document.getElementById("autocomplete-results");
+    // const searchInputElement = document.getElementById("parking-search");
+    // const searchInput = document.getElementById("parking-search").value.toLowerCase();
+    // const resultsContainer = document.getElementById("autocomplete-results");
 
     if (!searchInput) {
         resultsContainer.style.display = 'none'; // 검색어가 없으면 자동완성 창 숨기기
@@ -1221,11 +1199,39 @@ function searchParking() {
     } else if (event.key === "Enter" && selectedIndex >= 0) {
         // 엔터 키로 선택 항목 검색
         const selectedParking = filteredData[selectedIndex];
-        document.getElementById("parking-search").value = selectedParking.name;
+        // document.getElementById("parking-search").value = selectedParking.name;
+        document.getElementById("parking-search").value = "";
+
         resultsContainer.style.display = 'none';
         renderParkingList([selectedParking]); // 선택한 항목을 리스트에 표시
         selectedIndex = -1; // 인덱스 초기화
     }
+       // 마우스 클릭 이벤트 처리
+       resultsContainer.addEventListener("click", function (event) {
+        const clickedItem = event.target.closest(".autocomplete-item"); // 클릭된 항목 확인
+        if (clickedItem) {
+            // `resultsContainer`와 `filteredData`가 항상 동기화되도록 인덱스 확인
+            const index = Array.from(resultsContainer.children).indexOf(clickedItem);
+
+            // 인덱스가 유효하지 않은 경우 바로 리턴 (에러 제거)
+            if (index < 0 || index >= filteredData.length) {
+                return; // 잘못된 인덱스 접근 방지
+            }
+
+            // 선택된 데이터 가져오기
+            const selectedParking = filteredData[index];
+
+            // 선택한 데이터가 유효한지 확인
+            if (selectedParking && selectedParking.name) {
+                searchInputElement.value = ""; // 검색창 초기화
+                resultsContainer.style.display = 'none'; // 자동완성 창 닫기
+                renderParkingList([selectedParking]); // 선택한 항목을 리스트에 표시
+            }
+        }
+    });
+    
+
+
 }
 // 자동완성 항목을 강조 표시하는 함수
 function highlightItem(index) {
@@ -1288,8 +1294,7 @@ function displayAutocompleteResults(data) {
 resultsContainer.style.display = 'block'; // 자동완성 결과 표시
 }
 
-
-//현재 위치를 지도에 표시
+// 현재 위치를 지도에 표시
 function showCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -1305,11 +1310,25 @@ function showCurrentLocation() {
                 }
                 );
 
-                // 현재 위치 마커 생성
-                const marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(latitude, longitude), // 마커 위치 설정
-                    map: map, // 마커를 표시할 지도
-                    image: markerImage, //zjtmxja akzj dlalwl tjfwjd
+                // 현재 위치 마커를 감싸는 HTML 요소 생성
+                const markerContent = document.createElement('div');
+                markerContent.className = 'custom-marker';
+
+                // HTML 구조
+                markerContent.innerHTML = `
+                    <div class="radar-effect"></div>
+                    <img 
+                        src="https://ssl.pstatic.net/static/maps/m/pin_rd.png" 
+                        class="location-icon" 
+                        alt="현재 위치">
+                `;
+
+                // 카카오맵 CustomOverlay를 이용해 마커 표시
+                const markerOverlay = new kakao.maps.CustomOverlay({
+                    position: new kakao.maps.LatLng(latitude, longitude),
+                    content: markerContent, // 위에서 생성한 HTML 구조 삽입
+                    map: map,
+                    zIndex: 1
                 });
 
                 // 지도 중심을 현재 위치로 이동

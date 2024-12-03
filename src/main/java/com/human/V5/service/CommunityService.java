@@ -1,5 +1,6 @@
 package com.human.V5.service;
 
+import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostLikeDto;
 import com.human.V5.entity.PostCommentEntity;
 import com.human.V5.entity.PostEntity;
@@ -9,11 +10,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommunityService {
 	PostEntity save(PostEntity entity);
-	PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath);
+	PostEntity updatePost(PostEntity entity);
 	PostEntity deletePost(Integer postIndex, String userId);
 	PostEntity getPost(Integer postIndex);
+	List<PostDto> getPostDto(Integer postIndex);
 	List<PostDto> getPostList(Pageable pageable);
-	List<PostDto> searchPostList(Pageable pageable, String keyword);
+	List<PostDto> searchPostList(Pageable pageable, String keyword, Integer postIndex);
 	List<PostDto> getRecommendedPostList();
 	PostLikeDto like(Integer postIndex, String carId);
 	PostLikeDto unlike(Integer postIndex, String carId);
@@ -23,4 +25,8 @@ public interface CommunityService {
 	Integer commentLike(Integer postCommentIndex, String carId);
 	Integer commentUnlike(Integer postCommentIndex, String carId);
 	List<String> getPopularKeywordList();
+	List<PostEntity> getMyPostEntities(String carId, Pageable pageable);//얘가 안들어와
+	List<PostCommentDto> getPostCommentList(Integer postIndex);
+	
+	
 }

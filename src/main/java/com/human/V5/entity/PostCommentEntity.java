@@ -19,8 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="post_comment")
+@Table(name="Car_Post_comment")
 public class PostCommentEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_comment_index")

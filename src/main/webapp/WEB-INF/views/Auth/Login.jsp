@@ -6,446 +6,14 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${pageContext.request.contextPath}/resources/css/Login.css" rel="stylesheet" type="text/css">
+
+
 <meta charset="UTF-8">
+
 <title>로그인 및 회원가입</title>
-<style>
-/* 스타일 설정 유지 */
-@font-face {
-	font-family: 'KIMM_Bold';
-	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
-	font-weight: 700;
-	font-style: normal;
-}
 
-* { box-sizing: border-box; }
-
-.section {
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	flex-direction:column;
-	align-items: center;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: 0;
-}
-
-.container {
-	display: flex;
-	width: 60%;
-	height: 80vh;
-	position: relative;
-	overflow: hidden;
-}
-
-.formbox {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: white;
-	width: 50%;
-	padding: 20px;
-	border-radius: 15px;
-	text-align: center;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	transition: all 0.6s ease-in-out;
-}
-
-.signinlogo { font-family: 'KIMM_Bold'; }
-
-.sign-in-container {
-	left: 0;
-	z-index: 2;
-}
-
-.container.right-panel-active .sign-in-container {
-	transform: translateX(100%);
-}
-
-.sign-up-container {
-	left: 0;
-	opacity: 0;
-	z-index: 1;
-}
-
-.container.right-panel-active .sign-up-container {
-	transform: translateX(100%);
-	opacity: 1;
-	z-index: 5;
-	animation: show 0.6s;
-}
-
-@keyframes show { 0%, 49.99% { opacity: 0; z-index: 1; } 50%, 100% { opacity: 1; z-index: 5; } }
-
-.formbox h2 { margin-bottom: 20px; }
-
-.formbox p { font-weight: bold; font-size: 15px; cursor: pointer; }
-
-.formlogo h2 {
-	font-size: 2rem;
-	margin: 0;
-	padding: 0;
-	color: #333;
-}
-
-.signininput, .signupinput {
-	padding: 10px;
-	width: 80%;
-	margin: 10px 0;
-	font-size: 14px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-}
-
-.checkbox-group {
-	width: 80%;
-	display: flex;
-	flex-direction: column;
-	align-items: start;
-}
-
-.signinbut {
-	border: none;
-	border-radius: 15px;
-	background-color: #161938;
-	width: 80%;
-	padding: 10px 0;
-	color: white;
-	cursor: pointer;
-	font-size: 16px;
-	margin-top: 20px;
-}
-
-.signupinbtn:hover { transform: scale(1.1); }
-
-.pbox { width: 80%; text-align: left; }
-
-.s-login {
-	margin-top: 20px;
-	display: flex;
-	justify-content: center;
-	flex-direction:column;
-	width: 70%;
-	gap: 20px;
-}
-.s-loginImg{
-	display: flex;
-	justify-content: space-evenly;
-}
-
-
-.s-login img {
-	width: 40px;
-	height: 40px;
-	border: 1px solid black;
-	border-radius: 50%;
-	cursor: pointer;
-}
-
-.pagebox {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: #161938;
-	width: 50%;
-	color: white;
-	padding: 20px;
-	text-align: center;
-	height: 100%;
-	position: absolute;
-	right: 0;
-	transform: translateX(0);
-	transition: transform 0.6s ease-in-out;
-}
-
-.pagebox h2, .pagebox p { margin-bottom: 20px; }
-
-.signupinbtn {
-	border: none;
-	cursor: pointer;
-	font-size: 16px;
-	width: 80%;
-	height: 50px;
-	border-radius: 25px;
-	background-color: white;
-	color: #161938;
-	font-weight: bold;
-	margin-bottom: 40px;
-	padding: 10px;
-	transition: transform 0.4s ease;
-}
-
-.overlay-container {
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 50%;
-	height: 100%;
-	transition: transform 0.6s ease-in-out;
-	z-index: 3;
-}
-
-.container.right-panel-active .overlay-container {
-	transform: translateX(-200%);
-}
-
-.overlay {
-	position: relative;
-	height: 100%;
-	width: 200%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transform: translateX(0);
-	transition: transform 0.6s ease-in-out;
-	border-radius: 15px;
-}
-
-.overlay-left, .overlay-right {
-	position: absolute;
-	width: 50%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background-color: #161938;
-	align-items: center;
-	text-align: center;
-	padding: 20px;
-	color: white;
-	font-weight: bold;
-	border-radius: 15px;
-}
-
-.overlay-left { transform: translateX(0); left: 0; }
-
-.container.right-panel-active .overlay-left {
-	transform: translateX(0);
-	opacity: 0;
-}
-
-.overlay-right {
-	right: 0;
-	transform: translateX(0);
-	opacity: 0;
-}
-
-.container.right-panel-active .overlay-right {
-	transform: translateX(0);
-	opacity: 1;
-}
-.wrapbox{
-	display: flex;
-	align-items: center;
-	width: 80%;
-}
-.wrapbut{
-	font-size: 13px; /* 텍스트 크기를 조금 줄여서 버튼 안에 맞춤 */
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	padding: 8px 10px; /* 수직 패딩을 줄여 버튼 높이를 낮춤 */
-	margin-left: 5px;
-	background-color: #f6f5f7;
-	cursor: pointer;
-	width: 80px; /* 버튼의 고정 너비 설정 */
-	height: 40px; /* signupinput과 동일한 높이 */
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-}
-
-.terms-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    text-align: center; /* 기본적으로 가운데 정렬 */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-#modalContent {
-	margin:0 auto;
-	width: 80%;
-    text-align: Left; /* 텍스트만 왼쪽 정렬 */
-    line-height: 1.6; /* 읽기 편하도록 줄 간격 설정 */
-    background-color: #f9f9f9; /* 연한 배경색으로 박스 구분 */
-    border: 1px solid #ddd; /* 연한 테두리 */
-    border-radius: 10px; /* 모서리를 둥글게 */
-    padding: 20px; /* 내부 여백 */
-    margin-top: 10px; /* 상위 요소와 간격 추가 */
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-}
-
-#confirmTerms, #cancelTerms {
-    padding: 10px 20px; /* 버튼 크기 */
-    font-size: 14px; /* 텍스트 크기 */
-    font-weight: bold; /* 텍스트 두께 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    border: 1px solid #ccc; /* 테두리 색상 */
-    background: linear-gradient(to right, #f6f6f6, #e9e9e9); /* 부드러운 배경 그라데이션 */
-    color: #333; /* 텍스트 색상 */
-    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
-    transition: all 0.3s ease; /* 부드러운 애니메이션 */
-}
-
-/* 호버 효과 */
-#confirmTerms:hover, #cancelTerms:hover {
-    background: linear-gradient(to right, #e0e0e0, #d4d4d4); /* 호버 시 배경 그라데이션 변경 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 확대 */
-    border-color: #aaa; /* 테두리 색상 변경 */
-}
-
-/* 활성화된 확인 버튼 */
-#confirmTerms:disabled {
-    background: #f0f0f0; /* 비활성화 시 배경색 */
-    color: #aaa; /* 비활성화 시 텍스트 색상 */
-    border-color: #ddd; /* 비활성화 시 테두리 색상 */
-    cursor: not-allowed; /* 커서를 '금지'로 변경 */
-    box-shadow: none; /* 그림자 제거 */
-}
-
-.pwterm{
-	width:80%;
-	font-weight: normal !important;
-	font-size: 9px !important;
-	text-align: left;
-	cursor: text !important;
-}
-
-/* 테블릿 PC */
-@media (max-width: 1024px) {
-    .container {
-        width: 70%; /* 너비를 줄여서 레이아웃 조정 */
-        height: 70vh; /* 높이도 조금 줄임 */
-    }
-	
-	.formbox{
-		width: 50%
-	}
-	
-    .formbox, .pagebox {
-        padding: 10px; /* 내부 여백 조정 */
-    }
-
-    .signininput, .signupinput {
-        font-size: 12px; /* 입력 필드 글씨 크기 줄임 */
-        padding: 8px; /* 패딩 조정 */
-    }
-
-    .signinbut, .signupinbtn {
-        font-size: 14px; /* 버튼 텍스트 크기 조정 */
-        padding: 8px; /* 패딩 줄임 */
-    }
-
-    .s-login img {
-        width: 30px; /* 소셜 로그인 버튼 크기 줄임 */
-        height: 30px;
-    }
-}
-
-/* 모바일 */
-@media (max-width: 768px) {
-    .container {
-        width: 100%; /* 너비를 100%로 확장 */
-        height: auto; /* 높이를 자동으로 */
-        flex-direction: column; /* 세로 방향으로 나열 */
-    }
-
-    .formbox, .pagebox {
-        height: 50vh; /* 높이를 자동으로 */
-        padding: 15px; /* 여백 약간 추가 */
-    }
-
-    .signininput, .signupinput {
-        font-size: 10px; /* 글씨 크기 더 줄임 */
-        padding: 6px; /* 패딩 줄임 */
-    }
-
-    .signinbut, .signupinbtn {
-        font-size: 12px; /* 버튼 텍스트 더 줄임 */
-        padding: 6px;
-    }
-
-    .s-login {
-        width: 100%; /* 소셜 로그인 섹션 전체 너비 사용 */
-    }
-
-    .s-login img {
-        width: 25px; /* 버튼 크기 더 줄임 */
-        height: 25px;
-    }
-
-    .wrapbut {
-        font-size: 12px; /* 버튼 텍스트 크기 조정 */
-        padding: 5px; /* 패딩 줄임 */
-        height: auto; /* 높이 자동으로 */
-    }
-}
-
-/* 중형 모바일 */
-@media (max-width: 425px) {
-    .container {
-        flex-direction: column; /* 세로 방향으로 정렬 */
-        width: 100%; /* 전체 너비 사용 */
-        height: auto; /* 높이 자동으로 */
-    }
-
-    .formbox, .pagebox {
-        width: 50%; /* 박스가 전체 너비를 차지 */
-        padding: 10px; /* 내부 여백 줄임 */
-    }
-
-    .signininput, .signupinput {
-        font-size: 9px; /* 글씨 크기 더 줄임 */
-        padding: 5px; /* 패딩 줄임 */
-    }
-
-    .signinbut, .signupinbtn {
-        font-size: 10px; /* 버튼 텍스트 줄임 */
-        padding: 5px;
-    }
-
-    .s-login img {
-        width: 20px; /* 소셜 로그인 버튼 크기 더 줄임 */
-        height: 20px;
-    }
-
-    .wrapbut {
-        font-size: 10px; /* 버튼 텍스트 더 줄임 */
-        padding: 4px; /* 패딩 줄임 */
-        height: auto; /* 높이 자동으로 */
-    }
-}
-
-</style>
 </head>
 <body>
 <!-- 헤더 -->
@@ -453,7 +21,7 @@
 <div class="section">
 	<div class="container" id="container">
 		<form id="signupForm" action="joinProcess.do" method="POST">
-			<div class="formbox sign-up-container">
+			<div class="formbox sign-up-container" style="justify-content: flex-start;">
 				<div class="formlogo">
 					<h2>회원가입</h2>
 				</div>
@@ -462,23 +30,24 @@
 				
 				<div class="wrapbox">
 				<input class="signupinput" id="carId" name="carId" type="text" placeholder="아이디" required>
-				<button type="button" class="wrapbut" id="checkId">아이디 중복검사</button>
+				<button type="button" class="wrapbut" id="checkId">중복검사</button>
 				</div>
 				
 				<div id="resultMsg" style="display:none; font-size:13px; color:red; margin-top:5px;"></div>
-				<p class="pwterm">※비밀번호는 8~16자 영문 소문자 및 특수문자 1개이상 포함 공백금지 </p>
-				<input style="margin-top:0;" class="signupinput" id="carPw" name="carPw" type="password" placeholder="비밀번호" required>
+				<input style="margin-top:0;" class="signupinput" id="carPw" name="carPw" type="password" placeholder="비밀번호" maxlength="16" required>
+				<p id="pwwarning" class="pwterm">※비밀번호는 8~16자, 최소 1개의 소문자와 1개의 특수문자를 포함해야 합니다.</p>
 				<input class="signupinput" name="checkPw" type="password" placeholder="비밀번호 확인" required>
-				<p class="pwterm">※이메일 주소를 입력해주세요. 올바른 형식 예: user@example.com</p>
 				<div class="wrapbox">
-				<input style="margin-top:0;" class="signupinput" name="email" type="text" placeholder="이메일" required>
+				<input class="signupinput" name="email" type="text" id="emailInput" placeholder="이메일" required>
 				<button id="emailnumber" type="button" class="wrapbut">인증번호 받기</button>
 				</div>			
+				<p id="emailWarning" class="pwterm">※이메일 주소를 입력해주세요. 올바른 형식 예: user@example.com</p>
 				<div class="wrapbox">
 				<input class="signupinput" name="emailkey" type="text" placeholder="인증번호입력" required>
 				<button type="button" class="wrapbut" id="verifyCodeButton">인증확인</button>
 				</div>
-				<input class="signupinput" name="birthday" type="text" placeholder="생년월일 8자리" required>
+				<input class="signupinput" name="birthday" type="text" placeholder="생년월일 8자리" maxlength="8" required>
+				<p id="birWarning" class="pwterm">※생년월일을 입력해주세요. 올바른 형식 예: 19980410</p>
 				<div class="checkbox-group">
 					<label><input type="checkbox" required data-type="termsOfService" class="terms-detail"> 이용약관 필수 동의</label>
    					<label><input type="checkbox" required data-type="locationPolicy" class="terms-detail"> 위치정보 이용약관 필수 동의</label>
@@ -507,7 +76,7 @@
 		<form id="loginForm" method="post" action="loginProcess.do">
 			<div class="formbox sign-in-container">
 				<div class="formlogo">
-					<h2 class="signinlogo">Car<br>Planet</h2>
+					<span class="signinlogo">CAR PLANET</span>
 				</div>
 				<h2>로그인</h2>
 				<input class="signininput" id="loginCarId" name="carId" type="text" placeholder="아이디">
@@ -527,7 +96,7 @@
 	</div>
 	
 	<div class="terms-modal" id="termsModal" style="display: none;">
-    <div class="modal-content">
+    <div class="Lmodal-content">
         <span class="close-button" id="closeModal">&times;</span>
         <h2 id="modalTitle">약관 제목</h2>
         <div id="modalContent">약관 상세 내용</div>
@@ -556,6 +125,14 @@
 	    const confirmTerms = $("#confirmTerms");
 	    const modalCheckbox = $("#modalCheckbox");
 	    const cancelTerms = $("#cancelTerms");
+	    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	    const passwordRegex = /^(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+	    const passwordInput = document.querySelector('input[name="carPw"]');
+	    const passwordMessage = document.getElementById('pwwarning'); // 안내문자 요소 생성
+	    const emailInput = document.getElementById('emailInput');
+	    const emailMessage = document.getElementById('emailWarning');
+	    const birthdayInput = document.querySelector('input[name="birthday"]');
+	    const birRegex = /^\d{8}$/;
 	    const termsDetails = {
 	    	    termsOfService: `
 	    	        1. 본 서비스는 사용자에게 정보를 제공하기 위해 운영됩니다.<br>
@@ -738,36 +315,162 @@
 	    });
 		
 	    
+	    function validateEmail(email) {
+	        return emailRegex.test(email);
+	    }
+
+	    function validatePassword(password) {
+	        return passwordRegex.test(password);
+	    }
+	    
+	    function validateBir(birthday){
+	    	return birRegex.test(birthday);
+	    }
+
+	    // 이메일 입력 이벤트 핸들러
+	    emailInput.addEventListener('input', function () {
+	        const email = emailInput.value.trim();
+	        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 간단한 이메일 형식 검사
+
+	        if (email === "") {
+	            emailMessage.textContent = "이메일 주소를 입력해주세요.";
+	            emailMessage.style.color = "red";
+	            emailMessage.style.display = "block";
+	        } else if (!emailRegex.test(email)) {
+	            emailMessage.textContent = "※올바른 이메일 형식을 입력해주세요. 예: user@example.com";
+	            emailMessage.style.color = "red";
+	            emailMessage.style.display = "block";
+	        } else {
+	            emailMessage.textContent = "사용 가능한 이메일 형식입니다.";
+	            emailMessage.style.color = "green";
+	            emailMessage.style.display = "block";
+	        }
+	    });
+	    
+	    //생일입력 이벤트 핸들러
+birthdayInput.addEventListener('input', function () {
+    const birthday = birthdayInput.value.trim();
+    const birRegex = /^\d{8}$/; // 8자리 숫자 형식 확인
+
+    if (!birRegex.test(birthday)) {
+        birWarning.textContent = "생년월일은 8자리 숫자로 입력해주세요. 예: 19980410";
+        return;
+    }
+
+    const year = parseInt(birthday.substring(0, 4), 10);
+    const month = parseInt(birthday.substring(4, 6), 10);
+    const day = parseInt(birthday.substring(6, 8), 10);
+
+    // 현재 연도 가져오기
+    const currentYear = new Date().getFullYear();
+
+    // 연도, 월, 일 유효성 검사
+    if (year < 1900 || year > currentYear) {
+        birWarning.textContent = "연도는 1900~" + currentYear + " 사이여야 합니다.";
+    } else if (month < 1 || month > 12) {
+        birWarning.textContent = "월은 1~12 사이여야 합니다.";
+    } else {
+        // 월에 따라 최대 일 수 계산
+        const daysInMonth = new Date(year, month, 0).getDate(); // month에 0을 넣으면 이전 월의 마지막 날 반환
+        if (day < 1 || day > daysInMonth) {
+            birWarning.textContent = month + "월에는 1~" + daysInMonth + "일만 유효합니다.";
+        } else {
+            birWarning.textContent = "올바른 생년월일 입니다."; // 모든 유효성 검사가 통과되면 경고 메시지 제거
+            birWarning.style.color = "green";
+        }
+    }
+});
+
+
+
+
+	    // 비밀번호 입력 이벤트 핸들러
+	    passwordInput.addEventListener('input', function () {
+	        const password = passwordInput.value.trim();
+	        const passwordRegex = /^(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+
+	        if (password === "") {
+	            passwordMessage.textContent = "비밀번호를 입력해주세요.";
+	            passwordMessage.style.color = "red";
+	            passwordMessage.style.display = "block";
+	        } else if (!passwordRegex.test(password)) {
+	            passwordMessage.textContent =
+	                "비밀번호는 8~16자, 최소 1개의 소문자와 1개의 특수문자를 포함해야 합니다.";
+	            passwordMessage.style.color = "red";
+	            passwordMessage.style.display = "block";
+	        } else {
+	            passwordMessage.textContent = "사용 가능한 비밀번호입니다.";
+	            passwordMessage.style.color = "green";
+	            passwordMessage.style.display = "block";
+	        }
+	    });
+	    
 	    function validateForm() {
-	    	console.log("validateForm 실행");
-	    	console.log("isIdChecked: ", isIdChecked);
+	        console.log("validateForm 실행");
+	        console.log("isIdChecked: ", isIdChecked);
 	        console.log("isEmailVerified: ", isEmailVerified);
-	        const password = document.querySelector('input[name="carPw"]').value;
-	        const confirmPassword = document.querySelector('input[name="checkPw"]').value;
-	        const termsChecked = Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]')).every(checkbox => checkbox.checked);
-	       
+
+	        // 폼 필드 값 가져오기
+	        const email = document.querySelector('input[name="email"]').value.trim();
+	        const password = document.querySelector('input[name="carPw"]').value.trim();
+	        const confirmPassword = document.querySelector('input[name="checkPw"]').value.trim();
+	        const birthday = document.querySelector('input[name="birthday"]').value.trim();
+	        const termsChecked = Array.from(
+	            document.querySelectorAll('.checkbox-group input[type="checkbox"]')
+	        ).every(checkbox => checkbox.checked);
+
+	        // 이메일 유효성 검사
+	        if (!validateEmail(email)) {
+	            alert("유효하지 않은 이메일 형식입니다. 올바른 이메일 주소를 입력해주세요.");
+	            return false;
+	        }
+
+	        // 비밀번호 유효성 검사
+	        if (!validatePassword(password)) {
+	            alert("비밀번호는 8~16자이며, 최소 1개의 소문자와 1개의 특수문자를 포함해야 합니다.");
+	            return false;
+	        }
+	        
+	        if (!validateBir(birthday)){
+	        	alert("생년월일을 정확히 입력해 주세요")
+	        	return false;
+	        }
+
+	        // 비밀번호 확인 검사
+	        if (password !== confirmPassword) {
+	            alert("비밀번호가 일치하지 않습니다.");
+	            return false;
+	        }
+
+	        // 아이디 중복 검사 확인
 	        if (!isIdChecked) {
 	            alert("아이디 중복검사를 진행해주세요.");
 	            return false;
 	        }
 
+	        // 이메일 인증 확인
 	        if (!isEmailVerified) {
 	            alert("이메일 인증을 완료해주세요.");
 	            return false;
 	        }
-	        
-	        if (password !== confirmPassword) {
-	            alert("비밀번호가 일치하지 않습니다.");
-	            return false;
-	        }
-	        
+
+	        // 약관 동의 확인
 	        if (!termsChecked) {
 	            alert("모든 약관에 동의하셔야 합니다.");
 	            return false;
 	        }
 
+	        // 모든 유효성 검사가 통과되면 true 반환
 	        return true;
 	    }
+
+	    // 폼 제출 이벤트 핸들러
+	    $("#signupForm").on("submit", function (event) {
+	        if (!validateForm()) {
+	            event.preventDefault(); // 제출 중단
+	        }
+	    });
+
 	   
 	    // 폼 제출 이벤트 핸들러
 	    $("#signupForm").on("submit", function (event) {
@@ -915,7 +618,7 @@
 
 	</script>
 	<!-- 푸터 -->
-<jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" />
-<jsp:include page="/WEB-INF/views/MainPage/footer.jsp" />
+<div class="footer-right"><jsp:include page="/WEB-INF/views/MainPage/footer_right.jsp" /></div>
+<div class="footer"><jsp:include page="/WEB-INF/views/MainPage/footer.jsp" /></div>
 </body>
 </html>

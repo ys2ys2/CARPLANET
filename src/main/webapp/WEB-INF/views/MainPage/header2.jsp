@@ -27,7 +27,7 @@
  <div class="header-container">
       <div class="member">
          <span class="userprofile">${not empty user.carName ? user.carName : "유저"}님 환영합니다!</span>
-        <button class="mypage-btn" onclick="location.href='./mypage'">
+        <button class="mypage-btn" onclick="location.href='${pageContext.request.contextPath}/mypage'">
           <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
           <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
           <span>마이페이지</span>

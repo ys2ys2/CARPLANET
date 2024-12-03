@@ -39,7 +39,7 @@ public class UserEntity {
 	@Column(name="car_pw", length=200)
 	private String carPw;
 	
-	@Column(name="email", updatable=false, length=50)
+	@Column(name="email", length=50)
 	private String email;
 	
 	@Column(name="birthday", length=20)
@@ -80,4 +80,32 @@ public class UserEntity {
 	public void updatePassword(String newPassword) {
         this.carPw = newPassword;
     }
+
+	public void setBirthday(String newBirthday) {
+		this.birthday = newBirthday;
+		
+	}
+	
+	public void setcarNickname(String newcarNickname) {
+		this.carNickname = newcarNickname;
+	}
+
+	public void setPhone(String newPhone) {
+		this.phone = newPhone;
+		
+	}
+
+	public void setEmail(String newEmail) {
+		this.email = newEmail;
+		
+	}
+	
+	public void updateCarName(String carName) {
+	    this.carName = carName;
+	}
+	
+	public void setUserStatus(int status) {
+		this.carStatus = status;
+		
+	}
 }

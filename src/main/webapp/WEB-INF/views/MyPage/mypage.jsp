@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +24,9 @@
 	    		<h4>나의 차량 정보</h4>
 	    		<div class="profile-editbtn">
 		    		<span><img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">차량 정보 수정</span>
-		    		<a href="${pageContext.request.contextPath}/updatelogic" onclick="window.open(this.href, '_blank', 'width=500, height=700'); return false;">
+		    		<a href="${pageContext.request.contextPath}/updatelogic" onclick="openPopup(event, this.href);">
 		    			<span id="editMemberInfoBtn">
-		    				<img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
+		    			<img src="https://www.kia.com/content/dam/kwp/functional/btn_edit.svg">회원 정보 수정</span>
 		    		</a>
 	    		</div>
 	    	</div>
@@ -30,7 +36,7 @@
 	        	<div class="car-image">
 	    			<input type="file" id="carImage" name="carImage" style="display: none;" accept="image/*"> <!-- 기본 파일 선택 버튼 숨김 -->
 	      			<img src=""> <!-- 기본 src는 비워둠 -->
-	      			<button type="button" id="uploadButton" class="upload-btn" disabled>사진 등록</button> <!-- 커스텀 버튼 -->
+      				<button type="button" id="uploadButton" class="upload-btn" disabled>사진 등록</button> <!-- 커스텀 버튼 -->
 	        	</div>
 	            <div class="car-details">
 	                <div class="car-detail">
@@ -64,15 +70,27 @@
     <div class="community-section">
         <h4>나의 커뮤니티 관리</h4>
         <div class="community-links">
-            <ul>
-                <!-- 예시 커뮤니티 글 링크 -->
-                <li><a href="https://example.com/community-post-1" target="_blank"></a></li>
-                <li><a href="https://example.com/community-post-2" target="_blank"></a></li>
-                <li><a href="https://example.com/community-post-3" target="_blank"></a></li>
+	        <ul>
+                <!-- myPosts 리스트를 반복하며 게시글 출력 -->
+                <c:forEach var="post" items="${myPosts}">
+                    <li>
+                    <a href="${pageContext.request.contextPath}/community/getPostList.do">
+		                <span class="titleidx">#${post.postIndex}번 글 </span><span class="community-title">${post.title}</span>
+		            </a>
+		                <span class="community-date">
+		                	<fmt:formatDate value="${post.regDate}" pattern="yy-MM-dd HH:mm" />
+		                </span>
+		                <%-- <span>내용: ${post.content}</span> --%>
+                    
+                    </li>
+                </c:forEach>
             </ul>
+            <c:if test="${empty myPosts}">
+		        <p>작성한 게시글이 없습니다.</p>
+		    </c:if>
         </div>
         <!-- 커뮤니티 글 수정 버튼 -->
-        <a href="${pageContext.request.contextPath}/communityEditPage.jsp" class="edit-community-posts-btn">커뮤니티 글 수정하기</a>
+        <a href="${pageContext.request.contextPath}/community/post.do" class="edit-community-posts-btn">커뮤니티 글 작성하기</a>
     </div>
 </div>
 
@@ -83,6 +101,11 @@
 
 
 <script>
+
+function openPopup(event, url) {
+    event.preventDefault(); 
+    window.open(url, '_blank', 'width=500, height=700');
+}
 
 const contextPath = "${pageContext.request.contextPath}";
 

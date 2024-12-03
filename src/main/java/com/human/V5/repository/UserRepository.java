@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 
 	int countByCarId(String carId);
 
-	UserEntity findByCarIdAndCarPwAndCarStatus(String carId, String carPw, int i);
+	UserEntity findByCarIdAndCarPw(String carId, String carPw);
 
 	UserEntity findByCarId(String carId); // 카카오 ID로 조회 시 사용
 
@@ -19,4 +19,16 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 	UserEntity findByCarIdAndEmail(String id, String email);
 
 	boolean existsByCarNickname(String carNickname);
+
+
+	UserEntity findByCarIdAndCarPwAndCarStatusIn(String carId, String carPw, List<Integer> carStatusList);
+
+	List<UserEntity> findByCarIdContainingOrCarNicknameContaining(String keyword, String keyword2);
+
+	List<UserEntity> findByCarIdContainingOrCarNicknameContainingAndCarStatus(String keyword, String keyword2,
+			Integer carStatus);
+
+	List<UserEntity> findByCarStatus(Integer carStatus);
+
+
 }

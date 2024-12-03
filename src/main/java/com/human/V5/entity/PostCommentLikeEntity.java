@@ -1,12 +1,10 @@
 package com.human.V5.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +15,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "post_comment_like")
+@Table(name = "Car_Post_comment_like")
 public class PostCommentLikeEntity {
+	
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

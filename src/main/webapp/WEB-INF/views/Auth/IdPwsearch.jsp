@@ -438,7 +438,7 @@ button:active {
 						},
 						success : function(response) {
 							alert("임시 비밀번호를 메일로 전송했습니다."); // 성공 메시지 표시
-							window.location.href = "/V5/";
+							window.location.href = "/CarPlanet/";
 						},
 						error : function(xhr) {
 							if (xhr.status === 404) {

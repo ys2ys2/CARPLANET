@@ -47,18 +47,11 @@
  <div class="map_wrap">
 <div class="parking-map" id="map"></div>
   
- <img 
+ <img class="current-location-img"
         src="${pageContext.request.contextPath}/resources/images/mylocation.png" 
         alt="현재 위치 표시" 
         onclick="showCurrentLocation()" 
-        style="
-            width: 30px; 
-            height: 30px; 
-            cursor: pointer; 
-            position: absolute; 
-            bottom: 67px; 
-            right: 500px; 
-            z-index: 1000;">
+        >
 </div>
 <!--전체 콘텐츠 묶는 컨테이너  -->
 <div class="content-container">
@@ -149,8 +142,10 @@
 
     <!-- 길찾기 경로 표시 영역 -->
     <div class="route-result">
+    
+   
         <div id="route-directions">
-            <!-- 길찾기 결과가 표시될 영역 -->
+           
         </div>
     </div>
      </div>

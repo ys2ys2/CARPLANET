@@ -1,23 +1,37 @@
 package com.human.V5.service;
 
-import com.human.V5.dto.PostLikeDto;
-import com.human.V5.entity.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.human.V5.dto.PostCommentDto;
 import com.human.V5.dto.PostDto;
+import com.human.V5.dto.PostLikeDto;
+import com.human.V5.entity.PostCommentEntity;
+import com.human.V5.entity.PostCommentLikeEntity;
+import com.human.V5.entity.PostEntity;
+import com.human.V5.entity.PostLikeEntity;
+import com.human.V5.entity.PostSearchLogEntity;
+import com.human.V5.entity.UserEntity;
 import com.human.V5.repository.PostCommentLikeRepository;
 import com.human.V5.repository.PostCommentRepository;
 import com.human.V5.repository.PostLikeRepository;
 import com.human.V5.repository.PostRepository;
 import com.human.V5.repository.PostSearchLogRepository;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.human.V5.repository.UserRepository;
+
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -28,26 +42,18 @@ public class CommunityServiceImpl implements CommunityService {
   private PostCommentRepository postCommentRepository;
   private PostCommentLikeRepository postCommentLikeRepository;
   private PostSearchLogRepository postSearchLogRepository;
+  private UserRepository userRepository;
 
   @Override
   public PostEntity save(PostEntity entity) {
     return postRepository.save(entity);
   }
+  
 
   @Transactional
   @Override
-  public PostEntity updatePost(Integer postIndex, String title, String content, String userId, String fileName, String filePath) {
-    PostEntity post = postRepository.findById(postIndex).orElse(null);
-    if (post == null) return null;
-    if (!post.getCarId().equals(userId)) return null;
-
-    post.setTitle(title);
-    post.setContent(content);
-    post.setFileName(fileName);
-    post.setFilePath(filePath);
-    post.setModDate(new Date());
-
-    return postRepository.save(post);
+  public PostEntity updatePost(PostEntity entity) {
+    return postRepository.save(entity);
   }
 
   @Transactional
@@ -66,6 +72,13 @@ public class CommunityServiceImpl implements CommunityService {
     return postRepository.findById(postIndex).orElse(null);
   }
 
+  @Override
+  public List<PostDto> getPostDto(Integer postIndex) {
+    List<PostEntity> post = new ArrayList<>();
+    post.add(postRepository.findById(postIndex).orElse(null));
+    return convertPostDto(post);
+  }
+
   @Transactional
   @Override
   public List<PostDto> getPostList(Pageable pageable) {
@@ -78,9 +91,17 @@ public class CommunityServiceImpl implements CommunityService {
    */
   @Transactional
   @Override
-  public List<PostDto> searchPostList(Pageable pageable, String keyword) {
-    List<PostEntity> postList = postRepository.findAllByContentLikeOrderByRegDateDesc(keyword, pageable).getContent();
-    postSearchLogRepository.save(PostSearchLogEntity.builder().keyword(keyword).build());
+  public List<PostDto> searchPostList(Pageable pageable, String keyword, Integer postIndex) {
+    List<PostEntity> postList = new ArrayList<>();
+
+    if(postIndex != null){
+      postList = postRepository.findAllById(Arrays.asList(new Integer[]{postIndex}));
+    } else {
+      String searchKeyword = "%" + keyword + "%";
+      postList = postRepository.findAllByTitleLikeOrContentLikeOrderByRegDateDesc(searchKeyword, searchKeyword, pageable).getContent();
+      postSearchLogRepository.save(PostSearchLogEntity.builder().keyword(keyword).build());
+    }
+
     return convertPostDto(postList);
   }
 
@@ -93,21 +114,14 @@ public class CommunityServiceImpl implements CommunityService {
     List<PostEntity> postList = postRepository.findRecommendedPosts();
     return convertPostDto(postList);
   }
-
+  
+  
   @Transactional
   @Override
   public PostLikeDto like(Integer postIndex, String carId) {
-    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
-    PostLikeEntity like = likeAndUnlike.stream()
-            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
-    PostLikeEntity unlike = likeAndUnlike.stream()
-            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
+    PostLikeEntity likeAndUnlike = postLikeRepository.findByPostIndexAndCarId(postIndex, carId);
 
-    if (like == null) {
+    if (likeAndUnlike == null) { //회원의 게시글에 대한 데이터가 없는 경우에는 데이터 추가
       PostLikeEntity newLike = PostLikeEntity.builder()
         .postIndex(postIndex)
         .type(true)
@@ -115,11 +129,13 @@ public class CommunityServiceImpl implements CommunityService {
         .build();
 
       postLikeRepository.save(newLike);
-      if (unlike != null) {
-        postLikeRepository.deleteById(unlike.getPostLikeIndex());
+
+    } else {//회원의 게시글에 대한 데이터가 있는 경우
+      if (!likeAndUnlike.getType()) {//데이터가 싫어요인 경우
+        postLikeRepository.udpateType(likeAndUnlike.getPostIndex(), true);//기존의 데이터의 싫어요를 좋아요로 변경
+      } else { // 좋아요 취소
+        postLikeRepository.deleteById(likeAndUnlike.getPostLikeIndex());
       }
-    } else {
-      postLikeRepository.deleteById(like.getPostLikeIndex());
     }
 
     PostLikeDto postLikeDto = new PostLikeDto();
@@ -128,21 +144,13 @@ public class CommunityServiceImpl implements CommunityService {
     postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
     return postLikeDto;
   }
-
+  
   @Transactional
   @Override
   public PostLikeDto unlike(Integer postIndex, String carId) {
-    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
-    PostLikeEntity like = likeAndUnlike.stream()
-            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
-    PostLikeEntity unlike = likeAndUnlike.stream()
-            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
-            .findFirst()
-            .orElse(null);
+    PostLikeEntity likeAndUnlike = postLikeRepository.findByPostIndexAndCarId(postIndex, carId);
 
-    if (unlike == null) {
+    if (likeAndUnlike == null) {//회원의 게시글에 대한 데이터가 없는 경우에는 데이터 추가
       PostLikeEntity newUnlike = PostLikeEntity.builder()
         .postIndex(postIndex)
         .type(false)
@@ -151,11 +159,12 @@ public class CommunityServiceImpl implements CommunityService {
 
       postLikeRepository.save(newUnlike);
 
-      if (like != null) {
-        postLikeRepository.deleteById(like.getPostLikeIndex());
+    } else {//회원의 게시글에 대한 데이터가 있는 경우
+      if (likeAndUnlike.getType()) {//데이터가 좋아요인 경우
+        postLikeRepository.udpateType(likeAndUnlike.getPostIndex(), false);//기존의 데이터의 좋아요를 싫어요로 변경
+      } else { // 싫어요 취소
+        postLikeRepository.deleteById(likeAndUnlike.getPostLikeIndex());
       }
-    } else {
-      postLikeRepository.deleteById(unlike.getPostLikeIndex());
     }
 
     PostLikeDto postLikeDto = new PostLikeDto();
@@ -164,6 +173,78 @@ public class CommunityServiceImpl implements CommunityService {
     postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
     return postLikeDto;
   }
+  
+
+//  @Transactional
+//  @Override
+//  public PostLikeDto like(Integer postIndex, String carId) {
+//    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
+//    PostLikeEntity like = likeAndUnlike.stream()
+//            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//    PostLikeEntity unlike = likeAndUnlike.stream()
+//            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//
+//    if (like == null) {
+//      PostLikeEntity newLike = PostLikeEntity.builder()
+//        .postIndex(postIndex)
+//        .type(true)
+//        .carId(carId)
+//        .build();
+//
+//      postLikeRepository.save(newLike);
+//      if (unlike != null) {
+//        postLikeRepository.deleteById(unlike.getPostLikeIndex());
+//      }
+//    } else {
+//      postLikeRepository.deleteById(like.getPostLikeIndex());
+//    }
+//
+//    PostLikeDto postLikeDto = new PostLikeDto();
+//    postLikeDto.setPostIndex(postIndex);
+//    postLikeDto.setLikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, true));
+//    postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
+//    return postLikeDto;
+//  }
+
+//  @Transactional
+//  @Override
+//  public PostLikeDto unlike(Integer postIndex, String carId) {
+//    List<PostLikeEntity> likeAndUnlike = postLikeRepository.findAllByPostIndexAndCarId(postIndex, carId);
+//    PostLikeEntity like = likeAndUnlike.stream()
+//            .filter(l -> Boolean.TRUE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//    PostLikeEntity unlike = likeAndUnlike.stream()
+//            .filter(l -> Boolean.FALSE.equals(l.getType())) // type이 true인 요소만 필터링
+//            .findFirst()
+//            .orElse(null);
+//
+//    if (unlike == null) {
+//      PostLikeEntity newUnlike = PostLikeEntity.builder()
+//        .postIndex(postIndex)
+//        .type(false)
+//        .carId(carId)
+//        .build();
+//
+//      postLikeRepository.save(newUnlike);
+//
+//      if (like != null) {
+//        postLikeRepository.deleteById(like.getPostLikeIndex());
+//      }
+//    } else {
+//      postLikeRepository.deleteById(unlike.getPostLikeIndex());
+//    }
+//
+//    PostLikeDto postLikeDto = new PostLikeDto();
+//    postLikeDto.setPostIndex(postIndex);
+//    postLikeDto.setLikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, true));
+//    postLikeDto.setUnlikeCount((int) postLikeRepository.countByPostIndexAndType(postIndex, false));
+//    return postLikeDto;
+//  }
 
   @Transactional
   @Override
@@ -253,6 +334,25 @@ public class CommunityServiceImpl implements CommunityService {
       postIndexes).stream().collect(
       Collectors.groupingBy(PostCommentEntity::getPostIndex));
 
+    Set<String> carIdSet = new HashSet<>();
+    postList.forEach(post -> {
+      carIdSet.add(post.getCarId());
+    });
+
+    postComments.values().forEach(comments -> {
+      comments.forEach(comment -> {
+        carIdSet.add(comment.getCarId());
+      });
+    });
+
+
+    Map<String, String> userNickNameMap = new HashMap<>();
+    carIdSet.forEach(carId -> {
+      UserEntity user = userRepository.findByCarId(carId);
+      userNickNameMap.put(user.getCarId(), user.getCarNickname());
+    });
+
+
     Map<Integer, List<PostLikeEntity>> postLikes = postLikeRepository.findAllByPostIndexIn(
       postIndexes).stream().collect(
       Collectors.groupingBy(PostLikeEntity::getPostIndex));
@@ -287,12 +387,11 @@ public class CommunityServiceImpl implements CommunityService {
             commentUnlikeCount = (int) postCommentLikeList.stream().filter(obj -> obj.getType() == false).count();
           }
 
-
           PostCommentDto commentDto = new PostCommentDto();
           commentDto.setPostCommentIndex(c.getPostCommentIndex());
           commentDto.setPostIndex(c.getPostIndex());
           commentDto.setContent(c.getContent());
-          commentDto.setCarId(c.getCarId());
+		  commentDto.setCarId(userNickNameMap.get(c.getCarId()));
           commentDto.setLikeCount(commentLikeCount);
           commentDto.setUnlikeCount(commentUnlikeCount);
           commentDto.setRegDate(c.getRegDate());
@@ -308,7 +407,7 @@ public class CommunityServiceImpl implements CommunityService {
       dto.setContent(p.getContent());
       dto.setFilePath(p.getFilePath());
       dto.setFileName(p.getFileName());
-      dto.setCarId(p.getCarId());
+	  dto.setCarId(userNickNameMap.get(p.getCarId()));
       dto.setLikeCount(likeCount);
       dto.setUnlikeCount(unlikeCount);
       dto.setComments(comments);
@@ -316,5 +415,33 @@ public class CommunityServiceImpl implements CommunityService {
       dto.setModDate(p.getModDate());
       return dto;
     }).collect(Collectors.toList());
+  }
+  
+  
+  @Transactional
+  @Override
+  public List<PostEntity> getMyPostEntities(String carId, Pageable pageable) {
+      // Repository에서 데이터를 가져옵니다.
+      Page<PostEntity> postPage = postRepository.findByCarId(carId, pageable);
+      return postPage.getContent(); // 엔티티 리스트 반환
+  } //강제 충돌
+
+
+  public List<PostCommentDto> getPostCommentList(Integer postIndex) {
+    List<Object[]> list = postCommentRepository.findAllByPostIndex(postIndex);
+    List<PostCommentDto> comments = list.stream().map(e -> {
+      PostCommentDto postCommentDto = new PostCommentDto();
+      postCommentDto.setPostCommentIndex(Integer.parseInt(String.valueOf(e[0])));
+      postCommentDto.setContent(String.valueOf(e[2]));
+      postCommentDto.setModDate((Date) e[3]);
+      postCommentDto.setPostIndex(Integer.parseInt(String.valueOf(e[4])));
+      postCommentDto.setRegDate((Date) e[5]);
+      postCommentDto.setCarId(String.valueOf(e[6]));
+      postCommentDto.setLikeCount(Integer.parseInt(String.valueOf(e[7])));
+      postCommentDto.setUnlikeCount(Integer.parseInt(String.valueOf(e[8])));
+      return postCommentDto;
+    }).collect(Collectors.toList());
+
+    return comments;
   }
 }

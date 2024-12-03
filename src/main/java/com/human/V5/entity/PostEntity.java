@@ -16,8 +16,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="post")
+@Table(name="Car_Post")
 public class PostEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_index")
@@ -45,7 +46,7 @@ public class PostEntity {
 	private Date modDate; // 최근 게시글 수정일
 
 	@Builder
-	public PostEntity(String title, String content, String filePath, String fileName, String carId) {
+	public PostEntity(String title, String content, String filePath, String fileName, String carId, Integer post_Index) {
 		this.title = title;
 		this.content = content;
 		this.filePath = filePath;
@@ -53,5 +54,6 @@ public class PostEntity {
 		this.carId = carId;
 		this.regDate = new Date();
 		this.modDate = new Date();
+		this.postIndex = post_Index;
 	}
 }

@@ -17,8 +17,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="post_search_log")
+@Table(name="Car_Post_search_log")
 public class PostSearchLogEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_search_log_index")

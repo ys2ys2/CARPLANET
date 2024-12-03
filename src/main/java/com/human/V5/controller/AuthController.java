@@ -1,5 +1,7 @@
 package com.human.V5.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -159,31 +161,36 @@ public class AuthController {
 	        }
 	    }
 		
-	  //로그인 처리 요청
-		@PostMapping("/loginProcess.do")
-		public ModelAndView loginProcess(String carId, String carPw,
-				HttpServletRequest request, ModelAndView mav) {
-			
-			String viewName = "Auth/Login"; //로그인 실패시 뷰이름
-			
-//			MemberEntity vo = memberServiceImpl.login(memberId, memberPw);
-			//쿼리메소드를 이용해서 로그인 처리하기
-			//:findByMemberIdAndMemberPwAndMemStatus(memberId, memberPw, 1)
-			UserEntity vo = userService.findByCarIdAndCarPwAndCarStatus(carId, carPw, 1);
-			
-			//로그인 성공여부를 vo객체에 저장된 값으로 판단
-			if(vo != null) {//로그인 성공
-				//세션객체에 회원정보를 저장함(request객체의 getSession()메소드 이용)
-				HttpSession session = request.getSession();
-				session.setAttribute("user", vo);
-				viewName = "redirect:/";//메인 페이지 재요청
-			}else {//로그인 실패
-				mav.addObject("msg", "아이디나 비밀번호가 일치하지 않습니다");
-			}
-			mav.setViewName(viewName);
-			
-			return mav;
-		}
+	    //로그인 처리 요청
+	    @PostMapping("/loginProcess.do")
+	    public ModelAndView loginProcess(String carId, String carPw,
+	                                     HttpServletRequest request, ModelAndView mav) {
+	        
+	        String viewName = "Auth/Login"; // 로그인 실패시 뷰이름
+
+	        // UserEntity 조회 (status 조건 포함)
+	        UserEntity vo = userService.findByCarIdAndCarPw(carId, carPw); // 상태 조건 없이 먼저 조회
+	        
+	        if (vo != null) { // 아이디와 비밀번호는 맞는 경우
+	            if (Arrays.asList(1, 3).contains(vo.getCarStatus())) { // status가 1 또는 3인지 확인
+	                // 로그인 성공 처리
+	                HttpSession session = request.getSession();
+	                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	                String formattedRegDate = formatter.format(vo.getRegDate());
+	                session.setAttribute("formattedRegDate", formattedRegDate);
+	                session.setAttribute("user", vo);
+	                viewName = "redirect:/"; // 메인 페이지 재요청
+	            } else { // 상태가 1, 3이 아닌 경우
+	                mav.addObject("msg", "삭제 처리된 아이디입니다");
+	            }
+	        } else { // 아이디와 비밀번호가 틀린 경우
+	            mav.addObject("msg", "아이디나 비밀번호가 일치하지 않습니다");
+	        }
+	        
+	        mav.setViewName(viewName);
+	        return mav;
+	    }
+
 		
 		@GetMapping("/logout.do")
 		public String logout(HttpServletRequest request) {

@@ -130,6 +130,7 @@
   height: 20px; /* 아이콘 높이 */
 }
 
+
 /* 사용자 메뉴 공통 스타일 */
 .member, .menu {
   display: flex; /* 메뉴 항목을 가로로 정렬 */
@@ -143,6 +144,28 @@
   font-family: 'Freesentation-9Black';
   color: #000;
 }
+
+
+@media (max-width: 425px) {
+	
+.logo {
+  margin-left: 20px; /* 왼쪽 공백을 없앰 */
+  margin-top: 15px; /* 위쪽 공백 추가 */
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: flex-start; /* 로고를 왼쪽으로 정렬 */
+  position: relative; /* z-index 적용을 위해 relative 설정 */
+  z-index: 10; /* 다른 요소 위로 표시 */
+}	
+	
+.logo a {
+  font-family: 'Paperlogy-8ExtraBold'; /* 폰트 스타일 유지 */
+  font-size: 12px; /* 글자 크기 */
+  font-weight: bold; /* 굵기 설정 */
+  color: #000; /* 글자 색 */
+  text-decoration: none; /* 밑줄 제거 */
+  cursor: pointer; /* 마우스 포인터를 클릭 모양으로 변경 */
+}	
 
 .user-menu span {
 	font-family: 'Freesentation-9Black';
@@ -230,5 +253,6 @@
   text-decoration: none; /* 밑줄 제거 */
   transition: color 0.3s ease; /* 텍스트 색상 변경 애니메이션 */
      font-family: 'GongGothicMedium';
+}
 }
 }

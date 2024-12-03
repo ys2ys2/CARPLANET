@@ -55,6 +55,15 @@ html, body{
     z-index: 1;
 }
 
+.current-location-img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 67px;
+    right: 500px;
+    z-index: 1000;
+}
 
 
  /* 메인 검색바 설정 */
@@ -411,7 +420,7 @@ html, body{
 
     #parking-details-popup {
     position: fixed;
-    top: 90px;
+    top: 103px;
     right: 50px;
     max-width: 300px;
     width: 300px;
@@ -421,7 +430,7 @@ html, body{
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     z-index: 1000;
-    
+    border-radius: 20px;
      /* 스크롤바 추가 */
     overflow-y: auto; /* 세로 스크롤 활성화 */
     overflow-x: hidden; /* 가로 스크롤 제거 */
@@ -476,6 +485,144 @@ html, body{
     margin-top: -40px; /* 위쪽 여백 */
     font-size: 14px; /* 글자 크기 */
 }
+
+
+.info-table-open td {
+    padding: 8px; /* 셀 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    font-family: 'Pretendard-Regular';
+}
+
+.info-table-open tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경 */
+}
+
+.info-table-open tr:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 행 배경 */
+    font-family: 'Pretendard-Regular';
+}
+
+/* 테이블 행의 기본 높이 통일 */
+.info-table tr,
+.info-table-open tr {
+    height: 40px; /* 행 높이 설정 */
+}
+
+/* 테이블 폭 고정 */
+.info-table td:first-child,
+.info-table-open td:first-child {
+    width: 30%; /* 첫 번째 열의 폭 고정 */
+}
+
+.info-table{
+	width: 100%; /* 테이블 너비 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: -40px; /* 위쪽 여백 */
+    font-size: 14px; /* 글자 크기 */
+    position: relative;
+    top: 21px;
+}
+.info-extra{
+	font-family: 'Pretendard-Regular';
+	font-weight:700;
+	font-size: 17px;
+    position: relative;
+    top: 15px;}
+
+
+.info-capacity{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	margin-top: -6px;	
+}
+
+
+.info-contact{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+} 
+
+.info-accessibility{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+	
+}
+
+
+
+
+.info-table-open td {
+    padding: 8px; /* 셀 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    font-family: 'Pretendard-Regular';
+}
+
+.info-table-open tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경 */
+}
+
+.info-table-open tr:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 행 배경 */
+    font-family: 'Pretendard-Regular';
+}
+
+/* 테이블 행의 기본 높이 통일 */
+.info-table tr,
+.info-table-open tr {
+    height: 40px; /* 행 높이 설정 */
+}
+
+/* 테이블 폭 고정 */
+.info-table td:first-child,
+.info-table-open td:first-child {
+    width: 30%; /* 첫 번째 열의 폭 고정 */
+}
+
+.info-table{
+	width: 100%; /* 테이블 너비 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: -40px; /* 위쪽 여백 */
+    font-size: 14px; /* 글자 크기 */
+    position: relative;
+    top: 21px;
+}
+.info-extra{
+	font-family: 'Pretendard-Regular';
+	font-weight:700;
+	font-size: 17px;
+    position: relative;
+    top: 15px;}
+
+
+.info-capacity{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	margin-top: -6px;	
+}
+
+
+.info-contact{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+} 
+
+.info-accessibility{
+	font-family: 'Pretendard-Regular';
+	font-size: 14px;
+	border-bottom: 1px solid #ddd; /* 실선 스타일 */
+	
+	
+}
+
+
 
 
 .info-table-open td {
@@ -560,7 +707,7 @@ html, body{
     align-items: center; /* 이미지와 텍스트를 세로 중앙 정렬 */
     justify-content: center; /* 내부 요소를 가로 중앙 정렬 */
     gap: 6px; /* 이미지와 텍스트 사이 간격 */
-    background-color: #4CAF50; /* 버튼 배경색: 녹색 */
+    background-color: #4CC417; /* 버튼 배경색: 녹색 */
     color: white; /* 텍스트 색상: 흰색 */
     font-weight: bold; /* 텍스트 굵게 */
     font-family: 'Pretendard-Regular'; /* 폰트 설정 */
@@ -585,38 +732,13 @@ html, body{
 }
 
 
-/* .info-coordinates-btn {
-    background-color: #4CAF50; 기본 배경색: 녹색
-    color: white; 기본 글자색: 흰색
-    font-weight: bold; 글자 굵게
-    font-family: 'Pretendard-Regular'; 폰트 패밀리 설정
-    font-size: 14px; 폰트 크기 증가
-    border-radius: 11px; 버튼 모서리를 더 둥글게
-    border: none; 테두리 제거
-    position: relative;
-    left: 76%; 버튼 위치 조정
-    padding: 8px 4px; 버튼 내부 여백 확대
-    cursor: pointer; 마우스 포인터를 손 모양으로
-    transition: all 0.3s ease; 호버 효과에 부드러운 전환 추가
-}
-
-.info-coordinates-btn:hover {
-    background-color: #45a049; 호버 시 배경색을 더 진한 녹색으로 변경
-    transform: scale(1.1); 호버 시 버튼 크기 확대 (10% 증가)
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 호버 시 그림자 효과
-}
-
-.info-coordinates-btn img{
-    width: 20px;
-    height: 20px;
-}
- */
+ 
 /* 구분선을 추가할 클래스 */
 .info-divider {
-    border-bottom: 1px solid #ddd; /* 실선 스타일 */
-    padding-bottom: 5px; /* 구분선과 텍스트 사이 간격 */
-    margin-bottom: 10px; /* 다음 요소와 간격 */
+    padding-bottom: 3px; /* 구분선과 텍스트 사이 간격 */
     font-family: 'Pretendard-Regular';
+    position: relative;
+    top: 19px;
     
 }
 .info-charge{
@@ -641,7 +763,7 @@ html, body{
     height: 400px; /* 고정된 높이 설정 */
     position: relative; /* 부모 컨텍스트 내 배치 */
     border: 1px solid #ddd; /* 컨테이너 확인을 위한 테두리 */
-   
+   	top:18px;
 }
 
 
@@ -727,7 +849,7 @@ html, body{
 
 
 .route-result {
-    margin-top: 20px;
+    margin-top: -26px;
     padding: 20px;
     background-color: #f9f9f9;
 }
@@ -736,15 +858,49 @@ html, body{
 	 margin-top: -30px;
 	 font-family: 'GongGothicMedium';
 	 font-size:18px;
+	 margin-left: -8px;
 }
 .route-result h3 {
     font-family: 'GongGothicMedium';
+    margin-left: 2px;
+    margin-bottom: 11px;
 }
 
 .route-result p{
 	font-family: 'Pretendard-Regular';
-	font-weight:500;
+	font-weight:700;
+	
 }
+
+.route-fixed-info {
+    position: sticky; /* 부모 요소 내에서 고정 */
+    top: 0; /* 부모 요소의 위쪽에 고정 */
+    z-index: 10; /* 다른 요소 위에 표시 */
+    padding: 10px; /* 내부 여백 */
+    background: white;
+    width:100%;
+}
+
+.route-fixed-info h4{
+ 	margin: 0; /* p 태그 간격 제거 */
+	font-family: 'GongGothicMedium';
+	 font-size:18px;
+    color: black; /* 텍스트 색상 */
+	margin-bottom:6px;
+	margin-left: -9px;
+}
+
+
+.route-fixed-info p {
+    margin: 0; /* p 태그 간격 제거 */
+    font-family: 'Pretendard-Regular'; /* 폰트 설정 */
+    font-weight: 700; /* 폰트 두께 */
+    color: #4CC417;
+    line-height: 1.8;
+    margin-left: -8px;
+}
+
+
 
 .start_search-results {
     border: 1px solid #ddd;
@@ -792,6 +948,11 @@ html, body{
     gap: 10px; /* 아이콘과 텍스트 간격 */
     margin-bottom: 10px; /* 가이드 항목 간 간격 */
     font-family: 'Pretendard-Regular';
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+    padding: 6px;
+    margin-left: -1px;
+    
 }
 
 .guide-icon {
@@ -901,6 +1062,14 @@ html, body{
 	border-bottom:1px solid #bfbfbf;
 	}            
 	
+
+    .marker-icon {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+      
 	
 /* 	 전체 구조 
 .route-search {
@@ -934,10 +1103,433 @@ html, body{
     height: 20px; /* 이미지 높이 */
 }
 
+/* 커스텀 마커 컨테이너 */
+.custom-marker {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 레이더 효과 */
+.radar-effect {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형 */
+    background: rgba(0, 150, 255, 0.3); /* 반투명한 파란색 */
+    animation: radar 1s infinite linear; /* 애니메이션 이름과 반복 */
+}
+
+/* 레이더 애니메이션 */
+@keyframes radar {
+    0% {
+        transform: scale(1); /* 초기 크기 */
+        opacity: 0.7; /* 초기 불투명도 */
+    }
+    100% {
+        transform: scale(2.5); /* 확대 */
+        opacity: 0; /* 완전히 투명해짐 */
+    }
+}
+
+/* 현재 위치 아이콘 */
+.location-icon {
+    width: 15px;
+    height: 15px;
+    z-index: 2; /* 레이더 효과 위에 표시 */
+}
+
+
+
+@media (max-width: 1024px) { 
+	
+	#parking-details-popup {
+    position: fixed;
+    top: 187px;
+    right: 48px;
+    max-width: 300px;
+    width: 325px;
+    height: 500px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border-radius: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+	
+	.parking-title {
+    font-family: 'GongGothicMedium';
+    font-size: 21px;
+    font-weight: 700;
+    color: black;
+    margin-top: 0px;
+}
+	
+	
+	.info-address {
+    font-size: 13px;
+    color: #555;
+    font-family: 'Pretendard-Regular';
+    font-weight: 500;
+    margin-top: -10px;
+}
+	
+	.tab-button {
+    flex: 1;
+    padding: 10px 20px;
+    font-family: 'GongGothicMedium';
+    font-size: 15px;
+    color: #ccc;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: normal;
+    transition: color 0.3s;
+}
+	
+	.search-bar input[type="text"] {
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-family: 'GongGothicMedium';
+    font-size: 15px;
+    width: 200px;
+}
+	
+	
+	.route-fixed-info h4 {
+    margin: 0;
+    font-family: 'GongGothicMedium';
+    font-size: 16px;
+    color: black;
+    margin-bottom: 6px;
+    margin-left: -9px;
+}
+	
+	.route-fixed-info p {
+    margin: 0;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+    color: #4CC417;
+    line-height: 1.8;
+    margin-left: -8px;
+    font-size: 15px;
+}
+	.route-result h3 {
+    font-family: 'GongGothicMedium';
+    margin-left: 2px;
+    margin-bottom: 11px;
+    font-size: 16px;
+}
+	
+	.guide-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    padding: 6px;
+    margin-left: -1px;
+}
+	
+	
+	.guide-icon{
+	width: 18px;
+	height:18px;
+	
+	}
+	
+	.autocomplete-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 15px;
+	}
+	
+	
+	
+	
+	.region-selection button {
+    width: 120%;
+    padding: 12px;
+    font-size: 15px;}
+    
+	
+	.region-selection select {
+    width: 120%;
+    padding: 12px;
+    font-family: 'GongGothicMedium';
+    font-size: 14px;}
+	
+	.region-selection label {
+    font-size: 15px;
+    color: #333;
+    font-family: 'GongGothicMedium';
+    font-weight: bold;
+}
+	.start_search-results {
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    position: absolute;
+    width: 82%;}
+	
+	.route-search input[type="text"] {
+    width: 85%;
+    padding: 12px;
+    font-family: 'GongGothicMedium';
+    font-size: 15px;
+	}
+	
+	.end_search-results {
+    background-color: #fff;
+    position: absolute;
+    width: 82%;}
+    .autocomplete-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+    .autocomplete-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+    
+   .route-search-button {
+    width: 112%;
+    padding: 12px;
+    font-size: 15px;
+       }
+    
+    .location-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+
+.parking-item h3 {
+    font-family: 'GongGothicMedium';
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.label_gubun {
+    font-size: 10px;
+}
+
+.label_type{
+    font-size: 10px;
+}
+
+.label_charge{
+    font-size: 10px;
+}
+
+  .marker-icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 3px;
+        vertical-align: middle;
+    }
+	 
+}
+
+
+
+
+
+
+
 
 
  
 	
+
+
+
+/*태블릿 화면  */
+@media (max-width: 768px) { 
+	.pagination {
+    left: 33%;
+	}
+	
+	.parking-contents {
+    height: 70vh;
+    width: 87%;
+}
+	
+	#parking-details-popup {
+    position: fixed;
+    top: 182px;
+    right: 40px;
+    max-width: 300px;
+    width: 300px;
+    height: 494px;
+	}
+	
+	.search-bar {
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 76%;
+    top: 12px;
+    position: relative;
+	}
+	.search-bar button {
+    margin-left: 57px;
+}
+	
+
+	.region-selection select {
+    width: 103%;
+    font-size: 12px;
+}
+	
+	.region-selection button {
+    width: 104%;
+    padding: 12px;
+    font-size: 13px;
+	}
+	
+	
+	.region-selection label {
+    font-size: 14px;
+    color: #333;}
+	
+	.search-bar input[type="text"] {
+    font-size: 14px;
+}
+	
+	.tab-button {
+    font-size: 14px;}
+    
+    .parking-title {
+    font-family: 'GongGothicMedium';
+    font-size: 19px;}
+    
+	.route-search input[type="text"] {
+    width: 72%;
+    font-size: 13px;
+	}
+.route-search-button {
+    width: 98%;
+    padding: 12px;
+    font-size: 13px;
+}
+.autocomplete-results {
+    top: 77px;
+    left: 5px;
+    width: 84%;
+    max-height: 200px;
+    font-size: 14px;
+    
+}
+	.start_search-results {
+    max-height: 200px;
+    width: 83%;
+    top: 55px;
+    left: 20px;
+    font-size: 13px;
+}
+	.autocomplete-icon {
+    width: 18px;
+    height: 18px;
+	}
+	.end_search-results {
+    max-height: 180px;
+    width: 83%;
+    z-index: 1000;
+    top: 113px;
+    left: 20px;
+    font-size: 13px;
+}
+	
+	.current-location-img {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 62px;
+    right: 375px; 
+}
+	
+	.route-fixed-info h4 {
+    margin: 0;
+    font-family: 'GongGothicMedium';
+    font-size: 14px;
+    color: black;
+    margin-bottom: 6px;
+    margin-left: -8px;
+}
+
+	.route-fixed-info p {
+    margin: 0;
+    font-size: 13px;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+    color: #4CC417;
+    line-height: 1.8;
+    margin-left: -8px;
+}
+	.route-result h3 {
+    font-family: 'GongGothicMedium';
+    margin-left: 4px;
+    margin-bottom: 11px;
+    font-size: 14px;
+}
+	
+	.guide-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+    padding: 6px;
+    margin-left: -1px;
+    font-size: 12px;
+}
+	.guide-icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+	 
+	 .location-row {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    width: 122%;
+}
+	  .marker-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
+        vertical-align: middle;
+    }
+	 
+}
+
+
 /*media 모바일화면 (425px이하)*/
 @media(max-width: 425px){
 	.parking-contents{
@@ -948,8 +1540,17 @@ html, body{
     width: 170px;
     font-family: 'GongGothicMedium';
     font-size: 10px;}
+    
     .region-selection label {
-    font-size: 12px;}
+    font-size: 11px;}
+    
+    
+    .region-selection button {
+    width: 95%;
+    font-size: 13px;
+   
+}
+    
     
     .route-search-button {
     width: 173px;
@@ -971,6 +1572,8 @@ html, body{
 	.route-search-button {
     width: 155px;
     font-size: 10px;
+    margin-top: -1px;
+    margin-bottom: 3px;
 	}
 	
 	.autocomplete-item {
@@ -979,6 +1582,8 @@ html, body{
 	
 	.search-bar {
     width: 160px;
+    position: relative;
+        top: 23px;
 	}
 	.search-bar input[type="text"] {
     font-size: 11px;
@@ -994,7 +1599,7 @@ html, body{
 }
 
 .parking-item h3 {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .parking-item p {
@@ -1002,16 +1607,18 @@ html, body{
     }
     
   .label_gubun {
-    font-size: 9px;
+    font-size: 8px;
   }
   .label_charge{
-    font-size: 9px;
+    font-size: 8px;
   }
   
   .label_type{
-    font-size: 9px;
+    font-size: 8px;
   }
     
+
+
    .route-result h4 {
     font-size: 12px;
 } 
@@ -1042,27 +1649,32 @@ html, body{
 
 #parking-details-popup {
     position: fixed;
-    top: 237px;
-    right: 10px;
+    top: 182px;
+    right: 3px;
     width: 150px;
-    height: 450px;
+    height: 461px;
  
 }
 .parking-title {
     font-family: 'GongGothicMedium';
-    font-size: 15px;
+    font-size: 14px;
+       margin-top: 9px;
 }
 
 .info-charge {
-    font-size: 13px;}
+    font-size: 13px;
+    top: -4px;
+    }
     
   .info-table td {
     font-size: 11px;
     }
     
     .info-divider {
-    font-size: 11px;
+    font-size: 12px;
+    top: 29px;
     }
+    
     .guide-info{
      font-size: 11px;}
      
@@ -1071,12 +1683,140 @@ html, body{
     height: 13px;
      
 }
+ .info-address {
+    font-size: 11px;
+    color: #555;
+    font-family: 'Pretendard-Regular';
+    font-weight: 500;
+    margin-top: -5px;
+}
  
+ 
+.region-selection button {
+    width: 86%;
+    padding: 11px;
+    font-size: 11px;
+  
+}
 
+.info-coordinates-btn img {
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+}
 
+.info-coordinates-btn {
+    font-size: 11px;
+    padding: 3px 3px;
+    left: 62%;
+}
+.close-button img {
+    width: 12px;
+    height: 12px;
+}
+
+.info-type-se {
+    font-size: 10px;
+}
+.info-type-ty {
+    font-size: 10px;
+    position: relative;
+    left: -7px;
+    
+}
+.info-open {
+    font-size: 13px;
+    top: -22px;
+}
+.info-table-open {
+    margin-top: -32px;
+    font-size: 10px;
+}
+
+.info-table {
+    margin-top: -40px;
+    font-size: 10px;
+    top: 29px;
+}
+
+.pagination {
+    width: 100%;
+    left: 20%;
+    top: -6px;
+    padding: 2px 0;
+    }
+    
+    
+.pagination button {
+    font-size: 11px;
 }
 
 
-	
-	
-}	
+.swap-btn img, .clear-btn img {
+    width: 15px;
+    height: 15px;
+}
+
+.clear-btn, .swap-btn {
+    position: relative;
+    left: -1px;
+    top: -3px;
+}
+
+.start_search-results {
+    max-height: 151px;
+    position: absolute;
+    width: 77%;
+    top: 50px;
+    left: 20px;
+}
+
+.end_search-results {
+    max-height: 116px;
+    width: 77%;
+    top: 105px;
+    left: 20px;
+}
+.route-result h3 {
+    font-family: 'GongGothicMedium';
+    font-size: 12px;
+}
+
+.autocomplete-results {
+    position: absolute;
+    top: 77px;
+    left: 3px;
+    width: 49%;
+    max-height: 151px;
+}
+
+
+.current-location-img {
+    width: 19px;
+    height: 19px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 67px;
+    right: 196px;
+    z-index: 1000;
+}
+
+
+    .marker-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 2px;
+        vertical-align: middle;
+    }
+.route-search {
+    gap: 3px;
+}
+
+.region-selection {
+    padding: 0px;
+}
+
+    .location-row {
+        gap: 4px;
+}
+}

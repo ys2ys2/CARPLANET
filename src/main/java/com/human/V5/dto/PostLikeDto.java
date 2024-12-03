@@ -11,4 +11,5 @@ public class PostLikeDto {
   private Integer postIndex;
   private Integer likeCount;
   private Integer unlikeCount;
+  
 }
