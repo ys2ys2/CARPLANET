@@ -41,5 +41,7 @@ public interface UserService {
 
 	UserEntity findByCarIdAndCarPwAndCarStatusIn(String carId, String carPw, List<Integer> carStatusList);
 
+    void updateStatus(String carIdx, int status);
+
 	
 }

@@ -213,5 +213,22 @@ public class UserServiceImpl implements UserService {
 		return repository.findByCarIdAndCarPwAndCarStatusIn(carId, carPw, carStatusList);
 	}
 
+	@Override
+    @Transactional
+    public void updateStatus(String carIdx, int status) {
+        // 1. carIdx를 int로 변환
+        int id = Integer.parseInt(carIdx);
+
+        // 2. carIdx로 UserEntity 조회
+        UserEntity userEntity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 3. carStatus 값 업데이트
+        userEntity.setUserStatus(status);
+
+        // 4. 변경된 엔티티 저장
+        repository.save(userEntity);
+    }
+
 	
 }

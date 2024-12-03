@@ -3,7 +3,6 @@ package com.human.V5.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,5 +133,41 @@ public class MemberInfoController {
     }
     
     
-    
+    //delete
+    @ResponseBody
+    @PostMapping(value = "/deleteUser", produces = "application/json")
+    public Map<String, Object> deleteAccount(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // 1. 세션에서 user 객체 가져오기
+            UserEntity user = (UserEntity) session.getAttribute("user");
+
+            if (user == null) {
+                // 세션 정보가 없는 경우
+                response.put("status", "fail");
+                response.put("message", "세션 정보가 없습니다. 다시 로그인해주세요.");
+                return response;
+            }
+
+            // 2. user 객체에서 car_Idx 추출
+            Integer carIdx = user.getCarIdx();
+            System.out.println("CarIdx from session: " + carIdx); // 디버깅용 로그
+
+            // 3. 상태를 -1로 업데이트
+            userService.updateStatus(carIdx.toString(), -1);
+
+            // 4. 세션 무효화
+            session.invalidate();
+
+            response.put("status", "success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "fail");
+            response.put("message", "탈퇴 처리 중 문제가 발생했습니다.");
+        }
+
+        return response;
+    }
 }
+    

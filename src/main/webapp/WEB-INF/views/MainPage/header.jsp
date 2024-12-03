@@ -27,12 +27,20 @@
  <div class="header-container">
       <div class="member">
          <span class="userprofile">${not empty user.carNickname ? user.carNickname : "유저"}님 환영합니다!</span>
-        <button class="mypage-btn" onclick="location.href='./mypage'">
-          <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
-          <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
-          <span>마이페이지</span>
-        </button>
-
+        <c:choose>
+        	<c:when test="${user.carStatus == 3}">
+       	        <button class="admin-btn" onclick="location.href='./Admin/admin.do'">
+		        	<span>관리자 페이지</span>
+		        </button>
+		    </c:when>
+		<c:otherwise>
+	        <button class="mypage-btn" onclick="location.href='./mypage'">
+	          <!-- 마이페이지 아이콘 추가 (주석 처리된 부분을 원하면 해제) -->
+	          <!--<img src="${pageContext.request.contextPath}/resources/images/mypage-icon.png" alt="마이페이지" class="mypage-icon">-->
+	          <span>마이페이지</span>
+	        </button>
+	    </c:otherwise>
+	    </c:choose>
         <!-- 로그아웃을 링크로 변경 -->
         <span><a href="#" id="logout">로그아웃</a></span>
       </div>

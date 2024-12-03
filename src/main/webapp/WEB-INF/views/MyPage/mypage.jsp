@@ -75,7 +75,7 @@
                 <c:forEach var="post" items="${myPosts}">
                     <li>
                     <a href="${pageContext.request.contextPath}/community/getPostList.do">
-		                <span class="community-title">제목 : ${post.title}</span>
+		                <span class="titleidx">#${post.postIndex}번 글 </span><span class="community-title">${post.title}</span>
 		            </a>
 		                <span class="community-date">
 		                	<fmt:formatDate value="${post.regDate}" pattern="yy-MM-dd HH:mm" />

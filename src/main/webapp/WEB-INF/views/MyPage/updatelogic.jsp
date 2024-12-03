@@ -88,7 +88,7 @@
 			    	<form class="update-phone">
 			            <label for="phone">휴대폰번호</label>
 			            <input type="tel" id="phone" name="phone" value="${user.phone}" readonly>
-			            <span class="check">인증하기</span>
+			            <!-- <span class="check">인증하기</span> -->
 			        </form>
 			        <form class="reg-date">
 			        	<label for="date">가입일자</label>
@@ -104,6 +104,7 @@
 	       </div> <!-- end of updateWrapper -->
 	       
 	       <div class="update-footer">
+	       	<button type="button" class="update-delete" onclick="confirmDelete()">탈퇴하기</button>
 	       	<button type="button" class="update-save" onclick="saveUserInfo()">수정하기</button>
 	       </div>
 	    </div> <!-- end of update-info -->
@@ -297,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
        console.log("Password payload:", JSON.stringify({ password }));
 
        
-       // 비밀번호 확인 요청
+    // 비밀번호 확인 요청
 	fetch(contextPath + "/check_password", {
 	    method: 'POST',
 	    headers: {
@@ -437,12 +438,46 @@ document.addEventListener('DOMContentLoaded', () => {
    	        });
    	}
 
-
-	    
    
 });
 
-
+	// 회원탈퇴 로직
+	function confirmDelete() {
+	    // 1. 사용자 확인 팝업
+	    if (confirm('정말 탈퇴하시겠습니까?')) {
+	        // 2. 탈퇴 요청 (fetch)
+			fetch(contextPath + '/deleteUser', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	            },
+	            body: JSON.stringify({}), // 필요하면 추가 데이터를 body에 포함 가능
+	        })
+	            .then((response) => {
+	                console.log('Response status:', response.status); // 응답 상태 확인
+	                if (!response.ok) {
+	                    throw new Error('서버 오류가 발생했습니다.');
+	                }
+	                return response.json(); // 응답 데이터를 JSON으로 파싱
+	            })
+	            .then((data) => {
+	                console.log('Response data:', data); // 서버 응답 데이터 확인
+	                if (data.status === 'success') {
+	                    // 3. 성공 시: 세션 초기화 및 리다이렉트
+	                    alert('탈퇴 처리가 완료되었습니다.');
+	                    sessionStorage.clear(); // 세션 데이터 삭제
+	                    window.location.href = '/main'; // 메인 페이지로 이동
+	                } else {
+	                    // 4. 실패 시: 오류 메시지 표시
+	                    alert(data.message || '탈퇴 처리에 실패했습니다.');
+	                }
+	            })
+	            .catch((error) => {
+	                console.error('Error:', error);
+	                alert('서버와 통신 중 문제가 발생했습니다.');
+	            });
+	    }
+	}
 
 </script>
 

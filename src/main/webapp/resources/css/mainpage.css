@@ -429,6 +429,7 @@ body {
         padding: 10px; /* 패딩 추가 */
         border-radius: 8px; /* 둥근 모서리 */
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        
     }
 
     .arrow-text {

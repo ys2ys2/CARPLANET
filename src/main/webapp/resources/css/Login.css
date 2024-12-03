@@ -74,7 +74,8 @@ html, body {
 	left: 0;
 	opacity: 0;
 	z-index: 1;
-	overflow: hidden;
+	overflow: auto;
+	
 }
 
 .container.right-panel-active .sign-up-container {
@@ -336,7 +337,7 @@ html, body {
     z-index: 1000;
 }
 
-.modal-content {
+.Lmodal-content {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -347,13 +348,13 @@ html, body {
     font-family: 'SUIT-Regular';
 }
 
-.modal-content {
+.Lmodal-content {
 	margin: 2px 0;
 	display: block;
 	
 }
 
-#modalContent {
+#LmodalContent {
 	margin:0 auto;
 	width: 80%;
     text-align: Left; /* 텍스트만 왼쪽 정렬 */
@@ -447,6 +448,7 @@ html, body {
         width: 30px; /* 소셜 로그인 버튼 크기 줄임 */
         height: 30px;
     }
+    
 }
 
 /* 모바일 */

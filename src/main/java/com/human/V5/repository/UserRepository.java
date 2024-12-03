@@ -30,4 +30,5 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>{
 
 	List<UserEntity> findByCarStatus(Integer carStatus);
 
+
 }
