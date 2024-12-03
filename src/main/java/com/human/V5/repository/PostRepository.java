@@ -17,6 +17,6 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
   
   List<PostEntity> findByTitleContainingOrContentContaining(String keyword, String keyword2);
 
-  Page<PostEntity> findByCarId(String carId, Pageable pageable);
+  Page<PostEntity> findByCarId(String carId, Pageable pageable); // 충돌33
   
 }
