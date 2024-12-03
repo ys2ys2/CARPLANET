@@ -76,7 +76,7 @@
     <!-- 주차장 -->
     <div class="parking-lot-container">
         <a href="${pageContext.request.contextPath}/parkinglot">
-            <img src="${pageContext.request.contextPath}/resources/images/0003.jpg" alt="주차장" class="parking-lot-img">
+            <img src="${pageContext.request.contextPath}/resources/images/주차장3.jpg" alt="주차장" class="parking-lot-img">
             <div class="parking-lot-text">
                 <h3>Parking Lot</h3>
                 <p>주차장</p>

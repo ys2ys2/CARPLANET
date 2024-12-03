@@ -46,7 +46,7 @@ public class PostEntity {
 	private Date modDate; // 최근 게시글 수정일
 
 	@Builder
-	public PostEntity(String title, String content, String filePath, String fileName, String carId) {
+	public PostEntity(String title, String content, String filePath, String fileName, String carId, Integer post_Index) {
 		this.title = title;
 		this.content = content;
 		this.filePath = filePath;
@@ -54,5 +54,6 @@ public class PostEntity {
 		this.carId = carId;
 		this.regDate = new Date();
 		this.modDate = new Date();
+		this.postIndex = post_Index;
 	}
 }
