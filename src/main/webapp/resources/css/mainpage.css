@@ -52,7 +52,8 @@ body {
     z-index: 1;
     height: 230px; /* 고정 높이 설정 */
     overflow: hidden; /* 텍스트가 넘어가는 부분 숨김 */
-    transform: translateY(-70px)translateX(10px); ; /* 텍스트를 위로 150px 올리기 */
+    transform: translateY(-50%)translateX(150%); /* 텍스트를 위로 150px 올리기 */
+    width: 25%;
 }
 
 
@@ -198,6 +199,7 @@ body {
 .ev-charging-text h3, .ev-charging-text p {
     margin: 0; /* 상하 마진을 0으로 설정하여 텍스트 간격을 줄임 */
     padding: 0; /* 상하 패딩을 0으로 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .ev-charging-text h3 {
@@ -262,6 +264,8 @@ body {
 .gas-station-text h3, .gas-station-text p {
     margin: 0; /* 상하 마진을 0으로 설정하여 텍스트 간격을 줄임 */
     padding: 0; /* 상하 패딩을 0으로 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
+    
 }
 
 .gas-station-text h3 {
@@ -326,6 +330,7 @@ body {
 .parking-lot-text h3, .parking-lot-text p {
     margin: 0; /* 상하 마진을 0으로 설정하여 텍스트 간격을 줄임 */
     padding: 0; /* 상하 패딩을 0으로 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .parking-lot-text h3 {
@@ -390,6 +395,7 @@ body {
 .community-text h3, .community-text p {
     margin: 0; /* 상하 마진을 0으로 설정하여 텍스트 간격을 줄임 */
     padding: 0; /* 상하 패딩을 0으로 설정 */
+    font-family: 'Paperlogy-8ExtraBold';
 }
 
 .community-text h3 {
