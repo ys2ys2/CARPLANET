@@ -204,6 +204,24 @@ body {
 .kakao-close:hover {
   color: #000; /* 호버 시 색 변경 */
 }
+/* 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+	
+	  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
+}
+
+
+/*  화면 (768px 이하) */
+@media (max-width: 768px) {
+	
+  /* 푸터 숨기기 */
+  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
+
+/* 초소형 화면 (425px 이하) */
 
 .terms:hover,
 .notice:hover,
@@ -217,6 +235,11 @@ body {
 }
 
 @media (max-width: 425px) {
+
+
+  /* 푸터 숨기기 */
+  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
 	
 }
-
