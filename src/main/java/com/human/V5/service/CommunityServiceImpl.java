@@ -83,6 +83,12 @@ public class CommunityServiceImpl implements CommunityService {
   @Override
   public List<PostDto> getPostList(Pageable pageable) {
     List<PostEntity> postList = postRepository.findAllByOrderByRegDateDesc(pageable).getContent();
+    
+    if (postList == null || postList.isEmpty()) {
+        System.out.println("No posts found in the database.");
+        return new ArrayList<>();
+    }
+    
     return convertPostDto(postList);
   }
 
@@ -348,8 +354,16 @@ public class CommunityServiceImpl implements CommunityService {
 
     Map<String, String> userNickNameMap = new HashMap<>();
     carIdSet.forEach(carId -> {
-      UserEntity user = userRepository.findByCarId(carId);
-      userNickNameMap.put(user.getCarId(), user.getCarNickname());
+    	if (carId != null) { // null 체크
+            UserEntity user = userRepository.findByCarId(carId);
+            if (user != null) { // user가 null인지 추가 확인
+                userNickNameMap.put(user.getCarId(), user.getCarNickname());
+            } else {
+                System.out.println("No user found for carId: " + carId);
+            }
+        } else {
+            System.out.println("Null carId found in carIdSet.");
+        }
     });
 
 

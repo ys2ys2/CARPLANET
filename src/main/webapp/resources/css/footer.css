@@ -75,7 +75,7 @@ body {
    font-family: 'Pretendard-Regular';
   font-weight: normal;
   color: #333;
-  font-size: 11px;
+  font-size: 12px;
   margin: 0;
   text-decoration: none;
   animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
@@ -92,7 +92,7 @@ body {
   font-family: 'Pretendard-Regular';
   font-weight: normal;
   color: #333;
-  font-size: 11px;
+  font-size: 12px;
   text-decoration: none;
   animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
 }
@@ -204,6 +204,18 @@ body {
 .kakao-close:hover {
   color: #000; /* 호버 시 색 변경 */
 }
+
+.terms:hover,
+.notice:hover,
+.privacy:hover,
+.copyright:hover {
+	color: #0d8aff;
+}
+
+.icon-item:hover{
+	color: #0d8aff;
+}
+
 /* 화면 (1024px 이하) */
 @media (max-width: 1024px) {
 	
@@ -223,12 +235,7 @@ body {
 
 /* 초소형 화면 (425px 이하) */
 
-.terms:hover,
-.notice:hover,
-.privacy:hover,
-.copyright:hover {
-	color: #0d8aff;
-}
+
 
 .icon-links-row span:hover {
 	color: #0d8aff;
