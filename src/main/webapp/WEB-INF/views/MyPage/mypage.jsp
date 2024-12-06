@@ -56,6 +56,7 @@
 	                            <option value="디젤">디젤</option>
 	                            <option value="휘발유">휘발유</option>
 	                            <option value="전기">전기</option>
+	                            <option value="하이브리드">하이브리드</option>
 	                            <option value="lpg">LPG</option>
 	                        </select>
 	                    </div>
@@ -75,7 +76,7 @@
                 <c:forEach var="post" items="${myPosts}">
                     <li>
                     <a href="${pageContext.request.contextPath}/community/getPostList.do">
-		                <span class="community-title">제목 : ${post.title}</span>
+		                <span class="titleidx">#${post.postIndex}번 글 </span><span class="community-title">${post.title}</span>
 		            </a>
 		                <span class="community-date">
 		                	<fmt:formatDate value="${post.regDate}" pattern="yy-MM-dd HH:mm" />

@@ -17,14 +17,14 @@
   
   <!-- 이용약관 및 공지사항 -->
   <p>
-    <a href="#" class="terms">이용약관</a> 
-    <a href="#" class="notice">공지사항</a>
+    <a href="${pageContext.request.contextPath}/clause" class="terms" target="_blank">이용약관</a> 
+    <a href="${pageContext.request.contextPath}/copyright" class="notice" target="_blank">저작권 정책</a>
   </p>
 
   <!-- 개인정보 처리방침 및 저작권 정책 -->
   <p>
-    <a href="#" class="privacy">개인정보<br> 처리방침</a> 
-    <a href="#" class="copyright">저작권<br> 정책</a>
+    <a href="${pageContext.request.contextPath}/privacy" class="privacy" target="_blank">개인정보<br> 처리방침</a> 
+    <a href="${pageContext.request.contextPath}/marketing" class="copyright" target="_blank">광고성 정보<br>수신동의</a>
   </p>
 
 <!-- 마이페이지와 커뮤니티 -->

@@ -156,11 +156,16 @@
             now.setTime(now.getTime() + timeOffset); // 한국 시간으로 맞춤
 
             console.log('오늘 날짜', Date(now));
+            // 데이터 확인 로그
+            console.log('Dates:', dates);
+            console.log('Premium Prices:', premiumGasolinePrices);
+            console.log('Regular Prices:', regularGasolinePrices);
+            console.log('Diesel Prices:', dieselPrices);
 
             // 7일간의 날짜 배열 생성
             for (let i = 0; i <= 6; i++) {
                 const targetDate = new Date(now); // 새로 복사한 날짜 객체
-                targetDate.setDate(now.getDate() - (8 - i)); // 오늘 날짜에서 6-i일을 빼서 계산
+                targetDate.setDate(now.getDate() - (7 - i)); // 오늘 날짜에서 6-i일을 빼서 계산
 
                 const month = targetDate.getMonth() + 1; // 월 (0부터 시작하므로 +1)
                 const day = targetDate.getDate();      // 일
@@ -176,10 +181,10 @@
             }
 
             // 날짜 배열을 과거에서 오늘까지 순서로 정렬
-            dates.reverse(); // 날짜를 11.21부터 11.27까지 순서대로 뒤집기
-            premiumGasolinePrices.reverse(); 
-            regularGasolinePrices.reverse();
-            dieselPrices.reverse();
+            //dates.reverse(); // 날짜를 11.21부터 11.27까지 순서대로 뒤집기
+            //premiumGasolinePrices.reverse(); 
+            //regularGasolinePrices.reverse();
+            //dieselPrices.reverse();
 
             // 날짜 배열 출력 (디버깅용)
             console.log("최종 날짜 배열:", dates);

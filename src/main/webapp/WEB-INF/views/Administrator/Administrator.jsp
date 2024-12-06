@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
@@ -372,6 +373,23 @@ a.dynamic-link:visited {
     background-color: #0056b3;
 }
 
+@media (max-width: 1024px) {
+.main-container{
+	left:150px;
+}
+}
+
+
+@media (max-width: 768px) {
+	.main-container{
+		width:70%
+	}
+	#user-table td button{
+		width:60px;
+		height:40px;
+		font-size:10px;
+	}
+}
 </style>
 </head>
 <body>

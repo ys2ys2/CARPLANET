@@ -75,7 +75,7 @@ body {
    font-family: 'Pretendard-Regular';
   font-weight: normal;
   color: #333;
-  font-size: 10px;
+  font-size: 12px;
   margin: 0;
   text-decoration: none;
   animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
@@ -92,7 +92,7 @@ body {
   font-family: 'Pretendard-Regular';
   font-weight: normal;
   color: #333;
-  font-size: 10px;
+  font-size: 12px;
   text-decoration: none;
   animation: slide-up 1s ease-out; /* 텍스트가 하단에서 올라오는 애니메이션 */
 }
@@ -119,6 +119,7 @@ body {
   display: flex;
   justify-content: flex-start;
   gap: 1px;
+  align-items: center;
 }
 
 .icon-item,
@@ -132,15 +133,15 @@ body {
 .icon-item img.icon {
   width: 35px;
   height: 35px;
-  margin: 5px 0 5px -5px; /* 아이콘의 위, 아래 여백을 5px로 설정 */
+  margin: 5px 0 5px 0; /* 아이콘의 위, 아래 여백을 5px로 설정 */
   animation: slide-up 1s ease-out; /* 아이콘이 하단에서 올라오는 애니메이션 */
 }
 
 .icon-item1 img.icon {
   width: 45px;
   height: 45px;
-  margin: 2px 0 3px -5px;
-  margin-bottom: -1px;
+  /* margin: 2px 0 3px -5px; */
+  /* margin-bottom: -1px; */
   animation: slide-up 1s ease-out;
 }
 
@@ -203,7 +204,49 @@ body {
 .kakao-close:hover {
   color: #000; /* 호버 시 색 변경 */
 }
-@media (max-width: 425px) {
-	
+
+.terms:hover,
+.notice:hover,
+.privacy:hover,
+.copyright:hover {
+	color: #0d8aff;
 }
 
+.icon-item:hover{
+	color: #0d8aff;
+}
+
+/* 화면 (1024px 이하) */
+@media (max-width: 1024px) {
+	
+	  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
+}
+
+
+/*  화면 (768px 이하) */
+@media (max-width: 768px) {
+	
+  /* 푸터 숨기기 */
+  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
+
+/* 초소형 화면 (425px 이하) */
+
+
+
+.icon-links-row span:hover {
+	color: #0d8aff;
+}
+
+@media (max-width: 425px) {
+
+
+  /* 푸터 숨기기 */
+  .footer-company-info {
+    display: none; /* 화면에서 숨김 */
+  }
+	
+}

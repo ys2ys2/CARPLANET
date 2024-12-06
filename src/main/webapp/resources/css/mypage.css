@@ -107,6 +107,9 @@ body {
 	
 }
 
+.profile-editbtn span:hover {
+	color: #2b7cd3;
+}
 
 .car-info {
     display: flex;
@@ -340,6 +343,16 @@ option[disabled] {
     float: right; /* 오른쪽으로 정렬 */
 }
 
+.titleidx {
+	width: 115px;
+	display: inline-block; /* 인라인 블록으로 변경 */
+	color: #1e5ba9;
+	
+}
+
+.titleidxtext {
+	font-size: 12px;
+}
 
 
 

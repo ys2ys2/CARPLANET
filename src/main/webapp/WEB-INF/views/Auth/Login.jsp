@@ -96,7 +96,7 @@
 	</div>
 	
 	<div class="terms-modal" id="termsModal" style="display: none;">
-    <div class="modal-content">
+    <div class="Lmodal-content">
         <span class="close-button" id="closeModal">&times;</span>
         <h2 id="modalTitle">약관 제목</h2>
         <div id="modalContent">약관 상세 내용</div>

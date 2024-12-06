@@ -42,7 +42,7 @@ html, body {
 
 .title {
 	padding: 20px 0;
-	background-color: #161938;
+	background-color: #007bff;
 	color: white;
 	font-size: 20px;
 	font-weight: bold;
@@ -69,7 +69,7 @@ html, body {
 }
 
 .cateban>p.active {
-	background-color: #161938;
+	background-color: #007bff;
 	color: #ffffff;
 	border-bottom: 3px solid #1d4e89;
 }
@@ -162,7 +162,7 @@ button:active {
 	border-radius: 5px;
 	padding: 8px 10px; /* 수직 패딩을 줄여 버튼 높이를 낮춤 */
 	margin-left: 5px;
-	background-color: #161938;
+	background-color: #007bff;
 	cursor: pointer;
 	width: 90px; /* 버튼의 고정 너비 설정 */
 	height: 40px; /* signupinput과 동일한 높이 */
@@ -203,7 +203,7 @@ button:active {
 								type="text" placeholder="인증번호입력" required>
 							<button type="button" class="wrapbut" id="verifyCodeButtonId">인증확인</button>
 						</div>
-						<button type="submit">아이디 찾기</button>
+						<button type="submit" style="background-color: #007bff;">아이디 찾기</button>
 					</form>
 					<div id="idResult"
 						style="margin-top: 20px; color: green; font-weight: bold;"></div>
@@ -228,7 +228,7 @@ button:active {
 								type="text" placeholder="인증번호입력" required>
 							<button type="button" class="wrapbut" id="verifyCodeButtonPw">인증확인</button>
 						</div>
-						<button type="submit">비밀번호 찾기</button>
+						<button type="submit" style="background-color: #007bff;">비밀번호 찾기</button>
 					</form>
 				</div>
 			</div>

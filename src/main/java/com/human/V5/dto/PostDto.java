@@ -1,8 +1,8 @@
 package com.human.V5.dto;
 
+import com.human.V5.entity.PostCommentEntity;
 import java.util.Date;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -82,3 +82,9 @@
   margin: 0; /* 아이콘과 텍스트 간격 줄임 */
   padding: 5px 0; /* 이미지와 텍스트 사이 여백 조정 */
 }
+
+@media (max-width: 425px){
+	  .right-fixed-menu {
+    display: none; /* 작은 화면에서 숨김 */
+  }
+}

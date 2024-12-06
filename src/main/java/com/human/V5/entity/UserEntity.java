@@ -106,6 +106,5 @@ public class UserEntity {
 	
 	public void setUserStatus(int status) {
 		this.carStatus = status;
-		
 	}
 }
